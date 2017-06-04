@@ -6,14 +6,12 @@ use Cake\ORM\Entity;
 /**
  * SplatkaKalendar Entity
  *
- * @property int $id
- * @property string $about
+ * @property string $idSKalendar
+ * @property string $idRozhodnuti
  * @property float $castkaSplatkaPlanovana
  * @property float $castkaSplatkaSkutecna
- * @property string $uroceniIndikator
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $modified
+ * @property bool $uroceniIndikator
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class SplatkaKalendar extends Entity
 {
@@ -29,6 +27,6 @@ class SplatkaKalendar extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idSKalendar' => false
     ];
 }

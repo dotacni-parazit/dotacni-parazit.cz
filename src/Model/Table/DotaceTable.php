@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -16,8 +16,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Dotace patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Dotace[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Dotace findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class DotaceTable extends Table
 {
@@ -32,13 +30,9 @@ class DotaceTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('dotace');
-        $this->setDisplayField('title');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
-
-        $this->hasOne('Rozhodnuti', ['bindingKey' => 'byloRozhodnuto', 'foreignKey' => 'about']);
+        $this->setTable('Dotace');
+        $this->setDisplayField('idDotace');
+        $this->setPrimaryKey('idDotace');
     }
 
     /**
@@ -50,122 +44,92 @@ class DotaceTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('idDotace', 'create');
 
         $validator
-            ->requirePresence('about', 'create')
-            ->notEmpty('about')
-            ->add('about', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->allowEmpty('byloRozhodnuto');
-
-        $validator
-            ->dateTime('podaniDatum')
-            ->allowEmpty('podaniDatum');
+            ->requirePresence('idPrijemce', 'create')
+            ->notEmpty('idPrijemce');
 
         $validator
             ->allowEmpty('projektKod');
 
         $validator
-            ->dateTime('smlouvaPodpisDatum')
-            ->allowEmpty('smlouvaPodpisDatum');
+            ->dateTime('podpisDatum')
+            ->requirePresence('podpisDatum', 'create')
+            ->notEmpty('podpisDatum');
 
         $validator
-            ->dateTime('zaznamAktualizaceDatumCas')
-            ->allowEmpty('zaznamAktualizaceDatumCas');
-
-        $validator
-            ->allowEmpty('zaznamIdentifikator')
-            ->add('zaznamIdentifikator', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->dateTime('zaznamPlatnostDatum')
-            ->allowEmpty('zaznamPlatnostDatum');
-
-        $validator
-            ->allowEmpty('zmenaSmlouvaIdikator');
-
-        $validator
-            ->allowEmpty('projektIdentifikator');
-
-        $validator
-            ->allowEmpty('title');
-
-        $validator
-            ->allowEmpty('podprogram');
-
-        $validator
-            ->allowEmpty('operacniProgramCEDR');
-
-        $validator
-            ->integer('subjektRozliseniKod')
+            ->decimal('subjektRozliseniKod')
             ->allowEmpty('subjektRozliseniKod');
-
-        $validator
-            ->allowEmpty('operacniProgramMMR');
-
-        $validator
-            ->allowEmpty('prioritaMMR');
-
-        $validator
-            ->allowEmpty('opatreniMMR');
-
-        $validator
-            ->allowEmpty('podOpatreni');
-
-        $validator
-            ->allowEmpty('grantoveSchemaMMR');
-
-        $validator
-            ->dateTime('ukonceniSkutecneDatum')
-            ->allowEmpty('ukonceniSkutecneDatum');
-
-        $validator
-            ->dateTime('zahajeniSkutecneDatum')
-            ->allowEmpty('zahajeniSkutecneDatum');
 
         $validator
             ->dateTime('ukonceniPlanovaneDatum')
             ->allowEmpty('ukonceniPlanovaneDatum');
 
         $validator
-            ->allowEmpty('clenenNaEtapu');
+            ->dateTime('ukonceniSkutecneDatum')
+            ->allowEmpty('ukonceniSkutecneDatum');
 
         $validator
-            ->allowEmpty('realizovanNaUzemi');
+            ->dateTime('zahajeniPlanovaneDatum')
+            ->allowEmpty('zahajeniPlanovaneDatum');
 
         $validator
-            ->allowEmpty('prioritaCEDR');
+            ->dateTime('zahajeniSkutecneDatum')
+            ->allowEmpty('zahajeniSkutecneDatum');
 
         $validator
-            ->allowEmpty('projektNadrizenyIdentifikator');
+            ->boolean('zmenaSmlouvyIndikator')
+            ->requirePresence('zmenaSmlouvyIndikator', 'create')
+            ->notEmpty('zmenaSmlouvyIndikator');
 
         $validator
-            ->allowEmpty('podOpatreniCEDR');
+            ->requirePresence('projektIdnetifikator', 'create')
+            ->notEmpty('projektIdnetifikator');
 
         $validator
-            ->allowEmpty('opatreniCEDR');
+            ->allowEmpty('projektNazev');
 
         $validator
-            ->allowEmpty('poznamkaCEDR');
+            ->allowEmpty('iriOperacniProgram');
+
+        $validator
+            ->allowEmpty('iriPodprogram');
+
+        $validator
+            ->allowEmpty('iriPriorita');
+
+        $validator
+            ->allowEmpty('iriOpatreni');
+
+        $validator
+            ->allowEmpty('iriPodopatreni');
+
+        $validator
+            ->allowEmpty('iriGrantoveSchema');
+
+        $validator
+            ->boolean('iriProgramPodpora')
+            ->allowEmpty('iriProgramPodpora');
+
+        $validator
+            ->boolean('iriTypCinnosti')
+            ->allowEmpty('iriTypCinnosti');
+
+        $validator
+            ->boolean('iriProgram')
+            ->allowEmpty('iriProgram');
+
+        $validator
+            ->dateTime('dPlatnost')
+            ->requirePresence('dPlatnost', 'create')
+            ->notEmpty('dPlatnost');
+
+        $validator
+            ->dateTime('dtAktualizace')
+            ->requirePresence('dtAktualizace', 'create')
+            ->notEmpty('dtAktualizace');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['about']));
-        $rules->add($rules->isUnique(['zaznamIdentifikator']));
-
-        return $rules;
     }
 }

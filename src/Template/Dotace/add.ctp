@@ -14,35 +14,28 @@
     <fieldset>
         <legend><?= __('Add Dotace') ?></legend>
         <?php
-            echo $this->Form->control('about');
-            echo $this->Form->control('byloRozhodnuto');
-            echo $this->Form->control('podaniDatum', ['empty' => true]);
+            echo $this->Form->control('idPrijemce');
             echo $this->Form->control('projektKod');
-            echo $this->Form->control('smlouvaPodpisDatum', ['empty' => true]);
-            echo $this->Form->control('zaznamAktualizaceDatumCas', ['empty' => true]);
-            echo $this->Form->control('zaznamIdentifikator');
-            echo $this->Form->control('zaznamPlatnostDatum', ['empty' => true]);
-            echo $this->Form->control('zmenaSmlouvaIdikator');
-            echo $this->Form->control('projektIdentifikator');
-            echo $this->Form->control('title');
-            echo $this->Form->control('podprogram');
-            echo $this->Form->control('operacniProgramCEDR');
+            echo $this->Form->control('podpisDatum');
             echo $this->Form->control('subjektRozliseniKod');
-            echo $this->Form->control('operacniProgramMMR');
-            echo $this->Form->control('prioritaMMR');
-            echo $this->Form->control('opatreniMMR');
-            echo $this->Form->control('podOpatreni');
-            echo $this->Form->control('grantoveSchemaMMR');
-            echo $this->Form->control('ukonceniSkutecneDatum', ['empty' => true]);
-            echo $this->Form->control('zahajeniSkutecneDatum', ['empty' => true]);
             echo $this->Form->control('ukonceniPlanovaneDatum', ['empty' => true]);
-            echo $this->Form->control('clenenNaEtapu');
-            echo $this->Form->control('realizovanNaUzemi');
-            echo $this->Form->control('prioritaCEDR');
-            echo $this->Form->control('projektNadrizenyIdentifikator');
-            echo $this->Form->control('podOpatreniCEDR');
-            echo $this->Form->control('opatreniCEDR');
-            echo $this->Form->control('poznamkaCEDR');
+            echo $this->Form->control('ukonceniSkutecneDatum', ['empty' => true]);
+            echo $this->Form->control('zahajeniPlanovaneDatum', ['empty' => true]);
+            echo $this->Form->control('zahajeniSkutecneDatum', ['empty' => true]);
+            echo $this->Form->control('zmenaSmlouvyIndikator');
+            echo $this->Form->control('projektIdnetifikator');
+            echo $this->Form->control('projektNazev');
+            echo $this->Form->control('iriOperacniProgram');
+            echo $this->Form->control('iriPodprogram');
+            echo $this->Form->control('iriPriorita');
+            echo $this->Form->control('iriOpatreni');
+            echo $this->Form->control('iriPodopatreni');
+            echo $this->Form->control('iriGrantoveSchema');
+            echo $this->Form->control('iriProgramPodpora');
+            echo $this->Form->control('iriTypCinnosti');
+            echo $this->Form->control('iriProgram');
+            echo $this->Form->control('dPlatnost');
+            echo $this->Form->control('dtAktualizace');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

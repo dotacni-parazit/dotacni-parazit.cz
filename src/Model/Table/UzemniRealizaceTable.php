@@ -16,8 +16,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\UzemniRealizace patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\UzemniRealizace[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\UzemniRealizace findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UzemniRealizaceTable extends Table
 {
@@ -32,11 +30,9 @@ class UzemniRealizaceTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('uzemni_realizace');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
+        $this->setTable('UzemniRealizace');
+        $this->setDisplayField('idUzemi');
+        $this->setPrimaryKey('idUzemi');
     }
 
     /**
@@ -48,45 +44,82 @@ class UzemniRealizaceTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('idUzemi', 'create');
 
         $validator
-            ->requirePresence('about', 'create')
-            ->notEmpty('about')
-            ->add('about', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->requirePresence('idDotace', 'create')
+            ->notEmpty('idDotace');
 
         $validator
-            ->dateTime('zaznamAktualizaceDatumCas')
-            ->allowEmpty('zaznamAktualizaceDatumCas');
+            ->boolean('mezinarodniPusobnostIndikator')
+            ->allowEmpty('mezinarodniPusobnostIndikator');
 
         $validator
-            ->requirePresence('zaznamIdentifikator', 'create')
-            ->notEmpty('zaznamIdentifikator')
-            ->add('zaznamIdentifikator', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->boolean('iriRealizovanNaUzemiStatu')
+            ->allowEmpty('iriRealizovanNaUzemiStatu');
 
         $validator
-            ->dateTime('zaznamPlatnostDatum')
-            ->allowEmpty('zaznamPlatnostDatum');
+            ->boolean('uzemniRealizacePopis')
+            ->allowEmpty('uzemniRealizacePopis');
 
         $validator
-            ->allowEmpty('okresNutsKod');
+            ->boolean('obvodPrahaPredavaciKod')
+            ->allowEmpty('obvodPrahaPredavaciKod');
+
+        $validator
+            ->boolean('spravniObvodPrahaPredavaciKod')
+            ->allowEmpty('spravniObvodPrahaPredavaciKod');
+
+        $validator
+            ->boolean('stavebniObjektKod')
+            ->allowEmpty('stavebniObjektKod');
+
+        $validator
+            ->boolean('uliceKod')
+            ->allowEmpty('uliceKod');
+
+        $validator
+            ->boolean('iriCastObce')
+            ->allowEmpty('iriCastObce');
+
+        $validator
+            ->boolean('iriKraj')
+            ->allowEmpty('iriKraj');
+
+        $validator
+            ->boolean('iriMestskyObvodMestskaCast')
+            ->allowEmpty('iriMestskyObvodMestskaCast');
+
+        $validator
+            ->boolean('iriObec')
+            ->allowEmpty('iriObec');
+
+        $validator
+            ->boolean('iriOkres')
+            ->allowEmpty('iriOkres');
+
+        $validator
+            ->boolean('iriVusc')
+            ->allowEmpty('iriVusc');
+
+        $validator
+            ->boolean('adresniMistoKod')
+            ->allowEmpty('adresniMistoKod');
+
+        $validator
+            ->requirePresence('okresNutsKod', 'create')
+            ->notEmpty('okresNutsKod');
+
+        $validator
+            ->dateTime('dtAktualizace')
+            ->requirePresence('dtAktualizace', 'create')
+            ->notEmpty('dtAktualizace');
+
+        $validator
+            ->dateTime('dPlatnost')
+            ->requirePresence('dPlatnost', 'create')
+            ->notEmpty('dPlatnost');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['about']));
-        $rules->add($rules->isUnique(['zaznamIdentifikator']));
-
-        return $rules;
     }
 }

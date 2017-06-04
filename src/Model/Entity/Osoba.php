@@ -6,14 +6,11 @@ use Cake\ORM\Entity;
 /**
  * Osoba Entity
  *
- * @property int $id
- * @property string $about
+ * @property string $id
  * @property string $jmeno
  * @property string $prijmeni
- * @property int $bydlisteObecKod
- * @property int $narozeniRok
- * @property string $title
- * @property \Cake\I18n\Time $modified
+ * @property float $narozeniRok
+ * @property float $bydlisteObecKod
  */
 class Osoba extends Entity
 {

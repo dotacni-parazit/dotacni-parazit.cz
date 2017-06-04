@@ -16,8 +16,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\RozpoctoveObdobi patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\RozpoctoveObdobi[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\RozpoctoveObdobi findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class RozpoctoveObdobiTable extends Table
 {
@@ -32,11 +30,9 @@ class RozpoctoveObdobiTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('rozpoctove_obdobi');
-        $this->setDisplayField('title');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
+        $this->setTable('RozpoctoveObdobi');
+        $this->setDisplayField('idObdobi');
+        $this->setPrimaryKey('idObdobi');
     }
 
     /**
@@ -48,77 +44,53 @@ class RozpoctoveObdobiTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('idObdobi', 'create');
+
+        $validator
+            ->requirePresence('idRozhodnuti', 'create')
+            ->notEmpty('idRozhodnuti');
 
         $validator
             ->decimal('castkaCerpana')
             ->allowEmpty('castkaCerpana');
 
         $validator
-            ->decimal('castkaSpotrebovana')
-            ->allowEmpty('castkaSpotrebovana');
-
-        $validator
             ->decimal('castkaUvolnena')
             ->allowEmpty('castkaUvolnena');
-
-        $validator
-            ->allowEmpty('dotaceTitul');
-
-        $validator
-            ->allowEmpty('refRozpoctoveObdobi');
-
-        $validator
-            ->integer('rozpocetObdobi')
-            ->allowEmpty('rozpocetObdobi');
-
-        $validator
-            ->allowEmpty('ucelZnak');
-
-        $validator
-            ->dateTime('zaznamAktualizaceDatumCas')
-            ->allowEmpty('zaznamAktualizaceDatumCas');
-
-        $validator
-            ->requirePresence('zaznamIdentifikator', 'create')
-            ->notEmpty('zaznamIdentifikator')
-            ->add('zaznamIdentifikator', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->dateTime('zaznamPlatnostDatum')
-            ->allowEmpty('zaznamPlatnostDatum');
-
-        $validator
-            ->allowEmpty('menaKod');
-
-        $validator
-            ->allowEmpty('title');
 
         $validator
             ->decimal('castkaVracena')
             ->allowEmpty('castkaVracena');
 
         $validator
-            ->requirePresence('about', 'create')
-            ->notEmpty('about')
-            ->add('about', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->decimal('castkaSpotrebovana')
+            ->allowEmpty('castkaSpotrebovana');
+
+        $validator
+            ->decimal('rozpoctoveObdobi')
+            ->requirePresence('rozpoctoveObdobi', 'create')
+            ->notEmpty('rozpoctoveObdobi');
+
+        $validator
+            ->boolean('vyporadaniKod')
+            ->allowEmpty('vyporadaniKod');
+
+        $validator
+            ->allowEmpty('iriDotacniTitul');
+
+        $validator
+            ->allowEmpty('iriUcelovyZnak');
+
+        $validator
+            ->dateTime('dPlatnost')
+            ->requirePresence('dPlatnost', 'create')
+            ->notEmpty('dPlatnost');
+
+        $validator
+            ->dateTime('dtAktualizace')
+            ->requirePresence('dtAktualizace', 'create')
+            ->notEmpty('dtAktualizace');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['about']));
-        $rules->add($rules->isUnique(['zaznamIdentifikator']));
-
-        return $rules;
     }
 }

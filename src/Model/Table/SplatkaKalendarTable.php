@@ -16,8 +16,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\SplatkaKalendar patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\SplatkaKalendar[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\SplatkaKalendar findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class SplatkaKalendarTable extends Table
 {
@@ -32,11 +30,9 @@ class SplatkaKalendarTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('splatka_kalendar');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
+        $this->setTable('SplatkaKalendar');
+        $this->setDisplayField('idSKalendar');
+        $this->setPrimaryKey('idSKalendar');
     }
 
     /**
@@ -48,17 +44,16 @@ class SplatkaKalendarTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('idSKalendar', 'create');
 
         $validator
-            ->requirePresence('about', 'create')
-            ->notEmpty('about')
-            ->add('about', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->requirePresence('idRozhodnuti', 'create')
+            ->notEmpty('idRozhodnuti');
 
         $validator
             ->decimal('castkaSplatkaPlanovana')
-            ->allowEmpty('castkaSplatkaPlanovana');
+            ->requirePresence('castkaSplatkaPlanovana', 'create')
+            ->notEmpty('castkaSplatkaPlanovana');
 
         $validator
             ->decimal('castkaSplatkaSkutecna')
@@ -66,32 +61,15 @@ class SplatkaKalendarTable extends Table
             ->notEmpty('castkaSplatkaSkutecna');
 
         $validator
-            ->allowEmpty('uroceniIndikator');
+            ->boolean('uroceniIndikator')
+            ->requirePresence('uroceniIndikator', 'create')
+            ->notEmpty('uroceniIndikator');
 
         $validator
-            ->dateTime('zaznamAktualizaceDatumCas')
-            ->allowEmpty('zaznamAktualizaceDatumCas');
-
-        $validator
-            ->requirePresence('zaznamIdentifikator', 'create')
-            ->notEmpty('zaznamIdentifikator')
-            ->add('zaznamIdentifikator', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->dateTime('dtAktualizace')
+            ->requirePresence('dtAktualizace', 'create')
+            ->notEmpty('dtAktualizace');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['about']));
-        $rules->add($rules->isUnique(['zaznamIdentifikator']));
-
-        return $rules;
     }
 }

@@ -16,8 +16,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Etapa patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Etapa[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Etapa findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class EtapaTable extends Table
 {
@@ -32,11 +30,9 @@ class EtapaTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('etapa');
-        $this->setDisplayField('title');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
+        $this->setTable('Etapa');
+        $this->setDisplayField('idEtapa');
+        $this->setPrimaryKey('idEtapa');
     }
 
     /**
@@ -48,67 +44,49 @@ class EtapaTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('idEtapa', 'create');
 
         $validator
-            ->requirePresence('about', 'create')
-            ->notEmpty('about')
-            ->add('about', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->requirePresence('idDotace', 'create')
+            ->notEmpty('idDotace');
 
         $validator
-            ->requirePresence('etapaIdentifikator', 'create')
-            ->notEmpty('etapaIdentifikator');
+            ->decimal('etapaCislo')
+            ->requirePresence('etapaCislo', 'create')
+            ->notEmpty('etapaCislo');
 
         $validator
-            ->allowEmpty('etapaNazev');
+            ->requirePresence('etapaNazev', 'create')
+            ->notEmpty('etapaNazev');
+
+        $validator
+            ->dateTime('ukonceniPlanovaneDatum')
+            ->requirePresence('ukonceniPlanovaneDatum', 'create')
+            ->notEmpty('ukonceniPlanovaneDatum');
+
+        $validator
+            ->dateTime('ukonceniSkutecneDatum')
+            ->requirePresence('ukonceniSkutecneDatum', 'create')
+            ->notEmpty('ukonceniSkutecneDatum');
+
+        $validator
+            ->dateTime('zahajeniPlanovaneDatum')
+            ->requirePresence('zahajeniPlanovaneDatum', 'create')
+            ->notEmpty('zahajeniPlanovaneDatum');
+
+        $validator
+            ->dateTime('zahajeniSkutecneDatum')
+            ->requirePresence('zahajeniSkutecneDatum', 'create')
+            ->notEmpty('zahajeniSkutecneDatum');
 
         $validator
             ->allowEmpty('poznamka');
 
         $validator
-            ->dateTime('ukonceniPlanovaneDatum')
-            ->allowEmpty('ukonceniPlanovaneDatum');
-
-        $validator
-            ->dateTime('ukonceniSkutecneDatum')
-            ->allowEmpty('ukonceniSkutecneDatum');
-
-        $validator
-            ->dateTime('zahajeniPlanovaneDatum')
-            ->allowEmpty('zahajeniPlanovaneDatum');
-
-        $validator
-            ->dateTime('zahajeniSkutecneDatum')
-            ->allowEmpty('zahajeniSkutecneDatum');
-
-        $validator
-            ->dateTime('zaznamAktualizaceDatumCas')
-            ->allowEmpty('zaznamAktualizaceDatumCas');
-
-        $validator
-            ->requirePresence('zaznamIdentifikator', 'create')
-            ->notEmpty('zaznamIdentifikator')
-            ->add('zaznamIdentifikator', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->allowEmpty('title');
+            ->dateTime('dtAktualizace')
+            ->requirePresence('dtAktualizace', 'create')
+            ->notEmpty('dtAktualizace');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['about']));
-        $rules->add($rules->isUnique(['zaznamIdentifikator']));
-
-        return $rules;
     }
 }

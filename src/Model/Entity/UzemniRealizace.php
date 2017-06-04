@@ -6,13 +6,25 @@ use Cake\ORM\Entity;
 /**
  * UzemniRealizace Entity
  *
- * @property int $id
- * @property string $about
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $zaznamPlatnostDatum
+ * @property string $idUzemi
+ * @property string $idDotace
+ * @property bool $mezinarodniPusobnostIndikator
+ * @property bool $iriRealizovanNaUzemiStatu
+ * @property bool $uzemniRealizacePopis
+ * @property bool $obvodPrahaPredavaciKod
+ * @property bool $spravniObvodPrahaPredavaciKod
+ * @property bool $stavebniObjektKod
+ * @property bool $uliceKod
+ * @property bool $iriCastObce
+ * @property bool $iriKraj
+ * @property bool $iriMestskyObvodMestskaCast
+ * @property bool $iriObec
+ * @property bool $iriOkres
+ * @property bool $iriVusc
+ * @property bool $adresniMistoKod
  * @property string $okresNutsKod
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\Time $dtAktualizace
+ * @property \Cake\I18n\Time $dPlatnost
  */
 class UzemniRealizace extends Entity
 {
@@ -28,6 +40,6 @@ class UzemniRealizace extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idUzemi' => false
     ];
 }

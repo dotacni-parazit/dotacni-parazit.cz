@@ -6,37 +6,29 @@ use Cake\ORM\Entity;
 /**
  * Dotace Entity
  *
- * @property int $id
- * @property string $about
- * @property string $byloRozhodnuto
- * @property \Cake\I18n\Time $podaniDatum
+ * @property string $idDotace
+ * @property string $idPrijemce
  * @property string $projektKod
- * @property \Cake\I18n\Time $smlouvaPodpisDatum
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $zaznamPlatnostDatum
- * @property string $zmenaSmlouvaIdikator
- * @property string $projektIdentifikator
- * @property string $title
- * @property string $podprogram
- * @property string $operacniProgramCEDR
- * @property int $subjektRozliseniKod
- * @property string $operacniProgramMMR
- * @property string $prioritaMMR
- * @property string $opatreniMMR
- * @property string $podOpatreni
- * @property string $grantoveSchemaMMR
- * @property \Cake\I18n\Time $ukonceniSkutecneDatum
- * @property \Cake\I18n\Time $zahajeniSkutecneDatum
+ * @property \Cake\I18n\Time $podpisDatum
+ * @property float $subjektRozliseniKod
  * @property \Cake\I18n\Time $ukonceniPlanovaneDatum
- * @property string $clenenNaEtapu
- * @property string $realizovanNaUzemi
- * @property string $prioritaCEDR
- * @property string $projektNadrizenyIdentifikator
- * @property string $podOpatreniCEDR
- * @property string $opatreniCEDR
- * @property string $poznamkaCEDR
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\Time $ukonceniSkutecneDatum
+ * @property \Cake\I18n\Time $zahajeniPlanovaneDatum
+ * @property \Cake\I18n\Time $zahajeniSkutecneDatum
+ * @property bool $zmenaSmlouvyIndikator
+ * @property string $projektIdnetifikator
+ * @property string $projektNazev
+ * @property string $iriOperacniProgram
+ * @property string $iriPodprogram
+ * @property string $iriPriorita
+ * @property string $iriOpatreni
+ * @property string $iriPodopatreni
+ * @property string $iriGrantoveSchema
+ * @property bool $iriProgramPodpora
+ * @property bool $iriTypCinnosti
+ * @property bool $iriProgram
+ * @property \Cake\I18n\Time $dPlatnost
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class Dotace extends Entity
 {
@@ -52,6 +44,6 @@ class Dotace extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idDotace' => false
     ];
 }

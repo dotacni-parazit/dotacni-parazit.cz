@@ -6,26 +6,18 @@ use Cake\ORM\Entity;
 /**
  * Rozhodnuti Entity
  *
- * @property int $id
- * @property string $about
+ * @property string $idRozhodnuti
+ * @property string $idDotace
  * @property float $castkaPozadovana
  * @property float $castkaRozhodnuta
- * @property string $dotaciPoskytl
- * @property string $financniProstredekCleneni
- * @property string $financovanoZeZdroje
- * @property string $maSmlouvuORozhodnuti
- * @property string $refRozhodnutiRok
- * @property int $rokRozhodnuti
- * @property string $rozpoctoveObdobi
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $zaznamPlatnostDatum
- * @property string $menaKod
- * @property string $investiceIndikator
- * @property string $navratnostIndikator
- * @property string $title
- * @property string $splatkaKalendar
- * @property \Cake\I18n\Time $modified
+ * @property string $iriPoskytovatelDotace
+ * @property string $iriCleneniFinancnichProstredku
+ * @property string $iriFinancniZdroj
+ * @property float $rokRozhodnuti
+ * @property bool $investiceIndikator
+ * @property bool $navratnostIndikator
+ * @property \Cake\I18n\Time $dPlatnost
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class Rozhodnuti extends Entity
 {
@@ -41,6 +33,6 @@ class Rozhodnuti extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idRozhodnuti' => false
     ];
 }

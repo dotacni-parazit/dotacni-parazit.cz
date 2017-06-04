@@ -6,19 +6,16 @@ use Cake\ORM\Entity;
 /**
  * Etapa Entity
  *
- * @property int $id
- * @property string $about
- * @property string $etapaIdentifikator
+ * @property string $idEtapa
+ * @property string $idDotace
+ * @property float $etapaCislo
  * @property string $etapaNazev
- * @property string $poznamka
  * @property \Cake\I18n\Time $ukonceniPlanovaneDatum
  * @property \Cake\I18n\Time $ukonceniSkutecneDatum
  * @property \Cake\I18n\Time $zahajeniPlanovaneDatum
  * @property \Cake\I18n\Time $zahajeniSkutecneDatum
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property string $title
- * @property \Cake\I18n\Time $modified
+ * @property string $poznamka
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class Etapa extends Entity
 {
@@ -34,6 +31,6 @@ class Etapa extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idEtapa' => false
     ];
 }

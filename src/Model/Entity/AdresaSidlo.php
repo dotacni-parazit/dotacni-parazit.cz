@@ -6,29 +6,24 @@ use Cake\ORM\Entity;
 /**
  * AdresaSidlo Entity
  *
- * @property int $id
- * @property string $about
- * @property string $nachaziSeNaUzemiStatu
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $zaznamPlatnostDatum
- * @property int $adresniMistoKod
- * @property int $castObceKod
- * @property int $obecKod
+ * @property string $idAdresa
+ * @property string $idPrijemce
+ * @property bool $adrTyp
+ * @property string $iriStat
+ * @property string $iriObec
+ * @property float $obecKod
  * @property string $obecNazev
- * @property int $objektCisloDomovni
- * @property int $psc
- * @property int $uliceKod
- * @property string $uliceNazev
- * @property string $obec
- * @property string $title
- * @property string $adresaKvalifikatorKod
- * @property int $mestskyObvodMestskaCastKod
- * @property string $mestskyObvodMestskaCastNazev
- * @property string $objektCisloOrientacni
- * @property string $mestskyObvodMestskaCast
+ * @property float $psc
+ * @property float $adresniMistoKod
+ * @property bool $iriCastObce
+ * @property float $castObceKod
+ * @property float $cisloDomovni
+ * @property string $cisloOrientacni
+ * @property float $uliceKod
+ * @property string $ulice
  * @property string $adresaText
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\Time $dPlatnost
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class AdresaSidlo extends Entity
 {
@@ -44,6 +39,6 @@ class AdresaSidlo extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idAdresa' => false
     ];
 }

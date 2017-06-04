@@ -3,66 +3,74 @@
   * @var \App\View\AppView $this
   */
 ?>
-<div class="dotace content">
+<nav class="large-3 medium-4 columns" id="actions-sidebar">
+    <ul class="side-nav">
+        <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('New Dotace'), ['action' => 'add']) ?></li>
+    </ul>
+</nav>
+<div class="dotace index large-9 medium-8 columns content">
     <h3><?= __('Dotace') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('about') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('byloRozhodnuto') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('podaniDatum') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('idDotace') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('idPrijemce') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('projektKod') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('smlouvaPodpisDatum') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('projektIdentifikator') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('title') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('podprogram') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('operacniProgramCEDR') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('podpisDatum') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('subjektRozliseniKod') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('operacniProgramMMR') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('prioritaMMR') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('opatreniMMR') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('podOpatreni') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('grantoveSchemaMMR') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('ukonceniSkutecneDatum') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('zahajeniSkutecneDatum') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('ukonceniPlanovaneDatum') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('clenenNaEtapu') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('realizovanNaUzemi') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('prioritaCEDR') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('projektNadrizenyIdentifikator') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('podOpatreniCEDR') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('opatreniCEDR') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('ukonceniSkutecneDatum') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('zahajeniPlanovaneDatum') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('zahajeniSkutecneDatum') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('zmenaSmlouvyIndikator') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('projektIdnetifikator') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('projektNazev') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriOperacniProgram') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriPodprogram') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriPriorita') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriOpatreni') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriPodopatreni') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriGrantoveSchema') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriProgramPodpora') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriTypCinnosti') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('iriProgram') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('dPlatnost') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('dtAktualizace') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($dotace as $dotace): ?>
             <tr>
-                <td><?= h($dotace->id) ?></td>
-                <td><?= h($dotace->about) ?></td>
-                <td><?= h($dotace->byloRozhodnuto) ?></td>
-                <td><?= h($dotace->podaniDatum) ?></td>
+                <td><?= h($dotace->idDotace) ?></td>
+                <td><?= h($dotace->idPrijemce) ?></td>
                 <td><?= h($dotace->projektKod) ?></td>
-                <td><?= h($dotace->smlouvaPodpisDatum) ?></td>
-                <td><?= h($dotace->projektIdentifikator) ?></td>
-                <td><?= h($dotace->title) ?></td>
-                <td><?= h($dotace->podprogram) ?></td>
-                <td><?= h($dotace->operacniProgramCEDR) ?></td>
-                <td><?= h($dotace->subjektRozliseniKod) ?></td>
-                <td><?= h($dotace->operacniProgramMMR) ?></td>
-                <td><?= h($dotace->prioritaMMR) ?></td>
-                <td><?= h($dotace->opatreniMMR) ?></td>
-                <td><?= h($dotace->podOpatreni) ?></td>
-                <td><?= h($dotace->grantoveSchemaMMR) ?></td>
-                <td><?= h($dotace->ukonceniSkutecneDatum) ?></td>
-                <td><?= h($dotace->zahajeniSkutecneDatum) ?></td>
+                <td><?= h($dotace->podpisDatum) ?></td>
+                <td><?= $this->Number->format($dotace->subjektRozliseniKod) ?></td>
                 <td><?= h($dotace->ukonceniPlanovaneDatum) ?></td>
-                <td><?= h($dotace->clenenNaEtapu) ?></td>
-                <td><?= h($dotace->realizovanNaUzemi) ?></td>
-                <td><?= h($dotace->prioritaCEDR) ?></td>
-                <td><?= h($dotace->projektNadrizenyIdentifikator) ?></td>
-                <td><?= h($dotace->podOpatreniCEDR) ?></td>
-                <td><?= h($dotace->opatreniCEDR) ?></td>
+                <td><?= h($dotace->ukonceniSkutecneDatum) ?></td>
+                <td><?= h($dotace->zahajeniPlanovaneDatum) ?></td>
+                <td><?= h($dotace->zahajeniSkutecneDatum) ?></td>
+                <td><?= h($dotace->zmenaSmlouvyIndikator) ?></td>
+                <td><?= h($dotace->projektIdnetifikator) ?></td>
+                <td><?= h($dotace->projektNazev) ?></td>
+                <td><?= h($dotace->iriOperacniProgram) ?></td>
+                <td><?= h($dotace->iriPodprogram) ?></td>
+                <td><?= h($dotace->iriPriorita) ?></td>
+                <td><?= h($dotace->iriOpatreni) ?></td>
+                <td><?= h($dotace->iriPodopatreni) ?></td>
+                <td><?= h($dotace->iriGrantoveSchema) ?></td>
+                <td><?= h($dotace->iriProgramPodpora) ?></td>
+                <td><?= h($dotace->iriTypCinnosti) ?></td>
+                <td><?= h($dotace->iriProgram) ?></td>
+                <td><?= h($dotace->dPlatnost) ?></td>
+                <td><?= h($dotace->dtAktualizace) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $dotace->idDotace]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $dotace->idDotace]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $dotace->idDotace], ['confirm' => __('Are you sure you want to delete # {0}?', $dotace->idDotace)]) ?>
+                </td>
             </tr>
             <?php endforeach; ?>
         </tbody>

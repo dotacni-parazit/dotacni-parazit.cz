@@ -6,22 +6,18 @@ use Cake\ORM\Entity;
 /**
  * RozpoctoveObdobi Entity
  *
- * @property int $id
+ * @property string $idObdobi
+ * @property string $idRozhodnuti
  * @property float $castkaCerpana
- * @property float $castkaSpotrebovana
  * @property float $castkaUvolnena
- * @property string $dotaceTitul
- * @property string $refRozpoctoveObdobi
- * @property int $rozpocetObdobi
- * @property string $ucelZnak
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $zaznamPlatnostDatum
- * @property string $menaKod
- * @property string $title
  * @property float $castkaVracena
- * @property string $about
- * @property \Cake\I18n\Time $modified
+ * @property float $castkaSpotrebovana
+ * @property float $rozpoctoveObdobi
+ * @property bool $vyporadaniKod
+ * @property string $iriDotacniTitul
+ * @property string $iriUcelovyZnak
+ * @property \Cake\I18n\Time $dPlatnost
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class RozpoctoveObdobi extends Entity
 {
@@ -37,6 +33,6 @@ class RozpoctoveObdobi extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idObdobi' => false
     ];
 }

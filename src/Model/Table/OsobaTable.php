@@ -16,8 +16,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Osoba patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Osoba[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Osoba findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class OsobaTable extends Table
 {
@@ -32,11 +30,9 @@ class OsobaTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('osoba');
-        $this->setDisplayField('title');
+        $this->setTable('Osoba');
+        $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
     }
 
     /**
@@ -48,45 +44,26 @@ class OsobaTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('about', 'create')
-            ->notEmpty('about')
-            ->add('about', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->requirePresence('jmeno', 'create')
+            ->notEmpty('jmeno');
 
         $validator
-            ->allowEmpty('jmeno');
+            ->requirePresence('prijmeni', 'create')
+            ->notEmpty('prijmeni');
 
         $validator
-            ->allowEmpty('prijmeni');
+            ->decimal('narozeniRok')
+            ->requirePresence('narozeniRok', 'create')
+            ->notEmpty('narozeniRok');
 
         $validator
-            ->integer('bydlisteObecKod')
-            ->allowEmpty('bydlisteObecKod');
-
-        $validator
-            ->integer('narozeniRok')
-            ->allowEmpty('narozeniRok');
-
-        $validator
-            ->allowEmpty('title');
+            ->decimal('bydlisteObecKod')
+            ->requirePresence('bydlisteObecKod', 'create')
+            ->notEmpty('bydlisteObecKod');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['about']));
-
-        return $rules;
     }
 }

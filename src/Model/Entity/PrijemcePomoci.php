@@ -6,26 +6,18 @@ use Cake\ORM\Entity;
 /**
  * PrijemcePomoci Entity
  *
- * @property int $id
- * @property string $about
- * @property string $jePrislusnikStatu
- * @property string $jeRegistrovanSPravniFormou
- * @property string $obdrzelDotaci
- * @property string $sidliNaAdrese
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property \Cake\I18n\Time $zaznamPlatnostDatum
- * @property int $ico
+ * @property string $idPrijemce
+ * @property float $ico
  * @property string $obchodniJmeno
- * @property string $legalName
- * @property string $maTrvaleBydlisteNaAdrese
  * @property string $jmeno
  * @property string $prijmeni
- * @property int $narozeniRok
- * @property string $firstName
- * @property string $lastName
- * @property string $dic
- * @property \Cake\I18n\Time $modified
+ * @property string $iriPravniForma
+ * @property float $rokNarozeni
+ * @property string $iriStat
+ * @property string $iriOsoba
+ * @property string $iriEkonomikaSubjekt
+ * @property \Cake\I18n\Time $dPlatnost
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class PrijemcePomoci extends Entity
 {
@@ -41,6 +33,6 @@ class PrijemcePomoci extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idPrijemce' => false
     ];
 }

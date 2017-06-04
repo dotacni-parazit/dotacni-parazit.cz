@@ -6,11 +6,8 @@ use Cake\ORM\Entity;
 /**
  * EkonomikaSubjekt Entity
  *
- * @property int $id
- * @property string $about
- * @property int $ico
- * @property string $title
- * @property \Cake\I18n\Time $modified
+ * @property string $id
+ * @property float $ico
  */
 class EkonomikaSubjekt extends Entity
 {

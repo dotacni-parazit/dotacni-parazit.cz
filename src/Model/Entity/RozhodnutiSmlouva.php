@@ -6,15 +6,12 @@ use Cake\ORM\Entity;
 /**
  * RozhodnutiSmlouva Entity
  *
- * @property int $id
- * @property string $about
+ * @property string $idSmlouva
+ * @property string $idRozhodnuti
  * @property string $cisloJednaciRozhodnuti
- * @property int $dokumentDruhKod
+ * @property bool $dokumentDruhKod
  * @property \Cake\I18n\Time $rozhodnutiDatum
- * @property \Cake\I18n\Time $zaznamAktualizaceDatumCas
- * @property string $zaznamIdentifikator
- * @property string $title
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\Time $dtAktualizace
  */
 class RozhodnutiSmlouva extends Entity
 {
@@ -30,6 +27,6 @@ class RozhodnutiSmlouva extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'idSmlouva' => false
     ];
 }
