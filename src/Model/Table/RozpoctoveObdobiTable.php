@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -33,6 +34,13 @@ class RozpoctoveObdobiTable extends Table
         $this->setTable('RozpoctoveObdobi');
         $this->setDisplayField('idObdobi');
         $this->setPrimaryKey('idObdobi');
+
+        $this->belongsTo('CiselnikDotaceTitulv01', [
+            'className' => 'CiselnikDotaceTitulv01'
+        ])
+            ->setForeignKey('iriDotacniTitul')
+            ->setBindingKey('idDotaceTitul')
+            ->setProperty('CiselnikDotaceTitulv01');
     }
 
     /**

@@ -11,6 +11,9 @@ use App\Controller\AppController;
 class CiselnikFinancniZdrojv01Controller extends AppController
 {
 
+    public $paginate = [
+        'limit' => 120
+    ];
     /**
      * Index method
      *

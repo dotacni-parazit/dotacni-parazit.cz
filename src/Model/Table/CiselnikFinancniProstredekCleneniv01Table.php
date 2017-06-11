@@ -31,7 +31,7 @@ class CiselnikFinancniProstredekCleneniv01Table extends Table
         parent::initialize($config);
 
         $this->setTable('ciselnikFinancniProstredekCleneniv01');
-        $this->setDisplayField('id');
+        $this->setDisplayField('financniProstredekCleneniNazev');
         $this->setPrimaryKey('id');
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -33,6 +34,10 @@ class CiselnikStatniRozpocetKapitolav01Table extends Table
         $this->setTable('ciselnikStatniRozpocetKapitolav01');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('CiselnikDotaceTitulv01')
+            ->setForeignKey('statniRozpocetKapitolaKod')
+            ->setBindingKey('statniRozpocetKapitolaKod');
     }
 
     /**

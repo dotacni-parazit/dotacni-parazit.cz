@@ -31,7 +31,7 @@ class CiselnikDotacePoskytovatelv01Table extends Table
         parent::initialize($config);
 
         $this->setTable('ciselnikDotacePoskytovatelv01');
-        $this->setDisplayField('id');
+        $this->setDisplayField('dotacePoskytovatelNazev');
         $this->setPrimaryKey('id');
     }
 

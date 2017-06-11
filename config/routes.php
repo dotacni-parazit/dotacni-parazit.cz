@@ -41,11 +41,23 @@ use Cake\Routing\Router;
  * `:action` markers.
  *
  */
-Router::defaultRouteClass(DashedRoute::class);
+Router::defaultRouteClass(\Cake\Routing\Route\InflectedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    $routes->connect('/', ['controller' => 'Dotace', 'action' => 'index']);
-    $routes->fallbacks(DashedRoute::class);
+    $routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
+    $routes->connect('/operacni-programy-cedr', ['controller' => 'Pages', 'action' => 'cedrOperacniProgramy']);
+    $routes->connect('/operacni-programy-mmr', ['controller' => 'Pages', 'action' => 'mmrOperacniProgramy']);
+    $routes->connect('/financni-zdroje', ['controller' => 'Pages', 'action' => 'financniZdroje']);
+    $routes->connect('/pravni-formy', ['controller' => 'Pages', 'action' => 'pravniFormy']);
+    $routes->connect('/kapitoly-statniho-rozpoctu', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctu']);
+    $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazatele']);
+    $routes->connect('/rozpoctove-obdobi', ['controller' => 'Pages', 'action' => 'rozpoctoveObdobi']);
+    $routes->connect('/rozpoctove-obdobi/:year', ['controller' => 'Pages', 'action' => 'rozpoctoveObdobi']);
+    $routes->connect('/dotacni-tituly', ['controller' => 'Pages', 'action' => 'dotacniTituly']);
+    $routes->connect('/vyhledavani', ['controller' => 'Pages', 'action' => 'filtr']);
+    $routes->connect('/get-tituly-podle-kapitol', ['controller' => 'Pages', 'action' => 'cbFiltrKapitoly']);
+    $routes->connect('/dotacni-titul/detail/*', ['controller' => 'CiselnikDotaceTitulv01', 'action' => 'view']);
+    $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });
 
 /**

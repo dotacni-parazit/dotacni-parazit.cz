@@ -33,6 +33,21 @@ class RozhodnutiTable extends Table
         $this->setTable('Rozhodnuti');
         $this->setDisplayField('idRozhodnuti');
         $this->setPrimaryKey('idRozhodnuti');
+
+        $this->belongsTo('CiselnikDotacePoskytovatelv01')
+            ->setForeignKey('iriPoskytovatelDotace')
+            ->setBindingKey('id')
+            ->setProperty('PoskytovatelDotace');
+
+        $this->belongsTo('CiselnikFinancniProstredekCleneniv01')
+            ->setForeignKey('iriCleneniFinancnichProstredku')
+            ->setBindingKey('id')
+            ->setProperty('CleneniFinancnichProstredku');
+
+        $this->belongsTo('CiselnikFinancniZdrojv01')
+            ->setForeignKey('iriFinancniZdroj')
+            ->setBindingKey('id')
+            ->setProperty('FinancniZdroj');
     }
 
     /**

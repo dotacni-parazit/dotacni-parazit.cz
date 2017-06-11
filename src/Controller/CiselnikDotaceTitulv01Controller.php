@@ -33,6 +33,7 @@ class CiselnikDotaceTitulv01Controller extends AppController
      */
     public function view($id = null)
     {
+        $id = $this->request->getQuery('id');
         $ciselnikDotaceTitulv01 = $this->CiselnikDotaceTitulv01->get($id, [
             'contain' => []
         ]);

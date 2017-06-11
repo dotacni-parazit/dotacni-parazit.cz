@@ -31,7 +31,7 @@ class CiselnikFinancniZdrojv01Table extends Table
         parent::initialize($config);
 
         $this->setTable('ciselnikFinancniZdrojv01');
-        $this->setDisplayField('id');
+        $this->setDisplayField('financniZdrojNazev');
         $this->setPrimaryKey('id');
     }
 
