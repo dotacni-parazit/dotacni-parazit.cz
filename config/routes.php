@@ -57,6 +57,13 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/vyhledavani', ['controller' => 'Pages', 'action' => 'filtr']);
     $routes->connect('/get-tituly-podle-kapitol', ['controller' => 'Pages', 'action' => 'cbFiltrKapitoly']);
     $routes->connect('/dotacni-titul/detail/*', ['controller' => 'CiselnikDotaceTitulv01', 'action' => 'view']);
+    // Finalni vystupy
+    $routes->connect('/podle-poskytovatelu', ['controller' => 'Pages', 'action' => 'podlePoskytovatelu']);
+    $routes->connect('/podle-poskytovatelu/:id', ['controller' => 'Pages', 'action' => 'podlePoskytovateluDetail']);
+    $routes->connect('/podle-poskytovatelu/:id/rok/:year', ['controller' => 'Pages', 'action' => 'podlePoskytovateluDetailRok']);
+    $routes->connect('/detail-prijemce-pomoci/:id', ['controller' => 'Pages', 'action' => 'detailPrijemcePomoci']);
+    $routes->connect('/detail-dotace/:id', ['controller' => 'Pages', 'action' => 'detailDotace']);
+    // fallback
     $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });
 

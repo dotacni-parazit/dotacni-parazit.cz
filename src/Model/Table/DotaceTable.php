@@ -33,6 +33,11 @@ class DotaceTable extends Table
         $this->setTable('Dotace');
         $this->setDisplayField('idDotace');
         $this->setPrimaryKey('idDotace');
+
+        $this->belongsTo('PrijemcePomoci')
+            ->setForeignKey('idPrijemce')
+            ->setBindingKey('idPrijemce')
+            ->setProperty('PrijemcePomoci');
     }
 
     /**
