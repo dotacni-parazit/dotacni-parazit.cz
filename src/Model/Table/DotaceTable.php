@@ -68,6 +68,10 @@ class DotaceTable extends Table
             ->setForeignKey('iriGrantoveSchema')
             ->setBindingKey('idGrantoveSchema')
             ->setProperty('MmrGrantoveSchema');
+
+        $this->hasMany('Rozhodnuti')
+            ->setForeignKey('idDotace')
+            ->setProperty('Rozhodnuti');
     }
 
     /**

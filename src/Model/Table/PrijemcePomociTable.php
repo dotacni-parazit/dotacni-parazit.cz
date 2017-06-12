@@ -48,6 +48,11 @@ class PrijemcePomociTable extends Table
             ->setForeignKey('iriStat')
             ->setBindingKey('id')
             ->setProperty('Stat');
+
+        $this->belongsTo('Osoba')
+            ->setForeignKey('iriOsoba')
+            ->setBindingKey('id')
+            ->setProperty('Osoba');
     }
 
     /**

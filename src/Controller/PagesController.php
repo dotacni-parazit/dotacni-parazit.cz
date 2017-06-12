@@ -269,7 +269,8 @@ class PagesController extends AppController
         $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest']));
     }
 
-    public function podlePoskytovateluDetailRok(){
+    public function podlePoskytovateluDetailRok()
+    {
         $year = $this->request->getParam('year');
 
         $this->loadModel('CiselnikDotacePoskytovatelv01');
@@ -316,7 +317,8 @@ class PagesController extends AppController
         $this->set(compact(['year', 'year_sum', 'poskytovatel', 'data']));
     }
 
-    public function detailDotace(){
+    public function detailDotace()
+    {
         $this->loadModel('Dotace');
         $this->loadModel('Rozhodnuti');
 
@@ -352,8 +354,41 @@ class PagesController extends AppController
         $this->set(compact(['dotace', 'rozhodnuti']));
     }
 
-    public function detailPrijemcePomoci(){
+    public function detailPrijemcePomoci()
+    {
+        $this->loadModel('PrijemcePomoci');
+        $this->loadModel('Rozhodnuti');
 
+        $prijemce = $this->PrijemcePomoci->find('all', [
+            'conditions' => [
+                'idPrijemce' => $this->request->getParam('id')
+            ],
+            'contain' => [
+                'CiselnikPravniFormav01',
+                'CiselnikStatv01',
+                'Osoba',
+                'Osoba.CiselnikObecv01',
+                'EkonomikaSubjekt'
+            ]
+        ])->first();
+
+        $dotace = $this->Rozhodnuti->find('all', [
+            'conditions' => [
+                'Dotace.idPrijemce' => $prijemce->idPrijemce
+            ],
+            'contain' => [
+                'CiselnikFinancniProstredekCleneniv01',
+                'CiselnikFinancniZdrojv01',
+                'Dotace.CiselnikMmrOperacniProgramv01',
+                'Dotace.CiselnikMmrPodprogramv01',
+                'Dotace.CiselnikMmrPrioritav01',
+                'Dotace.CiselnikMmrOpatreniv01',
+                'Dotace.CiselnikMmrPodOpatreniv01',
+                'Dotace.CiselnikMmrGrantoveSchemav01'
+            ]
+        ]);
+
+        $this->set(compact(['prijemce', 'dotace']));
     }
 
 }

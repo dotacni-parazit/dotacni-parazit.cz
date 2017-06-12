@@ -33,6 +33,11 @@ class OsobaTable extends Table
         $this->setTable('Osoba');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->belongsTo('CiselnikObecv01')
+            ->setForeignKey('bydlisteObecKod')
+            ->setBindingKey('obecKod')
+            ->setProperty('Obec');
     }
 
     /**
