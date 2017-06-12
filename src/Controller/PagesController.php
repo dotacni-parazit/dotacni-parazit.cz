@@ -318,15 +318,38 @@ class PagesController extends AppController
 
     public function detailDotace(){
         $this->loadModel('Dotace');
+        $this->loadModel('Rozhodnuti');
 
-        $dotace = $this->Dotace->findById($this->request->getParam('id'), [
+        $dotace = $this->Dotace->find('all', [
+            'conditions' => [
+                'idDotace' => $this->request->getParam('id')
+            ],
             'contain' => [
                 'PrijemcePomoci',
-                'Rozhodnuti',
+                'PrijemcePomoci.CiselnikPravniFormav01',
+                'PrijemcePomoci.CiselnikStatv01',
+                'PrijemcePomoci.EkonomikaSubjekt',
                 'CiselnikMmrOperacniProgramv01',
-                'Ciselnik'
+                'CiselnikMmrPodprogramv01',
+                'CiselnikMmrPrioritav01',
+                'CiselnikMmrOpatreniv01',
+                'CiselnikMmrPodOpatreniv01',
+                'CiselnikMmrGrantoveSchemav01'
+            ]
+        ])->first();
+
+        $rozhodnuti = $this->Rozhodnuti->find('all', [
+            'conditions' => [
+                'idDotace' => $dotace->idDotace
+            ],
+            'contain' => [
+                'CiselnikDotacePoskytovatelv01',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01'
             ]
         ]);
+
+        $this->set(compact(['dotace', 'rozhodnuti']));
     }
 
     public function detailPrijemcePomoci(){

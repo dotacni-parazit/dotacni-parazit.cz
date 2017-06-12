@@ -33,6 +33,21 @@ class PrijemcePomociTable extends Table
         $this->setTable('PrijemcePomoci');
         $this->setDisplayField('idPrijemce');
         $this->setPrimaryKey('idPrijemce');
+
+        $this->belongsTo('EkonomikaSubjekt')
+            ->setForeignKey('iriEkonomikaSubjekt')
+            ->setBindingKey('id')
+            ->setProperty('EkonomikaSubjekt');
+
+        $this->belongsTo('CiselnikPravniFormav01')
+            ->setForeignKey('iriPravniForma')
+            ->setBindingKey('id')
+            ->setProperty('PravniForma');
+
+        $this->belongsTo('CiselnikStatv01')
+            ->setForeignKey('iriStat')
+            ->setBindingKey('id')
+            ->setProperty('Stat');
     }
 
     /**

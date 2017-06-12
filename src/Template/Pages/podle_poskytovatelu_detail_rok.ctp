@@ -33,7 +33,7 @@ use Cake\I18n\Number;
         }
         if (strpos($displayDotace, '<br/>') === 0) {
             $displayDotace = substr($displayDotace, 5);
-        }ě
+        }
         ?>
         <tr>
             <td><?= $this->Html->link($d->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce) ?></td>

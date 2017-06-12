@@ -38,6 +38,36 @@ class DotaceTable extends Table
             ->setForeignKey('idPrijemce')
             ->setBindingKey('idPrijemce')
             ->setProperty('PrijemcePomoci');
+
+        $this->belongsTo('CiselnikMmrOperacniProgramv01')
+            ->setForeignKey('iriOperacniProgram')
+            ->setBindingKey('idOperacniProgram')
+            ->setProperty('MmrOperacniProgram');
+
+        $this->belongsTo('CiselnikMmrPodprogramv01')
+            ->setForeignKey('iriPodprogram')
+            ->setBindingKey('id')
+            ->setProperty('MmrPodprogram');
+
+        $this->belongsTo('CiselnikMmrPrioritav01')
+            ->setForeignKey('iriPriorita')
+            ->setBindingKey('idPriorita')
+            ->setProperty('MmrPriorita');
+
+        $this->belongsTo('CiselnikMmrOpatreniv01')
+            ->setForeignKey('iriOpatreni')
+            ->setBindingKey('idOpatreni')
+            ->setProperty('MmrOpatreni');
+
+        $this->belongsTo('CiselnikMmrPodOpatreniv01')
+            ->setForeignKey('iriPodopatreni')
+            ->setBindingKey('idPodOpatreni')
+            ->setProperty('MmrPodOpatreni');
+
+        $this->belongsTo('CiselnikMmrGrantoveSchemav01')
+            ->setForeignKey('iriGrantoveSchema')
+            ->setBindingKey('idGrantoveSchema')
+            ->setProperty('MmrGrantoveSchema');
     }
 
     /**

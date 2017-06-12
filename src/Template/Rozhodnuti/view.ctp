@@ -31,15 +31,15 @@
         </tr>
         <tr>
             <th scope="row"><?= __('PoskytovatelDotace') ?></th>
-            <td><?= $rozhodnuti->has('PoskytovatelDotace') ? $this->Html->link($rozhodnuti->PoskytovatelDotace->dotacniPoskytovatelNazev, ['controller' => 'CiselnikDotacePoskytovatelv01', 'action' => 'view', $rozhodnuti->PoskytovatelDotace->id]) : '' ?></td>
+            <td><?= $rozhodnuti->has('PoskytovatelDotace') ? $this->Html->link($rozhodnuti->PoskytovatelDotace->dotacePoskytovatelNazev, ['controller' => 'CiselnikDotacePoskytovatelv01', 'action' => 'view', $rozhodnuti->PoskytovatelDotace->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('CleneniFinancnichProstredku') ?></th>
-            <td><?= $rozhodnuti->has('CleneniFinancnichProstredku') ? $this->Html->link($rozhodnuti->CleneniFinancnichProstredku->id, ['controller' => 'CiselnikFinancniProstredekCleneniv01', 'action' => 'view', $rozhodnuti->CleneniFinancnichProstredku->id]) : '' ?></td>
+            <td><?= $rozhodnuti->has('CleneniFinancnichProstredku') ? $this->Html->link($rozhodnuti->CleneniFinancnichProstredku->financniProstredekCleneniNazev, ['controller' => 'CiselnikFinancniProstredekCleneniv01', 'action' => 'view', $rozhodnuti->CleneniFinancnichProstredku->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('FinancniZdroj') ?></th>
-            <td><?= $rozhodnuti->has('FinancniZdroj') ? $this->Html->link($rozhodnuti->FinancniZdroj->id, ['controller' => 'CiselnikFinancniZdrojv01', 'action' => 'view', $rozhodnuti->FinancniZdroj->id]) : '' ?></td>
+            <td><?= $rozhodnuti->has('FinancniZdroj') ? $this->Html->link($rozhodnuti->FinancniZdroj->financniZdrojNazev, ['controller' => 'CiselnikFinancniZdrojv01', 'action' => 'view', $rozhodnuti->FinancniZdroj->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('CastkaPozadovana') ?></th>
