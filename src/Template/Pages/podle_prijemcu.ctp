@@ -7,9 +7,10 @@ $this->Html->script('datatable.js', ['block' => true]);
         <h2>Podle IČO</h2>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('ico', ['label' => 'IČO ("0" jsou "Fyzické osoby")', 'value' => $ico]);
+        echo $this->Form->input('ico', ['label' => 'IČO (pouze čísla)', 'value' => $ico]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
+        echo '("0" jsou "Fyzické osoby")';
         ?>
     </div>
     <div style="text-align: center; width: 49%; float: left; padding: 1%; border: 1px solid black;">
@@ -19,6 +20,7 @@ $this->Html->script('datatable.js', ['block' => true]);
         echo $this->Form->input('name', ['label' => 'Obchodní jméno / Jméno / Příjmení (alespoň 3 písmena)', 'value' => $name]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
+        echo 'použijte * pro hledání částí slova, např. "techn*" najde "technologie"';
         ?>
     </div>
     <br class="clear"/>

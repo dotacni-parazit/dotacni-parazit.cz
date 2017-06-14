@@ -480,7 +480,9 @@ class PagesController extends AppController
         $this->loadModel('PrijemcePomoci');
 
         $ico = $this->request->getQuery('ico');
+        $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
         $name = $this->request->getQuery('name');
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
 
         if ($ico != null) {
             $prijemci = $this->PrijemcePomoci->find('all', [
