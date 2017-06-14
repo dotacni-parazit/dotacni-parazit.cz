@@ -37,6 +37,8 @@ use Cake\I18n\Number;
             paging: true,
             serverSide: false,
             processing: true,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24 * 7,
             dom: 'r<"clear">ip<"clear">lf<"clear">t',
             ajax: '/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax',
             "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
