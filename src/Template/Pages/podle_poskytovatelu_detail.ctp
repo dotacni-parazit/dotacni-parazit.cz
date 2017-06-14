@@ -1,13 +1,15 @@
 <?php
 use Cake\I18n\Number;
 
+$this->Html->script('datatable.js', ['block' => true]);
 ?>
 <h1><?= $poskytovatel->dotacePoskytovatelNazev ?> - Poskytovatel Dotací</h1>
 <table>
     <thead>
     <tr>
         <th><a href="?sort=year">Rok</a></th>
-        <th><a href="?sort=sum">Součet poskytnutých dotací za rok</a></th>
+        <th><a href="?sort=sum">Součet</a></th>
+        <th>Detail</th>
     </tr>
     </thead>
     <tbody>
@@ -17,28 +19,37 @@ use Cake\I18n\Number;
         <tr>
             <td><?= $this->Html->link($key, '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
             <td><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
+            <td><?= $this->Html->link('Otevřít', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
         </tr>
         <?php
     }
     ?>
+
+    <tr>
+        <td><?= $this->Html->link('Součet', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok') ?></td>
+        <td><?= $this->Html->link(Number::currency($sum, 'CZK', ['zero' => '']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
+        <td><?= $this->Html->link('Otevřít Kompletní Výpis', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
+    </tr>
+
     </tbody>
     <tfoot>
     <tr>
         <th><a href="?sort=year">Rok</a></th>
-        <th><a href="?sort=sum">Součet poskytnutých dotací za rok</a></th>
+        <th><a href="?sort=sum">Součet</a></th>
+        <th>Detail</th>
     </tr>
     </tfoot>
 </table>
 <h2>100 nejvyšších rozhodnutí</h2>
-<table>
+<table id="datatable">
     <thead>
     <tr>
-        <th>Příjemce Pomoci</th>
-        <th>Dotace (kod nebo identifikator projektu)</th>
-        <th>Částka</th>
-        <th>Rok</th>
-        <th>Členění finančních prostředků</th>
-        <th>Finanční Zdroj</th>
+        <th data-type="html">Příjemce Pomoci</th>
+        <th data-type="html">Dotace (kod nebo identifikator projektu)</th>
+        <th data-type="currency">Částka</th>
+        <th data-type="year">Rok</th>
+        <th data-type="string">Členění finančních prostředků</th>
+        <th data-type="string">Finanční Zdroj</th>
     </tr>
     </thead>
     <tbody>

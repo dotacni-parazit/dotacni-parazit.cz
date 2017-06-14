@@ -1,5 +1,6 @@
 <?php
 use Cake\I18n\Number;
+
 ?>
 <h1>Poskytovatelé Dotací</h1>
 <table>
@@ -15,7 +16,7 @@ use Cake\I18n\Number;
         ?>
         <tr>
             <td><?= $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod) ?></td>
-            <td><?= Number::currency($counts[$d->id],'CZK', ['zero' => '']) ?></td>
+            <td><?= Number::currency($counts[$d->id], 'CZK', ['zero' => '']) ?></td>
         </tr>
         <?php
     }

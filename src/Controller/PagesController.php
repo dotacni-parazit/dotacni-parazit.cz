@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 use Cake\Cache\Cache;
+use Cake\Event\Event;
+use Cake\I18n\Number;
 
 
 class PagesController extends AppController
@@ -144,6 +146,10 @@ class PagesController extends AppController
      * Finalni vystupy
      * **/
 
+    /*
+     * Podle poskytovatelu
+     * **/
+
     public function podlePoskytovatelu()
     {
         $this->loadModel('CiselnikDotacePoskytovatelv01');
@@ -208,6 +214,7 @@ class PagesController extends AppController
         $cache_key = 'sum_rozhodnuti_podle_poskytovatele_years_' . sha1($poskytovatel->id);
         $poskytovatel_years = Cache::read($cache_key);
         $year_to_sum = [];
+        $sum = 0;
         if (!$poskytovatel_years) {
             $poskytovatel_years = $this->Rozhodnuti->find('all', [
                 'fields' => [
@@ -237,6 +244,7 @@ class PagesController extends AppController
                 Cache::write($cache_key_year, $year_sum);
             }
             $year_to_sum[$year] = $year_sum;
+            $sum += $year_sum;
         }
 
         $sort = $this->request->getQuery('sort');
@@ -266,7 +274,53 @@ class PagesController extends AppController
             ]
         ]);
 
-        $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest']));
+        $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest', 'sum']));
+    }
+
+    public function podlePoskytovateluDetailComplete()
+    {
+        $this->loadModel('CiselnikDotacePoskytovatelv01');
+        $this->loadModel('Rozhodnuti');
+
+        $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
+            'conditions' => [
+                'DotacePoskytovatelKod' => $this->request->getParam('id')
+            ]
+        ])->first();
+
+        $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
+
+        $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest', 'sum']));
+    }
+
+    public function podlePoskytovateluDetailCompleteAjax()
+    {
+        $this->loadModel('CiselnikDotacePoskytovatelv01');
+        $this->loadModel('Rozhodnuti');
+
+        $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
+            'conditions' => [
+                'DotacePoskytovatelKod' => $this->request->getParam('id')
+            ]
+        ])->first();
+
+        $dotace = $this->Rozhodnuti->find('all', [
+            'conditions' => [
+                'iriPoskytovatelDotace' => $poskytovatel->id
+            ],
+            'contain' => [
+                'Dotace',
+                'Dotace.PrijemcePomoci',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01'
+            ],
+            'order' => [
+                'castkaRozhodnuta' => 'DESC'
+            ]
+        ])->limit(10000);
+        $_serialize = false;
+
+        $this->set(compact(['dotace', '_serialize']));
     }
 
     public function podlePoskytovateluDetailRok()
@@ -354,6 +408,10 @@ class PagesController extends AppController
         $this->set(compact(['dotace', 'rozhodnuti']));
     }
 
+    /*
+     * Podle prijemcu
+     * **/
+
     public function detailPrijemcePomoci()
     {
         $this->loadModel('PrijemcePomoci');
@@ -370,11 +428,37 @@ class PagesController extends AppController
                 'Osoba.CiselnikObecv01',
                 'EkonomikaSubjekt'
             ]
-        ])->first();
+        ])->limit(1)->first();
+
+        if ($prijemce->ico == 0) {
+            $conditions = [
+                'ico' => 0,
+                'jmeno' => $prijemce->jmeno,
+                'prijmeni' => $prijemce->prijmeni,
+                'rokNarozeni' => $prijemce->rokNarozeni
+            ];
+        } else {
+            $conditions = [
+                'ico' => $prijemce->ico,
+                'idPrijemce !=' => $prijemce->idPrijemce
+            ];
+        }
+
+        $prijemci = $this->PrijemcePomoci->find('all', [
+            'conditions' => $conditions,
+            'order' => [
+                'PrijemcePomoci.idPrijemce' => 'ASC'
+            ]
+        ]);
+
+        $id_vsech_prijemcu = [$prijemce->idPrijemce];
+        foreach ($prijemci as $p) {
+            $id_vsech_prijemcu[] = $p->idPrijemce;
+        }
 
         $dotace = $this->Rozhodnuti->find('all', [
             'conditions' => [
-                'Dotace.idPrijemce' => $prijemce->idPrijemce
+                'Dotace.idPrijemce IN' => $id_vsech_prijemcu
             ],
             'contain' => [
                 'CiselnikFinancniProstredekCleneniv01',
@@ -388,7 +472,61 @@ class PagesController extends AppController
             ]
         ]);
 
-        $this->set(compact(['prijemce', 'dotace']));
+        $this->set(compact(['prijemce', 'dotace', 'prijemci']));
+    }
+
+    public function podlePrijemcu()
+    {
+        $this->loadModel('PrijemcePomoci');
+
+        $ico = $this->request->getQuery('ico');
+        $name = $this->request->getQuery('name');
+
+        if ($ico != null) {
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'jmeno',
+                    'prijmeni',
+                    'ico'
+                ],
+                'conditions' => [
+                    'ico' => $ico
+                ]
+            ])->limit(10000);
+            if ($ico != 0 && count($prijemci->toArray()) == 1) {
+                $this->redirect('/detail-prijemce-pomoci/' . $prijemci->first()->idPrijemce);
+            }
+            $this->set(compact('prijemci'));
+        } else if (!empty($name)) {
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'ico',
+                    'jmeno',
+                    'prijmeni'
+                ],
+                'conditions' => [
+                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
+                ]
+            ])->bind(':against', h($name))->limit(10000);
+            $this->set(compact('prijemci'));
+        } else {
+            $zvlastni_ico = $this->PrijemcePomoci->find('all', [
+                'conditions' => [
+                    'AND' => [
+                        'ico > 0',
+                        'ico < 10000'
+                    ]
+                ],
+                'fields' => ['ico', 'idPrijemce', 'obchodniJmeno'],
+                'group' => 'ico'
+            ]);
+            $this->set(compact(['zvlastni_ico']));
+        }
+        $this->set(compact(['ico', 'name']));
     }
 
 }

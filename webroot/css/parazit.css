@@ -24,6 +24,14 @@
     width: 100%;
 }
 
+table tbody tr:nth-child(even) {
+    background-color: #EEE;
+}
+
 body {
     padding: 1%;
+}
+
+#prijemce_aliasy {
+    font-family: "Courier New", monospace;
 }

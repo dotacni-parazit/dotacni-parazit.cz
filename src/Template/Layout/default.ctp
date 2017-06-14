@@ -15,7 +15,9 @@ $this->assign('title', empty($title) ? "" : $title);
     echo $this->Html->script([
         'jquery.min.js',
         'jstree.min.js',
-        'jquery.sumoselect.min'
+        'jquery.sumoselect.min',
+        '//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js',
+        '//cdn.datatables.net/plug-ins/1.10.15/sorting/currency.js'
     ]);
     ?>
 
@@ -23,6 +25,7 @@ $this->assign('title', empty($title) ? "" : $title);
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('jstree-theme/style.css') ?>
     <?= $this->Html->css('sumoselect.min.css') ?>
+    <?= $this->Html->css('//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css') ?>
     <?= $this->Html->css('parazit.css') ?>
 
     <?= $this->fetch('meta') ?>
