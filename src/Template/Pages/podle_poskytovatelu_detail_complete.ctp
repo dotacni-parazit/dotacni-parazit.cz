@@ -41,7 +41,10 @@ use Cake\I18n\Number;
             "stateDuration": 60 * 60 * 24 * 7,
             dom: 'r<"clear">ip<"clear">lf<"clear">t',
             ajax: '/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax',
-            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
+            "language": {
+                "processing": "Načítám data (maximálně 20.000 položek)"
+            }
         });
 
         $('#datatable thead th').each(function (i) {

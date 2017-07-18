@@ -7,7 +7,7 @@ use Cake\I18n\Number;
     <thead>
     <tr>
         <th><a href="?sort=poskytovatel">Poskytovatel</a></th>
-        <th><a href="?sort=sum">Součet poskytnutých dotacík</a></th>
+        <th><a href="?sort=sum">Součet poskytnutých dotací</a></th>
     </tr>
     </thead>
     <tbody>

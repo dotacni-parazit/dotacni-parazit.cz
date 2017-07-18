@@ -19,7 +19,6 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->loadModel('Cache');
         $this->loadModel('CiselnikCedrOperacniProgramv01');
         $this->loadModel('CiselnikMmrOperacniProgramv01');
         $this->loadModel('CiselnikFinancniZdrojv01');
@@ -32,8 +31,6 @@ class PagesController extends AppController
 
     public function index()
     {
-        $overview = $this->Cache->find('all');
-        $this->set(compact('overview'));
     }
 
     public function cedrOperacniProgramy()
@@ -165,7 +162,7 @@ class PagesController extends AppController
         $counts = [];
         foreach ($data as $d) {
             $cache_key = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
-            $cnt = Cache::read($cache_key);
+            $cnt = Cache::read($cache_key, 'long_term');
             if (!$cnt || empty($cnt)) {
                 // cache overall sum
                 $cnt = $this->Rozhodnuti->find('all', [
@@ -177,7 +174,7 @@ class PagesController extends AppController
                         'iriPoskytovatelDotace' => $d->id
                     ]
                 ])->first()->SUM;
-                Cache::write($cache_key, $cnt);
+                Cache::write($cache_key, $cnt, 'long_term');
             }
             $counts[$d->id] = $cnt;
             $d->sum = $cnt;
@@ -212,7 +209,7 @@ class PagesController extends AppController
         $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
 
         $cache_key = 'sum_rozhodnuti_podle_poskytovatele_years_' . sha1($poskytovatel->id);
-        $poskytovatel_years = Cache::read($cache_key);
+        $poskytovatel_years = Cache::read($cache_key, 'long_term');
         $year_to_sum = [];
         $sum = 0;
         if (!$poskytovatel_years) {
@@ -224,12 +221,12 @@ class PagesController extends AppController
                     'iriPoskytovatelDotace' => $poskytovatel->id
                 ]
             ])->toList();
-            Cache::write($cache_key, $poskytovatel_years);
+            Cache::write($cache_key, $poskytovatel_years, 'long_term');
         }
         foreach ($poskytovatel_years as $year) {
             $year = $year['roky'];
             $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
-            $year_sum = Cache::read($cache_key_year);
+            $year_sum = Cache::read($cache_key_year, 'long_term');
             if (!$year_sum) {
                 $year_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
@@ -241,7 +238,7 @@ class PagesController extends AppController
                     ]
                 ])->first()->toArray();
                 $year_sum = $year_sum['SUM'];
-                Cache::write($cache_key_year, $year_sum);
+                Cache::write($cache_key_year, $year_sum, 'long_term');
             }
             $year_to_sum[$year] = $year_sum;
             $sum += $year_sum;
@@ -304,10 +301,15 @@ class PagesController extends AppController
             ]
         ])->first();
 
+        $conditions = [
+            'iriPoskytovatelDotace' => $poskytovatel->id
+        ];
+        if (!empty($this->request->getParam('year'))) {
+            $conditions['rokRozhodnuti'] = $this->request->getParam('year');
+        }
+
         $dotace = $this->Rozhodnuti->find('all', [
-            'conditions' => [
-                'iriPoskytovatelDotace' => $poskytovatel->id
-            ],
+            'conditions' => $conditions,
             'contain' => [
                 'Dotace',
                 'Dotace.PrijemcePomoci',
@@ -317,13 +319,46 @@ class PagesController extends AppController
             'order' => [
                 'castkaRozhodnuta' => 'DESC'
             ]
-        ])->limit(10000);
+        ])->limit(20000);
         $_serialize = false;
 
         $this->set(compact(['dotace', '_serialize']));
     }
 
-    public function podlePoskytovateluDetailRok()
+    public function podlePoskytovateluDetailRok(){
+        $this->loadModel('CiselnikDotacePoskytovatelv01');
+        $this->loadModel('Rozhodnuti');
+
+        $year = $this->request->getParam('year');
+
+        $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
+            'conditions' => [
+                'DotacePoskytovatelKod' => $this->request->getParam('id')
+            ]
+        ])->first();
+
+        $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
+        $year_sum = Cache::read($cache_key_year, 'long_term');
+        if (!$year_sum) {
+            $year_sum = $this->Rozhodnuti->find('all', [
+                'fields' => [
+                    'SUM' => 'SUM(castkaRozhodnuta)'
+                ],
+                'conditions' => [
+                    'iriPoskytovatelDotace' => $poskytovatel->id,
+                    'rokRozhodnuti' => $year
+                ]
+            ])->first()->toArray();
+            $year_sum = $year_sum['SUM'];
+            Cache::write($cache_key_year, $year_sum, 'long_term');
+        }
+
+        $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
+
+        $this->set(compact(['poskytovatel', 'year', 'sum', 'year_sum']));
+    }
+
+    public function podlePoskytovateluDetailRok2()
     {
         $year = $this->request->getParam('year');
 
@@ -337,7 +372,7 @@ class PagesController extends AppController
         ])->first();
 
         $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
-        $year_sum = Cache::read($cache_key_year);
+        $year_sum = Cache::read($cache_key_year, 'long_term');
         if (!$year_sum) {
             $year_sum = $this->Rozhodnuti->find('all', [
                 'fields' => [
@@ -349,7 +384,7 @@ class PagesController extends AppController
                 ]
             ])->first()->toArray();
             $year_sum = $year_sum['SUM'];
-            Cache::write($cache_key_year, $year_sum);
+            Cache::write($cache_key_year, $year_sum, 'long_term');
         }
 
         $data = $this->Rozhodnuti->find('all', [
@@ -468,7 +503,9 @@ class PagesController extends AppController
                 'Dotace.CiselnikMmrPrioritav01',
                 'Dotace.CiselnikMmrOpatreniv01',
                 'Dotace.CiselnikMmrPodOpatreniv01',
-                'Dotace.CiselnikMmrGrantoveSchemav01'
+                'Dotace.CiselnikMmrGrantoveSchemav01',
+                'RozpoctoveObdobi'
+
             ]
         ]);
 
@@ -529,6 +566,159 @@ class PagesController extends AppController
             $this->set(compact(['zvlastni_ico']));
         }
         $this->set(compact(['ico', 'name']));
+    }
+
+    public function podleZdrojeFinanci()
+    {
+        $this->loadModel('Rozhodnuti');
+
+        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
+        $sums = [];
+        foreach ($zdroje as $z) {
+            $cache_tag = 'soucet_podle_zdroje_' . sha1($z->id);
+            $sum = Cache::read($cache_tag, 'long_term');
+            $sums[$z->financniZdrojKod] = $sum;
+            if (!$sum) {
+                $z_sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'conditions' => [
+                        'iriFinancniZdroj' => $z->id
+                    ]
+                ])->first()->toArray();
+                Cache::write($cache_tag, $z_sum, 'long_term');
+                $sums[$z->financniZdrojKod] = $z_sum;
+            }
+        }
+        $data = [];
+        foreach ($zdroje as $z) {
+            $data[$z->financniZdrojKod] = [
+                'nazev' => $z->financniZdrojNazev,
+                'suma' => $sums[$z->financniZdrojKod]['SUM'],
+                'id' => $z->financniZdrojKod
+            ];
+        }
+        $sort = $this->request->getQuery('sort');
+        if ($sort) {
+            if ($sort === "sum") {
+                usort($data, function ($a, $b) {
+                    return $b['suma'] - $a['suma'];
+                });
+            } else if ($sort === "zdroj") {
+                usort($data, function ($a, $b) {
+                    return strcmp($a['nazev'], $b['nazev']);
+                });
+            }
+        }
+        $this->set(compact(['data']));
+    }
+
+    function podleZdrojeFinanciDetail()
+    {
+        $this->loadModel('Rozhodnuti');
+
+        $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
+            'conditions' => [
+                'financniZdrojKod' => $this->request->getParam('kod')
+            ]
+        ])->first();
+
+        $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
+
+        $cache_key = 'sum_rozhodnuti_podle_zdroje_years_' . sha1($zdroj->id);
+        $zdroj_years = Cache::read($cache_key, 'long_term');
+        $year_to_sum = [];
+        $sum = 0;
+        if (!$zdroj_years) {
+            $zdroj_years = $this->Rozhodnuti->find('all', [
+                'fields' => [
+                    'roky' => 'DISTINCT(rokRozhodnuti)'
+                ],
+                'conditions' => [
+                    'iriFinancniZdroj' => $zdroj->id
+                ]
+            ])->toList();
+            Cache::write($cache_key, $zdroj_years, 'long_term');
+        }
+
+        foreach ($zdroj_years as $year) {
+            $year = $year['roky'];
+            $cache_key_year = 'sum_rozhodnuti_podle_zdroje_year_' . $year . '_' . sha1($zdroj->id);
+            $year_sum = Cache::read($cache_key_year, 'long_term');
+            if (!$year_sum) {
+                $year_sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'conditions' => [
+                        'iriFinancniZdroj' => $zdroj->id,
+                        'rokRozhodnuti' => $year
+                    ]
+                ])->first()->toArray();
+                $year_sum = $year_sum['SUM'];
+                Cache::write($cache_key_year, $year_sum, 'long_term');
+            }
+            $year_to_sum[$year] = $year_sum;
+            $sum += $year_sum;
+        }
+
+        $sort = $this->request->getQuery('sort');
+        if ($sort) {
+            if ($sort === "sum") {
+                arsort($year_to_sum);
+            } else if ($sort === "year") {
+                ksort($year_to_sum);
+            }
+        } else {
+            ksort($year_to_sum);
+        }
+
+        $zdroj_biggest = $this->Rozhodnuti->find('all', [
+            'conditions' => [
+                'iriFinancniZdroj' => $zdroj->id
+            ],
+            'limit' => 100,
+            'order' => [
+                'Rozhodnuti.castkaRozhodnuta' => 'DESC'
+            ],
+            'contain' => [
+                'Dotace',
+                'Dotace.PrijemcePomoci',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01'
+            ]
+        ]);
+
+        $this->set(compact(['zdroj', 'zdroj_biggest', 'year_to_sum', 'sum']));
+    }
+
+    function detailRozhodnuti()
+    {
+        $this->loadModel('Rozhodnuti');
+        $this->loadModel('RozpoctoveObdobi');
+
+        $id = $this->request->getParam('id');
+        $rozhodnuti = $this->Rozhodnuti->find('all', [
+            'conditions' => [
+                'idRozhodnuti' => $id
+            ],
+            'contain' => [
+                'Dotace',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01',
+                'CiselnikDotacePoskytovatelv01'
+            ]
+        ])->first()->toArray();
+        $rozpocet = $this->RozpoctoveObdobi->find('all', [
+            'conditions' => [
+                'idRozhodnuti' => $id
+            ]
+        ])->toArray();
+        //debug($rozhodnuti->toArray());
+        //debug($rozpocet->toArray());
+        //die();
+        $this->set(compact(['rozhodnuti', 'rozpocet']));
     }
 
 }

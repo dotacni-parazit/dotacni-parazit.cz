@@ -2,9 +2,12 @@
 use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
+//debug($rozpocet);
+//die();
+$dotace = (object)$rozhodnuti['Dotace'];
 $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev);
 ?>
-<h1><?= empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev ?> - Detail Dotace</h1>
+<h1><?= empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev ?> - Detail Rozhodnutí</h1>
 
 <table>
     <thead>
@@ -27,11 +30,6 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
     <tr>
         <td>Datum Podpisu</td>
         <td><?= $dotace->podpisDatum ?></td>
-    </tr>
-
-    <tr>
-        <td>Příjemce Pomoci</td>
-        <td><?= $this->Html->link($dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $dotace->PrijemcePomoci->idPrijemce) ?></td>
     </tr>
 
     <tr>
@@ -93,66 +91,6 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
     </tfoot>
 </table>
 
-<h2>Příjemce
-    Pomoci <?= $this->Html->link('(Otevřít detail)', '/detail-prijemce-pomoci/' . $dotace->PrijemcePomoci->idPrijemce) ?></h2>
-<table>
-    <thead>
-    <tr>
-        <th>Údaj</th>
-        <th>Obsah</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <tr>
-        <td>Název Příjemce (obchodní jméno)</td>
-        <td><?= $dotace->PrijemcePomoci->obchodniJmeno ?></td>
-    </tr>
-
-    <tr>
-        <td>IČ (IČO)</td>
-        <td><?= $dotace->PrijemcePomoci->ico ?></td>
-    </tr>
-
-    <tr>
-        <td>Právní Forma</td>
-        <td><?= empty($dotace->PrijemcePomoci->PravniForma) ? 'Nevyplněno' : $dotace->PrijemcePomoci->PravniForma->pravniFormaNazev ?></td>
-    </tr>
-
-    <tr>
-        <td>Stát</td>
-        <td><?= $dotace->PrijemcePomoci->Stat->statNazev ?></td>
-    </tr>
-
-    <tr>
-        <td>Ekonomický Subjekt</td>
-        <td><?= $dotace->PrijemcePomoci->EkonomikaSubjekt->id ?></td>
-    </tr>
-
-    <tr>
-        <td>Rok Narození</td>
-        <td><?= $dotace->PrijemcePomoci->rokNarozeni ?></td>
-    </tr>
-
-    <tr>
-        <td>Jméno</td>
-        <td><?= $dotace->PrijemcePomoci->jmeno ?></td>
-    </tr>
-
-    <tr>
-        <td>Příjmení</td>
-        <td><?= $dotace->PrijemcePomoci->prijmeni ?></td>
-    </tr>
-
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Údaj</th>
-        <th>Obsah</th>
-    </tr>
-    </tfoot>
-</table>
-
 <h2>Rozhodnutí o udělení dotace</h2>
 <hr/>
 <span id="soucet"></span>
@@ -160,49 +98,39 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
 <table id="datatable">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Rok Rozhodnutí</th>
-        <th>Částka Požadovaná</th>
-        <th>Částka Rozhodnutá</th>
-        <th>Poskytovatel Dotace</th>
-        <th>Členění Finančních Prostředků</th>
-        <th>Finanční Zdroj</th>
-        <th>Investice?</th>
-        <th>Návratnost?</th>
+        <th class="large-3 medium-3">ID</th>
+        <th>Rozpočtové období</th>
+        <th>Částka Čerpaná</th>
+        <th>Částka Uvolněná</th>
+        <th>Částka Vrácená</th>
+        <th>Částka Spotřebovaná</th>
     </tr>
     </thead>
     <tbody>
     <?php
-    $counter = 1;
-    foreach ($rozhodnuti as $r) {
+    foreach ($rozpocet as $r) {
+        $r = (object)$r;
         ?>
         <tr>
-            <td><?= $this->Html->link($counter, '/detail-rozhodnuti/' . $r->idRozhodnuti) ?></td>
-            <td><?= $r->rokRozhodnuti ?></td>
-            <td><?= Number::currency($r->castkaPozadovana) ?></td>
-            <td><?= Number::currency($r->castkaRozhodnuta) ?></td>
-            <td><?= $r->PoskytovatelDotace->dotacePoskytovatelNazev ?></td>
-            <td><?= $r->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
-            <td><?= $r->FinancniZdroj->financniZdrojNazev ?></td>
-            <td><?= $r->investiceIndikator ? 'ANO' : 'NE' ?></td>
-            <td><?= $r->navratnostIndikator ? 'ANO' : 'NE' ?></td>
+            <td><?= $this->Html->link($r->idObdobi, '/detail-obdobi/' . $r->idObdobi) ?></td>
+            <td><?= $r->rozpoctoveObdobi ?></td>
+            <td><?= Number::currency($r->castkaCerpana) ?></td>
+            <td><?= Number::currency($r->castkaUvolnena) ?></td>
+            <td><?= Number::currency($r->castkaVracena) ?></td>
+            <td><?= Number::currency($r->castkaSpotrebovana) ?></td>
         </tr>
         <?php
-        $counter++;
     }
     ?>
     </tbody>
     <tfoot>
     <tr>
         <th>ID</th>
-        <th>Rok Rozhodnutí</th>
-        <th>Částka Požadovaná</th>
-        <th>Částka Rozhodnutá</th>
-        <th>Poskytovatel Dotace</th>
-        <th>Členění Finančních Prostředků</th>
-        <th>Finanční Zdroj</th>
-        <th>Investice?</th>
-        <th>Návratnost?</th>
+        <th>Rozpočtové období</th>
+        <th>Částka Čerpaná</th>
+        <th>Částka Uvolněná</th>
+        <th>Částka Vrácená</th>
+        <th>Částka Spotřebovaná</th>
     </tr>
     </tfoot>
 </table>

@@ -53,6 +53,11 @@ class RozhodnutiTable extends Table
             ->setForeignKey('idDotace')
             ->setBindingKey('idDotace')
             ->setProperty('Dotace');
+
+        $this->belongsTo('RozpoctoveObdobi')
+            ->setForeignKey('idRozhodnuti')
+            ->setBindingKey('idRozhodnuti')
+            ->setProperty('RozpoctoveObdobi');
     }
 
     /**
