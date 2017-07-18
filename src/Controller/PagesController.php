@@ -325,7 +325,8 @@ class PagesController extends AppController
         $this->set(compact(['dotace', '_serialize']));
     }
 
-    public function podlePoskytovateluDetailRok(){
+    public function podlePoskytovateluDetailRok()
+    {
         $this->loadModel('CiselnikDotacePoskytovatelv01');
         $this->loadModel('Rozhodnuti');
 
@@ -356,54 +357,6 @@ class PagesController extends AppController
         $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
 
         $this->set(compact(['poskytovatel', 'year', 'sum', 'year_sum']));
-    }
-
-    public function podlePoskytovateluDetailRok2()
-    {
-        $year = $this->request->getParam('year');
-
-        $this->loadModel('CiselnikDotacePoskytovatelv01');
-        $this->loadModel('Rozhodnuti');
-
-        $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
-            'conditions' => [
-                'DotacePoskytovatelKod' => $this->request->getParam('id')
-            ]
-        ])->first();
-
-        $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
-        $year_sum = Cache::read($cache_key_year, 'long_term');
-        if (!$year_sum) {
-            $year_sum = $this->Rozhodnuti->find('all', [
-                'fields' => [
-                    'SUM' => 'SUM(castkaRozhodnuta)'
-                ],
-                'conditions' => [
-                    'iriPoskytovatelDotace' => $poskytovatel->id,
-                    'rokRozhodnuti' => $year
-                ]
-            ])->first()->toArray();
-            $year_sum = $year_sum['SUM'];
-            Cache::write($cache_key_year, $year_sum, 'long_term');
-        }
-
-        $data = $this->Rozhodnuti->find('all', [
-            'conditions' => [
-                'rokRozhodnuti' => $year,
-                'iriPoskytovatelDotace' => $poskytovatel->id
-            ],
-            'contain' => [
-                'Dotace',
-                'Dotace.PrijemcePomoci',
-                'CiselnikFinancniZdrojv01',
-                'CiselnikFinancniProstredekCleneniv01'
-            ],
-            'order' => [
-                'castkaRozhodnuta' => 'DESC'
-            ]
-        ]);
-
-        $this->set(compact(['year', 'year_sum', 'poskytovatel', 'data']));
     }
 
     public function detailDotace()
@@ -691,6 +644,89 @@ class PagesController extends AppController
         ]);
 
         $this->set(compact(['zdroj', 'zdroj_biggest', 'year_to_sum', 'sum']));
+    }
+
+    public function podleZdrojeFinanciDetailComplete()
+    {
+        $this->loadModel('Rozhodnuti');
+
+        $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
+            'conditions' => [
+                'financniZdrojKod' => $this->request->getParam('kod')
+            ]
+        ])->first();
+
+        $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
+
+        $this->set(compact(['zdroj']));
+    }
+
+    public function podleZdrojeFinanciDetailRok()
+    {
+        $this->loadModel('Rozhodnuti');
+
+        $year = $this->request->getParam('year');
+        $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
+            'conditions' => [
+                'financniZdrojKod' => $this->request->getParam('kod')
+            ]
+        ])->first();
+
+        $this->set('title', $zdroj->financniZdrojNazev . ' - Rok ' . $year . ' - Zdroj Financí');
+
+        $cache_key_year = 'sum_rozhodnuti_podle_zdroje_year_' . $year . '_' . sha1($zdroj->id);
+        $year_sum = Cache::read($cache_key_year, 'long_term');
+        if (!$year_sum) {
+            $year_sum = $this->Rozhodnuti->find('all', [
+                'fields' => [
+                    'SUM' => 'SUM(castkaRozhodnuta)'
+                ],
+                'conditions' => [
+                    'iriFinancniZdroj' => $zdroj->id,
+                    'rokRozhodnuti' => $year
+                ]
+            ])->first()->toArray();
+            $year_sum = $year_sum['SUM'];
+            Cache::write($cache_key_year, $year_sum, 'long_term');
+        }
+
+        $this->set(compact(['year', 'zdroj', 'year_sum']));
+    }
+
+    public function podleZdrojeFinanciCompleteAjax()
+    {
+        $this->loadModel('Rozhodnuti');
+
+        $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
+            'conditions' => [
+                'financniZdrojKod' => $this->request->getParam('kod')
+            ]
+        ])->first();
+
+        $conditions = [
+            'iriFinancniZdroj' => $zdroj->id
+        ];
+        if (!empty($this->request->getParam('year'))) {
+            $conditions['rokRozhodnuti'] = $this->request->getParam('year');
+        }
+
+        $dotace = $this->Rozhodnuti->find('all', [
+            'conditions' => $conditions,
+            'contain' => [
+                'Dotace',
+                'Dotace.PrijemcePomoci',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01',
+                'RozpoctoveObdobi'
+            ],
+            'order' => [
+                'castkaRozhodnuta' => 'DESC'
+            ]
+        ])->limit(20000);
+
+        $_serialize = false;
+
+        $this->set(compact(['dotace', '_serialize']));
     }
 
     function detailRozhodnuti()
