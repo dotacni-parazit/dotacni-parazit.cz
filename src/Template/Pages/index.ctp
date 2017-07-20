@@ -1,5 +1,3 @@
-<h1>Dotační Parazit</h1>
-
 <div class="homepage_tiles">
     <div class="homepage_tile">
         <a href="/podle-poskytovatelu">Poskytovatelé</a>
@@ -27,6 +25,7 @@
     </div>
     <br class="clear"/>
 </div>
+<hr/>
 
 <div>
     <h2>Rozcestník</h2>

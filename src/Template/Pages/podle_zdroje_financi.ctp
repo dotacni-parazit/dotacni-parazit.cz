@@ -1,12 +1,11 @@
 <?php
 use Cake\I18n\Number;
 
+$this->set('title', 'Zdroje Financí / Financování');
 ?>
-<h1>Zdroje Financí / Financování</h1>
-<hr/>
 <div style="float: left; border: 1px solid black; border-width: 0 1px 0 0; padding: 10px;"
      class="small-12 medium-12 large-6">
-    <h2>Tuzemské Finanční zdroje (t)</h2>
+    <h2>Tuzemské</h2>
     <table id="tuzemske">
         <thead>
         <tr>
@@ -42,7 +41,7 @@ use Cake\I18n\Number;
     </table>
 </div>
 <div style="float: left;  padding: 10px;" class="medium-12 large-6 small-12">
-    <h2>Zahraniční Finanční zdroje (z)</h2>
+    <h2>Zahraniční</h2>
     <table id="zahranicni">
         <thead>
         <tr>
@@ -108,6 +107,38 @@ use Cake\I18n\Number;
             "stateSave": false,
             "stateDuration": 60 * 60 * 24 * 7,
             dom: 't'
+        });
+
+        $('#tuzemske thead th').each(function (i) {
+            var title = $('#tuzemske thead th').eq($(this).index()).text();
+            if ($(this).hasClass('nosearch')) {
+                $(this).text(title);
+                return;
+            }
+            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
+        });
+
+        $(tableTuzemske.table().container()).on('keyup', 'thead input', function () {
+            tableTuzemske
+                .column($(this).data('index'))
+                .search(this.value)
+                .draw();
+        });
+
+        $('#zahranicni thead th').each(function (i) {
+            var title = $('#zahranicni thead th').eq($(this).index()).text();
+            if ($(this).hasClass('nosearch')) {
+                $(this).text(title);
+                return;
+            }
+            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
+        });
+
+        $(tableZahranicni.table().container()).on('keyup', 'thead input', function () {
+            tableZahranicni
+                .column($(this).data('index'))
+                .search(this.value)
+                .draw();
         });
     });
 </script>

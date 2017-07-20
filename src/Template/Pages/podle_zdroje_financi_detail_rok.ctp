@@ -1,8 +1,8 @@
 <?php
 use Cake\I18n\Number;
 
+$this->set('title', $year . ' - ' . $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 ?>
-<h1><?= $year ?> - <?= $zdroj->financniZdrojNazev ?> - Zdroj Financí</h1>
 <div>
     Součet za rok <?= $year ?>: <?= Number::currency($year_sum) ?>
 </div>

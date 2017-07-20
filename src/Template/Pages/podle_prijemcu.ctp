@@ -4,11 +4,12 @@ use Cake\I18n\Number;
 $this->Html->script('datatable.js', ['block' => true]);
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
+$this->set('title', 'Příjemci dotací - Vyhledávání');
 ?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-1" class="<?= !empty($ico) ? 'selected' : '' ?>">Podle IČO</a></li>
-        <li><a href="#tabs-2" class="<?= !empty($name) ? 'selected' : '' ?>">Podle Jména Příjemce</a></li>
+        <li><a href="#tabs-1">Podle IČO</a></li>
+        <li><a href="#tabs-2">Podle Jména Příjemce</a></li>
         <li><a href="#tabs-3">Více příjemců zároveň</a></li>
     </ul>
     <div id="tabs-1">
@@ -98,7 +99,8 @@ if (!empty($prijemci)) {
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
-            collapsible: true
+            collapsible: true,
+            active: <?= empty($name) ? '0' : '1' ?>
         });
     });
 </script>

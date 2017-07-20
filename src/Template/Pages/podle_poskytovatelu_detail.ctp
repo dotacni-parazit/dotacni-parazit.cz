@@ -2,8 +2,8 @@
 use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
+$this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
 ?>
-<h1><?= $poskytovatel->dotacePoskytovatelNazev ?> - Poskytovatel Dotací</h1>
 <table>
     <thead>
     <tr>

@@ -1,8 +1,8 @@
 <?php
 use Cake\I18n\Number;
 
+$this->set('title', 'Poskytovatelé dotací');
 ?>
-<h1>Poskytovatelé Dotací</h1>
 <table>
     <thead>
     <tr>

@@ -2,8 +2,8 @@
 use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
+$this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 ?>
-<h1><?= $zdroj->financniZdrojNazev ?> - Zdroj Financí</h1>
 <table>
     <thead>
     <tr>

@@ -1,5 +1,6 @@
 <?php
 $this->assign('title', empty($title) ? "" : $title);
+$title = $this->fetch('title');
 ?>
 <!DOCTYPE html>
 <html>
@@ -7,7 +8,7 @@ $this->assign('title', empty($title) ? "" : $title);
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $this->fetch('title') ?>
+        <?= $title ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
@@ -34,6 +35,18 @@ $this->assign('title', empty($title) ? "" : $title);
 </head>
 <body>
 <?= $this->Flash->render() ?>
+<nav>
+    <?php if (!empty($this->request->referer())) { ?>
+        <!--<a href="<?= $this->request->referer(); ?>"><img src="/img/arrow_back.png" style="max-height: 64px;"></a>-->
+    <?php } ?>
+    <a href="/"><img src="/img/404.png" style="max-height: 64px; float: left;"></a>
+    <h1 style="float: left; margin-left: 20px;">
+        <?php
+        echo empty($title) ? 'Dotační Parazit' : $title;
+        ?>
+    </h1>
+</nav>
+<hr/>
 <div class="container clearfix">
     <?= $this->fetch('content') ?>
 </div>

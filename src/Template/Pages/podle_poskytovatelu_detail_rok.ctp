@@ -1,8 +1,8 @@
 <?php
 use Cake\I18n\Number;
 
+$this->set('title', 'Poskytovatel dotací - ' . $poskytovatel->dotacePoskytovatelNazev . ', rok ' . $year);
 ?>
-<h1><?= $year ?> - <?= $poskytovatel->dotacePoskytovatelNazev ?> - Poskytovatel Dotací</h1>
 <div>
     Součet za rok <?= $year ?>: <?= Number::currency($year_sum) ?>
 </div>
@@ -21,31 +21,6 @@ use Cake\I18n\Number;
     </tr>
     </thead>
     <tbody>
-    <?php
-    foreach ($data as $d) {
-        $displayDotace = $d->Dotace->projektNazev;
-        if ($d->Dotace->projekKod === $d->Dotace->projektIdnetifikator && !empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-            $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ")";
-        } else if (!empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-            $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ", " . $d->Dotace->projektIdnetifikator . ")";
-        } else if (!empty($d->Dotace->projektIdnetifikator)) {
-            $displayDotace .= "<br/>(" . $d->Dotace->projektIdnetifikator . ")";
-        }
-        if (strpos($displayDotace, '<br/>') === 0) {
-            $displayDotace = substr($displayDotace, 5);
-        }
-        ?>
-        <tr>
-            <td><?= $this->Html->link($d->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce) ?></td>
-            <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
-            <td><?= Number::currency($d->castkaRozhodnuta) ?></td>
-            <td><?= $d->rokRozhodnuti ?></td>
-            <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
-            <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>
-        </tr>
-        <?php
-    }
-    ?>
     </tbody>
     <tfoot>
     <tr>

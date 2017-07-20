@@ -1,10 +1,8 @@
 <?php
 use Cake\I18n\Number;
 
+$this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 ?>
-<h1><?= $zdroj->financniZdrojNazev ?> - Zdroj Financí</h1>
-<br/>
-<br/>
 <h2>Všechna Rozhodnutí/Dotace</h2>
 <table id="datatable">
     <thead>

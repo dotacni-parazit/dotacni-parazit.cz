@@ -1,10 +1,8 @@
 <?php
 use Cake\I18n\Number;
 
+$this->set('title',$poskytovatel->dotacePoskytovatelNazev .  ' - Poskytovatel Dotací')
 ?>
-<h1><?= $poskytovatel->dotacePoskytovatelNazev ?> - Poskytovatel Dotací</h1>
-<br/>
-<br/>
 <h2>Všechna Rozhodnutí/Dotace</h2>
 <table id="datatable">
     <thead>
