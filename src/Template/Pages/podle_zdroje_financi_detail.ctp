@@ -18,7 +18,7 @@ $this->Html->script('datatable.js', ['block' => true]);
         ?>
         <tr>
             <td><?= $this->Html->link($key, '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
-            <td><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-zdroje-financi/' . $zdroj->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
+            <td><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
             <td><?= $this->Html->link('Otevřít', '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
         </tr>
         <?php

@@ -2,8 +2,16 @@
 use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
+$this->Html->script('jquery-ui.min.js', ['block' => true]);
+$this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
-    <div style="text-align: center; width: 49%; float: left; padding: 1%; border: 1px solid black;">
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1" class="<?= !empty($ico) ? 'selected' : '' ?>">Podle IČO</a></li>
+        <li><a href="#tabs-2" class="<?= !empty($name) ? 'selected' : '' ?>">Podle Jména Příjemce</a></li>
+        <li><a href="#tabs-3">Více příjemců zároveň</a></li>
+    </ul>
+    <div id="tabs-1">
         <h2>Podle IČO</h2>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
@@ -13,7 +21,7 @@ $this->Html->script('datatable.js', ['block' => true]);
         echo '("0" jsou "Fyzické osoby")';
         ?>
     </div>
-    <div style="text-align: center; width: 49%; float: left; padding: 1%; border: 1px solid black;">
+    <div id="tabs-2">
         <h2>Podle jména</h2>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
@@ -23,7 +31,18 @@ $this->Html->script('datatable.js', ['block' => true]);
         echo 'použijte * pro hledání částí slova, např. "techn*" najde "technologie"';
         ?>
     </div>
-    <br class="clear"/>
+    <div id="tabs-3">
+        <h2>Více příjemců zároveň (IČO)</h2>
+        <?php
+        echo $this->Form->create(null, ['type'=>'get']);
+        echo $this->Form->input('multiple', ['label' => 'IČO několika příjemců', 'value' => $multiple]);
+        echo $this->Form->submit('Zobrazit!');
+        echo $this->Form->end();
+        echo 'Zadejte IČ příjemců oddělená čárkou nebo mezerou';
+        ?>
+    </div>
+</div>
+<br class="clear"/>
 <?php
 if (!empty($prijemci)) {
     ?>
@@ -76,3 +95,10 @@ if (!empty($prijemci)) {
     <?php
 }
 ?>
+<script type="text/javascript">
+    $(function () {
+        $("#tabs").tabs({
+            collapsible: true
+        });
+    });
+</script>

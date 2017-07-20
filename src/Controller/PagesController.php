@@ -11,6 +11,7 @@ namespace App\Controller;
 use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\I18n\Number;
+use Cake\Network\Exception\NotFoundException;
 
 
 class PagesController extends AppController
@@ -119,6 +120,8 @@ class PagesController extends AppController
     public function filtr()
     {
         $this->set('kapitoly', $this->CiselnikStatniRozpocetKapitolav01->find('all')->toArray());
+
+        throw new NotFoundException();
     }
 
     public function cbFiltrKapitoly()
@@ -200,11 +203,15 @@ class PagesController extends AppController
         $this->loadModel('CiselnikDotacePoskytovatelv01');
         $this->loadModel('Rozhodnuti');
 
-        $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
+        $kod = filter_var($this->request->getParam('id'), FILTER_SANITIZE_NUMBER_INT);
+
+        $poskytovatel = !empty($kod) ? $this->CiselnikDotacePoskytovatelv01->find('all', [
             'conditions' => [
-                'DotacePoskytovatelKod' => $this->request->getParam('id')
+                'DotacePoskytovatelKod' => $kod
             ]
-        ])->first();
+        ])->first() : null;
+
+        if (empty($poskytovatel)) throw new NotFoundException();
 
         $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
 
@@ -285,6 +292,8 @@ class PagesController extends AppController
             ]
         ])->first();
 
+        if (empty($poskytovatel)) throw new NotFoundException();
+
         $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
 
         $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest', 'sum']));
@@ -300,6 +309,8 @@ class PagesController extends AppController
                 'DotacePoskytovatelKod' => $this->request->getParam('id')
             ]
         ])->first();
+
+        if (empty($poskytovatel)) throw new NotFoundException();
 
         $conditions = [
             'iriPoskytovatelDotace' => $poskytovatel->id
@@ -337,6 +348,8 @@ class PagesController extends AppController
                 'DotacePoskytovatelKod' => $this->request->getParam('id')
             ]
         ])->first();
+
+        if (empty($poskytovatel)) throw new NotFoundException();
 
         $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
         $year_sum = Cache::read($cache_key_year, 'long_term');
@@ -382,6 +395,8 @@ class PagesController extends AppController
             ]
         ])->first();
 
+        if (empty($dotace)) throw new NotFoundException();
+
         $rozhodnuti = $this->Rozhodnuti->find('all', [
             'conditions' => [
                 'idDotace' => $dotace->idDotace
@@ -389,7 +404,8 @@ class PagesController extends AppController
             'contain' => [
                 'CiselnikDotacePoskytovatelv01',
                 'CiselnikFinancniZdrojv01',
-                'CiselnikFinancniProstredekCleneniv01'
+                'CiselnikFinancniProstredekCleneniv01',
+                'RozpoctoveObdobi'
             ]
         ]);
 
@@ -417,6 +433,8 @@ class PagesController extends AppController
                 'EkonomikaSubjekt'
             ]
         ])->limit(1)->first();
+
+        if (empty($prijemce)) throw new NotFoundException();
 
         if ($prijemce->ico == 0) {
             $conditions = [
@@ -473,6 +491,17 @@ class PagesController extends AppController
         $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
         $name = $this->request->getQuery('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $multiple = $this->request->getQuery('multiple');
+        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
+        $multi_prijemci = null;
+
+        if (!empty($multiple)) {
+            foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
+                if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
+                $multi_prijemci .= $multi_ico . ",";
+            }
+            $multi_prijemci = substr($multi_prijemci, 0, -1);
+        }
 
         if ($ico != null) {
             $prijemci = $this->PrijemcePomoci->find('all', [
@@ -505,6 +534,8 @@ class PagesController extends AppController
                 ]
             ])->bind(':against', h($name))->limit(10000);
             $this->set(compact('prijemci'));
+        } else if (!empty($multi_prijemci)) {
+            $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
         } else {
             $zvlastni_ico = $this->PrijemcePomoci->find('all', [
                 'conditions' => [
@@ -518,7 +549,24 @@ class PagesController extends AppController
             ]);
             $this->set(compact(['zvlastni_ico']));
         }
-        $this->set(compact(['ico', 'name']));
+
+        $this->set(compact(['ico', 'name', 'multiple']));
+    }
+
+    public function detailPrijemceMulti()
+    {
+        $multiple = $this->request->getParam('ico');
+        $ico = [];
+        foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
+            if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
+            $ico[] = $multi_ico;
+        }
+
+        if (empty($ico)) {
+            $this->redirect($this->referer());
+        }
+
+        $prijemci = [];
     }
 
     public function podleZdrojeFinanci()
@@ -528,9 +576,30 @@ class PagesController extends AppController
         $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
         $sums = [];
         foreach ($zdroje as $z) {
+            // soucet spotrebovana
             $cache_tag = 'soucet_podle_zdroje_' . sha1($z->id);
             $sum = Cache::read($cache_tag, 'long_term');
-            $sums[$z->financniZdrojKod] = $sum;
+            $sums[$z->financniZdrojKod]['SUM'] = $sum;
+            if (!$sum) {
+                $z_sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'iriFinancniZdroj' => $z->id
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi'
+                    ]
+                ])->first()->toArray()['SUM'];
+                Cache::write($cache_tag, $z_sum, 'long_term');
+                $sums[$z->financniZdrojKod]['SUM'] = $z_sum;
+            }
+
+            // soucet rozhodnuta
+            $cache_tag = 'soucet_podle_zdroje_rozhodnuta_' . sha1($z->id);
+            $sum = Cache::read($cache_tag, 'long_term');
+            $sums[$z->financniZdrojKod]['SUM2'] = $sum;
             if (!$sum) {
                 $z_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
@@ -539,16 +608,17 @@ class PagesController extends AppController
                     'conditions' => [
                         'iriFinancniZdroj' => $z->id
                     ]
-                ])->first()->toArray();
+                ])->first()->toArray()['SUM'];
                 Cache::write($cache_tag, $z_sum, 'long_term');
-                $sums[$z->financniZdrojKod] = $z_sum;
+                $sums[$z->financniZdrojKod]['SUM2'] = $z_sum;
             }
         }
         $data = [];
         foreach ($zdroje as $z) {
             $data[$z->financniZdrojKod] = [
                 'nazev' => $z->financniZdrojNazev,
-                'suma' => $sums[$z->financniZdrojKod]['SUM'],
+                'castkaSpotrebovana' => $sums[$z->financniZdrojKod]['SUM'],
+                'castkaRozhodnuta' => $sums[$z->financniZdrojKod]['SUM2'],
                 'id' => $z->financniZdrojKod
             ];
         }
@@ -556,7 +626,7 @@ class PagesController extends AppController
         if ($sort) {
             if ($sort === "sum") {
                 usort($data, function ($a, $b) {
-                    return $b['suma'] - $a['suma'];
+                    return $b['castkaSpotrebovana'] - $a['castkaSpotrebovana'];
                 });
             } else if ($sort === "zdroj") {
                 usort($data, function ($a, $b) {
@@ -565,6 +635,7 @@ class PagesController extends AppController
             }
         }
         $this->set(compact(['data']));
+        $this->set('title', 'Zdroj Financí / Financování');
     }
 
     function podleZdrojeFinanciDetail()
@@ -576,6 +647,7 @@ class PagesController extends AppController
                 'financniZdrojKod' => $this->request->getParam('kod')
             ]
         ])->first();
+        if (empty($zdroj)) throw new NotFoundException();
 
         $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 
@@ -655,6 +727,7 @@ class PagesController extends AppController
                 'financniZdrojKod' => $this->request->getParam('kod')
             ]
         ])->first();
+        if (empty($zdroj)) throw new NotFoundException();
 
         $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 
@@ -671,6 +744,8 @@ class PagesController extends AppController
                 'financniZdrojKod' => $this->request->getParam('kod')
             ]
         ])->first();
+
+        if (empty($zdroj)) throw new NotFoundException();
 
         $this->set('title', $zdroj->financniZdrojNazev . ' - Rok ' . $year . ' - Zdroj Financí');
 
@@ -702,6 +777,7 @@ class PagesController extends AppController
                 'financniZdrojKod' => $this->request->getParam('kod')
             ]
         ])->first();
+        if (empty($zdroj)) throw new NotFoundException();
 
         $conditions = [
             'iriFinancniZdroj' => $zdroj->id
@@ -745,7 +821,11 @@ class PagesController extends AppController
                 'CiselnikFinancniProstredekCleneniv01',
                 'CiselnikDotacePoskytovatelv01'
             ]
-        ])->first()->toArray();
+        ])->first();
+        if (empty($rozhodnuti)) throw new NotFoundException();
+
+        $rozhodnuti = $rozhodnuti->toArray();
+
         $rozpocet = $this->RozpoctoveObdobi->find('all', [
             'conditions' => [
                 'idRozhodnuti' => $id

@@ -18,7 +18,7 @@ foreach ($dotace as $d) {
     }
 
     $prijemcePomoci = $d->Dotace->PrijemcePomoci->obchodniJmeno;
-    if(empty($prijemcePomoci)){
+    if (empty($prijemcePomoci)) {
         $prijemcePomoci = $d->Dotace->PrijemcePomoci->jmeno . ' ' . $d->Dotace->PrijemcePomoci->prijmeni . ' (Fyzicka osoba)';
     }
 
@@ -26,7 +26,7 @@ foreach ($dotace as $d) {
         $this->Html->link($prijemcePomoci, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce),
         $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]),
         Number::currency($d->castkaRozhodnuta),
-        Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana),
+        (!empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A'),
         $d->rokRozhodnuti,
         $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev,
         $d->FinancniZdroj->financniZdrojNazev

@@ -155,15 +155,17 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
 
 <h2>Rozhodnutí o udělení dotace</h2>
 <hr/>
-<span id="soucet"></span>
+<span id="soucet"></span><br/>
+<span id="soucetCerpani"></span>
 <hr/>
 <table id="datatable">
     <thead>
     <tr>
-        <th>ID</th>
+        <th>Dílčí Rozhodnutí</th>
         <th>Rok Rozhodnutí</th>
         <th>Částka Požadovaná</th>
         <th>Částka Rozhodnutá</th>
+        <th>Částka Spotřebovaná</th>
         <th>Poskytovatel Dotace</th>
         <th>Členění Finančních Prostředků</th>
         <th>Finanční Zdroj</th>
@@ -181,6 +183,7 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
             <td><?= $r->rokRozhodnuti ?></td>
             <td><?= Number::currency($r->castkaPozadovana) ?></td>
             <td><?= Number::currency($r->castkaRozhodnuta) ?></td>
+            <td><?= !empty($r->RozpoctoveObdobi) ? Number::currency($r->RozpoctoveObdobi->castkaSpotrebovana) : "N/A" ?></td>
             <td><?= $r->PoskytovatelDotace->dotacePoskytovatelNazev ?></td>
             <td><?= $r->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $r->FinancniZdroj->financniZdrojNazev ?></td>
@@ -194,10 +197,11 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
     </tbody>
     <tfoot>
     <tr>
-        <th>ID</th>
+        <th>Dílčí Rozhodnutí</th>
         <th>Rok Rozhodnutí</th>
         <th>Částka Požadovaná</th>
         <th>Částka Rozhodnutá</th>
+        <th>Částka Spotřebovaná</th>
         <th>Poskytovatel Dotace</th>
         <th>Členění Finančních Prostředků</th>
         <th>Finanční Zdroj</th>
@@ -212,6 +216,10 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
         function printSum() {
             var num = $("#datatable").dataTable().api().column(3, {page: 'current'}).data().sum();
             $("#soucet").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(num) + " Kč");
+
+            num = $("#datatable").dataTable().api().column(4, {page: 'current'}).data().sum();
+            $("#soucetCerpani").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(num) + " Kč");
+
         }
 
         $("#datatable").dataTable().fnSettings().aoDrawCallback.push({

@@ -26,7 +26,7 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
 
     <tr>
         <td>IČ (IČO)</td>
-        <td><?= $prijemce->ico ?></td>
+        <td><?= $prijemce->ico == 0 ? "N/A" : $prijemce->ico ?></td>
     </tr>
 
     <tr>
