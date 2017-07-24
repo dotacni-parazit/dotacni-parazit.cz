@@ -25,7 +25,9 @@ $(document).ready(function () {
 
     $('#datatable thead th').each(function (i) {
         var title = $('#datatable thead th').eq($(this).index()).text();
-        $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
+        if (!$(this).hasClass('nosearch')) {
+            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
+        }
     });
 
     $(table.table().container()).on('keyup', 'thead input', function () {

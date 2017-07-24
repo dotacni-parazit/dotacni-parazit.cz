@@ -2,10 +2,8 @@
 use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
-$this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev);
-?>
-<h1><?= empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev ?> - Detail Dotace</h1>
-
+$this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Dotace');
+?>a
 <table>
     <thead>
     <tr>
@@ -126,12 +124,12 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
 
     <tr>
         <td>Ekonomický Subjekt</td>
-        <td><?= $dotace->PrijemcePomoci->EkonomikaSubjekt->id ?></td>
+        <td><?= !empty($dotace->PrijemcePomoci->EkonomikaSubjekt) ? $dotace->PrijemcePomoci->EkonomikaSubjekt->id : 'Nevyplněno' ?></td>
     </tr>
 
     <tr>
         <td>Rok Narození</td>
-        <td><?= $dotace->PrijemcePomoci->rokNarozeni ?></td>
+        <td><?= $dotace->PrijemcePomoci->rokNarozeni == 0 ? '' : $dotace->PrijemcePomoci->rokNarozeni ?></td>
     </tr>
 
     <tr>
@@ -219,7 +217,6 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
 
             num = $("#datatable").dataTable().api().column(4, {page: 'current'}).data().sum();
             $("#soucetCerpani").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(num) + " Kč");
-
         }
 
         $("#datatable").dataTable().fnSettings().aoDrawCallback.push({

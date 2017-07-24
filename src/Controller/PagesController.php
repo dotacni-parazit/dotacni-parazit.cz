@@ -174,7 +174,8 @@ class PagesController extends AppController
                         'SUM' => 'SUM(castkaRozhodnuta)'
                     ],
                     'conditions' => [
-                        'iriPoskytovatelDotace' => $d->id
+                        'iriPoskytovatelDotace' => $d->id,
+                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                     ]
                 ])->first()->SUM;
                 Cache::write($cache_key, $cnt, 'long_term');
@@ -241,7 +242,8 @@ class PagesController extends AppController
                     ],
                     'conditions' => [
                         'iriPoskytovatelDotace' => $poskytovatel->id,
-                        'rokRozhodnuti' => $year
+                        'rokRozhodnuti' => $year,
+                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                     ]
                 ])->first()->toArray();
                 $year_sum = $year_sum['SUM'];
@@ -360,7 +362,8 @@ class PagesController extends AppController
                 ],
                 'conditions' => [
                     'iriPoskytovatelDotace' => $poskytovatel->id,
-                    'rokRozhodnuti' => $year
+                    'rokRozhodnuti' => $year,
+                    'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                 ]
             ])->first()->toArray();
             $year_sum = $year_sum['SUM'];
@@ -586,7 +589,8 @@ class PagesController extends AppController
                         'SUM' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
                     ],
                     'conditions' => [
-                        'iriFinancniZdroj' => $z->id
+                        'iriFinancniZdroj' => $z->id,
+                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                     ],
                     'contain' => [
                         'RozpoctoveObdobi'
@@ -606,7 +610,8 @@ class PagesController extends AppController
                         'SUM' => 'SUM(castkaRozhodnuta)'
                     ],
                     'conditions' => [
-                        'iriFinancniZdroj' => $z->id
+                        'iriFinancniZdroj' => $z->id,
+                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                     ]
                 ])->first()->toArray()['SUM'];
                 Cache::write($cache_tag, $z_sum, 'long_term');
@@ -661,7 +666,8 @@ class PagesController extends AppController
                     'roky' => 'DISTINCT(rokRozhodnuti)'
                 ],
                 'conditions' => [
-                    'iriFinancniZdroj' => $zdroj->id
+                    'iriFinancniZdroj' => $zdroj->id,
+                    'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                 ]
             ])->toList();
             Cache::write($cache_key, $zdroj_years, 'long_term');
@@ -758,7 +764,8 @@ class PagesController extends AppController
                 ],
                 'conditions' => [
                     'iriFinancniZdroj' => $zdroj->id,
-                    'rokRozhodnuti' => $year
+                    'rokRozhodnuti' => $year,
+                    'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                 ]
             ])->first()->toArray();
             $year_sum = $year_sum['SUM'];
@@ -831,10 +838,118 @@ class PagesController extends AppController
                 'idRozhodnuti' => $id
             ]
         ])->toArray();
-        //debug($rozhodnuti->toArray());
-        //debug($rozpocet->toArray());
-        //die();
+
         $this->set(compact(['rozhodnuti', 'rozpocet']));
+    }
+
+    public function fyzickeOsoby()
+    {
+
+    }
+
+    public function fyzickeOsobyAjax()
+    {
+        $this->loadModel('PrijemcePomoci');
+        $this->loadModel('Rozhodnuti');
+
+        $osoby = $this->PrijemcePomoci->find('all', [
+            'fields' => [
+                'idPrijemce',
+                'jmeno',
+                'prijmeni',
+                'rokNarozeni',
+                'iriStat',
+                'iriOsoba',
+                'CiselnikStatv01.statNazev',
+                'AdresaBydliste.obecNazev'
+            ],
+            'conditions' => [
+                'ico' => 0
+            ]
+        ])->contain([
+            'CiselnikStatv01',
+            'AdresaBydliste'
+        ])->hydrate(true)->limit(110000);
+
+        $_serialize = false;
+
+        $this->set(compact(['osoby', '_serialize']));
+    }
+
+    public function podleSidlaPrijemce()
+    {
+        $this->loadModel('CiselnikKrajv01');
+        $this->loadModel('CiselnikStatv01');
+        $this->loadModel('PrijemcePomoci');
+        $this->loadModel('Rozhodnuti');
+        $this->loadModel('RozpoctoveObdobi');
+
+        $kraje = $this->CiselnikKrajv01->find('all', [
+            'fields' => [
+                'krajNazev' => 'DISTINCT(krajNazev)'
+            ]
+        ]);
+        $staty = $this->CiselnikStatv01->find('all', [
+            'fields' => [
+                'CiselnikStatv01.statNazev',
+                'CiselnikStatv01.id'
+            ]
+        ]);
+        $soucet_staty = [];
+        $soucet_staty_spotrebovano = [];
+
+        foreach ($staty as $stat) {
+            // soucet rozhodnutych
+            $cache_tag = "soucet_stat_" . sha1($stat->id);
+            $soucet = Cache::read($cache_tag, 'long_term');
+            if ($soucet === false) {
+                if ($stat->id == "http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/CZE/19930101") {
+                    // manually uncomment with new cache
+                    // $sum = 4994037133233;
+                } else {
+                    $sum = $this->Rozhodnuti->find('all', [
+                            'fields' => [
+                                'sum' => 'SUM(castkaRozhodnuta)'
+                            ],
+                            'conditions' => [
+                                'PrijemcePomoci.iriStat' => $stat->id
+                            ],
+                            'contain' => [
+                                'Dotace.PrijemcePomoci'
+                            ]
+                        ])->first()->sum + 0;
+                }
+                Cache::write($cache_tag, $sum, 'long_term');
+                $soucet = $sum;
+            }
+            $soucet_staty[$stat->id] = $soucet;
+
+
+            // soucet spotrebovaanych
+            $cache_tag_spotrebovano = "soucet_stat_spotrebovano_" . sha1($stat->id);
+            $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
+            if ($soucet_spotrebovano === false) {
+                if ($stat->id == "http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/CZE/19930101") {
+                    $sum_spotrebovano = 4328744309651;
+                } else {
+                    $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                            'fields' => [
+                                'sum' => 'SUM(castkaSpotrebovana)'
+                            ],
+                            'conditions' => [
+                                'PrijemcePomoci.iriStat' => $stat->id
+                            ],
+                            'contain' => [
+                                'Rozhodnuti.Dotace.PrijemcePomoci'
+                            ]
+                        ])->first()->sum + 0;
+                }
+                Cache::write($cache_tag_spotrebovano, $sum_spotrebovano, 'long_term');
+                $soucet_spotrebovano = $sum_spotrebovano;
+            }
+            $soucet_staty_spotrebovano[$stat->id] = $soucet_spotrebovano;
+        }
+        $this->set(compact(['kraje', 'staty', 'soucet_staty', 'soucet_staty_spotrebovano']));
     }
 
 }

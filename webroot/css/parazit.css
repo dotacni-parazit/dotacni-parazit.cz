@@ -1,27 +1,19 @@
-.homepage_tiles {
-    width: 80%;
-    margin: 0 auto;
-    height: auto;
-    min-height: 100px;
-}
-
 .clear {
     clear: both;
 }
 
 .homepage_tile {
-    height: 200px;
-    width: 300px;
-    text-align: center;
     float: left;
-    border: 1px solid black;
+    text-align: center;
 }
 
 .homepage_tile a {
-    padding-top: 90px;
+    border: 1px solid black;
+    padding: 20% 0;
     display: block;
     height: 100%;
-    width: 100%;
+    width: 98%;
+    margin: 5px 0;
 }
 
 table tbody tr:nth-child(even) {

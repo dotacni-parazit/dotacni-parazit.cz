@@ -53,6 +53,21 @@ class PrijemcePomociTable extends Table
             ->setForeignKey('iriOsoba')
             ->setBindingKey('id')
             ->setProperty('Osoba');
+
+        $this->hasOne('AdresaSidlo')
+            ->setForeignKey('idPrijemce')
+            ->setBindingKey('idPrijemce')
+            ->setProperty('AdresaSidlo');
+
+        $this->hasOne('AdresaBydliste')
+            ->setForeignKey('idPrijemce')
+            ->setBindingKey('idPrijemce')
+            ->setProperty('AdresaBydliste');
+
+        $this->hasMany('Dotace')
+            ->setForeignKey('idPrijemce')
+            ->setBindingKey('idPrijemce')
+            ->setProperty('Dotace');
     }
 
     /**

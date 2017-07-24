@@ -8,7 +8,7 @@ $title = $this->fetch('title');
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $title ?>
+        <?= strtolower($title) === "dotační parazit" ? "Hlavní stránka" : $title ?> - Dotační Parazit
     </title>
     <?= $this->Html->meta('icon') ?>
 
@@ -39,8 +39,8 @@ $title = $this->fetch('title');
     <?php if (!empty($this->request->referer())) { ?>
         <!--<a href="<?= $this->request->referer(); ?>"><img src="/img/arrow_back.png" style="max-height: 64px;"></a>-->
     <?php } ?>
-    <a href="/"><img src="/img/404.png" style="max-height: 64px; float: left;"></a>
     <h1 style="float: left; margin-left: 20px;">
+        <a href="/"><img src="/img/404.png" style="max-height: 64px; float: left;"></a> &nbsp;
         <?php
         echo empty($title) ? 'Dotační Parazit' : $title;
         ?>

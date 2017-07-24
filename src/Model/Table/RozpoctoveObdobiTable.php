@@ -41,6 +41,11 @@ class RozpoctoveObdobiTable extends Table
             ->setForeignKey('iriDotacniTitul')
             ->setBindingKey('idDotaceTitul')
             ->setProperty('CiselnikDotaceTitulv01');
+
+        $this->belongsTo('Rozhodnuti')
+            ->setForeignKey('idRozhodnuti')
+            ->setBindingKey('idRozhodnuti')
+            ->setProperty('Rozhodnuti');
     }
 
     /**

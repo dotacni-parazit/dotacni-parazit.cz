@@ -8,8 +8,6 @@ $jmeno_prijemce = empty($prijemce->obchodniJmeno) ? $prijemce->jmeno . ' ' . $pr
 $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
 ?>
 
-<h1><?= $jmeno_prijemce ?> - Příjemce Pomoci</h1>
-
 <table>
     <thead>
     <tr>
@@ -46,7 +44,7 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
 
     <tr>
         <td>Rok Narození</td>
-        <td><?= $prijemce->rokNarozeni ?></td>
+        <td><?= $prijemce->rokNarozeni == 0 ? '' : $prijemce->rokNarozeni ?></td>
     </tr>
 
     <tr>
@@ -112,7 +110,7 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
             <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
             <td><?= Number::currency($d->castkaPozadovana) ?></td>
             <td><?= Number::currency($d->castkaRozhodnuta) ?></td>
-            <td><?= Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) ?></td>
+            <td><?= isset($d->RozpoctoveObdobi) && !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
             <td><?= $d->rokRozhodnuti ?></td>
             <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>
