@@ -11,9 +11,9 @@ jQuery.fn.dataTable.Api.register('sum()', function () {
     }, 0);
 });
 
-$(document).ready(function () {
-
-    var table = $('#datatable').DataTable({
+function setupDataTable(selector) {
+    $e = (typeof(selector) === 'string') ? $(selector) : selector;
+    var ttable = $($e).DataTable({
         fixedColumns: true,
         paging: true,
         "pageLength": 100,
@@ -23,17 +23,29 @@ $(document).ready(function () {
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
     });
 
-    $('#datatable thead th').each(function (i) {
-        var title = $('#datatable thead th').eq($(this).index()).text();
+    $('thead th', $e).each(function (i) {
+        var title = $('thead th', $e).eq($(this).index()).text();
         if (!$(this).hasClass('nosearch')) {
             $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
         }
     });
 
-    $(table.table().container()).on('keyup', 'thead input', function () {
-        table
+    $(ttable.table().container()).on('keyup', 'thead input', function () {
+        ttable
             .column($(this).data('index'))
             .search(this.value)
             .draw();
     });
+    return ttable;
+}
+var table;
+$(document).ready(function () {
+
+    table = setupDataTable('#datatable');
+
+    setupDataTable('#datatable2');
+    $('.datatable').each(function () {
+        setupDataTable($(this))
+    });
+
 });

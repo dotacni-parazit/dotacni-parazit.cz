@@ -33,6 +33,16 @@ class CiselnikOkresv01Table extends Table
         $this->setTable('ciselnikOkresv01');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('CiselnikObecv01')
+            ->setForeignKey('okresKod')
+            ->setBindingKey('okresNadKod')
+            ->setProperty('Obec');
+
+        $this->hasMany('CiselnikKrajv01')
+            ->setForeignKey('krajNadKod')
+            ->setBindingKey('krajKod')
+            ->setProperty('Kraj');
     }
 
     /**

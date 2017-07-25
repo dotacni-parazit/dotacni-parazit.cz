@@ -33,6 +33,11 @@ class AdresaSidloTable extends Table
         $this->setTable('AdresaSidlo');
         $this->setDisplayField('idAdresa');
         $this->setPrimaryKey('idAdresa');
+
+        $this->belongsTo('CiselnikObecv01')
+            ->setForeignKey('iriObec')
+            ->setBindingKey('id')
+            ->setProperty('Obec');
     }
 
     /**
