@@ -193,6 +193,19 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             "krajNazev": "<?= $kraje_data[31]->krajNazev ?>"
         }
     };
+
+    var okresy_soucet = {
+        <?php foreach($okresy_soucet as $okres) {?>
+        "<?= $okres->okresKod ?>": {
+            "soucet": "<?= Number::currency($okres->soucet) ?>",
+            "soucetSpotrebovano": "<?= Number::currency($okres->soucetSpotrebovano) ?>",
+            "color": "<?= $okres->color ?>",
+            "okresNazev": "<?= $okres->okresNazev ?>"
+        },
+        <?php } ?>
+    };
+
+    // cz_kraje_2.svg
     var kraje = {
         "zapadocesky": "#karlovarsky-kraj, #plzensky-kraj",
         "jihocesky": "#jihocesky-kraj, #vysocina",
@@ -204,6 +217,87 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         "praha": "#praha"
     };
 
+    // cz_districts.svg
+    var okresy = {
+        "trebic": "3710",
+        "usti_nad_orlici": "3611",
+        "bruntal": "3801",
+        "karlovy_vary": "3403",
+        "melnik": "3206",
+        "jablonec_nad_nisou": "3504",
+        "pribram": "3211",
+        "kromeriz": "3708",
+        "plzen": "3405",
+        "vsetin": "3810",
+        "decin": "3502",
+        "cheb": "3402",
+        "rakovnik": "3212",
+        "zlin": "3705",
+        "pelhrimov": "3304",
+        "svitavy": "3609",
+        "praha-zapad": "3210",
+        "blansko": "3701",
+        "prachatice": "3306",
+        "liberec": "3505",
+        "havlickuv_brod": "3601",
+        "benesov": "3201",
+        "hradec_kralove": "3602",
+        "ceska_lipa": "3501",
+        "rokycany": "3408",
+        "hodonin": "3706",
+        "zdar_nad_sazavou": "3714",
+        "praha-vychod": "3209",
+        "karvina": "3803",
+        "nachod": "3605",
+        "semily": "3608",
+        "litomerice": "3506",
+        "ceske_budejovice": "3301",
+        "kolin": "3204",
+        "beroun": "3202",
+        "olomouc": "3805",
+        "domazlice": "3401",
+        "jihlava": "3707",
+        "kutna_hora": "3205",
+        "sokolov": "3409",
+        "ostrava": "3807",
+        "jesenik": "3811",
+        "cesky_krumlov": "3302",
+        "mlada_boleslav": "3207",
+        "plzen-jih": "3406",
+        "novy_jicin": "3804",
+        "jindrichuv_hradec": "3303",
+        "trutnov": "3610",
+        "frydek-mistek": "3802",
+        "sumperk": "3809",
+        "brno-venkov": "3703",
+        "most": "3508",
+        "pisek": "3305",
+        "jicin": "3604",
+        "chrudim": "3603",
+        "nymburk": "3208",
+        "tachov": "3410",
+        "teplice": "3509",
+        "plzen-sever": "3407",
+        "kladno": "3203",
+        "pardubice": "3606",
+        "klatovy": "3404",
+        "vyskov": "3712",
+        "chomutov": "3503",
+        "opava": "3806",
+        "znojmo": "3713",
+        "louny": "3507",
+        "praha": "3100",
+        "prostejov": "3709",
+        "uherske_hradiste": "3711",
+        "strakonice": "3307",
+        "breclav": "3704",
+        "usti_nad_labem": "3510",
+        "prerov": "3808",
+        "rychnov_nad_kneznou": "3607",
+        "tabor": "3308",
+        "brno": "3702"
+    };
+
     $(function () {
         $("#tabs").tabs({
             collapsible: true,
@@ -212,13 +306,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
         $.each(kraje, function (key) {
             var path = kraje[key];
-            $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8");
+            $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
             $(path)
                 .mouseenter(function (event) {
-                    $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "1");
+                    $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "1").css("fill-opacity", "1");
                     var infoel = $("#info-" + key);
                     if (infoel.length === 0) {
-                        infoel = $("#kraje_map").append("<div id='info-" + key + "' style='position:absolute;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + kraje_soucet[key]["krajNazev"] + "</strong><br/>Součet rozhodnuto: " + kraje_soucet[key]["soucet"] + "<br/>Součet spotřebováno: " + kraje_soucet[key]["soucetSpotrebovano"] + "<br/></div>");
+                        infoel = $("#kraje_map").append("<div id='info-" + key + "' style='padding:10px;position:absolute;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + kraje_soucet[key]["krajNazev"] + "</strong><br/>Součet rozhodnuto: " + kraje_soucet[key]["soucet"] + "<br/>Součet spotřebováno: " + kraje_soucet[key]["soucetSpotrebovano"] + "<br/></div>");
                     }
                     infoel.show();
                 })
@@ -230,8 +324,37 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                         infoel.css('left', xpos + 40).css('top', ypos);
                 })
                 .mouseout(function (event) {
-                    $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8");
+                    $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
                     var infoel = $("#info-" + key);
+                    if (infoel.length > 0)
+                        infoel.hide();
+                });
+        });
+
+        $.each(okresy, function (key) {
+            var path = "#" + key;
+            var id = okresy[key];
+            $(path, $("#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+
+            $(path, $("#okresy"))
+                .mouseenter(function (event) {
+                    $(path).css("fill", okresy_soucet[id]["color"]).css("opacity", "1").css("fill-opacity", "1");
+                    var infoel = $("#info-okres-" + key, $("#okresy_map"));
+                    if (infoel.length === 0) {
+                        infoel = $("#okresy_map").append("<div id='info-okres-" + key + "' style='padding:10px;position:absolute;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + okresy_soucet[id]["okresNazev"] + "</strong><br/>Součet rozhodnuto: " + okresy_soucet[id]["soucet"] + "<br/>Součet spotřebováno: " + okresy_soucet[id]["soucetSpotrebovano"] + "<br/></div>");
+                    }
+                    infoel.show();
+                })
+                .mousemove(function (e) {
+                    var xpos = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX;
+                    var ypos = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
+                    var infoel = $("#info-okres-" + key, $("#okresy_map"));
+                    if (infoel.length > 0)
+                        infoel.css('left', xpos + 40).css('top', ypos);
+                })
+                .mouseout(function (event) {
+                    $(path, $("#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                    var infoel = $("#info-okres-" + key, $("#okresy_map"));
                     if (infoel.length > 0)
                         infoel.hide();
                 });

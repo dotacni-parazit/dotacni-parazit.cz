@@ -1026,7 +1026,7 @@ class PagesController extends AppController
             ];
         }
 
-        $gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($kraje_data)+1);
+        $gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($kraje_data) + 1);
         usort($kraje_data, function ($a, $b) {
             if ($a->soucet_spotrebovano == $b->soucet_spotrebovano) {
                 return 0;
@@ -1034,7 +1034,7 @@ class PagesController extends AppController
             return ($a->soucet_spotrebovano < $b->soucet_spotrebovano) ? -1 : 1;
         });
 
-        $tmparr=[];
+        $tmparr = [];
         $cntr = 0;
         foreach ($kraje_data as $key => $val) {
             $val->color = $gradients[$cntr];
@@ -1083,9 +1083,31 @@ class PagesController extends AppController
 
             $okresy_soucet[$okres->id] = (object)[
                 'soucet' => $soucet_okres,
-                'soucetSpotrebovano' => $soucet_okres_spotrebovano
+                'soucetSpotrebovano' => $soucet_okres_spotrebovano,
+                'okresNazev' => $okres->okresNazev,
+                'color' => '',
+                'okresKod' => $okres->okresKod,
+                'id' => $okres->id
             ];
         }
+
+        $okresy_gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($okresy_soucet) + 1);
+        usort($okresy_soucet, function ($a, $b) {
+            if ($a->soucetSpotrebovano == $b->soucetSpotrebovano) {
+                return 0;
+            }
+            return ($a->soucetSpotrebovano < $b->soucetSpotrebovano) ? -1 : 1;
+        });
+
+        $tmparr = [];
+        $cntr = 0;
+        foreach ($okresy_soucet as $key => $val) {
+            $val->color = $okresy_gradients[$cntr];
+            $tmparr[$val->id] = $val;
+            $cntr++;
+        }
+        $okresy_soucet = $tmparr;
+        unset($tmparr);
 
         foreach ($obce as $obec) {
             $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->id);
@@ -1139,9 +1161,9 @@ class PagesController extends AppController
         for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {
             $iterationdiff = $iterationnr - $iterationc;
             $colorindex[] = '#' .
-                dechex(intval((($ra * $iterationc) + ($rz * $iterationdiff)) / $iterationnr)) .
-                dechex(intval((($ga * $iterationc) + ($gz * $iterationdiff)) / $iterationnr)) .
-                dechex(intval((($ba * $iterationc) + ($bz * $iterationdiff)) / $iterationnr));
+                str_pad(dechex(intval((($ra * $iterationc) + ($rz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
+                str_pad(dechex(intval((($ga * $iterationc) + ($gz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
+                str_pad(dechex(intval((($ba * $iterationc) + ($bz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT);
         }
         return $colorindex;
     }
