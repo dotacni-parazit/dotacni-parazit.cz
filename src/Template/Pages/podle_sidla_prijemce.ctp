@@ -22,7 +22,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         ?>
     </div>
     <div id="okresy_list" style="width: 100%;">
-        <table class="datatable">
+        <table class="datatable datatable_simple">
             <thead>
             <tr>
                 <th>Název okresu</th>
@@ -33,7 +33,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($okresy as $o) { ?>
                 <tr>
-                    <td><?= $o->okresNazev ?></td>
+                    <td><?= $this->Html->link($o->okresNazev, '/detail-okresu/' . $o->okresKod) ?></td>
                     <td style="text-align: right;"><?= Number::currency($okresy_soucet[$o->id]->soucet) ?></td>
                     <td style="text-align: right;"><?= Number::currency($okresy_soucet[$o->id]->soucetSpotrebovano) ?></td>
                 </tr>
@@ -65,7 +65,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($obce as $o) { ?>
                 <tr>
-                    <td><?= $o->obecNazev ?></td>
+                    <td><?= $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod) ?></td>
                     <td style="text-align: right;"><?= Number::currency($obce_soucet[$o->id]->soucet) ?></td>
                     <td style="text-align: right;"><?= Number::currency($obce_soucet[$o->id]->soucetSpotrebovano) ?></td>
                 </tr>
@@ -81,7 +81,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </table>
     </div>
     <div id="kraje_list" style="width: 100%;">
-        <table id="datatable2">
+        <table id="datatable2" class="datatable_simple">
             <thead>
             <tr>
                 <th>Název Kraje</th>
@@ -119,7 +119,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($staty as $s) { ?>
                 <tr>
-                    <td><?= $s->statNazev ?></td>
+                    <td><?= $this->Html->link($s->statNazev, '/detail-statu/' . $s->statKod3Znaky) ?></td>
                     <td style="text-align: right;"><?= Number::currency($soucet_staty[$s->id]) ?></td>
                     <td style="text-align: right;"><?= Number::currency($soucet_staty_spotrebovano[$s->id]) ?></td>
                 </tr>
@@ -328,6 +328,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     var infoel = $("#info-" + key);
                     if (infoel.length > 0)
                         infoel.hide();
+                })
+                .click(function(){
+                    window.location.href = '/detail-kraje/';
                 });
         });
 

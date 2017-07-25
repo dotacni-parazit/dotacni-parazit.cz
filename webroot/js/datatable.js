@@ -19,7 +19,7 @@ function setupDataTable(selector) {
         "pageLength": 100,
         "stateSave": true,
         "stateDuration": 60 * 60 * 24 * 7,
-        dom: 'r<"clear">ip<"clear">lf<"clear">t',
+        dom: $($e).hasClass('datatable_simple') ? 't' : 'r<"clear">ip<"clear">lf<"clear">t',
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
     });
 
