@@ -9,6 +9,9 @@ $this->set('title', 'Číselníky');
     <li><a href="/operacni-programy-mmr">Operační programy MMR</a></li>
     <li><a href="/operacni-programy-cedr">Operační programy CEDR</a></li>
     <li><a href="/dotacni-tituly">Dotační Tituly dle kapitol státního rozpočtu</a></li>
+</ul>
+<hr/>
+<strong>Zajímavost:</strong>
+<ul>
     <li><a href="/rozpoctove-obdobi">Transakce a.k.a. Rozpočtové Období</a></li>
-    <li><a href="/vyhledavani">Vyhledávání</a></li>
 </ul>

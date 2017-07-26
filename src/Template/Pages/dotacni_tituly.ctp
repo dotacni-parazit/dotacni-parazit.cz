@@ -1,3 +1,6 @@
+<?php
+$this->set('title', 'Dotační tituly');
+?>
 <h2>Dynamický strom Dotačních Titulů</h2>
 <div>Řazeno nejprve podle kapitol státního rozpočtu</div>
 <input type="text" id="treesearch"/>

@@ -1,3 +1,6 @@
+<?php
+$this->set('title', 'Kapitoly Státního Rozpočtu');
+?>
 <table>
     <thead>
     <tr>

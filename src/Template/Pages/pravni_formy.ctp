@@ -1,3 +1,6 @@
+<?php
+$this->set('title', 'Právní formy');
+?>
 <table>
     <thead>
     <tr>

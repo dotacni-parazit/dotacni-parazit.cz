@@ -56,9 +56,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/rozpoctove-obdobi', ['controller' => 'Pages', 'action' => 'rozpoctoveObdobi']);
     $routes->connect('/rozpoctove-obdobi/:year', ['controller' => 'Pages', 'action' => 'rozpoctoveObdobi']);
     $routes->connect('/dotacni-tituly', ['controller' => 'Pages', 'action' => 'dotacniTituly']);
-    $routes->connect('/vyhledavani', ['controller' => 'Pages', 'action' => 'filtr']);
     $routes->connect('/get-tituly-podle-kapitol', ['controller' => 'Pages', 'action' => 'cbFiltrKapitoly']);
-    $routes->connect('/dotacni-titul/detail/*', ['controller' => 'CiselnikDotaceTitulv01', 'action' => 'view']);
+    $routes->connect('/dotacni-titul/detail/:kod', ['controller' => 'CiselnikDotaceTitulv01', 'action' => 'view']);
     // Finalni vystupy
     $routes->connect('/fyzicke-osoby', ['controller' => 'Pages', 'action' => 'fyzickeOsoby']);
     $routes->connect('/fyzicke-osoby/ajax', ['controller' => 'Pages', 'action' => 'fyzickeOsobyAjax']);
@@ -89,6 +88,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-obce/:id', ['controller' => 'Pages', 'action' => 'detailObce'], ['id' => '5[0-9]{5}']);
     $routes->connect('/detail-okres/:id', ['controller' => 'Pages', 'action' => 'detailOkres'], ['id' => '3[0-9]{3}']);
     $routes->connect('/detail-kraje/:id', ['controller' => 'Pages', 'action' => 'detailKraje'], ['id' => '3[0-9]']);
+    $routes->connect('/detail-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);

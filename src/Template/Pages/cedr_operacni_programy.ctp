@@ -1,3 +1,6 @@
+<?php
+$this->set('title', 'Operační programy CEDR');
+?>
 <table>
     <thead>
     <tr>

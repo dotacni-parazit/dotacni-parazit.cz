@@ -1,3 +1,7 @@
+<?php
+$this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
+?>
+<h2>Dynamický stroj ukazatelů kapitol státního rozpočtu</h2>
 <div id="sourcestree"></div>
 <script type="text/javascript">
     var sources = <?= json_encode($data) ?>;

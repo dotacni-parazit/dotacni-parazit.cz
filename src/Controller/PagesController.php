@@ -117,13 +117,6 @@ class PagesController extends AppController
         $this->set(compact('data'));
     }
 
-    public function filtr()
-    {
-        $this->set('kapitoly', $this->CiselnikStatniRozpocetKapitolav01->find('all')->toArray());
-
-        throw new NotFoundException();
-    }
-
     public function cbFiltrKapitoly()
     {
         $tituly = $this->CiselnikDotaceTitulv01->find('all', [

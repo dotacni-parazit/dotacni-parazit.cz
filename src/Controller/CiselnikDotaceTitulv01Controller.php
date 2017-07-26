@@ -33,10 +33,7 @@ class CiselnikDotaceTitulv01Controller extends AppController
      */
     public function view($id = null)
     {
-        $id = $this->request->getQuery('id');
-        $ciselnikDotaceTitulv01 = $this->CiselnikDotaceTitulv01->get($id, [
-            'contain' => []
-        ]);
+        $ciselnikDotaceTitulv01 = $this->CiselnikDotaceTitulv01->find('all', ['conditions' => ['dotaceTitulKod' => $this->request->getParam('kod    ')]])->first();
 
         $this->set('ciselnikDotaceTitulv01', $ciselnikDotaceTitulv01);
         $this->set('_serialize', ['ciselnikDotaceTitulv01']);
