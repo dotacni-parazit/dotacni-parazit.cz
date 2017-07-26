@@ -36,12 +36,12 @@ $title = $this->fetch('title');
 </head>
 <body>
 <?= $this->Flash->render() ?>
-<nav style="background: #35002f; color: #fff;">
+<nav style="background: #35002f; color: #fff; ">
     <?php if (!empty($this->request->referer())) { ?>
         <!--<a href="<?= $this->request->referer(); ?>"><img src="/img/arrow_back.png" style="max-height: 64px;"></a>-->
     <?php } ?>
-    <a href="/" style="display: block; height: 100%;" class="small-hide"><img src="/img/404.png" style="max-height: 64px; float: left; margin-right: 10px;"></a>
-    <h1 style="float: left; margin-left: 20px; color: #fff;">
+    <a href="/" style="display: block; height: 100%; float: left;" class="small-hide"><img src="/img/404.png" style="max-height: 64px; margin-right: 10px;"></a>
+    <h1 style="float: left; margin-left: 20px; max-width: 85%; color: #fff;">
         <?php
         echo empty($title) ? 'Dotační Parazit' : $title;
         ?>

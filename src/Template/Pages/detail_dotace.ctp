@@ -154,7 +154,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
 <h2>Rozhodnutí o udělení dotace</h2>
 <hr/>
 <span id="soucet"></span><br/>
-<span id="soucetCerpani"></span>
+<span id="soucetSpotrebovana"></span>
 <hr/>
 <table id="datatable">
     <thead>
@@ -212,11 +212,17 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
 <script type="text/javascript">
     $(document).ready(function () {
         function printSum() {
-            var num = $("#datatable").dataTable().api().column(3, {page: 'current'}).data().sum();
-            $("#soucet").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(num) + " Kč");
+            var soucet = 0, soucetSpotrebovano = 0;
 
-            num = $("#datatable").dataTable().api().column(4, {page: 'current'}).data().sum();
-            $("#soucetCerpani").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(num) + " Kč");
+            $("#datatable").dataTable().api().rows().every(function (index, tableLoop, rowLoop) {
+                if (this.data()[6].lastIndexOf('p)') !== 0) {
+                    soucet += this.data()[3].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                    soucetSpotrebovano += this.data()[4].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                }
+            });
+
+            $("#soucet").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(soucet) + " Kč");
+            $("#soucetSpotrebovana").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetSpotrebovano) + " Kč");
         }
 
         $("#datatable").dataTable().fnSettings().aoDrawCallback.push({
