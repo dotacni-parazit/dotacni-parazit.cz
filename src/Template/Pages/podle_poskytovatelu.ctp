@@ -25,7 +25,7 @@ $this->set('title', 'Poskytovatelé dotací');
     <tfoot>
     <tr>
         <th><a href="?sort=poskytovatel">Poskytovatel</a></th>
-        <th><a href="?sort=sum">Součet poskytnutých dotacík</a></th>
+        <th><a href="?sort=sum">Součet poskytnutých dotací</a></th>
     </tr>
     </tfoot>
 </table>

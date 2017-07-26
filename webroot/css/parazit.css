@@ -8,22 +8,57 @@
 }
 
 .homepage_tile a {
-    border: 1px solid black;
+    border: 1px solid #9c4c8a;
     padding: 20% 0;
     display: block;
     height: 100%;
     width: 98%;
     margin: 5px 0;
+    font-size: 2em;
+    color: #351a2f;
+    background: #fff;
+}
+
+.homepage_tile a:hover {
+    text-decoration: underline;
 }
 
 table tbody tr:nth-child(even) {
     background-color: #EEE;
 }
 
-body {
+.container, nav {
     padding: 1%;
 }
 
 #prijemce_aliasy {
     font-family: "Courier New", monospace;
+}
+
+hr {
+    color: #351a2f;
+    background-color: #351a2f;
+    border-color: #351a2f;
+}
+
+h1 {
+    color: #462B40;
+}
+
+table thead, table tbody tr:nth-child(even), table tfoot {
+    background: #f7f0f6;
+}
+
+table thead a, table tfoot a, table a, table tbody a, a, a:visited, a:link, a:active {
+    text-decoration: none;
+    color: #000;
+}
+
+table thead a:hover, table tfoot a:hover, table a:hover, table tbody a:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+table tr th {
+    padding: 0.5625rem 0.625rem;
 }

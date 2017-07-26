@@ -3,7 +3,7 @@ use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
 $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Dotace');
-?>a
+?>
 <table>
     <thead>
     <tr>

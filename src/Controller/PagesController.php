@@ -918,7 +918,8 @@ class PagesController extends AppController
         $staty = $this->CiselnikStatv01->find('all', [
             'fields' => [
                 'CiselnikStatv01.statNazev',
-                'CiselnikStatv01.id'
+                'CiselnikStatv01.id',
+                'CiselnikStatv01.statKod3Znaky'
             ]
         ]);
 
@@ -1155,7 +1156,12 @@ class PagesController extends AppController
         $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
     }
 
-    function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
+    public function ciselniky()
+    {
+
+    }
+
+    private function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
     {
         $colorindex = array();
         for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {

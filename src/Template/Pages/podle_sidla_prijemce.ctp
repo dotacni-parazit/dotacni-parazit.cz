@@ -20,6 +20,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php
         echo file_get_contents(WWW_ROOT . 'svg' . DS . 'cz_kraje_2.svg');
         ?>
+        <br/>
+        <input type="checkbox" id="kraje_opacity" value="Vypnout průhlednost">Vypnout průhlednost
+        <br/>
     </div>
     <div id="okresy_list" style="width: 100%;">
         <table class="datatable datatable_simple">
@@ -33,7 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($okresy as $o) { ?>
                 <tr>
-                    <td><?= $this->Html->link($o->okresNazev, '/detail-okresu/' . $o->okresKod) ?></td>
+                    <td><?= $this->Html->link($o->okresNazev, '/detail-okres/' . $o->okresKod) ?></td>
                     <td style="text-align: right;"><?= Number::currency($okresy_soucet[$o->id]->soucet) ?></td>
                     <td style="text-align: right;"><?= Number::currency($okresy_soucet[$o->id]->soucetSpotrebovano) ?></td>
                 </tr>
@@ -52,6 +55,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php
         echo file_get_contents(WWW_ROOT . 'svg' . DS . 'cz_districts.svg');
         ?>
+        <br/>
+        <input type="checkbox" id="okresy_opacity" value="Vypnout průhlednost">Vypnout průhlednost
+        <br/>
     </div>
     <div id="obce_list" style="width: 100%;">
         <table class="datatable">
@@ -136,9 +142,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 </div>
 <style type="text/css">
-    #map {
-        width: 100%;
-        height: 100%;
+    svg#czech_districts_by_frettie g#okresy path {
+        opacity: 1;
+        fill-opacity: 1;
     }
 </style>
 <script type="text/javascript">
@@ -148,49 +154,57 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             "soucet": "<?= Number::currency($kraje_data[34]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[34]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[34]->color ?>",
-            "krajNazev": "<?= $kraje_data[34]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[34]->krajNazev ?>",
+            "krajKod": 34
         },
         "jihocesky": {
             "soucet": "<?= Number::currency($kraje_data[33]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[33]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[33]->color ?>",
-            "krajNazev": "<?= $kraje_data[33]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[33]->krajNazev ?>",
+            "krajKod": 33
         },
         "jihomoravsky": {
             "soucet": "<?= Number::currency($kraje_data[37]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[37]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[37]->color ?>",
-            "krajNazev": "<?= $kraje_data[37]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[37]->krajNazev ?>",
+            "krajKod": 37
         },
         "severocesky": {
             "soucet": "<?= Number::currency($kraje_data[35]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[35]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[35]->color ?>",
-            "krajNazev": "<?= $kraje_data[35]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[35]->krajNazev ?>",
+            "krajKod": 35
         },
         "severomoravsky": {
             "soucet": "<?= Number::currency($kraje_data[38]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[38]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[38]->color ?>",
-            "krajNazev": "<?= $kraje_data[38]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[38]->krajNazev ?>",
+            "krajKod": 38
         },
         "stredocesky": {
             "soucet": "<?= Number::currency($kraje_data[32]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[32]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[32]->color ?>",
-            "krajNazev": "<?= $kraje_data[32]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[32]->krajNazev ?>",
+            "krajKod": 32
         },
         "vychodocesky": {
             "soucet": "<?= Number::currency($kraje_data[36]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[36]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[36]->color ?>",
-            "krajNazev": "<?= $kraje_data[36]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[36]->krajNazev ?>",
+            "krajKod": 36
         },
         "praha": {
             "soucet": "<?= Number::currency($kraje_data[31]->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($kraje_data[31]->soucet_spotrebovano) ?>",
             "color": "<?= $kraje_data[31]->color ?>",
-            "krajNazev": "<?= $kraje_data[31]->krajNazev ?>"
+            "krajNazev": "<?= $kraje_data[31]->krajNazev ?>",
+            "krajKod": 31
         }
     };
 
@@ -200,7 +214,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             "soucet": "<?= Number::currency($okres->soucet) ?>",
             "soucetSpotrebovano": "<?= Number::currency($okres->soucetSpotrebovano) ?>",
             "color": "<?= $okres->color ?>",
-            "okresNazev": "<?= $okres->okresNazev ?>"
+            "okresNazev": "<?= $okres->okresNazev ?>",
+            "okresKod": "<?= $okres->okresKod ?>"
         },
         <?php } ?>
     };
@@ -298,7 +313,37 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         "brno": "3702"
     };
 
+    var enable_opacity_kraje = false;
+    var enable_opacity_okresy = false;
+
     $(function () {
+
+        $("#kraje_opacity").on('change', function () {
+            var checked = $(this).is(":checked");
+            enable_opacity_kraje = !checked;
+            $.each(kraje, function (key) {
+                var path = kraje[key];
+                if (enable_opacity_kraje)
+                    $(path, $("#svgmapy")).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                else
+                    $(path, $("#svgmapy")).css("fill", kraje_soucet[key]["color"]).css("opacity", "1").css("fill-opacity", "1");
+            });
+        });
+        enable_opacity_kraje = !$("#kraje_opacity").is(":checked");
+        $("#okresy_opacity").on('change', function () {
+            var checked = $(this).is(":checked");
+            enable_opacity_okresy = !checked;
+            $.each(okresy, function (key) {
+                var path = "#" + key;
+                var id = okresy[key];
+                if (enable_opacity_okresy)
+                    $(path, $("#czech_districts_by_frettie g#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                else
+                    $(path, $("#czech_districts_by_frettie g#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "1").css("fill-opacity", "1");
+            });
+        });
+        enable_opacity_okresy = !$("#okresy_opacity").is(":checked");
+
         $("#tabs").tabs({
             collapsible: true,
             active: <?= empty($name) ? '0' : '1' ?>
@@ -306,10 +351,14 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
         $.each(kraje, function (key) {
             var path = kraje[key];
-            $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
-            $(path)
+            if (enable_opacity_kraje) {
+                $(path, $("#svgmapy")).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+            } else {
+                $(path, $("#svgmapy")).css("fill", kraje_soucet[key]["color"]).css("opacity", "1").css("fill-opacity", "1");
+            }
+            $(path, $("#svgmapy"))
                 .mouseenter(function (event) {
-                    $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "1").css("fill-opacity", "1");
+                    $(path, $("#svgmapy")).css("fill", kraje_soucet[key]["color"]).css("opacity", "1").css("fill-opacity", "1");
                     var infoel = $("#info-" + key);
                     if (infoel.length === 0) {
                         infoel = $("#kraje_map").append("<div id='info-" + key + "' style='padding:10px;position:absolute;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + kraje_soucet[key]["krajNazev"] + "</strong><br/>Součet rozhodnuto: " + kraje_soucet[key]["soucet"] + "<br/>Součet spotřebováno: " + kraje_soucet[key]["soucetSpotrebovano"] + "<br/></div>");
@@ -320,28 +369,34 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     var xpos = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX;
                     var ypos = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
                     var infoel = $("#info-" + key);
-                    if (infoel.length > 0)
+                    if (infoel.length > 0) {
                         infoel.css('left', xpos + 40).css('top', ypos);
+                    }
                 })
                 .mouseout(function (event) {
-                    $(path).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                    if (enable_opacity_kraje) {
+                        $(path, $("#svgmapy")).css("fill", kraje_soucet[key]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                    }
                     var infoel = $("#info-" + key);
-                    if (infoel.length > 0)
+                    if (infoel.length > 0) {
                         infoel.hide();
+                    }
                 })
-                .click(function(){
-                    window.location.href = '/detail-kraje/';
+                .click(function () {
+                    window.location.href = '/detail-kraje/' + kraje_soucet[key]["krajKod"];
                 });
         });
 
         $.each(okresy, function (key) {
             var path = "#" + key;
             var id = okresy[key];
-            $(path, $("#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+            if (enable_opacity_okresy) {
+                $(path, $("#czech_districts_by_frettie g#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+            }
 
-            $(path, $("#okresy"))
+            $(path, $("#czech_districts_by_frettie g#okresy"))
                 .mouseenter(function (event) {
-                    $(path).css("fill", okresy_soucet[id]["color"]).css("opacity", "1").css("fill-opacity", "1");
+                    $(path, $("#czech_districts_by_frettie g#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "1").css("fill-opacity", "1");
                     var infoel = $("#info-okres-" + key, $("#okresy_map"));
                     if (infoel.length === 0) {
                         infoel = $("#okresy_map").append("<div id='info-okres-" + key + "' style='padding:10px;position:absolute;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + okresy_soucet[id]["okresNazev"] + "</strong><br/>Součet rozhodnuto: " + okresy_soucet[id]["soucet"] + "<br/>Součet spotřebováno: " + okresy_soucet[id]["soucetSpotrebovano"] + "<br/></div>");
@@ -349,17 +404,24 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     infoel.show();
                 })
                 .mousemove(function (e) {
-                    var xpos = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX;
-                    var ypos = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
+                    var xpos = (e.offsetX || (event.pageX - $(event.target).offset().left));
+                    var ypos = (e.offsetY || (event.pageY - $(event.target).offset().top));
                     var infoel = $("#info-okres-" + key, $("#okresy_map"));
-                    if (infoel.length > 0)
+                    if (infoel.length > 0) {
                         infoel.css('left', xpos + 40).css('top', ypos);
+                    }
                 })
                 .mouseout(function (event) {
-                    $(path, $("#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                    if (enable_opacity_okresy) {
+                        $(path, $("#czech_districts_by_frettie g#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "0.8").css("fill-opacity", "0.8");
+                    }
                     var infoel = $("#info-okres-" + key, $("#okresy_map"));
-                    if (infoel.length > 0)
+                    if (infoel.length > 0) {
                         infoel.hide();
+                    }
+                })
+                .click(function () {
+                    window.location.href = '/detail-okres/' + id;
                 });
         });
 

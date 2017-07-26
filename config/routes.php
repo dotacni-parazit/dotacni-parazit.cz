@@ -45,6 +45,8 @@ Router::defaultRouteClass(\Cake\Routing\Route\InflectedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
+    $routes->connect('/ciselniky', ['controller' => 'Pages', 'action' => 'ciselniky']);
+
     $routes->connect('/operacni-programy-cedr', ['controller' => 'Pages', 'action' => 'cedrOperacniProgramy']);
     $routes->connect('/operacni-programy-mmr', ['controller' => 'Pages', 'action' => 'mmrOperacniProgramy']);
     $routes->connect('/financni-zdroje', ['controller' => 'Pages', 'action' => 'financniZdroje']);
@@ -82,6 +84,11 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/detail-rozhodnuti/:id', ['controller' => 'Pages', 'action' => 'detailRozhodnuti'], ['id' => '[a-zA-Z0-9]+']);
     $routes->connect('/podle-sidla-prijemce', ['controller' => 'Pages', 'action' => 'podleSidlaPrijemce']);
+
+    $routes->connect('/detail-statu/:id', ['controller' => 'Pages', 'action' => 'detailStatu'], ['id' => '[a-zA-Z]{3}']);
+    $routes->connect('/detail-obce/:id', ['controller' => 'Pages', 'action' => 'detailObce'], ['id' => '5[0-9]{5}']);
+    $routes->connect('/detail-okres/:id', ['controller' => 'Pages', 'action' => 'detailOkres'], ['id' => '3[0-9]{3}']);
+    $routes->connect('/detail-kraje/:id', ['controller' => 'Pages', 'action' => 'detailKraje'], ['id' => '3[0-9]']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
