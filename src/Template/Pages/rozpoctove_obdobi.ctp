@@ -31,10 +31,10 @@ Rok:
         ?>
         <tr>
             <td><?= $this->Html->link($c->idRozhodnuti, "https://dotacni-parazit.cz/rozhodnuti/view/" . $c->idRozhodnuti) ?></td>
-            <td><?= Number::currency($c->castkaCerpana,'CZK') ?></td>
-            <td><?= Number::currency($c->castkaUvolnena,'CZK') ?></td>
-            <td><?= Number::currency($c->castkaVracena,'CZK') ?></td>
-            <td><?= Number::currency($c->castkaSpotrebovana,'CZK') ?></td>
+            <td style="text-align: right"><?= Number::currency($c->castkaCerpana,'CZK') ?></td>
+            <td style="text-align: right"><?= Number::currency($c->castkaUvolnena,'CZK') ?></td>
+            <td style="text-align: right"><?= Number::currency($c->castkaVracena,'CZK') ?></td>
+            <td style="text-align: right"><?= Number::currency($c->castkaSpotrebovana,'CZK') ?></td>
             <td><?= $c->rozpoctoveObdobi ?></td>
             <td><?= isset($c->CiselnikDotaceTitulv01) ? $this->Html->link($c->CiselnikDotaceTitulv01->dotaceTitulNazev, "https://dotacni-parazit.cz/dotacni-titul/detail?id=" . $c->iriDotacniTitul) : "" ?></td>
 <!--            <td><?= $c->iriUcelovyZnak ?></td>-->

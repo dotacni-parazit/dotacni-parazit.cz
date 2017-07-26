@@ -114,10 +114,10 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
         <tr>
             <td><?= $this->Html->link($r->idObdobi, '/detail-obdobi/' . $r->idObdobi) ?></td>
             <td><?= $r->rozpoctoveObdobi ?></td>
-            <td><?= Number::currency($r->castkaCerpana) ?></td>
-            <td><?= Number::currency($r->castkaUvolnena) ?></td>
-            <td><?= Number::currency($r->castkaVracena) ?></td>
-            <td><?= Number::currency($r->castkaSpotrebovana) ?></td>
+            <td style="text-align: right"><?= Number::currency($r->castkaCerpana) ?></td>
+            <td style="text-align: right"><?= Number::currency($r->castkaUvolnena) ?></td>
+            <td style="text-align: right"><?= Number::currency($r->castkaVracena) ?></td>
+            <td style="text-align: right"><?= Number::currency($r->castkaSpotrebovana) ?></td>
         </tr>
         <?php
     }

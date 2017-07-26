@@ -108,9 +108,9 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
         ?>
         <tr>
             <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
-            <td><?= Number::currency($d->castkaPozadovana) ?></td>
-            <td><?= Number::currency($d->castkaRozhodnuta) ?></td>
-            <td><?= isset($d->RozpoctoveObdobi) && !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
+            <td style="text-align: right"><?= Number::currency($d->castkaPozadovana) ?></td>
+            <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
+            <td style="text-align: right"><?= isset($d->RozpoctoveObdobi) && !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
             <td><?= $d->rokRozhodnuti ?></td>
             <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>

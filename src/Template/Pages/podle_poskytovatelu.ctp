@@ -16,7 +16,7 @@ $this->set('title', 'Poskytovatelé dotací');
         ?>
         <tr>
             <td><?= $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod) ?></td>
-            <td><?= Number::currency($counts[$d->id], 'CZK', ['zero' => '']) ?></td>
+            <td style="text-align: right"><?= Number::currency($counts[$d->id], 'CZK', ['zero' => '']) ?></td>
         </tr>
         <?php
     }

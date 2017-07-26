@@ -179,9 +179,9 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
         <tr>
             <td><?= $this->Html->link($counter, '/detail-rozhodnuti/' . $r->idRozhodnuti) ?></td>
             <td><?= $r->rokRozhodnuti ?></td>
-            <td><?= Number::currency($r->castkaPozadovana) ?></td>
-            <td><?= Number::currency($r->castkaRozhodnuta) ?></td>
-            <td><?= !empty($r->RozpoctoveObdobi) ? Number::currency($r->RozpoctoveObdobi->castkaSpotrebovana) : "N/A" ?></td>
+            <td style="text-align: right"><?= Number::currency($r->castkaPozadovana) ?></td>
+            <td style="text-align: right"><?= Number::currency($r->castkaRozhodnuta) ?></td>
+            <td style="text-align: right"><?= !empty($r->RozpoctoveObdobi) ? Number::currency($r->RozpoctoveObdobi->castkaSpotrebovana) : "N/A" ?></td>
             <td><?= $r->PoskytovatelDotace->dotacePoskytovatelNazev ?></td>
             <td><?= $r->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $r->FinancniZdroj->financniZdrojNazev ?></td>

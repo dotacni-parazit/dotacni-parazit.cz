@@ -18,7 +18,7 @@ $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Do
         ?>
         <tr>
             <td><?= $this->Html->link($key, '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
-            <td><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
+            <td style="text-align: right"><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
             <td><?= $this->Html->link('Otevřít', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
         </tr>
         <?php
@@ -27,7 +27,7 @@ $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Do
 
     <tr>
         <td><?= $this->Html->link('Součet', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok') ?></td>
-        <td><?= $this->Html->link(Number::currency($sum, 'CZK', ['zero' => '']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
+        <td style="text-align: right"><?= $this->Html->link(Number::currency($sum, 'CZK', ['zero' => '']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
         <td><?= $this->Html->link('Otevřít Kompletní Výpis', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
     </tr>
 
@@ -70,7 +70,7 @@ $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Do
         <tr>
             <td><?= $this->Html->link($d->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce) ?></td>
             <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
-            <td><?= Number::currency($d->castkaRozhodnuta) ?></td>
+            <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
             <td><?= $d->rokRozhodnuti ?></td>
             <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>

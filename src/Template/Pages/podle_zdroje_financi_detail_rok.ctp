@@ -3,12 +3,12 @@ use Cake\I18n\Number;
 
 $this->set('title', $year . ' - ' . $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 ?>
+<h2>Rozhodnutí/Dotace za rok <?= $year ?></h2>
+<hr/>
 <div>
     Součet za rok <?= $year ?>: <?= Number::currency($year_sum) ?>
 </div>
-<br/>
-<br/>
-<h2>Rozhodnutí/Dotace za rok <?= $year ?></h2>
+<hr/>
 <table id="datatable">
     <thead>
     <tr>

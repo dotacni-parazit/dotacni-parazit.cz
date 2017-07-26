@@ -18,7 +18,7 @@ $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
         ?>
         <tr>
             <td><?= $this->Html->link($key, '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
-            <td><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
+            <td style="text-align: right"><?= $this->Html->link(Number::currency($value, 'CZK', ['zero' => '']), '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
             <td><?= $this->Html->link('Otevřít', '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok/' . $key) ?></td>
         </tr>
         <?php
@@ -27,7 +27,7 @@ $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 
     <tr>
         <td><?= $this->Html->link('Součet', '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/rok') ?></td>
-        <td><?= $this->Html->link(Number::currency($sum, 'CZK', ['zero' => '']), '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/complete') ?></td>
+        <td style="text-align: right"><?= $this->Html->link(Number::currency($sum, 'CZK', ['zero' => '']), '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/complete') ?></td>
         <td><?= $this->Html->link('Otevřít Kompletní Výpis', '/podle-zdroje-financi/' . $zdroj->financniZdrojKod . '/complete') ?></td>
     </tr>
 
@@ -70,7 +70,7 @@ $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
         <tr>
             <td><?= $this->Html->link($d->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce) ?></td>
             <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
-            <td><?= Number::currency($d->castkaRozhodnuta) ?></td>
+            <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
             <td><?= $d->rokRozhodnuti ?></td>
             <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>
