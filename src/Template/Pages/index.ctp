@@ -24,7 +24,7 @@
     <a href="/podle-sidla-prijemce">Podle sídla příjemce</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/ciselniky">Číselníky CEDR</a>
+    <a href="/ciselniky">Číselníky</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">
     <a href="#">Novinky</a>

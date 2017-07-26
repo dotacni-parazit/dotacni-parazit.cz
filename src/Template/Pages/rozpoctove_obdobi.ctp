@@ -26,14 +26,10 @@ Rok:
         <th data-type="currency">spotřebovaná</th>
         <th data-type="year">Rok</th>
         <th data-type="html">Dotační Titul</th>
-        <!--        <th>Účel</th>-->
     </tr>
     </thead>
     <tbody>
-    <?php
-    foreach ($data as $c) {
-        //die(print_r($c));
-        ?>
+    <?php foreach ($data as $c) { ?>
         <tr>
             <td><?= $this->Html->link($c->idRozhodnuti, "https://dotacni-parazit.cz/detail-rozhodnuti/" . $c->idRozhodnuti) ?></td>
             <td style="text-align: right"><?= Number::currency($c->castkaCerpana, 'CZK') ?></td>
@@ -41,12 +37,10 @@ Rok:
             <td style="text-align: right"><?= Number::currency($c->castkaVracena, 'CZK') ?></td>
             <td style="text-align: right"><?= Number::currency($c->castkaSpotrebovana, 'CZK') ?></td>
             <td><?= $c->rozpoctoveObdobi ?></td>
-            <td><?= isset($c->CiselnikDotaceTitulv01) ? $this->Html->link($c->CiselnikDotaceTitulv01->dotaceTitulNazev, "https://dotacni-parazit.cz/detail-dotacni-titul/?id=" . $c->iriDotacniTitul) : "" ?></td>
+            <td><?= isset($c->CiselnikDotaceTitulv01) ? $this->Html->link($c->CiselnikDotaceTitulv01->dotaceTitulNazev, "/detail-dotacni-titul/" . $c->CiselnikDotaceTitulv01->dotaceTitulKod) : "" ?></td>
             <!--            <td><?= $c->iriUcelovyZnak ?></td>-->
         </tr>
-        <?php
-    }
-    ?>
+    <?php } ?>
     </tbody>
 
     <tfoot>
@@ -58,7 +52,6 @@ Rok:
         <th>spotřebovaná</th>
         <th>Rok</th>
         <th>Dotační Titul</th>
-        <!--        <th>Účel</th>-->
     </tr>
     </tfoot>
 </table>
