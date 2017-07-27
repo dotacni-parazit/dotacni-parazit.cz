@@ -813,13 +813,15 @@ class PagesController extends AppController
         $id = $this->request->getParam('id');
         $rozhodnuti = $this->Rozhodnuti->find('all', [
             'conditions' => [
-                'idRozhodnuti' => $id
+                'Rozhodnuti.idRozhodnuti' => $id
             ],
             'contain' => [
                 'Dotace',
                 'CiselnikFinancniZdrojv01',
                 'CiselnikFinancniProstredekCleneniv01',
-                'CiselnikDotacePoskytovatelv01'
+                'CiselnikDotacePoskytovatelv01',
+                'RozpoctoveObdobi',
+                'RozpoctoveObdobi.CiselnikDotaceTitulv01'
             ]
         ])->first();
         if (empty($rozhodnuti)) throw new NotFoundException();
@@ -1147,6 +1149,48 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
+    }
+
+    public function detailDotacniTitul()
+    {
+        $titul = $this->CiselnikDotaceTitulv01->find('all', [
+            'conditions' => [
+                'dotaceTitulKod' => $this->request->getParam('kod')
+            ],
+            'contain' => [
+                'CiselnikStatniRozpocetKapitolav01'
+            ]
+        ])->first();
+        if (!$titul) throw new NotFoundException();
+
+        $tituly_ids = $this->CiselnikDotaceTitulv01->find('all', [
+            'fields' => [
+                'id' => 'DISTINCT(idDotaceTitul)'
+            ],
+            'conditions' => [
+                'dotaceTitulKod' => $this->request->getParam('kod')
+            ]
+        ])->hydrate(false)->toArray();
+        $tituly_ids_flat = [];
+        array_walk_recursive($tituly_ids, function($a) use (&$tituly_ids_flat) { $tituly_ids_flat[] = $a; });
+
+        $top_rozpoctove_obdobi = $this->RozpoctoveObdobi->find('all', [
+            'conditions' => [
+                'iriDotacniTitul IN' => $tituly_ids_flat
+            ],
+            'contain' => [
+                'Rozhodnuti',
+                'Rozhodnuti.CiselnikDotacePoskytovatelv01',
+                'Rozhodnuti.CiselnikFinancniProstredekCleneniv01',
+                'Rozhodnuti.Dotace',
+                'CiselnikUcelZnakv01'
+            ],
+            'order' => [
+                'castkaSpotrebovana' => 'DESC'
+            ]
+        ])->limit(1000);
+
+        $this->set(compact(['titul', 'top_rozpoctove_obdobi']));
     }
 
     public function ciselniky()

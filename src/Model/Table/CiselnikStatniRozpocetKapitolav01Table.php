@@ -37,7 +37,8 @@ class CiselnikStatniRozpocetKapitolav01Table extends Table
 
         $this->hasMany('CiselnikDotaceTitulv01')
             ->setForeignKey('statniRozpocetKapitolaKod')
-            ->setBindingKey('statniRozpocetKapitolaKod');
+            ->setBindingKey('statniRozpocetKapitolaKod')
+            ->setProperty('CiselnikDotaceTitul');
     }
 
     /**

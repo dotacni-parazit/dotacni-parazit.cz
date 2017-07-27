@@ -35,9 +35,7 @@ class RozpoctoveObdobiTable extends Table
         $this->setDisplayField('idObdobi');
         $this->setPrimaryKey('idObdobi');
 
-        $this->belongsTo('CiselnikDotaceTitulv01', [
-            'className' => 'CiselnikDotaceTitulv01'
-        ])
+        $this->belongsTo('CiselnikDotaceTitulv01')
             ->setForeignKey('iriDotacniTitul')
             ->setBindingKey('idDotaceTitul')
             ->setProperty('CiselnikDotaceTitulv01');
@@ -46,6 +44,11 @@ class RozpoctoveObdobiTable extends Table
             ->setForeignKey('idRozhodnuti')
             ->setBindingKey('idRozhodnuti')
             ->setProperty('Rozhodnuti');
+
+        $this->belongsTo('CiselnikUcelZnakv01')
+            ->setForeignKey('iriUcelovyZnak')
+            ->setBindingKey('idUcelZnak')
+            ->setProperty('CiselnikUcelZnak');
     }
 
     /**

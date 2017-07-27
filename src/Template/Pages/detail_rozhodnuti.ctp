@@ -2,7 +2,7 @@
 use Cake\I18n\Number;
 
 $this->Html->script('datatable.js', ['block' => true]);
-//debug($rozpocet);
+//debug($rozhodnuti);
 //die();
 $dotace = (object)$rozhodnuti['Dotace'];
 $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev);
@@ -80,6 +80,11 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
     <tr>
         <td>MMR: Priorita</td>
         <td><?= empty($dotace->MmrPriorita) ? 'Nevyplněno' : $this->Html->link($dotace->MmrPriorita->prioritaNazev . ' ( kód: ' . $dotace->MmrPriorita->prioritaKod . ' )', '/detail-mmr-priorita/?id=' . $dotace->MmrPriorita->idPriorita) ?></td>
+    </tr>
+
+    <tr>
+        <td>Dotační titul</td>
+        <td><?= $this->Html->link($rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulNazev'], '/detail-dotacni-titul/' . $rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulKod']) ?></td>
     </tr>
 
     </tbody>
