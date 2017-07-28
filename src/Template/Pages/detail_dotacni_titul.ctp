@@ -62,7 +62,7 @@ $props = [
             <td><?= $r->dotaceTitulNazev ?></td>
             <td style="text-align: right;"><?= Number::currency($soucty[$r->idDotaceTitul]['soucetRozhodnuto']) ?></td>
             <td style="text-align: right;"><?= Number::currency($soucty[$r->idDotaceTitul]['soucetSpotrebovano']) ?></td>
-            <td><?= $this->Html->link('Otevřít', '') ?></td>
+            <td><?= $this->Html->link('Otevřít', '/detail-dotacni-titul/' . $titul->dotaceTitulKod . '/rok/?id=' . $r->idDotaceTitul) ?></td>
         </tr>
     <?php } ?>
     </tbody>
@@ -76,7 +76,7 @@ $props = [
     </tr>
     </tfoot>
 </table>
-<h2>Až 1000 nejvyšších rozhodnutí/dotací</h2>
+<h2>Až 5.000 nejvyšších rozhodnutí/dotací</h2>
 <table id="datatable">
     <thead>
     <tr>

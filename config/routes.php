@@ -89,7 +89,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-kraje/:id', ['controller' => 'Pages', 'action' => 'detailKraje'], ['id' => '3[0-9]']);
     $routes->connect('/detail-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);
     $routes->connect('/detail-dotacni-titul/:kod', ['controller' => 'Pages', 'action' => 'detailDotacniTitul'], ['kod' => '[0-9]{10}']);
-
+    $routes->connect('/detail-dotacni-titul/:kod/rok/', ['controller' => 'Pages', 'action' => 'detailDotacniTitulRok'], ['kod' => '[0-9]{10}']);
+    $routes->connect('/detail-dotacni-titul/:kod/ajax/', ['controller' => 'Pages', 'action' => 'detailDotacniTitulRokAjax'], ['kod' => '[0-9]{10}']);
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

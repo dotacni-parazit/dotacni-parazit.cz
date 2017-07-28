@@ -1208,7 +1208,7 @@ class PagesController extends AppController
             'order' => [
                 'castkaSpotrebovana' => 'DESC'
             ]
-        ])->limit(1000);
+        ])->limit(5000);
 
         $soucty = [];
 
@@ -1251,6 +1251,93 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['titul', 'top_rozpoctove_obdobi', 'roky', 'soucty']));
+    }
+
+    public function detailDotacniTitulRok()
+    {
+        $idTitul = $this->request->getQuery('id');
+        $idTitul = filter_var($idTitul, FILTER_SANITIZE_URL);
+
+        $titul = $this->CiselnikDotaceTitulv01->find('all', [
+            'conditions' => [
+                'idDotaceTitul' => $idTitul
+            ],
+            'contain' => [
+                'CiselnikStatniRozpocetKapitolav01'
+            ]
+        ])->first();
+        if (empty($titul)) throw new NotFoundException();
+
+        $cache_tag_rozhodnuto = 'dotacni_titul_soucet_rozhodnuto_' . sha1($titul->idDotaceTitul);
+        $cache_tag_spotrebovano = 'dotacni_titul_soucet_spotrebovano_' . sha1($titul->idDotaceTitul);
+
+        $soucet_rozhodnuto = Cache::read($cache_tag_rozhodnuto, 'long_term');
+        $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
+
+        if ($soucet_rozhodnuto === false) {
+            $soucet_rozhodnuto = $this->RozpoctoveObdobi->find('all', [
+                'fields' => [
+                    'sum' => 'SUM(Rozhodnuti.castkaRozhodnuta)'
+                ],
+                'contain' => [
+                    'Rozhodnuti'
+                ],
+                'conditions' => [
+                    'iriDotacniTitul' => $titul->idDotaceTitul
+                ]
+            ])->first()->sum;
+            Cache::write($cache_tag_rozhodnuto, $soucet_rozhodnuto, 'long_term');
+        }
+        if ($soucet_spotrebovano === false) {
+            $soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                'fields' => [
+                    'sum' => 'SUM(castkaSpotrebovana)'
+                ],
+                'conditions' => [
+                    'iriDotacniTitul' => $titul->idDotaceTitul
+                ]
+            ])->first()->sum;
+            Cache::write($cache_tag_spotrebovano, $soucet_spotrebovano, 'long_term');
+        }
+        $soucty[$titul->idDotaceTitul] = [
+            'soucetRozhodnuto' => $soucet_rozhodnuto,
+            'soucetSpotrebovano' => $soucet_spotrebovano
+        ];
+
+        $this->set(compact(['titul', 'soucty', 'idTitul']));
+    }
+
+    public function detailDotacniTitulRokAjax()
+    {
+        $idTitul = $this->request->getQuery('id');
+        $idTitul = filter_var($idTitul, FILTER_SANITIZE_URL);
+
+        $titul = $this->CiselnikDotaceTitulv01->find('all', [
+            'conditions' => [
+                'idDotaceTitul' => $idTitul
+            ]
+        ])->first();
+        if (empty($titul)) throw new NotFoundException();
+
+        $dotace = $this->Rozhodnuti->find('all', [
+            'conditions' => [
+                'RozpoctoveObdobi.iriDotacniTitul' => $titul->idDotaceTitul
+            ],
+            'contain' => [
+                'Dotace',
+                'Dotace.PrijemcePomoci',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01',
+                'RozpoctoveObdobi',
+                'CiselnikDotacePoskytovatelv01'
+            ],
+            'order' => [
+                'castkaRozhodnuta' => 'DESC'
+            ]
+        ])->limit(50000);
+        $_serialize = false;
+
+        $this->set(compact(['dotace', '_serialize']));
     }
 
     public function detailKraje()
