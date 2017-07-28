@@ -45,6 +45,12 @@ $props = [
     </tfoot>
 </table>
 <h2>Rozhodnutí / Dotace</h2>
+
+<hr/>
+<span id="soucet"></span><br/>
+<span id="soucetSpotrebovana"></span>
+<hr/>
+
 <table id="datatable_ajax">
     <thead>
     <tr>
@@ -75,8 +81,9 @@ $props = [
 </table>
 
 <script type="text/javascript">
+    var table;
     $(document).ready(function () {
-        var table = $('#datatable_ajax').DataTable({
+        table = $('#datatable_ajax').DataTable({
             fixedColumns: true,
             paging: true,
             serverSide: false,
@@ -102,5 +109,28 @@ $props = [
                 .search(this.value)
                 .draw();
         });
+
+        function printSum() {
+            var soucet = 0, soucetSpotrebovano = 0;
+
+            $("#datatable_ajax").dataTable().api().rows().every(function (index, tableLoop, rowLoop) {
+                //if (this.data()[5].lastIndexOf('p)') !== 0) {
+                soucet += this.data()[4].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                soucetSpotrebovano += this.data()[5].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                //}
+            });
+
+            $("#soucet").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(soucet) + " Kč");
+            $("#soucetSpotrebovana").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetSpotrebovano) + " Kč");
+        }
+
+        $("#datatable_ajax").dataTable().fnSettings().aoDrawCallback.push({
+            'sName': 'showSum',
+            'fn': function () {
+                printSum();
+            }
+        });
+
+        printSum();
     });
 </script>
