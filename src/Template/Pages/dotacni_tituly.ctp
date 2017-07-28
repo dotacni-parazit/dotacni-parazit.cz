@@ -1,53 +1,33 @@
 <?php
-$this->set('title', 'Dotační tituly');
+$this->set('title', 'Dotační tituly podle kapitoly státního rozpočtu');
+$this->Html->script('datatable.js', ['block' => true]);
 ?>
-<h2>Dynamický strom Dotačních Titulů</h2>
-<div>Řazeno nejprve podle kapitol státního rozpočtu</div>
-<input type="text" id="treesearch"/>
-<div id="sourcestree"></div>
-<?php
-$tojson = [];
 
-foreach ($data as $d) {
-    if (isset($tojson[$d->statniRozpocetKapitolaKod])) continue;
-    $out = [
-        'text' => $d->statniRozpocetKapitolaKod . " :: " . $d->statniRozpocetKapitolaNazev
-    ];
-    if (!empty($d->ciselnik_dotace_titulv01)) {
-        foreach ($d->ciselnik_dotace_titulv01 as $c) {
-            $out['children'][] = [
-                'text' => $c->dotaceTitulKod . " :: " . $c->dotaceTitulNazev . " (" . $c->zaznamPlatnostOdDatum->year . " - " . $c->zaznamPlatnostDoDatum->year . ")"
-            ];
-        }
-    }
-    $tojson[$d->statniRozpocetKapitolaKod] = $out;
-}
-?>
-<script type="text/javascript">
-    var sources = <?php echo json_encode(array_values($tojson)) ?>;
-    var to = false;
-
-    $(function () {
-        $('#treesearch').keyup(function () {
-            if(to) { clearTimeout(to); }
-            to = setTimeout(function () {
-                var v = $('#treesearch').val();
-                $('#sourcestree').jstree(true).search(v);
-            }, 250);
-        });
-
-        $("#sourcestree").jstree({
-            'core': {
-                'data': sources
-            },
-            'plugins': [
-                'search'
-            ],
-            'search': {
-                'show_only_matches': true,
-                'case_insensitive': true
-            }
-        });
-    });
-
-</script>
+<table id="datatable">
+    <thead>
+    <tr>
+        <th data-type="html">Kapitola Státního Rozpočtu</th>
+        <th data-type="number" class="large-1 medium-1">Kód Kapitoly</th>
+        <th data-type="html">Dotační Titul</th>
+        <th data-type="number" class="large-1 medium-1">Kód Titulu</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data as $d) { ?>
+        <tr>
+            <td><?= $this->Html->link($d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaNazev, '/podle-zdroje-financi/t' . $d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
+            <td><?= $this->Html->link($d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod, '/podle-zdroje-financi/t' . $d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
+            <td><?= $this->Html->link($d->dotaceTitulNazev, '/detail-dotacni-titul/' . $d->dotaceTitulKod) ?></td>
+            <td><?= $this->Html->link($d->dotaceTitulKod, '/detail-dotacni-titul/' . $d->dotaceTitulKod) ?></td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td>Kapitola Státního Rozpočtu</td>
+        <td>Kód Kapitoly</td>
+        <td>Dotační Titul</td>
+        <td>Kód Titulu</td>
+    </tr>
+    </tfoot>
+</table>

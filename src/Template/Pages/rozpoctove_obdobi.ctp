@@ -1,7 +1,7 @@
 <?php
 use Cake\I18n\Number;
 
-$this->set('title', 'Rozpočtové Období');
+$this->set('title', 'Rozpočtové Období' . ($year == null ? '' : ' - ' . $year));
 $this->Html->script('datatable.js', ['block' => true]);
 ?>
 <h2>Prvních 1000 záznamů, seřazeno podle spotřebované částky sestupně</h2>
@@ -19,11 +19,11 @@ Rok:
 <table id="datatable">
     <thead>
     <tr>
-        <th data-type="html">Rozhodnutí</th>
-        <th data-type="currency">Částka čerpaná</th>
-        <th data-type="currency">uvolněná</th>
-        <th data-type="currency">vrácená</th>
-        <th data-type="currency">spotřebovaná</th>
+        <th data-type="html" class="nosearch medium-1 large-1">Rozhodnutí</th>
+        <th data-type="currency" class="nosearch">Částka čerpaná</th>
+        <th data-type="currency" class="nosearch">uvolněná</th>
+        <th data-type="currency" class="nosearch">vrácená</th>
+        <th data-type="currency" class="nosearch">spotřebovaná</th>
         <th data-type="year">Rok</th>
         <th data-type="html">Dotační Titul</th>
     </tr>
@@ -31,7 +31,7 @@ Rok:
     <tbody>
     <?php foreach ($data as $c) { ?>
         <tr>
-            <td><?= $this->Html->link($c->idRozhodnuti, "https://dotacni-parazit.cz/detail-rozhodnuti/" . $c->idRozhodnuti) ?></td>
+            <td><?= $this->Html->link('[R]', "https://dotacni-parazit.cz/detail-rozhodnuti/" . $c->idRozhodnuti) ?></td>
             <td style="text-align: right"><?= Number::currency($c->castkaCerpana, 'CZK') ?></td>
             <td style="text-align: right"><?= Number::currency($c->castkaUvolnena, 'CZK') ?></td>
             <td style="text-align: right"><?= Number::currency($c->castkaVracena, 'CZK') ?></td>

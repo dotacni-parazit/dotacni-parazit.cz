@@ -20,14 +20,27 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('Rozhodnuti');
+        $this->loadModel('Dotace');
+        $this->loadModel('PrijemcePomoci');
+        $this->loadModel('AdresaSidlo');
+        $this->loadModel('AdresaBydliste');
+        $this->loadModel('RozpoctoveObdobi');
+        $this->loadModel('PrijemcePomoci');
         $this->loadModel('CiselnikCedrOperacniProgramv01');
         $this->loadModel('CiselnikMmrOperacniProgramv01');
         $this->loadModel('CiselnikFinancniZdrojv01');
         $this->loadModel('CiselnikPravniFormav01');
         $this->loadModel('CiselnikStatniRozpocetKapitolav01');
         $this->loadModel('CiselnikStatniRozpocetUkazatelv01');
-        $this->loadModel('RozpoctoveObdobi');
         $this->loadModel('CiselnikDotaceTitulv01');
+        $this->loadModel('CiselnikDotacePoskytovatelv01');
+        $this->loadModel('CiselnikKrajv01');
+        $this->loadModel('CiselnikObecv01');
+        $this->loadModel('CiselnikOkresv01');
+        $this->loadModel('CiselnikStatv01');
+
+
     }
 
     public function index()
@@ -104,16 +117,23 @@ class PagesController extends AppController
                 'CiselnikDotaceTitulv01'
             ]
         ]);
-        $this->set(compact('data'));
+        $this->set(compact(['data', 'year']));
     }
 
     public function dotacniTituly()
     {
-        $data = $this->CiselnikStatniRozpocetKapitolav01->find('all', [
+        $data = $this->CiselnikDotaceTitulv01->find('all', [
             'contain' => [
-                'CiselnikDotaceTitulv01'
+                'CiselnikStatniRozpocetKapitolav01'
+            ],
+            'group' => [
+                'dotaceTitulKod'
+            ],
+            'order' => [
+                'CiselnikDotaceTitulv01.zaznamPlatnostDoDatum' => 'DESC'
             ]
         ]);
+
         $this->set(compact('data'));
     }
 
@@ -145,8 +165,6 @@ class PagesController extends AppController
 
     public function podlePoskytovatelu()
     {
-        $this->loadModel('CiselnikDotacePoskytovatelv01');
-        $this->loadModel('Rozhodnuti');
 
         $this->set('title', 'Poskytovatelé Dotací');
 
@@ -194,8 +212,6 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetail()
     {
-        $this->loadModel('CiselnikDotacePoskytovatelv01');
-        $this->loadModel('Rozhodnuti');
 
         $kod = filter_var($this->request->getParam('id'), FILTER_SANITIZE_NUMBER_INT);
 
@@ -278,8 +294,6 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetailComplete()
     {
-        $this->loadModel('CiselnikDotacePoskytovatelv01');
-        $this->loadModel('Rozhodnuti');
 
         $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
             'conditions' => [
@@ -296,8 +310,6 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetailCompleteAjax()
     {
-        $this->loadModel('CiselnikDotacePoskytovatelv01');
-        $this->loadModel('Rozhodnuti');
 
         $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
             'conditions' => [
@@ -333,8 +345,6 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetailRok()
     {
-        $this->loadModel('CiselnikDotacePoskytovatelv01');
-        $this->loadModel('Rozhodnuti');
 
         $year = $this->request->getParam('year');
 
@@ -370,8 +380,6 @@ class PagesController extends AppController
 
     public function detailDotace()
     {
-        $this->loadModel('Dotace');
-        $this->loadModel('Rozhodnuti');
 
         $dotace = $this->Dotace->find('all', [
             'conditions' => [
@@ -414,8 +422,6 @@ class PagesController extends AppController
 
     public function detailPrijemcePomoci()
     {
-        $this->loadModel('PrijemcePomoci');
-        $this->loadModel('Rozhodnuti');
 
         $prijemce = $this->PrijemcePomoci->find('all', [
             'conditions' => [
@@ -481,7 +487,6 @@ class PagesController extends AppController
 
     public function podlePrijemcu()
     {
-        $this->loadModel('PrijemcePomoci');
 
         $ico = $this->request->getQuery('ico');
         $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
@@ -489,6 +494,8 @@ class PagesController extends AppController
         $name = filter_var($name, FILTER_SANITIZE_STRING);
         $multiple = $this->request->getQuery('multiple');
         $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
+        $pravni_forma = $this->request->getQuery('pravniforma');
+        $pravni_forma = filter_var($pravni_forma, FILTER_SANITIZE_NUMBER_INT);
         $multi_prijemci = null;
 
         if (!empty($multiple)) {
@@ -532,6 +539,25 @@ class PagesController extends AppController
             $this->set(compact('prijemci'));
         } else if (!empty($multi_prijemci)) {
             $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
+        } else if (!empty($pravni_forma)) {
+            $pf = $this->CiselnikPravniFormav01->find('all', [
+                'conditions' => [
+                    'pravniFormaKod' => $pravni_forma
+                ]
+            ])->first();
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'ico',
+                    'jmeno',
+                    'prijmeni'
+                ],
+                'conditions' => [
+                    'iriPravniForma' => $pf->id
+                ]
+            ]);
+            $this->set(compact('prijemci'));
         } else {
             $zvlastni_ico = $this->PrijemcePomoci->find('all', [
                 'conditions' => [
@@ -546,7 +572,14 @@ class PagesController extends AppController
             $this->set(compact(['zvlastni_ico']));
         }
 
-        $this->set(compact(['ico', 'name', 'multiple']));
+        $pravni_formy = $this->CiselnikPravniFormav01->find('list', [
+            'fields' => [
+                'id' => 'pravniFormaKod',
+                'pravniFormaNazev'
+            ]
+        ]);
+
+        $this->set(compact(['ico', 'name', 'multiple', 'pravni_formy']));
     }
 
     public function detailPrijemceMulti()
@@ -567,7 +600,6 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanci()
     {
-        $this->loadModel('Rozhodnuti');
 
         $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
         $sums = [];
@@ -638,7 +670,6 @@ class PagesController extends AppController
 
     function podleZdrojeFinanciDetail()
     {
-        $this->loadModel('Rozhodnuti');
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -719,8 +750,6 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciDetailComplete()
     {
-        $this->loadModel('Rozhodnuti');
-
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
                 'financniZdrojKod' => $this->request->getParam('kod')
@@ -735,8 +764,6 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciDetailRok()
     {
-        $this->loadModel('Rozhodnuti');
-
         $year = $this->request->getParam('year');
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -770,7 +797,6 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciCompleteAjax()
     {
-        $this->loadModel('Rozhodnuti');
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -807,9 +833,6 @@ class PagesController extends AppController
 
     function detailRozhodnuti()
     {
-        $this->loadModel('Rozhodnuti');
-        $this->loadModel('RozpoctoveObdobi');
-
         $id = $this->request->getParam('id');
         $rozhodnuti = $this->Rozhodnuti->find('all', [
             'conditions' => [
@@ -844,9 +867,6 @@ class PagesController extends AppController
 
     public function fyzickeOsobyAjax()
     {
-        $this->loadModel('PrijemcePomoci');
-        $this->loadModel('Rozhodnuti');
-
         $osoby = $this->PrijemcePomoci->find('all', [
             'fields' => [
                 'idPrijemce',
@@ -859,7 +879,7 @@ class PagesController extends AppController
                 'AdresaBydliste.obecNazev'
             ],
             'conditions' => [
-                'ico' => 0
+                'iriPravniForma' => 'http://cedropendata.mfcr.cz/c3lod/szcr/resource/ciselnik/PravniForma/v01/100/19980101'
             ]
         ])->contain([
             'CiselnikStatv01',
@@ -873,15 +893,6 @@ class PagesController extends AppController
 
     public function podleSidlaPrijemce()
     {
-        $this->loadModel('CiselnikKrajv01');
-        $this->loadModel('CiselnikObecv01');
-        $this->loadModel('CiselnikOkresv01');
-        $this->loadModel('CiselnikStatv01');
-        $this->loadModel('PrijemcePomoci');
-        $this->loadModel('Rozhodnuti');
-        $this->loadModel('AdresaSidlo');
-        $this->loadModel('Dotace');
-        $this->loadModel('RozpoctoveObdobi');
 
         $kraje = $this->CiselnikKrajv01->find('all', [
             'fields' => [
@@ -1172,7 +1183,15 @@ class PagesController extends AppController
             ]
         ])->hydrate(false)->toArray();
         $tituly_ids_flat = [];
-        array_walk_recursive($tituly_ids, function($a) use (&$tituly_ids_flat) { $tituly_ids_flat[] = $a; });
+        array_walk_recursive($tituly_ids, function ($a) use (&$tituly_ids_flat) {
+            $tituly_ids_flat[] = $a;
+        });
+
+        $roky = $this->CiselnikDotaceTitulv01->find('all', [
+            'conditions' => [
+                'dotaceTitulKod' => $this->request->getParam('kod')
+            ]
+        ]);
 
         $top_rozpoctove_obdobi = $this->RozpoctoveObdobi->find('all', [
             'conditions' => [
@@ -1183,6 +1202,7 @@ class PagesController extends AppController
                 'Rozhodnuti.CiselnikDotacePoskytovatelv01',
                 'Rozhodnuti.CiselnikFinancniProstredekCleneniv01',
                 'Rozhodnuti.Dotace',
+                'Rozhodnuti.Dotace.PrijemcePomoci',
                 'CiselnikUcelZnakv01'
             ],
             'order' => [
@@ -1190,7 +1210,18 @@ class PagesController extends AppController
             ]
         ])->limit(1000);
 
-        $this->set(compact(['titul', 'top_rozpoctove_obdobi']));
+        $this->set(compact(['titul', 'top_rozpoctove_obdobi', 'roky']));
+    }
+
+    public function detailKraje()
+    {
+        $kraj = $this->CiselnikKrajv01->find('all', [
+            'conditions' => [
+                'krajKod' => $this->request->getParam('id')
+            ]
+        ]);
+
+        $this->set(compact(['kraj']));
     }
 
     public function ciselniky()

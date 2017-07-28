@@ -31,7 +31,7 @@ class CiselnikPravniFormav01Table extends Table
         parent::initialize($config);
 
         $this->setTable('ciselnikPravniFormav01');
-        $this->setDisplayField('id');
+        $this->setDisplayField('pravniFormaNazev');
         $this->setPrimaryKey('id');
     }
 

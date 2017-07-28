@@ -43,12 +43,36 @@ $props = [
     </tr>
     </tfoot>
 </table>
+<h2>Historie dotačního titulu</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Rok</th>
+        <th>Název Dotačního Titulu</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($roky as $r){ ?>
+        <tr>
+            <td><?= $r->zaznamPlatnostOdDatum->year . ' - ' . $r->zaznamPlatnostDoDatum->year ?></td>
+            <td><?= $r->dotaceTitulNazev ?></td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td>Rok</td>
+        <td>Název Dotačního Titulu</td>
+    </tr>
+    </tfoot>
+</table>
 <h2>Až 1000 nejvyšších rozhodnutí/dotací</h2>
 <table id="datatable">
     <thead>
     <tr>
         <th data-type="html" class="nosearch medium-1 large-1">Rozhodnutí</th>
         <th data-type="html">Dotace</th>
+        <th data-type="html">Jméno příjemce</th>
         <th class="medium-1 large-1">Rozpočtové Období</th>
         <th data-type="currency" class="nosearch">Částka rozhodnutá</th>
         <th data-type="currency" class="nosearch">Částka spotřebovaná</th>
@@ -59,10 +83,12 @@ $props = [
     <tbody>
     <?php foreach($top_rozpoctove_obdobi as $r) {
         $dotaceNazev = (empty($r->Rozhodnuti->Dotace->projektNazev) ? $r->Rozhodnuti->Dotace->projektIdnetifikator : $r->Rozhodnuti->Dotace->projektNazev);
+        $jmeno_prijemce = empty($r->Rozhodnuti->Dotace->PrijemcePomoci->obchodniJmeno) ? $r->Rozhodnuti->Dotace->PrijemcePomoci->jmeno . ' ' . $r->Rozhodnuti->Dotace->PrijemcePomoci->prijmeni : $r->Rozhodnuti->Dotace->PrijemcePomoci->obchodniJmeno;
         ?>
         <tr>
             <td><?= $this->Html->link('[R]', '/detail-rozhodnuti/'. $r->idRozhodnuti) ?></td>
             <td><?= $this->Html->link($dotaceNazev, '/detail-dotace/'.$r->Rozhodnuti->idDotace); ?></td>
+            <td><?= $this->Html->link($jmeno_prijemce, '/detail-prijemce-pomoci/'.$r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
             <td><?= $r->rozpoctoveObdobi ?></td>
             <td><?= Number::currency($r->Rozhodnuti->castkaRozhodnuta) ?></td>
             <td><?= Number::currency($r->castkaSpotrebovana) ?></td>
@@ -75,6 +101,7 @@ $props = [
     <tr>
         <td>Rozhodnutí</td>
         <td>Dotace</td>
+        <td>Jméno příjemce</td>
         <td>Rozpočtové Období</td>
         <td>Částka rozhodnutá</td>
         <td>Částka spotřebovaná</td>
