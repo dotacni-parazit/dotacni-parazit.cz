@@ -1210,7 +1210,47 @@ class PagesController extends AppController
             ]
         ])->limit(1000);
 
-        $this->set(compact(['titul', 'top_rozpoctove_obdobi', 'roky']));
+        $soucty = [];
+
+        foreach ($roky as $r) {
+            $cache_tag_rozhodnuto = 'dotacni_titul_soucet_rozhodnuto_' . sha1($r->idDotaceTitul);
+            $cache_tag_spotrebovano = 'dotacni_titul_soucet_spotrebovano_' . sha1($r->idDotaceTitul);
+
+            $soucet_rozhodnuto = Cache::read($cache_tag_rozhodnuto, 'long_term');
+            $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
+
+            if ($soucet_rozhodnuto === false) {
+                $soucet_rozhodnuto = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(Rozhodnuti.castkaRozhodnuta)'
+                    ],
+                    'contain' => [
+                        'Rozhodnuti'
+                    ],
+                    'conditions' => [
+                        'iriDotacniTitul' => $r->idDotaceTitul
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_rozhodnuto, $soucet_rozhodnuto, 'long_term');
+            }
+            if ($soucet_spotrebovano === false) {
+                $soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'iriDotacniTitul' => $r->idDotaceTitul
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_spotrebovano, $soucet_spotrebovano, 'long_term');
+            }
+            $soucty[$r->idDotaceTitul] = [
+                'soucetRozhodnuto' => $soucet_rozhodnuto,
+                'soucetSpotrebovano' => $soucet_spotrebovano
+            ];
+        }
+
+        $this->set(compact(['titul', 'top_rozpoctove_obdobi', 'roky', 'soucty']));
     }
 
     public function detailKraje()

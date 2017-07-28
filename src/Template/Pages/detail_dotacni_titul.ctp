@@ -1,5 +1,6 @@
 <?php
 use \Cake\I18n\Number;
+
 $this->Html->script('datatable.js', ['block' => true]);
 $this->set('title', $titul->dotaceTitulNazev . ' - Dotační Titul');
 $props = [
@@ -44,18 +45,24 @@ $props = [
     </tfoot>
 </table>
 <h2>Historie dotačního titulu</h2>
-<table>
+<table class="datatable datatable_simple">
     <thead>
     <tr>
         <th>Rok</th>
         <th>Název Dotačního Titulu</th>
+        <th data-type="currency">Součet Rozhodnutí</th>
+        <th data-type="currency">Součet Spotřebovaných částek</th>
+        <th>Otevřít</th>
     </tr>
     </thead>
     <tbody>
-    <?php foreach($roky as $r){ ?>
+    <?php foreach ($roky as $r) { ?>
         <tr>
             <td><?= $r->zaznamPlatnostOdDatum->year . ' - ' . $r->zaznamPlatnostDoDatum->year ?></td>
             <td><?= $r->dotaceTitulNazev ?></td>
+            <td style="text-align: right;"><?= Number::currency($soucty[$r->idDotaceTitul]['soucetRozhodnuto']) ?></td>
+            <td style="text-align: right;"><?= Number::currency($soucty[$r->idDotaceTitul]['soucetSpotrebovano']) ?></td>
+            <td><?= $this->Html->link('Otevřít', '') ?></td>
         </tr>
     <?php } ?>
     </tbody>
@@ -63,6 +70,9 @@ $props = [
     <tr>
         <td>Rok</td>
         <td>Název Dotačního Titulu</td>
+        <th>Součet Rozhodnutí</th>
+        <th>Součet Spotřebovaných částek</th>
+        <th>Otevřít</th>
     </tr>
     </tfoot>
 </table>
@@ -81,14 +91,14 @@ $props = [
     </tr>
     </thead>
     <tbody>
-    <?php foreach($top_rozpoctove_obdobi as $r) {
+    <?php foreach ($top_rozpoctove_obdobi as $r) {
         $dotaceNazev = (empty($r->Rozhodnuti->Dotace->projektNazev) ? $r->Rozhodnuti->Dotace->projektIdnetifikator : $r->Rozhodnuti->Dotace->projektNazev);
         $jmeno_prijemce = empty($r->Rozhodnuti->Dotace->PrijemcePomoci->obchodniJmeno) ? $r->Rozhodnuti->Dotace->PrijemcePomoci->jmeno . ' ' . $r->Rozhodnuti->Dotace->PrijemcePomoci->prijmeni : $r->Rozhodnuti->Dotace->PrijemcePomoci->obchodniJmeno;
         ?>
         <tr>
-            <td><?= $this->Html->link('[R]', '/detail-rozhodnuti/'. $r->idRozhodnuti) ?></td>
-            <td><?= $this->Html->link($dotaceNazev, '/detail-dotace/'.$r->Rozhodnuti->idDotace); ?></td>
-            <td><?= $this->Html->link($jmeno_prijemce, '/detail-prijemce-pomoci/'.$r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
+            <td><?= $this->Html->link('[R]', '/detail-rozhodnuti/' . $r->idRozhodnuti) ?></td>
+            <td><?= $this->Html->link($dotaceNazev, '/detail-dotace/' . $r->Rozhodnuti->idDotace); ?></td>
+            <td><?= $this->Html->link($jmeno_prijemce, '/detail-prijemce-pomoci/' . $r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
             <td><?= $r->rozpoctoveObdobi ?></td>
             <td><?= Number::currency($r->Rozhodnuti->castkaRozhodnuta) ?></td>
             <td><?= Number::currency($r->castkaSpotrebovana) ?></td>
