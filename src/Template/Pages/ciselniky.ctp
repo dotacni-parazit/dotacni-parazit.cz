@@ -14,4 +14,5 @@ $this->set('title', 'Číselníky');
 <strong>Zajímavost:</strong>
 <ul>
     <li><a href="/rozpoctove-obdobi">Transakce a.k.a. Rozpočtové Období</a></li>
+    <li><a href="/db-statistiky">Statistika využití databáze</a></li>
 </ul>

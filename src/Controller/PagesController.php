@@ -8,12 +8,8 @@
 
 namespace App\Controller;
 
-use App\Model\Table\AdresaBydlisteTable;
 use Cake\Cache\Cache;
-use Cake\Database\Exception;
 use Cake\Datasource\ConnectionManager;
-use Cake\Event\Event;
-use Cake\I18n\Number;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 
@@ -1381,7 +1377,6 @@ class PagesController extends AppController
             foreach ($dbtables as $key => $t) {
                 $tablereg = TableRegistry::get($t);
 
-
                 $this->loadModel($tablereg->getAlias());
                 $tableData = (object)[
                     "name" => $tablereg->getAlias(),
@@ -1390,29 +1385,32 @@ class PagesController extends AppController
                 ];
                 $tableCount100 = $tableData->total / 100;
 
-                try {
-                    foreach ($tablereg->getSchema()->columns() as $raw_col) {
-                        $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col => ''])->orWhere([$raw_col => null])->count();
-                        $top_value = $this->{$tablereg->getAlias()}->find('all', [
-                            'fields' => [
-                                $raw_col,
-                                'rsum' => 'COUNT(' . $raw_col . ')'
-                            ],
-                            'group' => [$raw_col],
-                            'order' => [
-                                'rsum' => 'DESC'
-                            ]
-                        ])->limit(1)->first();
-                        $tableData->columns[] = (object)[
-                            "empty_rows" => $empty_rows,
-                            "percent_empty" => round($empty_rows / $tableCount100, 1),
-                            "name" => $raw_col,
-                            "most_common_value" => $top_value->{$raw_col}
-                        ];
-                    }
+                foreach ($tablereg->getSchema()->columns() as $raw_col) {
+                    $col_type = $tablereg->getSchema()->column($raw_col);
+                    $col_type = $col_type['type'];
+                    $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col . ' IS NULL']);
+                    if ($col_type == 'string') $empty_rows->orWhere([$raw_col => '']);
+                    else if ($col_type == 'decimal') $empty_rows->orWhere([$raw_col => 0]);
+                    $empty_rows = $empty_rows->count();
 
-                } catch (\Exception $ignore) {
+                    $top_value = $this->{$tablereg->getAlias()}->find('all', [
+                        'fields' => [
+                            $raw_col,
+                            'rsum' => 'COUNT(' . $raw_col . ')'
+                        ],
+                        'group' => [$raw_col],
+                        'order' => [
+                            'rsum' => 'DESC'
+                        ]
+                    ])->limit(1)->first();
+                    $tableData->columns[] = (object)[
+                        "empty_rows" => $empty_rows,
+                        "percent_empty" => $tableCount100 == 0 ? 0 : round($empty_rows / $tableCount100, 4),
+                        "name" => $raw_col,
+                        "most_common_value" => empty($top_value) ? '' : $top_value->{$raw_col}
+                    ];
                 }
+
 
                 $tables[] = $tableData;
             }
