@@ -1407,10 +1407,26 @@ class PagesController extends AppController
         $kraj = $this->CiselnikKrajv01->find('all', [
             'conditions' => [
                 'krajKod' => $this->request->getParam('id')
+            ],
+            'order' => [
+                'zaznamPlatnostDoDatum' => 'DESC'
+            ]
+        ])->first();
+        if(empty($kraj)) throw new NotFoundException();
+
+        $okresy = $this->CiselnikOkresv01->find('all',[
+            'conditions' => [
+                'krajNadKod' => $this->request->getParam('id')
+            ],
+            'group' => [
+                'okresKod'
+            ],
+            'order' => [
+                'zaznamPlatnostDoDatum' => 'DESC'
             ]
         ]);
 
-        $this->set(compact(['kraj']));
+        $this->set(compact(['kraj', 'okresy']));
     }
 
     public function ciselniky()

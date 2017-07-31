@@ -49,8 +49,8 @@ $props = [
     <tr>
         <th>Rok</th>
         <th>Název Dotačního Titulu</th>
-        <th data-type="currency">Součet Rozhodnutí</th>
-        <th data-type="currency">Součet Spotřebovaných částek</th>
+        <th data-type="currency" style="text-align: right;">Součet Rozhodnutí</th>
+        <th data-type="currency" style="text-align: right;">Součet Spotřebovaných částek</th>
         <th>Otevřít</th>
     </tr>
     </thead>
@@ -69,8 +69,8 @@ $props = [
     <tr>
         <td>Rok</td>
         <td>Název Dotačního Titulu</td>
-        <th>Součet Rozhodnutí</th>
-        <th>Součet Spotřebovaných částek</th>
+        <th style="text-align: right;">Součet Rozhodnutí</th>
+        <th style="text-align: right;">Součet Spotřebovaných částek</th>
         <th>Otevřít</th>
     </tr>
     </tfoot>
@@ -83,8 +83,8 @@ $props = [
         <th data-type="html">Dotace</th>
         <th data-type="html">Jméno příjemce</th>
         <th class="medium-1 large-1">Rozpočtové Období</th>
-        <th data-type="currency" class="nosearch">Částka rozhodnutá</th>
-        <th data-type="currency" class="nosearch">Částka spotřebovaná</th>
+        <th data-type="currency" class="nosearch" style="text-align: right;">Částka rozhodnutá</th>
+        <th data-type="currency" class="nosearch" style="text-align: right;">Částka spotřebovaná</th>
         <th>Poskytovatel Dotace</th>
         <th class="medium-2 large-2">Finanční Zdroj</th>
     </tr>
@@ -99,8 +99,8 @@ $props = [
             <td><?= $this->Html->link($dotaceNazev, '/detail-dotace/' . $r->Rozhodnuti->idDotace); ?></td>
             <td><?= $this->Html->link($jmeno_prijemce, '/detail-prijemce-pomoci/' . $r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
             <td><?= $r->rozpoctoveObdobi ?></td>
-            <td><?= Number::currency($r->Rozhodnuti->castkaRozhodnuta) ?></td>
-            <td><?= Number::currency($r->castkaSpotrebovana) ?></td>
+            <td style="text-align: right;"><?= Number::currency($r->Rozhodnuti->castkaRozhodnuta) ?></td>
+            <td style="text-align: right;"><?= Number::currency($r->castkaSpotrebovana) ?></td>
             <td><?= $this->Html->link($r->Rozhodnuti->PoskytovatelDotace->dotacePoskytovatelNazev, '') ?></td>
             <td><?= $this->Html->link($r->Rozhodnuti->CleneniFinancnichProstredku->financniProstredekCleneniNazev, '') ?></td>
         </tr>
@@ -112,8 +112,8 @@ $props = [
         <td>Dotace</td>
         <td>Jméno příjemce</td>
         <td>Rozpočtové Období</td>
-        <td>Částka rozhodnutá</td>
-        <td>Částka spotřebovaná</td>
+        <td style="text-align: right;">Částka rozhodnutá</td>
+        <td style="text-align: right;">Částka spotřebovaná</td>
         <td>Poskytovatel Dotace</td>
         <td>Finanční Zdroj</td>
     </tr>

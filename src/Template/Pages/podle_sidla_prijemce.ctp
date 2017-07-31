@@ -1,4 +1,5 @@
 <?php
+
 use Cake\I18n\Number;
 
 $this->set('title', 'Podle sídla příjemce');
@@ -28,8 +29,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <thead>
             <tr>
                 <th>Název okresu</th>
-                <th class="nosearch" data-type="currency">Součet částek rozhodnutých</th>
-                <th class="nosearch" data-type="currency">Součet částek spotřebovaných</th>
+                <th class="nosearch" data-type="currency" style="text-align: right;">Součet částek rozhodnutých</th>
+                <th class="nosearch" data-type="currency" style="text-align: right;">Součet částek spotřebovaných</th>
             </tr>
             </thead>
             <tbody>
@@ -44,8 +45,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tfoot>
             <tr>
                 <td>Název okresu</td>
-                <td>Součet částek rozhodnutých</td>
-                <td>Součet částek spotřebovaných</td>
+                <td style="text-align: right;">Součet částek rozhodnutých</td>
+                <td style="text-align: right;">Součet částek spotřebovaných</td>
             </tr>
             </tfoot>
         </table>
@@ -63,8 +64,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <thead>
             <tr>
                 <th>Název obce</th>
-                <th class="nosearch" data-type="currency">Součet částek rozhodnutých</th>
-                <th class="nosearch" data-type="currency">Součet částek spotřebovaných</th>
+                <th class="nosearch" data-type="currency" style="text-align: right;">Součet částek rozhodnutých</th>
+                <th class="nosearch" data-type="currency" style="text-align: right;">Součet částek spotřebovaných</th>
             </tr>
             </thead>
             <tbody>
@@ -79,8 +80,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tfoot>
             <tr>
                 <td>Název obce</td>
-                <td>Součet částek rozhodnutých</td>
-                <td>Součet částek spotřebovaných</td>
+                <td style="text-align: right;">Součet částek rozhodnutých</td>
+                <td style="text-align: right;">Součet částek spotřebovaných</td>
             </tr>
             </tfoot>
         </table>
@@ -90,8 +91,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <thead>
             <tr>
                 <th>Název Kraje</th>
-                <th data-type="currency" class="nosearch">Součet rozhodnutých částek</th>
-                <th data-type="currency" class="nosearch">Součet spotřebovaných částek</th>
+                <th data-type="currency" class="nosearch" style="text-align: right;">Součet rozhodnutých částek</th>
+                <th data-type="currency" class="nosearch" style="text-align: right;">Součet spotřebovaných částek</th>
             </tr>
             </thead>
             <tbody>
@@ -106,8 +107,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tfoot>
             <tr>
                 <td>Název Kraje</td>
-                <td>Součet rozhodnutých částek</td>
-                <td>Součet spotřebovaných částek</td>
+                <td style="text-align: right;">Součet rozhodnutých částek</td>
+                <td style="text-align: right;">Součet spotřebovaných částek</td>
             </tr>
             </tfoot>
         </table>
@@ -117,8 +118,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <thead>
             <tr>
                 <th>Název státu</th>
-                <th data-type="currency" class="nosearch">Součet rozhodnutých částek</th>
-                <th data-type="currency" class="nosearch">Součet vyčerpaných částek</th>
+                <th data-type="currency" class="nosearch" style="text-align: right;">Součet rozhodnutých částek</th>
+                <th data-type="currency" class="nosearch" style="text-align: right;">Součet vyčerpaných částek</th>
             </tr>
             </thead>
             <tbody>
@@ -133,8 +134,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tfoot>
             <tr>
                 <td>Název státu</td>
-                <td>Součet rozhodnutých částek</td>
-                <td>Součet vyčerpaných částek</td>
+                <td style="text-align: right;">Součet rozhodnutých částek</td>
+                <td style="text-align: right;">Součet vyčerpaných částek</td>
             </tr>
             </tfoot>
         </table>
@@ -381,8 +382,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                         infoel.hide();
                     }
                 })
-                .click(function () {
-                    window.location.href = '/detail-kraje/' + kraje_soucet[key]["krajKod"];
+                .click(function (e) {
+                    e.preventDefault();
+                    if (e.ctrlKey) {
+                        window.open('/detail-kraje/' + kraje_soucet[key]["krajKod"], '_blank')
+                    } else {
+                        window.location.href = '/detail-kraje/' + kraje_soucet[key]["krajKod"];
+                    }
                 });
         });
 
@@ -419,8 +425,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                         infoel.hide();
                     }
                 })
-                .click(function () {
-                    window.location.href = '/detail-okres/' + id;
+                .click(function (e) {
+                    e.preventDefault();
+                    if (e.ctrlKey) {
+                        window.open('/detail-okres/' + id, '_blank')
+                    } else {
+                        window.location.href = '/detail-okres/' + id;
+                    }
                 });
         });
 
