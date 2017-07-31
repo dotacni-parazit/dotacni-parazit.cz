@@ -1,5 +1,5 @@
 <?php
-use Cake\I18n\Number;
+
 
 $this->set('title', 'Statistiky využití databáze');
 ?>

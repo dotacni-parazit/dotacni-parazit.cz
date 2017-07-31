@@ -1,6 +1,6 @@
 <?php
 use Cake\Cache\Cache;
-use Cake\I18n\Number;
+
 
 $cache_key = 'fyzicke_osoby_ajax';
 $cache_data = Cache::read($cache_key, 'long_term');

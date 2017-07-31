@@ -1,9 +1,10 @@
 <?php
+
 use Cake\I18n\Number;
 
 $this->set('title', 'Zdroje Financí / Financování');
 ?>
-<div style="float: left; border: 1px solid black; border-width: 0 1px 0 0; padding: 10px;"
+<div style="float: left; border: 0 solid black;border-right-width: 1px;padding: 10px;"
      class="small-12 medium-12 large-6">
     <h2>Tuzemské</h2>
     <table id="tuzemske">
@@ -83,6 +84,9 @@ $this->set('title', 'Zdroje Financí / Financování');
             fixedColumns: false,
             paging: false,
             "pageLength": 100,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
+            },
             "stateSave": false,
             "stateDuration": 60 * 60 * 24 * 7,
             dom: 't'
@@ -91,6 +95,9 @@ $this->set('title', 'Zdroje Financí / Financování');
             fixedColumns: false,
             paging: false,
             "pageLength": 100,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
+            },
             "stateSave": false,
             "stateDuration": 60 * 60 * 24 * 7,
             dom: 't'

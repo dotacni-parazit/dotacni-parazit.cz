@@ -1,5 +1,5 @@
 <?php
-use \Cake\I18n\Number;
+
 
 $years = $titul->zaznamPlatnostOdDatum->year == $titul->zaznamPlatnostDoDatum->year ? $titul->zaznamPlatnostDoDatum->year : $titul->zaznamPlatnostOdDatum->year . '-' . $titul->zaznamPlatnostDoDatum->year;
 $this->set('title', $titul->dotaceTitulNazev . ' (' . $years . ') - Dotační Titul');
@@ -94,7 +94,7 @@ $props = [
             ajax: '/detail-dotacni-titul/3040000001/ajax/?id=<?= $idTitul ?>',
             "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
             "language": {
-                "processing": "Načítám data (maximálně 50.000 položek)"
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
             }
         });
 

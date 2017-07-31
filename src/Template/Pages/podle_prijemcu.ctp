@@ -1,5 +1,5 @@
 <?php
-use Cake\I18n\Number;
+
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

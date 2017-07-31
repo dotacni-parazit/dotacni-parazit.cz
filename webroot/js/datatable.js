@@ -17,6 +17,9 @@ function setupDataTable(selector) {
         fixedColumns: true,
         paging: true,
         "pageLength": 100,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
+        },
         "stateSave": true,
         "stateDuration": 60 * 60 * 24 * 7,
         dom: $($e).hasClass('datatable_simple') ? 't' : 'r<"clear">ip<"clear">lf<"clear">t',

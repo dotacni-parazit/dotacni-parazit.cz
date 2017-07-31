@@ -1,5 +1,5 @@
 <?php
-use Cake\I18n\Number;
+
 
 $this->set('title', 'Fyzické osoby - Přijemci Dotací')
 ?>
@@ -37,16 +37,16 @@ $this->set('title', 'Fyzické osoby - Přijemci Dotací')
         var table_custom = $('#datatable_custom').DataTable({
             fixedColumns: true,
             paging: true,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
+            },
             serverSide: false,
             processing: true,
             "stateSave": true,
             "stateDuration": 60 * 60 * 24 * 7,
             dom: 'r<"clear">ip<"clear">lf<"clear">t',
             ajax: '/fyzicke-osoby/ajax',
-            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
-            "language": {
-                "processing": "Načítám data"
-            }
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
         });
 
         $('#datatable_custom thead th').each(function (i) {

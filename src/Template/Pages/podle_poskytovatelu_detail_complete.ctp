@@ -1,6 +1,5 @@
 <?php
 
-use Cake\I18n\Number;
 
 $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací')
 ?>
@@ -42,7 +41,7 @@ $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Do
             ajax: '/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax',
             "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
             "language": {
-                "processing": "Načítám data (maximálně 20.000 položek)"
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
             }
         });
 

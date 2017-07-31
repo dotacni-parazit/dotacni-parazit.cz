@@ -1,4 +1,5 @@
 <?php
+
 use Cake\I18n\Number;
 
 $jmeno_prijemce = empty($prijemce->obchodniJmeno) ? $prijemce->jmeno . ' ' . $prijemce->prijmeni : $prijemce->obchodniJmeno;
@@ -20,10 +21,12 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
         <td><?= $prijemce->obchodniJmeno ?></td>
     </tr>
 
-    <tr>
-        <td>IČ (IČO)</td>
-        <td><?= $prijemce->ico == 0 ? "N/A" : $prijemce->ico ?></td>
-    </tr>
+    <?php if ($prijemce->ico != 0) { ?>
+        <tr>
+            <td>IČ (IČO)</td>
+            <td><?= $prijemce->ico == 0 ? "N/A" : $prijemce->ico ?></td>
+        </tr>
+    <?php } ?>
 
     <tr>
         <td>Právní Forma</td>
@@ -70,8 +73,10 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
 </table>
 
 <h2>Rozhodnutí/Dotace</h2>
-<input id="onlythis" type="checkbox" name="onlythis"
-       value="onlythis">Neukazovat ostatní rozhodnutí příjemců se stejným IČO<br/>
+<?php if (!empty($prijemci->toArray()) && count($prijemci->toArray()) > 1) { ?>
+    <input id="onlythis" type="checkbox" name="onlythis"
+           value="onlythis">Neukazovat ostatní rozhodnutí příjemců se stejným IČO<br/>
+<?php } ?>
 <hr/>
 <span id="soucet"></span><br/>
 <span id="soucetSpotrebovana"></span>
@@ -135,13 +140,13 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
 <br/>
 <br/>
 
-<?php if (!empty($prijemci->toArray())) {
+<?php if (!empty($prijemci->toArray()) && count($prijemci->toArray()) > 1) {
     ?>
     <div id="prijemce_aliasy">
         Příjemce pomoci je také evidován pod těmito odkazy: <br/>
         <?php
         foreach ($prijemci as $p) { ?>
-            <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . $p->obchodniJmeno, '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
+            <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . (empty($p->obchodniJmeno) ? $p->jmeno . ' ' . $p->prijmeni : $p->obchodniJmeno), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
             <br/>
         <?php } ?>
     </div>
