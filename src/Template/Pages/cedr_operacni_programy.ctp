@@ -1,7 +1,7 @@
 <?php
 $this->set('title', 'Operační programy CEDR');
 ?>
-<table>
+<table class="datatable datatable_simple">
     <thead>
     <tr>
         <th>Název</th>

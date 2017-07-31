@@ -19,7 +19,8 @@ $title = $this->fetch('title');
         'jstree.min.js',
         'jquery.sumoselect.min',
         '//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js',
-        '//cdn.datatables.net/plug-ins/1.10.15/sorting/currency.js'
+        '//cdn.datatables.net/plug-ins/1.10.15/sorting/currency.js',
+        'datatable.js'
     ]);
     ?>
 

@@ -4,7 +4,7 @@ use Cake\I18n\Number;
 $this->set('title', 'Fyzické osoby - Přijemci Dotací')
 ?>
 <h2>Všechny Fyzické osoby evidované v CEDR-III jako Příjemci dotací</h2>
-<table id="datatable">
+<table id="datatable_custom">
     <thead>
     <tr>
         <th>Jméno</th>
@@ -34,7 +34,7 @@ $this->set('title', 'Fyzické osoby - Přijemci Dotací')
 </table>
 <script type="text/javascript">
     $(document).ready(function () {
-        var table = $('#datatable').DataTable({
+        var table_custom = $('#datatable_custom').DataTable({
             fixedColumns: true,
             paging: true,
             serverSide: false,
@@ -45,17 +45,17 @@ $this->set('title', 'Fyzické osoby - Přijemci Dotací')
             ajax: '/fyzicke-osoby/ajax',
             "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
             "language": {
-                "processing": "Načítám data (maximálně 110.000 položek)"
+                "processing": "Načítám data"
             }
         });
 
-        $('#datatable thead th').each(function (i) {
-            var title = $('#datatable thead th').eq($(this).index()).text();
+        $('#datatable_custom thead th').each(function (i) {
+            var title = $('#datatable_custom thead th').eq($(this).index()).text();
             $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
         });
 
-        $(table.table().container()).on('keyup change', 'thead input', function () {
-            table
+        $(table_custom.table().container()).on('keyup change', 'thead input', function () {
+            table_custom
                 .column($(this).data('index'))
                 .search(this.value)
                 .draw();

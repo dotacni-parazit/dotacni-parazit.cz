@@ -1,6 +1,5 @@
 <?php
 $this->set('title', 'Dotační tituly podle kapitoly státního rozpočtu');
-$this->Html->script('datatable.js', ['block' => true]);
 ?>
 
 <table id="datatable">

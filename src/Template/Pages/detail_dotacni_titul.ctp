@@ -1,7 +1,6 @@
 <?php
 use \Cake\I18n\Number;
 
-$this->Html->script('datatable.js', ['block' => true]);
 $this->set('title', $titul->dotaceTitulNazev . ' - Dotační Titul');
 $props = [
     "dotaceTitulKod" => "Kód Dotačního Titulu",
@@ -14,7 +13,7 @@ $props = [
 ];
 ?>
 
-<table>
+<table class="datatable datatable_simple">
     <thead>
     <tr>
         <th>Vlastnost</th>

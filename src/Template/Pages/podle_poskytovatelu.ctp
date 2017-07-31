@@ -2,7 +2,6 @@
 use Cake\I18n\Number;
 
 $this->set('title', 'Poskytovatelé dotací');
-$this->Html->script('datatable.js', ['block' => true]);
 ?>
 <table id="datatable" class="datatable_simple">
     <thead>

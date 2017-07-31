@@ -2,7 +2,6 @@
 use Cake\I18n\Number;
 
 $this->set('title', 'Rozpočtové Období' . ($year == null ? '' : ' - ' . $year));
-$this->Html->script('datatable.js', ['block' => true]);
 ?>
 <h2>Prvních 1000 záznamů, seřazeno podle spotřebované částky sestupně</h2>
 <hr/>

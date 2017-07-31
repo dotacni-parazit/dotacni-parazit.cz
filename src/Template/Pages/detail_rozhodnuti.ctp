@@ -1,9 +1,6 @@
 <?php
 use Cake\I18n\Number;
 
-$this->Html->script('datatable.js', ['block' => true]);
-//debug($rozhodnuti);
-//die();
 $dotace = (object)$rozhodnuti['Dotace'];
 $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev);
 ?>

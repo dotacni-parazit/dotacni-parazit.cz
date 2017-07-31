@@ -1,8 +1,6 @@
 <?php
 use Cake\I18n\Number;
 
-$this->Html->script('datatable.js', ['block' => true]);
-
 $jmeno_prijemce = empty($prijemce->obchodniJmeno) ? $prijemce->jmeno . ' ' . $prijemce->prijmeni : $prijemce->obchodniJmeno;
 
 $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
@@ -110,7 +108,7 @@ $this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
             <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
             <td style="text-align: right"><?= Number::currency($d->castkaPozadovana) ?></td>
             <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
-            <td style="text-align: right"><?= isset($d->RozpoctoveObdobi) && !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
+            <td style="text-align: right"><?= !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
             <td><?= $d->rokRozhodnuti ?></td>
             <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
             <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>

@@ -238,8 +238,12 @@ class PagesController extends AppController
 
         $cache_key = 'sum_rozhodnuti_podle_poskytovatele_years_' . sha1($poskytovatel->id);
         $poskytovatel_years = Cache::read($cache_key, 'long_term');
+
         $year_to_sum = [];
         $sum = 0;
+        $sum_spotrebovano = 0;
+
+
         if (!$poskytovatel_years) {
             $poskytovatel_years = $this->Rozhodnuti->find('all', [
                 'fields' => [
@@ -254,8 +258,10 @@ class PagesController extends AppController
         foreach ($poskytovatel_years as $year) {
             $year = $year['roky'];
             $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
+            $cache_key_year_spotrebovano = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_spotrebovano_' . sha1($poskytovatel->id);
+
             $year_sum = Cache::read($cache_key_year, 'long_term');
-            if (!$year_sum) {
+            if ($year_sum === false) {
                 $year_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(castkaRozhodnuta)'
@@ -265,12 +271,31 @@ class PagesController extends AppController
                         'rokRozhodnuti' => $year,
                         'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
                     ]
-                ])->first()->toArray();
-                $year_sum = $year_sum['SUM'];
+                ])->first()->SUM;
                 Cache::write($cache_key_year, $year_sum, 'long_term');
             }
-            $year_to_sum[$year] = $year_sum;
+
+            $year_sum_spotrebovano = Cache::read($cache_key_year_spotrebovano, 'long_term');
+            if($year_sum_spotrebovano === false){
+                $year_sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'iriPoskytovatelDotace' => $poskytovatel->id,
+                        'rokRozhodnuti' => $year,
+                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                    ],
+                    'contain' => [
+                        'Rozhodnuti'
+                    ]
+                ])->first()->SUM;
+                Cache::write($cache_key_year_spotrebovano, $year_sum_spotrebovano, 'long_term');
+            }
+
+            $year_to_sum[$year] = [$year_sum, $year_sum_spotrebovano];
             $sum += $year_sum;
+            $sum_spotrebovano += $year_sum_spotrebovano;
         }
 
         $sort = $this->request->getQuery('sort');
@@ -296,11 +321,12 @@ class PagesController extends AppController
                 'Dotace',
                 'Dotace.PrijemcePomoci',
                 'CiselnikFinancniZdrojv01',
-                'CiselnikFinancniProstredekCleneniv01'
+                'CiselnikFinancniProstredekCleneniv01',
+                'RozpoctoveObdobi'
             ]
         ]);
 
-        $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest', 'sum']));
+        $this->set(compact(['poskytovatel', 'year_to_sum', 'poskytovatel_biggest', 'sum', 'sum_spotrebovano']));
     }
 
     public function podlePoskytovateluDetailComplete()
@@ -695,6 +721,8 @@ class PagesController extends AppController
         $zdroj_years = Cache::read($cache_key, 'long_term');
         $year_to_sum = [];
         $sum = 0;
+        $sum_spotrebovano = 0;
+
         if (!$zdroj_years) {
             $zdroj_years = $this->Rozhodnuti->find('all', [
                 'fields' => [
@@ -710,9 +738,12 @@ class PagesController extends AppController
 
         foreach ($zdroj_years as $year) {
             $year = $year['roky'];
+
             $cache_key_year = 'sum_rozhodnuti_podle_zdroje_year_' . $year . '_' . sha1($zdroj->id);
+            $cache_key_year_spotrebovano = 'sum_rozhodnuti_podle_zdroje_year_' . $year . '_spotrebovano_' . sha1($zdroj->id);
+
             $year_sum = Cache::read($cache_key_year, 'long_term');
-            if (!$year_sum) {
+            if ($year_sum === false) {
                 $year_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(castkaRozhodnuta)'
@@ -721,12 +752,31 @@ class PagesController extends AppController
                         'iriFinancniZdroj' => $zdroj->id,
                         'rokRozhodnuti' => $year
                     ]
-                ])->first()->toArray();
-                $year_sum = $year_sum['SUM'];
+                ])->first()->SUM;
                 Cache::write($cache_key_year, $year_sum, 'long_term');
             }
-            $year_to_sum[$year] = $year_sum;
+
+            $year_sum_spotrebovano = Cache::read($cache_key_year_spotrebovano, 'long_term');
+            if($year_sum_spotrebovano === false){
+                $year_sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'iriFinancniZdroj' => $zdroj->id,
+                        'rokRozhodnuti' => $year
+                    ],
+                    'contain' => 'Rozhodnuti'
+                ])->first()->SUM;
+                Cache::write($cache_key_year_spotrebovano,$year_sum_spotrebovano, 'long_term');
+            }
+
+            $year_to_sum[$year] = [
+                $year_sum,
+                $year_sum_spotrebovano
+            ];
             $sum += $year_sum;
+            $sum_spotrebovano += $year_sum_spotrebovano;
         }
 
         $sort = $this->request->getQuery('sort');
@@ -752,11 +802,12 @@ class PagesController extends AppController
                 'Dotace',
                 'Dotace.PrijemcePomoci',
                 'CiselnikFinancniZdrojv01',
-                'CiselnikFinancniProstredekCleneniv01'
+                'CiselnikFinancniProstredekCleneniv01',
+                'RozpoctoveObdobi'
             ]
         ]);
 
-        $this->set(compact(['zdroj', 'zdroj_biggest', 'year_to_sum', 'sum']));
+        $this->set(compact(['zdroj', 'zdroj_biggest', 'year_to_sum', 'sum', 'sum_spotrebovano']));
     }
 
     public function podleZdrojeFinanciDetailComplete()

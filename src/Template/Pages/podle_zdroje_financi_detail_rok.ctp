@@ -37,7 +37,7 @@ $this->set('title', $year . ' - ' . $zdroj->financniZdrojNazev . ' - Zdroj Finan
 </table>
 <script type="text/javascript">
     $(document).ready(function () {
-        var table = $('#datatable').DataTable({
+        var table_custom = $('#datatable_custom').DataTable({
             fixedColumns: true,
             paging: true,
             serverSide: false,
@@ -52,13 +52,13 @@ $this->set('title', $year . ' - ' . $zdroj->financniZdrojNazev . ' - Zdroj Finan
             }
         });
 
-        $('#datatable thead th').each(function (i) {
-            var title = $('#datatable thead th').eq($(this).index()).text();
+        $('#datatable_custom thead th').each(function (i) {
+            var title = $('#datatable_custom thead th').eq($(this).index()).text();
             $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
         });
 
-        $(table.table().container()).on('keyup change', 'thead input', function () {
-            table
+        $(table_custom.table().container()).on('keyup change', 'thead input', function () {
+            table_custom
                 .column($(this).data('index'))
                 .search(this.value)
                 .draw();
