@@ -8,10 +8,14 @@
 
 namespace App\Controller;
 
+use App\Model\Table\AdresaBydlisteTable;
 use Cake\Cache\Cache;
+use Cake\Database\Exception;
+use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\I18n\Number;
 use Cake\Network\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 
 
 class PagesController extends AppController
@@ -176,8 +180,12 @@ class PagesController extends AppController
         $counts = [];
         foreach ($data as $d) {
             $cache_key = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
+            $cache_key_spotrebovano = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
+
             $cnt = Cache::read($cache_key, 'long_term');
-            if (!$cnt || empty($cnt)) {
+            $cnt_spotreba = Cache::read($cache_key_spotrebovano, 'long_term');
+
+            if ($cnt === false) {
                 // cache overall sum
                 $cnt = $this->Rozhodnuti->find('all', [
                     'fields' => [
@@ -191,22 +199,29 @@ class PagesController extends AppController
                 ])->first()->SUM;
                 Cache::write($cache_key, $cnt, 'long_term');
             }
-            $counts[$d->id] = $cnt;
-            $d->sum = $cnt;
-        }
-        $sort = $this->request->getQuery('sort');
-        if ($sort) {
-            $data = $data->toArray();
-            if ($sort === "sum") {
-                usort($data, function ($a, $b) {
-                    return $b->sum - $a->sum;
-                });
-            } else if ($sort === "poskytovatel") {
-                usort($data, function ($a, $b) {
-                    return strcmp($a->dotacePoskytovatelNazev, $b->dotacePoskytovatelNazev);
-                });
+            if ($cnt_spotreba === false) {
+                $cnt_spotreba = $this->RozpoctoveObdobi->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSpotrebovana)'
+                        ],
+                        'conditions' => [
+                            'iriPoskytovatelDotace' => $d->id,
+                            'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                        ],
+                        'contain' => [
+                            'Rozhodnuti.Dotace.PrijemcePomoci'
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_key_spotrebovano, $cnt_spotreba, 'long_term');
             }
+
+            $counts[$d->id] = [
+                'soucet' => $cnt,
+                'soucetSpotrebovano' => $cnt_spotreba
+            ];
+
         }
+
         $this->set(compact(['data', 'counts']));
     }
 
@@ -1354,6 +1369,56 @@ class PagesController extends AppController
     public function ciselniky()
     {
 
+    }
+
+    public function statistics()
+    {
+        $cache_tag = 'db_stats';
+        $tables = Cache::read($cache_tag, 'long_term');
+        if ($tables === false) {
+            $tables = [];
+            $dbtables = ConnectionManager::get('default')->schemaCollection()->listTables();
+            foreach ($dbtables as $key => $t) {
+                $tablereg = TableRegistry::get($t);
+
+
+                $this->loadModel($tablereg->getAlias());
+                $tableData = (object)[
+                    "name" => $tablereg->getAlias(),
+                    "total" => $this->{$tablereg->getAlias()}->find()->count(),
+                    "columns" => []
+                ];
+                $tableCount100 = $tableData->total / 100;
+
+                try {
+                    foreach ($tablereg->getSchema()->columns() as $raw_col) {
+                        $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col => ''])->orWhere([$raw_col => null])->count();
+                        $top_value = $this->{$tablereg->getAlias()}->find('all', [
+                            'fields' => [
+                                $raw_col,
+                                'rsum' => 'COUNT(' . $raw_col . ')'
+                            ],
+                            'group' => [$raw_col],
+                            'order' => [
+                                'rsum' => 'DESC'
+                            ]
+                        ])->limit(1)->first();
+                        $tableData->columns[] = (object)[
+                            "empty_rows" => $empty_rows,
+                            "percent_empty" => round($empty_rows / $tableCount100, 1),
+                            "name" => $raw_col,
+                            "most_common_value" => $top_value->{$raw_col}
+                        ];
+                    }
+
+                } catch (\Exception $ignore) {
+                }
+
+                $tables[] = $tableData;
+            }
+            Cache::write($cache_tag, $tables, 'long_term');
+        }
+        $this->set(compact(['tables']));
     }
 
     private function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)

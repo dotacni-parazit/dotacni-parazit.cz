@@ -46,6 +46,7 @@ Router::defaultRouteClass(\Cake\Routing\Route\InflectedRoute::class);
 Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
     // ciselniky a rozpoctove obdobi
+    $routes->connect('/db-statistiky', ['controller' => 'Pages', 'action' => 'statistics']);
     $routes->connect('/ciselniky', ['controller' => 'Pages', 'action' => 'ciselniky']);
     $routes->connect('/operacni-programy-cedr', ['controller' => 'Pages', 'action' => 'cedrOperacniProgramy']);
     $routes->connect('/operacni-programy-mmr', ['controller' => 'Pages', 'action' => 'mmrOperacniProgramy']);

@@ -2,12 +2,14 @@
 use Cake\I18n\Number;
 
 $this->set('title', 'Poskytovatelé dotací');
+$this->Html->script('datatable.js', ['block' => true]);
 ?>
-<table>
+<table id="datatable" class="datatable_simple">
     <thead>
     <tr>
-        <th><a href="?sort=poskytovatel">Poskytovatel</a></th>
-        <th><a href="?sort=sum">Součet poskytnutých dotací</a></th>
+        <th>Poskytovatel</th>
+        <th class="nosearch text-right" data-type="currency">Součet rozhodnutých částek</th>
+        <th class="nosearch text-right" data-type="currency">Součet spotřebovaných částek</th>
     </tr>
     </thead>
     <tbody>
@@ -16,7 +18,8 @@ $this->set('title', 'Poskytovatelé dotací');
         ?>
         <tr>
             <td><?= $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod) ?></td>
-            <td style="text-align: right"><?= Number::currency($counts[$d->id], 'CZK', ['zero' => '']) ?></td>
+            <td style="text-align: right"><?= Number::currency($counts[$d->id]['soucet']) ?></td>
+            <td style="text-align: right"><?= Number::currency($counts[$d->id]['soucetSpotrebovano']) ?></td>
         </tr>
         <?php
     }
@@ -24,8 +27,9 @@ $this->set('title', 'Poskytovatelé dotací');
     </tbody>
     <tfoot>
     <tr>
-        <th><a href="?sort=poskytovatel">Poskytovatel</a></th>
-        <th><a href="?sort=sum">Součet poskytnutých dotací</a></th>
+        <td>Poskytovatel</td>
+        <td class="text-right">Součet poskytnutých dotací</td>
+        <td class="text-right">Součet spotřebovaných částek</td>
     </tr>
     </tfoot>
 </table>
