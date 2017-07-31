@@ -244,7 +244,7 @@ class PagesController extends AppController
         $sum_spotrebovano = 0;
 
 
-        if (!$poskytovatel_years) {
+        if ($poskytovatel_years === false) {
             $poskytovatel_years = $this->Rozhodnuti->find('all', [
                 'fields' => [
                     'roky' => 'DISTINCT(rokRozhodnuti)'
@@ -395,7 +395,7 @@ class PagesController extends AppController
 
         $cache_key_year = 'sum_rozhodnuti_podle_poskytovatele_year_' . $year . '_' . sha1($poskytovatel->id);
         $year_sum = Cache::read($cache_key_year, 'long_term');
-        if (!$year_sum) {
+        if ($year_sum === false) {
             $year_sum = $this->Rozhodnuti->find('all', [
                 'fields' => [
                     'SUM' => 'SUM(castkaRozhodnuta)'
@@ -645,7 +645,7 @@ class PagesController extends AppController
             $cache_tag = 'soucet_podle_zdroje_' . sha1($z->id);
             $sum = Cache::read($cache_tag, 'long_term');
             $sums[$z->financniZdrojKod]['SUM'] = $sum;
-            if (!$sum) {
+            if ($sum === false) {
                 $z_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
@@ -666,7 +666,7 @@ class PagesController extends AppController
             $cache_tag = 'soucet_podle_zdroje_rozhodnuta_' . sha1($z->id);
             $sum = Cache::read($cache_tag, 'long_term');
             $sums[$z->financniZdrojKod]['SUM2'] = $sum;
-            if (!$sum) {
+            if ($sum === false) {
                 $z_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(castkaRozhodnuta)'
@@ -723,7 +723,7 @@ class PagesController extends AppController
         $sum = 0;
         $sum_spotrebovano = 0;
 
-        if (!$zdroj_years) {
+        if ($zdroj_years === false) {
             $zdroj_years = $this->Rozhodnuti->find('all', [
                 'fields' => [
                     'roky' => 'DISTINCT(rokRozhodnuti)'
@@ -839,7 +839,7 @@ class PagesController extends AppController
 
         $cache_key_year = 'sum_rozhodnuti_podle_zdroje_year_' . $year . '_' . sha1($zdroj->id);
         $year_sum = Cache::read($cache_key_year, 'long_term');
-        if (!$year_sum) {
+        if ($year_sum === false) {
             $year_sum = $this->Rozhodnuti->find('all', [
                 'fields' => [
                     'SUM' => 'SUM(castkaRozhodnuta)'
