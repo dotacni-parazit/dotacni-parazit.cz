@@ -61,16 +61,16 @@ $this->set('title', $kraj->krajNazev . ' - Detail Kraje');
     <?php foreach ($okresy as $o) { ?>
         <?php
 
-        $cache_tag_okres_soucet = 'soucet_okres_' . sha1($o->krajKod);
-        $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($o->krajKod);
+        $cache_tag_okres_soucet = 'soucet_okres_' . sha1($o->okresKod);
+        $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($o->okresKod);
 
         $soucet_okres = Cache::read($cache_tag_okres_soucet, 'long_term');
         $soucet_okres_spotrebovano = Cache::read($cache_tag_okres_soucet_spotrebovano, 'long_term');
         ?>
         <tr>
-            <td><?= $o->okresNazev ?></td>
-            <td style="text-align: right;"><?= Number::currency($soucet_okres) ?></td>
-            <td style="text-align: right;"><?= Number::currency($soucet_okres_spotrebovano) ?></td>
+            <td><?= $this->Html->link($o->okresNazev, '/detail-okres/' . $o->okresKod) ?></td>
+            <td style="text-align: right;"><?= $this->Html->link(Number::currency($soucet_okres), '/detail-okres/' . $o->okresKod) ?></td>
+            <td style="text-align: right;"><?= $this->Html->link(Number::currency($soucet_okres_spotrebovano), '/detail-okres/' . $o->okresKod) ?></td>
         </tr>
     <?php } ?>
     </tbody>

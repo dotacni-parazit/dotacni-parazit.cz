@@ -1215,6 +1215,20 @@ class PagesController extends AppController
         $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
     }
 
+    private
+    function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
+    {
+        $colorindex = array();
+        for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {
+            $iterationdiff = $iterationnr - $iterationc;
+            $colorindex[] = '#' .
+                str_pad(dechex(intval((($ra * $iterationc) + ($rz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
+                str_pad(dechex(intval((($ga * $iterationc) + ($gz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
+                str_pad(dechex(intval((($ba * $iterationc) + ($bz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT);
+        }
+        return $colorindex;
+    }
+
     public
     function detailDotacniTitul()
     {
@@ -1431,7 +1445,10 @@ class PagesController extends AppController
             'conditions' => [
                 'okresKod' => $this->request->getParam('id')
             ],
-            'order' => ['zaznamPlatnostDoDatum' => 'DESC']
+            'order' => ['CiselnikOkresv01.zaznamPlatnostDoDatum' => 'DESC'],
+            'contain' => [
+                'CiselnikKrajv01'
+            ]
         ])->first();
         if (empty($okres)) throw new NotFoundException();
 
@@ -1445,6 +1462,26 @@ class PagesController extends AppController
         ]);
 
         $this->set(compact(['okres', 'obce']));
+    }
+
+    public
+    function detailObce()
+    {
+        $obec = $this->CiselnikObecv01->find('all', [
+            'conditions' => [
+                'obecKod' => $this->request->getParam('id')
+            ],
+            'order' => [
+                'CiselnikObecv01.zaznamPlatnostDoDatum' => 'DESC'
+            ],
+            'contain' => [
+                'CiselnikOkresv01'
+            ]
+        ])->first();
+
+        if (empty($obec)) throw new NotFoundException();
+
+        $this->set(compact(['obec']));
     }
 
     public
@@ -1504,20 +1541,6 @@ class PagesController extends AppController
             Cache::write($cache_tag, $tables, 'long_term');
         }
         $this->set(compact(['tables']));
-    }
-
-    private
-    function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
-    {
-        $colorindex = array();
-        for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {
-            $iterationdiff = $iterationnr - $iterationc;
-            $colorindex[] = '#' .
-                str_pad(dechex(intval((($ra * $iterationc) + ($rz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
-                str_pad(dechex(intval((($ga * $iterationc) + ($gz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
-                str_pad(dechex(intval((($ba * $iterationc) + ($bz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT);
-        }
-        return $colorindex;
     }
 
 }

@@ -19,6 +19,11 @@ $this->set('title', $okres->okresNazev . ' - Detail Okresu');
     </tr>
 
     <tr>
+        <td>Kód NUTS</td>
+        <td><?= $okres->okresNutsKod ?></td>
+    </tr>
+
+    <tr>
         <td>Název Okresu</td>
         <td><?= $okres->okresNazev ?></td>
     </tr>
@@ -31,6 +36,11 @@ $this->set('title', $okres->okresNazev . ' - Detail Okresu');
     <tr>
         <td>Platnost Do</td>
         <td><?= $okres->zaznamPlatnostDoDatum->nice() ?></td>
+    </tr>
+
+    <tr>
+        <td>Nadřazený Kraj</td>
+        <td><?= $this->Html->link($okres->Kraj->krajNazev, '/detail-kraj/' . $okres->Kraj->krajKod) ?></td>
     </tr>
 
     <tr>
@@ -67,9 +77,9 @@ $this->set('title', $okres->okresNazev . ' - Detail Okresu');
         $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
         ?>
         <tr>
-            <td><?= $o->obecNazev ?></td>
-            <td style="text-align: right;"><?= Number::currency($obec_soucet) ?></td>
-            <td style="text-align: right;"><?= Number::currency($obec_soucet_spotrebovano) ?></td>
+            <td><?= $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod) ?></td>
+            <td style="text-align: right;"><?= $this->Html->link(Number::currency($obec_soucet), '/detail-obce/' . $o->obecKod) ?></td>
+            <td style="text-align: right;"><?= $this->Html->link(Number::currency($obec_soucet_spotrebovano), '/detail-obce/' . $o->obecKod) ?></td>
         </tr>
     <?php } ?>
     </tbody>

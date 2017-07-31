@@ -39,7 +39,7 @@ class CiselnikOkresv01Table extends Table
             ->setBindingKey('okresNadKod')
             ->setProperty('Obec');
 
-        $this->hasMany('CiselnikKrajv01')
+        $this->belongsTo('CiselnikKrajv01')
             ->setForeignKey('krajNadKod')
             ->setBindingKey('krajKod')
             ->setProperty('Kraj');
