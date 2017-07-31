@@ -276,7 +276,7 @@ class PagesController extends AppController
             }
 
             $year_sum_spotrebovano = Cache::read($cache_key_year_spotrebovano, 'long_term');
-            if($year_sum_spotrebovano === false){
+            if ($year_sum_spotrebovano === false) {
                 $year_sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(castkaSpotrebovana)'
@@ -757,7 +757,7 @@ class PagesController extends AppController
             }
 
             $year_sum_spotrebovano = Cache::read($cache_key_year_spotrebovano, 'long_term');
-            if($year_sum_spotrebovano === false){
+            if ($year_sum_spotrebovano === false) {
                 $year_sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(castkaSpotrebovana)'
@@ -768,7 +768,7 @@ class PagesController extends AppController
                     ],
                     'contain' => 'Rozhodnuti'
                 ])->first()->SUM;
-                Cache::write($cache_key_year_spotrebovano,$year_sum_spotrebovano, 'long_term');
+                Cache::write($cache_key_year_spotrebovano, $year_sum_spotrebovano, 'long_term');
             }
 
             $year_to_sum[$year] = [
@@ -999,25 +999,20 @@ class PagesController extends AppController
 
         foreach ($staty as $stat) {
             // soucet rozhodnutych
-            $cache_tag = "soucet_stat_" . sha1($stat->id);
+            $cache_tag = "soucet_stat_" . $stat->statKod3Znaky;
             $soucet = Cache::read($cache_tag, 'long_term');
             if ($soucet === false) {
-                if ($stat->id == "http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/CZE/19930101") {
-                    // manually uncomment with new cache
-                    // $sum = 4994037133233;
-                } else {
-                    $sum = $this->Rozhodnuti->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(castkaRozhodnuta)'
-                            ],
-                            'conditions' => [
-                                'PrijemcePomoci.iriStat' => $stat->id
-                            ],
-                            'contain' => [
-                                'Dotace.PrijemcePomoci'
-                            ]
-                        ])->first()->sum + 0;
-                }
+                $sum = $this->Rozhodnuti->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaRozhodnuta)'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.iriStat' => $stat->id
+                        ],
+                        'contain' => [
+                            'Dotace.PrijemcePomoci'
+                        ]
+                    ])->first()->sum + 0;
                 Cache::write($cache_tag, $sum, 'long_term');
                 $soucet = $sum;
             }
@@ -1025,24 +1020,20 @@ class PagesController extends AppController
 
 
             // soucet spotrebovaanych
-            $cache_tag_spotrebovano = "soucet_stat_spotrebovano_" . sha1($stat->id);
+            $cache_tag_spotrebovano = "soucet_stat_spotrebovano_" . $stat->statKod3Znaky;
             $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
             if ($soucet_spotrebovano === false) {
-                if ($stat->id == "http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/CZE/19930101") {
-                    $sum_spotrebovano = 4328744309651;
-                } else {
-                    $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(castkaSpotrebovana)'
-                            ],
-                            'conditions' => [
-                                'PrijemcePomoci.iriStat' => $stat->id
-                            ],
-                            'contain' => [
-                                'Rozhodnuti.Dotace.PrijemcePomoci'
-                            ]
-                        ])->first()->sum + 0;
-                }
+                $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSpotrebovana)'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.iriStat' => $stat->id
+                        ],
+                        'contain' => [
+                            'Rozhodnuti.Dotace.PrijemcePomoci'
+                        ]
+                    ])->first()->sum + 0;
                 Cache::write($cache_tag_spotrebovano, $sum_spotrebovano, 'long_term');
                 $soucet_spotrebovano = $sum_spotrebovano;
             }
@@ -1114,8 +1105,8 @@ class PagesController extends AppController
         unset($tmparr);
 
         foreach ($okresy as $okres) {
-            $cache_tag_okres_soucet = 'soucet_okres_' . sha1($okres->id);
-            $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($okres->id);
+            $cache_tag_okres_soucet = 'soucet_okres_' . sha1($okres->okresKod);
+            $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($okres->okresKod);
 
             $soucet_okres = Cache::read($cache_tag_okres_soucet, 'long_term');
             $soucet_okres_spotrebovano = Cache::read($cache_tag_okres_soucet_spotrebovano, 'long_term');
@@ -1179,8 +1170,8 @@ class PagesController extends AppController
         unset($tmparr);
 
         foreach ($obce as $obec) {
-            $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->id);
-            $cache_tag_obec_soucet_spotrebovano = 'obec_soucet_spotrebovano_' . sha1($obec->id);
+            $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->obecKod);
+            $cache_tag_obec_soucet_spotrebovano = 'obec_soucet_spotrebovano_' . sha1($obec->obecKod);
 
             $obec_soucet = Cache::read($cache_tag_obec_soucet, 'long_term');
             $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
@@ -1224,7 +1215,8 @@ class PagesController extends AppController
         $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
     }
 
-    public function detailDotacniTitul()
+    public
+    function detailDotacniTitul()
     {
         $titul = $this->CiselnikDotaceTitulv01->find('all', [
             'conditions' => [
@@ -1315,7 +1307,8 @@ class PagesController extends AppController
         $this->set(compact(['titul', 'top_rozpoctove_obdobi', 'roky', 'soucty']));
     }
 
-    public function detailDotacniTitulRok()
+    public
+    function detailDotacniTitulRok()
     {
         $idTitul = $this->request->getQuery('id');
         $idTitul = filter_var($idTitul, FILTER_SANITIZE_URL);
@@ -1369,7 +1362,8 @@ class PagesController extends AppController
         $this->set(compact(['titul', 'soucty', 'idTitul']));
     }
 
-    public function detailDotacniTitulRokAjax()
+    public
+    function detailDotacniTitulRokAjax()
     {
         $idTitul = $this->request->getQuery('id');
         $idTitul = filter_var($idTitul, FILTER_SANITIZE_URL);
@@ -1402,7 +1396,8 @@ class PagesController extends AppController
         $this->set(compact(['dotace', '_serialize']));
     }
 
-    public function detailKraje()
+    public
+    function detailKraje()
     {
         $kraj = $this->CiselnikKrajv01->find('all', [
             'conditions' => [
@@ -1412,9 +1407,9 @@ class PagesController extends AppController
                 'zaznamPlatnostDoDatum' => 'DESC'
             ]
         ])->first();
-        if(empty($kraj)) throw new NotFoundException();
+        if (empty($kraj)) throw new NotFoundException();
 
-        $okresy = $this->CiselnikOkresv01->find('all',[
+        $okresy = $this->CiselnikOkresv01->find('all', [
             'conditions' => [
                 'krajNadKod' => $this->request->getParam('id')
             ],
@@ -1429,12 +1424,37 @@ class PagesController extends AppController
         $this->set(compact(['kraj', 'okresy']));
     }
 
-    public function ciselniky()
+    public
+    function detailOkres()
+    {
+        $okres = $this->CiselnikOkresv01->find('all', [
+            'conditions' => [
+                'okresKod' => $this->request->getParam('id')
+            ],
+            'order' => ['zaznamPlatnostDoDatum' => 'DESC']
+        ])->first();
+        if (empty($okres)) throw new NotFoundException();
+
+        $obce = $this->CiselnikObecv01->find('all', [
+            'conditions' => [
+                'okresNadKod' => $this->request->getParam('id')
+            ],
+            'group' => [
+                'obecKod'
+            ]
+        ]);
+
+        $this->set(compact(['okres', 'obce']));
+    }
+
+    public
+    function ciselniky()
     {
 
     }
 
-    public function statistics()
+    public
+    function statistics()
     {
         $cache_tag = 'db_stats';
         $tables = Cache::read($cache_tag, 'long_term');
@@ -1486,7 +1506,8 @@ class PagesController extends AppController
         $this->set(compact(['tables']));
     }
 
-    private function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
+    private
+    function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
     {
         $colorindex = array();
         for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {

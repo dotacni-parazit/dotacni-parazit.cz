@@ -4,8 +4,6 @@ use Cake\Cache\Cache;
 use Cake\I18n\Number;
 
 $this->set('title', $kraj->krajNazev . ' - Detail Kraje');
-$this->Html->script('jquery-ui.min.js', ['block' => true]);
-$this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
 <table class="datatable datatable_simple">
     <thead>
@@ -50,7 +48,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 </table>
 
 <hr/>
-<h2>Okresy v kraji</h2>
+<h2>Okresy v kraji (dle CEDR)</h2>
 <table class="datatable datatable_simple">
     <thead>
     <tr>
@@ -63,8 +61,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php foreach ($okresy as $o) { ?>
         <?php
 
-        $cache_tag_okres_soucet = 'soucet_okres_' . sha1($o->id);
-        $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($o->id);
+        $cache_tag_okres_soucet = 'soucet_okres_' . sha1($o->krajKod);
+        $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($o->krajKod);
 
         $soucet_okres = Cache::read($cache_tag_okres_soucet, 'long_term');
         $soucet_okres_spotrebovano = Cache::read($cache_tag_okres_soucet_spotrebovano, 'long_term');
