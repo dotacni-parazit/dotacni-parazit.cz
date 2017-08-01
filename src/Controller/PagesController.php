@@ -1410,6 +1410,104 @@ class PagesController extends AppController
         $this->set(compact(['dotace', '_serialize']));
     }
 
+    public function detailKrajeCache()
+    {
+        $kraje = $this->CiselnikKrajv01->find('all', [
+            'fields' => [
+                'krajKod' => 'DISTINCT(krajKod)'
+            ]
+        ])->hydrate(false)->toArray();
+
+        foreach ($kraje as $kraj) {
+
+            $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj['krajKod']);
+            $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'CiselnikOkresv01.krajNadKod' => $kraj['krajKod']
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(100)->hydrate(false)->toArray();
+                Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
+            }
+            debug($kraj);
+            debug(count($biggest));
+        }
+    }
+
+    public function detailOkresyCache()
+    {
+        $okresy = $this->CiselnikOkresv01->find('all', [
+            'fields' => [
+                'okresKod' => 'DISTINCT(okresKod)'
+            ]
+        ])->hydrate(false)->toArray();
+
+        foreach ($okresy as $okres) {
+            debug($okres);
+
+            $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres['okresKod']);
+            $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'CiselnikObecv01.okresNadKod' => $okres['okresKod']
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(100)->hydrate(false)->toArray();
+                Cache::write($cache_tag_okres_top_100, $biggest, 'long_term');
+            }
+            debug(count($biggest));
+        }
+    }
+
     public
     function detailKraje()
     {
@@ -1440,49 +1538,12 @@ class PagesController extends AppController
                 'krajKod' => $this->request->getParam('id')
             ]
         ]);
-        /*
-                $historie_sums = [];
-                foreach ($historie as $h) {
-                    $cache_tag = 'soucet_kraj_historie_' . sha1($h->id);
-                    $cache_tag_spotreba = 'soucet_kraj_historie_spotrebovano_' . sha1($h->id);
 
-                    $sum = Cache::read($cache_tag, 'long_term');
-                    $sum_spotreba = Cache::read($cache_tag_spotreba, 'long_term');
+        $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj->krajKod);
+        $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
+        if ($biggest === false) $biggest = [];
 
-                    if ($sum === false) {
-                        $sum = $this->Rozhodnuti->find('all', [
-                            "fields" => [
-                                "SUM" => "SUM(castkaRozhodnuta)"
-                            ],
-                            'conditions' => [
-                                'CiselnikOkresv01.krajNad' => $h->id
-                            ],
-                            'contain' => [
-                                'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                            ]
-                        ])->first()->SUM;
-                        Cache::write($cache_tag, $sum, 'long_term');
-                    }
-                    if ($sum_spotreba === false) {
-                        $sum_spotreba = $this->RozpoctoveObdobi->find('all', [
-                            'fields' => [
-                                'SUM' => 'SUM(castkaSpotrebovana)'
-                            ],
-                            'conditions' => [
-                                'CiselnikOkresv01.krajNad' => $h->id
-                            ],
-                            'contain' => [
-                                'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                            ]
-                        ])->first()->SUM;
-                        Cache::write($cache_tag_spotreba, $sum_spotreba, 'long_term');
-                    }
-                    $historie_sums[$h->id] = [
-                        $sum, $sum_spotreba
-                    ];
-                }*/
-
-        $this->set(compact(['kraj', 'okresy', 'historie']));
+        $this->set(compact(['kraj', 'okresy', 'historie', 'biggest']));
     }
 
     public
@@ -1514,7 +1575,11 @@ class PagesController extends AppController
             ]
         ]);
 
-        $this->set(compact(['okres', 'obce', 'historie']));
+        $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres->okresKod);
+        $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
+        if ($biggest === false) $biggest = [];
+
+        $this->set(compact(['okres', 'obce', 'historie', 'biggest']));
     }
 
     public
