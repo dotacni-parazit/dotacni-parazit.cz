@@ -1435,7 +1435,54 @@ class PagesController extends AppController
             ]
         ]);
 
-        $this->set(compact(['kraj', 'okresy']));
+        $historie = $this->CiselnikKrajv01->find('all', [
+            'conditions' => [
+                'krajKod' => $this->request->getParam('id')
+            ]
+        ]);
+        /*
+                $historie_sums = [];
+                foreach ($historie as $h) {
+                    $cache_tag = 'soucet_kraj_historie_' . sha1($h->id);
+                    $cache_tag_spotreba = 'soucet_kraj_historie_spotrebovano_' . sha1($h->id);
+
+                    $sum = Cache::read($cache_tag, 'long_term');
+                    $sum_spotreba = Cache::read($cache_tag_spotreba, 'long_term');
+
+                    if ($sum === false) {
+                        $sum = $this->Rozhodnuti->find('all', [
+                            "fields" => [
+                                "SUM" => "SUM(castkaRozhodnuta)"
+                            ],
+                            'conditions' => [
+                                'CiselnikOkresv01.krajNad' => $h->id
+                            ],
+                            'contain' => [
+                                'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                            ]
+                        ])->first()->SUM;
+                        Cache::write($cache_tag, $sum, 'long_term');
+                    }
+                    if ($sum_spotreba === false) {
+                        $sum_spotreba = $this->RozpoctoveObdobi->find('all', [
+                            'fields' => [
+                                'SUM' => 'SUM(castkaSpotrebovana)'
+                            ],
+                            'conditions' => [
+                                'CiselnikOkresv01.krajNad' => $h->id
+                            ],
+                            'contain' => [
+                                'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                            ]
+                        ])->first()->SUM;
+                        Cache::write($cache_tag_spotreba, $sum_spotreba, 'long_term');
+                    }
+                    $historie_sums[$h->id] = [
+                        $sum, $sum_spotreba
+                    ];
+                }*/
+
+        $this->set(compact(['kraj', 'okresy', 'historie']));
     }
 
     public
@@ -1461,7 +1508,13 @@ class PagesController extends AppController
             ]
         ]);
 
-        $this->set(compact(['okres', 'obce']));
+        $historie = $this->CiselnikOkresv01->find('all', [
+            'conditions' => [
+                'okresKod' => $this->request->getParam('id')
+            ]
+        ]);
+
+        $this->set(compact(['okres', 'obce', 'historie']));
     }
 
     public
