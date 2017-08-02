@@ -432,10 +432,10 @@ class PagesController extends AppController
                 'CiselnikMmrPrioritav01',
                 'CiselnikMmrOpatreniv01',
                 'CiselnikMmrPodOpatreniv01',
-                'CiselnikMmrGrantoveSchemav01'
+                'CiselnikMmrGrantoveSchemav01',
+                'Rozhodnuti.RozpoctoveObdobi.CiselnikDotaceTitulv01'
             ]
         ])->first();
-
         if (empty($dotace)) throw new NotFoundException();
 
         $rozhodnuti = $this->Rozhodnuti->find('all', [
@@ -1508,6 +1508,55 @@ class PagesController extends AppController
         }
     }
 
+    public function detailObceCache()
+    {
+        $obce = $this->CiselnikObecv01->find('all', [
+            'fields' => [
+                'obecKod' => 'DISTINCT(obecKod)'
+            ]
+        ])->hydrate(false)->toArray();
+
+        foreach ($obce as $obec) {
+            debug($obec);
+
+            $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec['obecKod']);
+            $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'CiselnikObecv01.obecKod' => $obec['obecKod']
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(100)->hydrate(false)->toArray();
+                Cache::write($cache_tag_obec_top_100, $biggest, 'long_term');
+            }
+            debug(count($biggest));
+        }
+    }
+
     public
     function detailKraje()
     {
@@ -1599,7 +1648,17 @@ class PagesController extends AppController
 
         if (empty($obec)) throw new NotFoundException();
 
-        $this->set(compact(['obec']));
+        $historie = $this->CiselnikObecv01->find('all', [
+            'conditions' => [
+                'obecKod' => $this->request->getParam('id')
+            ]
+        ]);
+
+        $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec->obecKod);
+        $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
+        if ($biggest === false) $biggest = [];
+
+        $this->set(compact(['obec', 'historie', 'biggest']));
     }
 
     public

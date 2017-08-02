@@ -1,4 +1,5 @@
 <?php
+
 use Cake\I18n\Number;
 
 $dotace = (object)$rozhodnuti['Dotace'];
@@ -81,7 +82,7 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
 
     <tr>
         <td>Dotační titul</td>
-        <td><?= $this->Html->link($rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulNazev'], '/detail-dotacni-titul/' . $rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulKod']) ?></td>
+        <td><?= !empty($rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulNazev']) ? $this->Html->link($rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulNazev'] . ' ( kód: ' . $rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulKod'] . ' )', '/detail-dotacni-titul/' . $rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulKod']) : "Nevyplněno" ?></td>
     </tr>
 
     </tbody>

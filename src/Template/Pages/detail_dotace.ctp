@@ -1,4 +1,5 @@
 <?php
+
 use Cake\I18n\Number;
 
 $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Dotace');
@@ -83,7 +84,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
 
     <tr>
         <td>Dotační Titul</td>
-        <td><?= empty($dotace->MmrPriorita) ? 'Nevyplněno' : $this->Html->link($dotace->MmrPriorita->prioritaNazev . ' ( kód: ' . $dotace->MmrPriorita->prioritaKod . ' )', '/detail-mmr-priorita/?id=' . $dotace->MmrPriorita->idPriorita) ?></td>
+        <td><?= count($dotace->Rozhodnuti) > 0 ? $this->Html->link($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulNazev . ' ( kód: ' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod . ' )', '/dotacni-titul/' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod) : "Nevyplněno" ?></td>
     </tr>
 
     </tbody>
