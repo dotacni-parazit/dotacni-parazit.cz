@@ -1736,4 +1736,19 @@ class PagesController extends AppController
         $this->set(compact(['data']));
     }
 
+    public function mmrOpatreni()
+    {
+        $data = $this->CiselnikMmrOpatreniv01->find('all', [
+            'conditions' => [
+                'idOpatreni' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikMmrPrioritav01'
+            ]
+        ])->first();
+        if(empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
+    }
+
 }
