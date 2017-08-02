@@ -70,6 +70,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
             <tr>
                 <th>Priorita Název</th>
                 <th>Priorita Kód</th>
+                <th>Počet Dotací</th>
                 <th>Platnost Od</th>
                 <th>Platnost Do</th>
                 <th>Otevřít</th>
@@ -80,6 +81,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
                 <tr>
                     <td><?= $this->Html->link($p->prioritaNazev, '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
                     <td><?= $p->prioritaKod ?></td>
+                    <td><?= $counts[$p->idPriorita] ?></td>
                     <td><?= $p->zaznamPlatnostOdDatum->year ?></td>
                     <td><?= $p->zaznamPlatnostDoDatum->year ?></td>
                     <td><?= $this->Html->link('Otevřít', '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
@@ -90,6 +92,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
             <tr>
                 <td>Priorita Název</td>
                 <td>Priorita Kód</td>
+                <th>Počet Dotací</th>
                 <td>Platnost Od</td>
                 <td>Platnost Do</td>
                 <td>Otevřít</td>

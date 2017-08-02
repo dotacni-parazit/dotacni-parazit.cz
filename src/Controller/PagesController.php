@@ -1903,6 +1903,22 @@ class PagesController extends AppController
         ])->first();
         if (empty($data)) throw new NotFoundException();
 
+        $cache_tag_mmr_priorita_dotace_count = 'mmr_priorita_count_dotace_' . sha1($data->idOperacniProgram);
+        $counts = Cache::read($cache_tag_mmr_priorita_dotace_count, 'long_term');
+        if ($counts === false) {
+            $counts = [];
+
+            foreach ($data->MmrPriorita as $p) {
+                $counts[$p->idPriorita] = $this->Dotace->find('all', [
+                    'conditions' => [
+                        'iriPriorita' => $p->idPriorita
+                    ]
+                ])->count();
+            }
+
+            Cache::write($cache_tag_mmr_priorita_dotace_count, $counts, 'long_term');
+        }
+
         if ($this->request->is('ajax')) {
             $dotace = $this->Dotace->find('all', [
                 'fields' => [
@@ -1923,10 +1939,11 @@ class PagesController extends AppController
                     'PrijemcePomoci'
                 ]
             ])->limit(50000);
+
             $_serialize = false;
             $this->set(compact(['data', 'dotace', '_serialize']));
         } else {
-            $this->set(compact(['data']));
+            $this->set(compact(['data', 'counts']));
         }
 
 
