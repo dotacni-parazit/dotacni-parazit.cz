@@ -28,7 +28,6 @@ class PagesController extends AppController
         $this->loadModel('RozpoctoveObdobi');
         $this->loadModel('PrijemcePomoci');
         $this->loadModel('CiselnikCedrOperacniProgramv01');
-        $this->loadModel('CiselnikMmrOperacniProgramv01');
         $this->loadModel('CiselnikFinancniZdrojv01');
         $this->loadModel('CiselnikPravniFormav01');
         $this->loadModel('CiselnikStatniRozpocetKapitolav01');
@@ -41,6 +40,8 @@ class PagesController extends AppController
         $this->loadModel('CiselnikStatv01');
         $this->loadModel('CiselnikMmrPodOpatreniv01');
         $this->loadModel('CiselnikMmrOpatreniv01');
+        $this->loadModel('CiselnikMmrPrioritav01');
+        $this->loadModel('CiselnikMmrOperacniProgramv01');
 
     }
 
@@ -1744,6 +1745,22 @@ class PagesController extends AppController
             ],
             'contain' => [
                 'CiselnikMmrPrioritav01'
+            ]
+        ])->first();
+        if(empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
+    }
+
+    public function mmrPriorita()
+    {
+        $data = $this->CiselnikMmrPrioritav01->find('all', [
+            'conditions' => [
+                'idPriorita' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikMmrOperacniProgramv01',
+                'CiselnikMmrPodprogramv01'
             ]
         ])->first();
         if(empty($data)) throw new NotFoundException();
