@@ -3,7 +3,7 @@
 use Cake\Cache\Cache;
 
 
-$cache_key = 'mmr_operacni_program_dotace_' . sha1($data->idOperacniProgram);
+$cache_key = 'mmr_priorita_dotace_' . sha1($data->idPriorita);
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
