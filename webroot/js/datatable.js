@@ -21,6 +21,7 @@ function setupDataTable(selector) {
             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
         },
         "stateSave": true,
+        ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
         "stateDuration": 60 * 60 * 24 * 7,
         dom: $($e).hasClass('datatable_simple') ? 't' : 'r<"clear">ip<"clear">lf<"clear">t',
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]

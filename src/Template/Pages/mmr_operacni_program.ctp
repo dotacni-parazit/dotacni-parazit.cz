@@ -99,28 +99,18 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
     </div>
     <div id="dotace">
         <h2>Dotace v OP</h2>
-        <div>Max. 1.000 záznamů</div>
-        <table class="datatable">
+        <div>Max. 50.000 záznamů</div>
+        <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
-                <th>Název Projektu</th>
-                <th>Projekt Kód</th>
-                <th>Projekt Identifikátor</th>
-                <th>Příjemce Pomoci</th>
+                <th data-type="html">Název Projektu</th>
+                <th data-type="html">Projekt Kód</th>
+                <th data-type="html">Projekt Identifikátor</th>
+                <th data-type="html">Příjemce Pomoci</th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($dotace as $d) { ?>
-                <?php
 
-                ?>
-                <tr>
-                    <td><?= $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace) ?></td>
-                    <td><?= $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace) ?></td>
-                    <td><?= $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace) ?></td>
-                    <td><?= $this->Html->link($d->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce) ?></td>
-                </tr>
-            <?php } ?>
             </tbody>
             <tfoot>
             <tr>

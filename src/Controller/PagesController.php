@@ -1882,27 +1882,33 @@ class PagesController extends AppController
         ])->first();
         if (empty($data)) throw new NotFoundException();
 
-        $dotace = $this->Dotace->find('all', [
-            'fields' => [
-                'idDotace',
-                'idPrijemce',
-                'projektKod',
-                'projektIdnetifikator',
-                'projektNazev',
-                'PrijemcePomoci.idPrijemce',
-                'PrijemcePomoci.obchodniJmeno',
-                'PrijemcePomoci.jmeno',
-                'PrijemcePomoci.prijmeni'
-            ],
-            'conditions' => [
-                'iriOperacniProgram' => $this->request->getQuery('id')
-            ],
-            'contain' => [
-                'PrijemcePomoci'
-            ]
-        ])->limit(1000);
+        if ($this->request->is('ajax')) {
+            $dotace = $this->Dotace->find('all', [
+                'fields' => [
+                    'idDotace',
+                    'idPrijemce',
+                    'projektKod',
+                    'projektIdnetifikator',
+                    'projektNazev',
+                    'PrijemcePomoci.idPrijemce',
+                    'PrijemcePomoci.obchodniJmeno',
+                    'PrijemcePomoci.jmeno',
+                    'PrijemcePomoci.prijmeni'
+                ],
+                'conditions' => [
+                    'iriOperacniProgram' => $this->request->getQuery('id')
+                ],
+                'contain' => [
+                    'PrijemcePomoci'
+                ]
+            ])->limit(50000);
+            $_serialize = false;
+            $this->set(compact(['data', 'dotace', '_serialize']));
+        } else {
+            $this->set(compact(['data']));
+        }
 
-        $this->set(compact(['data', 'dotace']));
+
     }
 
 }
