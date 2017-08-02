@@ -1,5 +1,8 @@
 <?php
 
+$this->Html->script('jquery-ui.min.js', ['block' => true]);
+$this->Html->css('jquery-ui.min.css', ['block' => true]);
+
 $this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod . ') - MMR PodOpatření');
 ?>
 <div id="tabs">
@@ -63,6 +66,41 @@ $this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod
         </table>
     </div>
 
+    <div id="dotace">
+        <h2>Dotace v MMR PodOpatření</h2>
+        <div>Max. 1.000 záznamů</div>
+        <table class="datatable">
+            <thead>
+            <tr>
+                <th>Název Projektu</th>
+                <th>Projekt Kód</th>
+                <th>Projekt Identifikátor</th>
+                <th>Příjemce Pomoci</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($dotace as $d) { ?>
+                <?php
+
+                ?>
+                <tr>
+                    <td><?= $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace) ?></td>
+                    <td><?= $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace) ?></td>
+                    <td><?= $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace) ?></td>
+                    <td><?= $this->Html->link($d->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce) ?></td>
+                </tr>
+            <?php } ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Název Projektu</td>
+                <td>Projekt Kód</td>
+                <td>Projekt Identifikátor</td>
+                <td>Příjemce Pomoci</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">

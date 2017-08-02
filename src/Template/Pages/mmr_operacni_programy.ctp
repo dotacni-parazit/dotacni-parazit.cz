@@ -1,12 +1,11 @@
 <?php
 $this->set('title', 'Operační programy MMR');
 ?>
-<table>
+<table class="datatable datatable_simple">
     <thead>
     <tr>
         <th>Název</th>
         <th>Kód Programu</th>
-        <th>Číslo Programu</th>
         <th>Platnost Do</th>
     </tr>
     </thead>
@@ -15,9 +14,8 @@ $this->set('title', 'Operační programy MMR');
     foreach ($mmr as $c) {
         ?>
         <tr>
-            <td><?= $this->Html->link($c->operacaniProgramNazev, $c->idOperacniProgram) ?></td>
+            <td><?= $this->Html->link($c->operacaniProgramNazev, '/detail-mmr-operacni-program/?id='.$c->idOperacniProgram) ?></td>
             <td><?= $c->operacaniProgramKod ?></td>
-            <td><?= $c->operacaniProgramCislo ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
         </tr>
         <?php
@@ -29,7 +27,6 @@ $this->set('title', 'Operační programy MMR');
     <tr>
         <th>Název</th>
         <th>Kód Programu</th>
-        <th>Číslo Programu</th>
         <th>Platnost Do</th>
     </tr>
     </tfoot>
