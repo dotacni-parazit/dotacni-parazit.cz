@@ -1813,11 +1813,34 @@ class PagesController extends AppController
         $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
             'conditions' => [
                 'idOperacniProgram' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikMmrPrioritav01'
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
 
-        $this->set(compact(['data']));
+        $dotace = $this->Dotace->find('all', [
+            'fields' => [
+                'idDotace',
+                'idPrijemce',
+                'projektKod',
+                'projektIdnetifikator',
+                'projektNazev',
+                'PrijemcePomoci.idPrijemce',
+                'PrijemcePomoci.obchodniJmeno',
+                'PrijemcePomoci.jmeno',
+                'PrijemcePomoci.prijmeni'
+            ],
+            'conditions' => [
+                'iriOperacniProgram' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'PrijemcePomoci'
+            ]
+        ])->limit(1000);
+
+        $this->set(compact(['data', 'dotace']));
     }
 
 }
