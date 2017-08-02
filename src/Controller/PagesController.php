@@ -28,6 +28,7 @@ use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
 use Cake\Cache\Cache;
+use Cake\Database\Query;
 use Cake\Datasource\ConnectionManager;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -1731,6 +1732,7 @@ class PagesController extends AppController
                 foreach ($tablereg->getSchema()->columns() as $raw_col) {
                     $col_type = $tablereg->getSchema()->column($raw_col);
                     $col_type = $col_type['type'];
+                    /** @var Query $empty_rows */
                     $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col . ' IS NULL']);
                     if ($col_type == 'string') $empty_rows->orWhere([$raw_col => '']);
                     else if ($col_type == 'decimal') $empty_rows->orWhere([$raw_col => 0]);

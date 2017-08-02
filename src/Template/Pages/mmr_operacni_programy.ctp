@@ -6,6 +6,7 @@ $this->set('title', 'Operační programy MMR');
     <tr>
         <th>Název</th>
         <th>Kód Programu</th>
+        <th>Platnost Od</th>
         <th>Platnost Do</th>
     </tr>
     </thead>
@@ -16,6 +17,7 @@ $this->set('title', 'Operační programy MMR');
         <tr>
             <td><?= $this->Html->link($c->operacaniProgramNazev, '/detail-mmr-operacni-program/?id='.$c->idOperacniProgram) ?></td>
             <td><?= $c->operacaniProgramKod ?></td>
+            <td><?= $c->zaznamPlatnostOdDatum->year ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
         </tr>
         <?php
@@ -27,6 +29,7 @@ $this->set('title', 'Operační programy MMR');
     <tr>
         <th>Název</th>
         <th>Kód Programu</th>
+        <th>Platnost Od</th>
         <th>Platnost Do</th>
     </tr>
     </tfoot>
