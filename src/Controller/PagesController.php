@@ -8,12 +8,52 @@
 
 namespace App\Controller;
 
+use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
+use App\Model\Table\CiselnikDotacePoskytovatelv01Table;
+use App\Model\Table\CiselnikDotaceTitulv01Table;
+use App\Model\Table\CiselnikFinancniZdrojv01Table;
+use App\Model\Table\CiselnikKrajv01Table;
+use App\Model\Table\CiselnikMmrOpatreniv01Table;
+use App\Model\Table\CiselnikMmrOperacniProgramv01Table;
+use App\Model\Table\CiselnikMmrPodOpatreniv01Table;
+use App\Model\Table\CiselnikMmrPrioritav01Table;
+use App\Model\Table\CiselnikObecv01Table;
+use App\Model\Table\CiselnikOkresv01Table;
+use App\Model\Table\CiselnikPravniFormav01Table;
+use App\Model\Table\CiselnikStatniRozpocetKapitolav01Table;
+use App\Model\Table\CiselnikStatniRozpocetUkazatelv01Table;
+use App\Model\Table\CiselnikStatv01Table;
+use App\Model\Table\DotaceTable;
+use App\Model\Table\PrijemcePomociTable;
+use App\Model\Table\RozhodnutiTable;
+use App\Model\Table\RozpoctoveObdobiTable;
 use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 
 
+/**
+ * @property CiselnikStatniRozpocetUkazatelv01Table CiselnikStatniRozpocetUkazatelv01
+ * @property CiselnikMmrOperacniProgramv01Table CiselnikMmrOperacniProgramv01
+ * @property CiselnikCedrOperacniProgramv01Table CiselnikCedrOperacniProgramv01
+ * @property CiselnikFinancniZdrojv01Table CiselnikFinancniZdrojv01
+ * @property CiselnikPravniFormav01Table CiselnikPravniFormav01
+ * @property CiselnikStatniRozpocetKapitolav01Table CiselnikStatniRozpocetKapitolav01
+ * @property RozpoctoveObdobiTable RozpoctoveObdobi
+ * @property CiselnikDotaceTitulv01Table CiselnikDotaceTitulv01
+ * @property CiselnikDotacePoskytovatelv01Table CiselnikDotacePoskytovatelv01
+ * @property CiselnikMmrPodOpatreniv01Table CiselnikMmrPodOpatreniv01
+ * @property CiselnikMmrPrioritav01Table CiselnikMmrPrioritav01
+ * @property CiselnikMmrOpatreniv01Table CiselnikMmrOpatreniv01
+ * @property CiselnikObecv01Table CiselnikObecv01
+ * @property CiselnikOkresv01Table CiselnikOkresv01
+ * @property CiselnikKrajv01Table CiselnikKrajv01
+ * @property RozhodnutiTable Rozhodnuti
+ * @property CiselnikStatv01Table CiselnikStatv01
+ * @property PrijemcePomociTable PrijemcePomoci
+ * @property DotaceTable Dotace
+ */
 class PagesController extends AppController
 {
 
@@ -948,7 +988,7 @@ class PagesController extends AppController
         ])->contain([
             'CiselnikStatv01',
             'AdresaBydliste'
-        ])->hydrate(true)->limit(110000);
+        ])->enableHydration(true)->limit(110000);
 
         $_serialize = false;
 
@@ -1251,7 +1291,7 @@ class PagesController extends AppController
             'conditions' => [
                 'dotaceTitulKod' => $this->request->getParam('kod')
             ]
-        ])->hydrate(false)->toArray();
+        ])->enableHydration(false)->toArray();
         $tituly_ids_flat = [];
         array_walk_recursive($tituly_ids, function ($a) use (&$tituly_ids_flat) {
             $tituly_ids_flat[] = $a;
@@ -1418,7 +1458,7 @@ class PagesController extends AppController
             'fields' => [
                 'krajKod' => 'DISTINCT(krajKod)'
             ]
-        ])->hydrate(false)->toArray();
+        ])->enableHydration(false)->toArray();
 
         foreach ($kraje as $kraj) {
 
@@ -1453,7 +1493,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->hydrate(false)->toArray();
+                ])->limit(100)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
             }
             debug($kraj);
@@ -1467,7 +1507,7 @@ class PagesController extends AppController
             'fields' => [
                 'okresKod' => 'DISTINCT(okresKod)'
             ]
-        ])->hydrate(false)->toArray();
+        ])->enableHydration(false)->toArray();
 
         foreach ($okresy as $okres) {
             debug($okres);
@@ -1503,7 +1543,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->hydrate(false)->toArray();
+                ])->limit(100)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_okres_top_100, $biggest, 'long_term');
             }
             debug(count($biggest));
@@ -1516,7 +1556,7 @@ class PagesController extends AppController
             'fields' => [
                 'obecKod' => 'DISTINCT(obecKod)'
             ]
-        ])->hydrate(false)->toArray();
+        ])->enableHydration(false)->toArray();
 
         foreach ($obce as $obec) {
             debug($obec);
@@ -1552,7 +1592,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->hydrate(false)->toArray();
+                ])->limit(100)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_obec_top_100, $biggest, 'long_term');
             }
             debug(count($biggest));
@@ -1732,7 +1772,7 @@ class PagesController extends AppController
                 'CiselnikMmrOpatreniv01'
             ]
         ])->first();
-        if(empty($data)) throw new NotFoundException();
+        if (empty($data)) throw new NotFoundException();
 
         $this->set(compact(['data']));
     }
@@ -1747,7 +1787,7 @@ class PagesController extends AppController
                 'CiselnikMmrPrioritav01'
             ]
         ])->first();
-        if(empty($data)) throw new NotFoundException();
+        if (empty($data)) throw new NotFoundException();
 
         $this->set(compact(['data']));
     }
@@ -1763,7 +1803,19 @@ class PagesController extends AppController
                 'CiselnikMmrPodprogramv01'
             ]
         ])->first();
-        if(empty($data)) throw new NotFoundException();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
+    }
+
+    public function mmrOperacniProgram()
+    {
+        $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
+            'conditions' => [
+                'idOperacniProgram' => $this->request->getQuery('id')
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
 
         $this->set(compact(['data']));
     }
