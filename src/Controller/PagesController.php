@@ -1800,12 +1800,33 @@ class PagesController extends AppController
             ],
             'contain' => [
                 'CiselnikMmrOperacniProgramv01',
-                'CiselnikMmrPodprogramv01'
+                'CiselnikMmrPodprogramv01',
+                'CiselnikMmrOpatreniv01'
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
 
-        $this->set(compact(['data']));
+        $dotace = $this->Dotace->find('all', [
+            'fields' => [
+                'idDotace',
+                'idPrijemce',
+                'projektKod',
+                'projektIdnetifikator',
+                'projektNazev',
+                'PrijemcePomoci.idPrijemce',
+                'PrijemcePomoci.obchodniJmeno',
+                'PrijemcePomoci.jmeno',
+                'PrijemcePomoci.prijmeni'
+            ],
+            'conditions' => [
+                'iriPriorita' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'PrijemcePomoci'
+            ]
+        ])->limit(1000);
+
+        $this->set(compact(['data', 'dotace']));
     }
 
     public function mmrOperacniProgram()

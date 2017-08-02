@@ -8,7 +8,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
-        <li><a href="#priority">Podřízené - MMR Priority</a></li>
+        <li><a href="#priority">Podřízené MMR Priority</a></li>
         <li><a href="#dotace">Dotace</a></li>
     </ul>
     <div id="obecne">
@@ -64,13 +64,12 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
         </table>
     </div>
     <div id="priority">
-        <h2>MMR Priorita</h2>
+        <h2>Podřízené MMR Priority</h2>
         <table class="datatable datatable_simple">
             <thead>
             <tr>
                 <th>Priorita Název</th>
                 <th>Priorita Kód</th>
-                <th>Priorita Číslo</th>
                 <th>Platnost Od</th>
                 <th>Platnost Do</th>
                 <th>Otevřít</th>
@@ -81,7 +80,6 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
                 <tr>
                     <td><?= $this->Html->link($p->prioritaNazev, '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
                     <td><?= $p->prioritaKod ?></td>
-                    <td><?= $p->prioritaCislo ?></td>
                     <td><?= $p->zaznamPlatnostOdDatum->year ?></td>
                     <td><?= $p->zaznamPlatnostDoDatum->year ?></td>
                     <td><?= $this->Html->link('Otevřít', '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
@@ -92,7 +90,6 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
             <tr>
                 <td>Priorita Název</td>
                 <td>Priorita Kód</td>
-                <td>Priorita Číslo</td>
                 <td>Platnost Od</td>
                 <td>Platnost Do</td>
                 <td>Otevřít</td>
@@ -103,7 +100,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
     <div id="dotace">
         <h2>Dotace v OP</h2>
         <div>Max. 1.000 záznamů</div>
-        <table class="datatable datatable_simple">
+        <table class="datatable">
             <thead>
             <tr>
                 <th>Název Projektu</th>

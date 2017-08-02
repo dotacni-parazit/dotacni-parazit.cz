@@ -42,6 +42,11 @@ class CiselnikMmrPrioritav01Table extends Table
             ->setBindingKey('id')
             ->setForeignKey('idPodprogram')
             ->setProperty('MmrPodprogram');
+
+        $this->hasMany('CiselnikMmrOpatreniv01')
+            ->setBindingKey('idPriorita')
+            ->setForeignKey('idPriorita')
+            ->setProperty('MmrOpatreni');
     }
 
     /**
