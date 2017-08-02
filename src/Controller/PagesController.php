@@ -39,7 +39,8 @@ class PagesController extends AppController
         $this->loadModel('CiselnikObecv01');
         $this->loadModel('CiselnikOkresv01');
         $this->loadModel('CiselnikStatv01');
-
+        $this->loadModel('CiselnikMmrPodOpatreniv01');
+        $this->loadModel('CiselnikMmrOpatreniv01');
 
     }
 
@@ -1718,6 +1719,21 @@ class PagesController extends AppController
             Cache::write($cache_tag, $tables, 'long_term');
         }
         $this->set(compact(['tables']));
+    }
+
+    public function mmrPodOpatreni()
+    {
+        $data = $this->CiselnikMmrPodOpatreniv01->find('all', [
+            'conditions' => [
+                'idPodOpatreni' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikMmrOpatreniv01'
+            ]
+        ])->first();
+        if(empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
     }
 
 }

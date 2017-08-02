@@ -84,7 +84,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
 
     <tr>
         <td>Dotační Titul</td>
-        <td><?= count($dotace->Rozhodnuti) > 0 ? $this->Html->link($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulNazev . ' ( kód: ' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod . ' )', '/dotacni-titul/' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod) : "Nevyplněno" ?></td>
+        <td><?= (count($dotace->Rozhodnuti) > 0 && !empty($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01)) ? $this->Html->link($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulNazev . ' ( kód: ' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod . ' )', '/dotacni-titul/' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod) : "Nevyplněno" ?></td>
     </tr>
 
     </tbody>

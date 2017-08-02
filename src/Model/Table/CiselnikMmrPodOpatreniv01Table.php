@@ -1,8 +1,7 @@
 <?php
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -33,6 +32,11 @@ class CiselnikMmrPodOpatreniv01Table extends Table
         $this->setTable('ciselnikMmrPodOpatreniv01');
         $this->setDisplayField('idPodOpatreni');
         $this->setPrimaryKey('idPodOpatreni');
+
+        $this->belongsTo('CiselnikMmrOpatreniv01')
+            ->setBindingKey('idOpatreni')
+            ->setForeignKey('idOpatreni')
+            ->setProperty('MmrOpatreni');
     }
 
     /**
