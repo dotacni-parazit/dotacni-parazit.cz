@@ -1945,8 +1945,81 @@ class PagesController extends AppController
         } else {
             $this->set(compact(['data', 'counts']));
         }
+    }
+
+    public function detailStatu()
+    {
+        $stat = $this->CiselnikStatv01->find('all', [
+            'conditions' => [
+                'statKod3Znaky' => $this->request->getParam('id')
+            ],
+            'order' => [
+                'zaznamPlatnostDoDatum' => 'DESC'
+            ]
+        ])->first();
+        if (empty($stat)) throw new NotFoundException();
+
+        $historie = $this->CiselnikStatv01->find('all', [
+            'conditions' => [
+                'statKod3Znaky' => $this->request->getParam('id')
+            ]
+        ]);
+
+        $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat->statKod3Znaky);
+        $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
+        if ($biggest === false) $biggest = [];
+
+        $this->set(compact(['stat', 'historie', 'biggest']));
+    }
 
 
+    public function detailStatuCache()
+    {
+        $staty = $this->CiselnikStatv01->find('all', [
+            'fields' => [
+                'statKod3Znaky' => 'DISTINCT(statKod3Znaky)'
+            ]
+        ])->enableHydration(false)->toArray();
+
+        foreach ($staty as $stat) {
+            debug($stat);
+
+            $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat['statKod3Znaky']);
+            $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'AdresaSidlo.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(100)->enableHydration(false)->toArray();
+                Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
+            }
+            debug(count($biggest));
+        }
     }
 
 }
