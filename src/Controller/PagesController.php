@@ -107,7 +107,22 @@ class PagesController extends AppController
                 'operacaniProgramKod' => 'DESC'
             ]
         ]);
-        $this->set(compact('mmr'));
+
+        $cache_tag_mmr_op_counts = 'mmr_op_dotace_counts';
+        $counts = Cache::read($cache_tag_mmr_op_counts, 'long_term');
+        if ($counts === false) {
+            $counts = [];
+            foreach ($mmr as $op) {
+                $counts[$op->idOperacniProgram] = $this->Dotace->find('all', [
+                    'conditions' => [
+                        'iriOperacniProgram' => $op->idOperacniProgram
+                    ]
+                ])->count();
+            }
+            Cache::write($cache_tag_mmr_op_counts, $counts, 'long_term');
+        }
+
+        $this->set(compact('mmr', 'counts'));
     }
 
     public function financniZdroje()

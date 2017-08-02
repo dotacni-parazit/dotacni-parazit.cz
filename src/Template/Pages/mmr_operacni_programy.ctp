@@ -6,6 +6,7 @@ $this->set('title', 'Operační programy MMR');
     <tr>
         <th>Název</th>
         <th>Kód Programu</th>
+        <th>Počet evidovaných dotací</th>
         <th>Platnost Od</th>
         <th>Platnost Do</th>
     </tr>
@@ -17,6 +18,7 @@ $this->set('title', 'Operační programy MMR');
         <tr>
             <td><?= $this->Html->link($c->operacaniProgramNazev, '/detail-mmr-operacni-program/?id='.$c->idOperacniProgram) ?></td>
             <td><?= $c->operacaniProgramKod ?></td>
+            <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostOdDatum->year ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
         </tr>
@@ -27,10 +29,11 @@ $this->set('title', 'Operační programy MMR');
 
     <tfoot>
     <tr>
-        <th>Název</th>
-        <th>Kód Programu</th>
-        <th>Platnost Od</th>
-        <th>Platnost Do</th>
+        <td>Název</td>
+        <td>Kód Programu</td>
+        <td>Počet evidovaných dotací</td>
+        <td>Platnost Od</td>
+        <td>Platnost Do</td>
     </tr>
     </tfoot>
 </table>
