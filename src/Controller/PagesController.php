@@ -89,6 +89,7 @@ class PagesController extends AppController
         $this->loadModel('CiselnikCedrOpatreniv01');
         $this->loadModel('CiselnikCedrPodOpatreniv01');
         $this->loadModel('CiselnikCedrGrantoveSchemav01');
+        $this->loadModel('StrukturalniFondy');
     }
 
     public function index()
@@ -2036,6 +2037,15 @@ class PagesController extends AppController
             }
             debug(count($biggest));
         }
+    }
+
+    public function strukturalniFondy(){
+        $data = $this->StrukturalniFondy->find('all', [
+            'conditions' => [
+                'cisloANazevProgramu' => 'CZ.3.22 OP ČR - Polsko'
+            ]
+        ])->limit(10000);
+        $this->set(compact(['data']));
     }
 
 }

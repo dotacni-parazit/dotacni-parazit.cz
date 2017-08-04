@@ -97,6 +97,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-mmr-priorita/', ['controller' => 'Pages', 'action' => 'mmrPriorita']);
     $routes->connect('/detail-mmr-operacni-program/', ['controller' => 'Pages', 'action' => 'mmrOperacniProgram']);
     $routes->connect('/detail-mmr-grantove-schema/', ['controller' => 'Pages', 'action' => 'mmrGrantoveSchema']);
+    $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
 
 
     // fallback
