@@ -52,39 +52,133 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
         <td><?= $dotace->ukonceniSkutecneDatum ?></td>
     </tr>
 
-    <tr>
-        <td>MMR: Operační program</td>
-        <td><?= empty($dotace->MmrOperacniProgram) ? 'Nevyplněno' : $this->Html->link($dotace->MmrOperacniProgram->operacaniProgramNazev . ' ( kód: ' . $dotace->MmrOperacniProgram->operacaniProgramKod . ' )', '/detail-mmr-operacni-program/?id=' . $dotace->MmrOperacniProgram->idOperacniProgram) ?></td>
-    </tr>
+    <?php
+    $operacni_program_label = $operacni_program_value
+        = $grantove_schema_label = $grantove_schema_value
+        = $opatreni_label = $opatreni_value
+        = $pod_opatreni_label = $pod_opatreni_value
+        = $priorita_label = $priorita_value = "";
 
-    <tr>
-        <td>MMR: Podprogram</td>
-        <td><?= empty($dotace->MmrPodprogram) ? 'Nevyplněno' : $this->Html->link($dotace->MmrPodprogram->podprogramNazev . ' ( kód: ' . $dotace->MmrPodprogram->podprogramKod . ' )', '/detail-mmr-podprogram/?id=' . $dotace->MmrPodprogram->idPodprogram) ?></td>
-    </tr>
+    if (!empty($dotace->MmrOperacniProgram)) {
+        $operacni_program_label = 'MMR: Operační Program';
+        $operacni_program_value = $this->Html->link(
+            $dotace->MmrOperacniProgram->operacaniProgramNazev .
+            ' ( kód: ' . $dotace->MmrOperacniProgram->operacaniProgramKod . ' )',
+            '/detail-mmr-operacni-program/?id=' . $dotace->MmrOperacniProgram->idOperacniProgram
+        );
+    } else if (!empty($dotace->CedrOperacniProgram)) {
+        $operacni_program_label = 'CEDR: Operační Program';
+        $operacni_program_value = $this->Html->link(
+            $dotace->CedrOperacniProgram->operacaniProgramNazev .
+            ' ( kód: ' . $dotace->CedrOperacniProgram->operacaniProgramKod . ' )',
+            '/detail-cedr-operacni-program/?id=' . $dotace->CedrOperacniProgram->idOperacniProgram
+        );
+    }
 
-    <tr>
-        <td>MMR: Grantové Schéma</td>
-        <td><?= empty($dotace->MmrGrantoveSchema) ? 'Nevyplněno' : $this->Html->link($dotace->MmrGrantoveSchema->grantoveSchemaNazev . ' ( kód: ' . $dotace->MmrGrantoveSchema->grantoveSchemaKod . ' )', '/detail-mmr-grantove-schema/?id=' . $dotace->MmrGrantoveSchema->idGrantoveSchema) ?></td>
-    </tr>
+    if (!empty($dotace->MmrGrantoveSchema)) {
+        $grantove_schema_label = 'MMR: Grantové Schéma';
+        $grantove_schema_value = $this->Html->link(
+            $dotace->MmrGrantoveSchema->grantoveSchemaNazev . ' ( kód: '
+            . $dotace->MmrGrantoveSchema->grantoveSchemaKod . ' )',
+            '/detail-mmr-grantove-schema/?id=' . $dotace->MmrGrantoveSchema->idGrantoveSchema
+        );
+    } else if (!empty($dotace->CedrGrantoveSchema)) {
+        $grantove_schema_label = 'CEDR: Grantové Schéma';
+        $grantove_schema_value = $this->Html->link(
+            $dotace->CedrGrantoveSchema->grantoveSchemaNazev . ' ( kód: '
+            . $dotace->CedrGrantoveSchema->grantoveSchemaKod . ' )',
+            '/detail-cedr-grantove-schema/?id=' . $dotace->CedrGrantoveSchema->idGrantoveSchema
+        );
+    }
 
-    <tr>
-        <td>MMR: Opatření</td>
-        <td><?= empty($dotace->MmrOpatreni) ? 'Nevyplněno' : $this->Html->link($dotace->MmrOpatreni->opatreniNazev . ' ( kód: ' . $dotace->MmrOpatreni->opatreniKod . ' )', '/detail-mmr-opatreni/?id=' . $dotace->MmrOpatreni->idOpatreni) ?></td>
-    </tr>
+    if (!empty($dotace->MmrPriorita)) {
+        $priorita_label = 'MMR: Priorita';
+        $priorita_value = $this->Html->link(
+            $dotace->MmrPriorita->prioritaNazev .
+            ' ( kód: ' . $dotace->MmrPriorita->prioritaKod . ')',
+            '/detail-mmr-priorita/?id=' . $dotace->MmrPriorita->idPriorita
+        );
+    } else if (!empty($dotace->CedrPriorita)) {
+        $priorita_label = 'CEDR: Priorita';
+        $priorita_value = $this->Html->link(
+            $dotace->CedrPriorita->prioritaNazev .
+            ' ( kód: ' . $dotace->CedrPriorita->prioritaKod . ')',
+            '/detail-mmr-priorita/?id=' . $dotace->CedrPriorita->idPriorita
+        );
+    }
 
-    <tr>
-        <td>MMR: PodOpatření</td>
-        <td><?= empty($dotace->MmrPodOpatreni) ? 'Nevyplněno' : $this->Html->link($dotace->MmrPodOpatreni->podOpatreniNazev . ' ( kód: ' . $dotace->MmrPodOpatreni->podOpatreniKod . ' )', '/detail-mmr-podopatreni/?id=' . $dotace->MmrPodOpatreni->idPodOpatreni) ?></td>
-    </tr>
+    if (!empty($dotace->MmrOpatreni)) {
+        $opatreni_label = 'MMR: Opatření';
+        $opatreni_value = $this->Html->link(
+            $dotace->MmrOpatreni->opatreniNazev .
+            ' ( kód: ' . $dotace->MmrOpatreni->opatreniKod . ')',
+            '/detail-mmr-opatreni/?id=' . $dotace->MmrOpatreni->idOpatreni
+        );
+    } else if (!empty($dotace->CedrOpatreni)) {
+        $opatreni_label = 'CEDR: Opatření';
+        $opatreni_value = $this->Html->link(
+            $dotace->CedrOpatreni->opatreniNazev .
+            ' ( kód: ' . $dotace->CedrOpatreni->opatreniKod . ')',
+            '/detail-cedr-opatreni/?id=' . $dotace->CedrOpatreni->idOpatreni
+        );
+    }
 
-    <tr>
-        <td>MMR: Priorita</td>
-        <td><?= empty($dotace->MmrPriorita) ? 'Nevyplněno' : $this->Html->link($dotace->MmrPriorita->prioritaNazev . ' ( kód: ' . $dotace->MmrPriorita->prioritaKod . ' )', '/detail-mmr-priorita/?id=' . $dotace->MmrPriorita->idPriorita) ?></td>
-    </tr>
+    if (!empty($dotace->MmrPodOpatreni)) {
+        $opatreni_label = 'MMR: PodOpatření';
+        $opatreni_value = $this->Html->link(
+            $dotace->MmrPodOpatreni->podOpatreniNazev .
+            ' ( kód: ' . $dotace->MmrPodOpatreni->podOpatreniKod . ')',
+            '/detail-mmr-opatreni/?id=' . $dotace->MmrPodOpatreni->idPodOpatreni
+        );
+    } else if (!empty($dotace->CedrPodOpatreni)) {
+        $opatreni_label = 'CEDR: Opatření';
+        $opatreni_value = $this->Html->link(
+            $dotace->CedrPodOpatreni->podOpatreniNazev .
+            ' ( kód: ' . $dotace->CedrPodOpatreni->podOpatreniKod . ')',
+            '/detail-cedr-opatreni/?id=' . $dotace->CedrPodOpatreni->idPodOpatreni
+        );
+    }
+    ?>
+
+    <?php if (!empty($operacni_program_label)) { ?>
+        <tr>
+            <td><?= $operacni_program_label ?></td>
+            <td><?= $operacni_program_value ?></td>
+        </tr>
+    <?php } ?>
+
+    <?php if (!empty($grantove_schema_label)) { ?>
+        <tr>
+            <td><?= $grantove_schema_label ?></td>
+            <td><?= $grantove_schema_value ?></td>
+        </tr>
+    <?php } ?>
+
+    <?php if (!empty($priorita_label)) { ?>
+        <tr>
+            <td><?= $priorita_label ?></td>
+            <td><?= $priorita_value ?></td>
+        </tr>
+    <?php } ?>
+
+    <?php if (!empty($opatreni_label)) { ?>
+        <tr>
+            <td><?= $opatreni_label ?></td>
+            <td><?= $opatreni_value ?></td>
+        </tr>
+    <?php } ?>
+
+
+    <?php if (!empty($pod_opatreni_label)) { ?>
+        <tr>
+            <td><?= $pod_opatreni_label ?></td>
+            <td><?= $pod_opatreni_value ?></td>
+        </tr>
+    <?php } ?>
 
     <tr>
         <td>Dotační Titul</td>
-        <td><?= (count($dotace->Rozhodnuti) > 0 && !empty($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01)) ? $this->Html->link($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulNazev . ' ( kód: ' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod . ' )', '/dotacni-titul/' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod) : "Nevyplněno" ?></td>
+        <td><?= (count($dotace->Rozhodnuti) > 0 && !empty($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01)) ? $this->Html->link($dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulNazev . ' ( kód: ' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod . ' )', '/detail-dotacni-titul/' . $dotace->Rozhodnuti[0]->RozpoctoveObdobi->CiselnikDotaceTitulv01->dotaceTitulKod) : "Nevyplněno" ?></td>
     </tr>
 
     </tbody>
@@ -174,6 +268,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
         <th>Finanční Zdroj</th>
         <th>Investice?</th>
         <th>Návratnost?</th>
+        <th>Refundace?</th>
     </tr>
     </thead>
     <tbody>
@@ -192,6 +287,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
             <td><?= $r->FinancniZdroj->financniZdrojNazev ?></td>
             <td><?= $r->investiceIndikator ? 'ANO' : 'NE' ?></td>
             <td><?= $r->navratnostIndikator ? 'ANO' : 'NE' ?></td>
+            <td><?= $r->refundaceIndikator ? 'ANO' : 'NE' ?></td>
         </tr>
         <?php
         $counter++;
@@ -210,6 +306,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
         <th>Finanční Zdroj</th>
         <th>Investice?</th>
         <th>Návratnost?</th>
+        <th>Refundace?</th>
     </tr>
     </tfoot>
 </table>

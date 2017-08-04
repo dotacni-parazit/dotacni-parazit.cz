@@ -44,30 +44,60 @@ class DotaceTable extends Table
             ->setBindingKey('idOperacniProgram')
             ->setProperty('MmrOperacniProgram');
 
+        $this->belongsTo('CiselnikCedrOperacniProgramv01')
+            ->setForeignKey('iriOperacniProgram')
+            ->setBindingKey('idOperacniProgram')
+            ->setProperty('CedrOperacniProgram');
+
         $this->belongsTo('CiselnikMmrPodprogramv01')
             ->setForeignKey('iriPodprogram')
             ->setBindingKey('id')
             ->setProperty('MmrPodprogram');
+
+        $this->belongsTo('CiselnikCedrPodprogramv01')
+            ->setForeignKey('iriPodprogram')
+            ->setBindingKey('id')
+            ->setProperty('CedrPodprogram');
 
         $this->belongsTo('CiselnikMmrPrioritav01')
             ->setForeignKey('iriPriorita')
             ->setBindingKey('idPriorita')
             ->setProperty('MmrPriorita');
 
+        $this->belongsTo('CiselnikCedrPrioritav01')
+            ->setForeignKey('iriPriorita')
+            ->setBindingKey('idPriorita')
+            ->setProperty('CedrPriorita');
+
         $this->belongsTo('CiselnikMmrOpatreniv01')
             ->setForeignKey('iriOpatreni')
             ->setBindingKey('idOpatreni')
             ->setProperty('MmrOpatreni');
+
+        $this->belongsTo('CiselnikCedrOpatreniv01')
+            ->setForeignKey('iriOpatreni')
+            ->setBindingKey('idOpatreni')
+            ->setProperty('CedrOpatreni');
 
         $this->belongsTo('CiselnikMmrPodOpatreniv01')
             ->setForeignKey('iriPodopatreni')
             ->setBindingKey('idPodOpatreni')
             ->setProperty('MmrPodOpatreni');
 
+        $this->belongsTo('CiselnikCedrPodOpatreniv01')
+            ->setForeignKey('iriPodopatreni')
+            ->setBindingKey('idPodOpatreni')
+            ->setProperty('CedrPodOpatreni');
+
         $this->belongsTo('CiselnikMmrGrantoveSchemav01')
             ->setForeignKey('iriGrantoveSchema')
             ->setBindingKey('idGrantoveSchema')
             ->setProperty('MmrGrantoveSchema');
+
+        $this->belongsTo('CiselnikCedrGrantoveSchemav01')
+            ->setForeignKey('iriGrantoveSchema')
+            ->setBindingKey('idGrantoveSchema')
+            ->setProperty('CedrGrantoveSchema');
 
         $this->hasMany('Rozhodnuti')
             ->setForeignKey('idDotace')

@@ -9,7 +9,7 @@ $this->set('title', $year . ' - ' . $zdroj->financniZdrojNazev . ' - Zdroj Finan
     Součet za rok <?= $year ?>: <?= Number::currency($year_sum) ?>
 </div>
 <hr/>
-<table id="datatable">
+<table id="datatable_custom">
     <thead>
     <tr>
         <th data-type="html">Příjemce Pomoci</th>

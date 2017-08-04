@@ -1,7 +1,7 @@
 <?php
 $this->set('title', 'Operační programy MMR');
 ?>
-<table class="datatable datatable_simple">
+<table class="datatable">
     <thead>
     <tr>
         <th>Název</th>

@@ -85,6 +85,21 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
         <td><?= !empty($rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulNazev']) ? $this->Html->link($rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulNazev'] . ' ( kód: ' . $rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulKod'] . ' )', '/detail-dotacni-titul/' . $rozhodnuti['RozpoctoveObdobi']['CiselnikDotaceTitulv01']['dotaceTitulKod']) : "Nevyplněno" ?></td>
     </tr>
 
+    <tr>
+        <td>Indikátor Refundace?</td>
+        <td><?= $rozhodnuti['refundaceIndikator'] ?></td>
+    </tr>
+
+    <tr>
+        <td>Indikátor Návratnosti?</td>
+        <td><?= $rozhodnuti['navratnostIndikator'] ?></td>
+    </tr>
+
+    <tr>
+        <td>Indikátor Investice?</td>
+        <td><?= $rozhodnuti['investiceIndikator'] ?></td>
+    </tr>
+
     </tbody>
     <tfoot>
     <tr>

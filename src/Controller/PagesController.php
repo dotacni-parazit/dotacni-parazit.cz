@@ -83,7 +83,12 @@ class PagesController extends AppController
         $this->loadModel('CiselnikMmrOpatreniv01');
         $this->loadModel('CiselnikMmrPrioritav01');
         $this->loadModel('CiselnikMmrOperacniProgramv01');
-
+        $this->loadModel('CiselnikCedrOperacniProgramv01');
+        $this->loadModel('CiselnikCedrPodprogramv01');
+        $this->loadModel('CiselnikCedrPrioritav01');
+        $this->loadModel('CiselnikCedrOpatreniv01');
+        $this->loadModel('CiselnikCedrPodOpatreniv01');
+        $this->loadModel('CiselnikCedrGrantoveSchemav01');
     }
 
     public function index()
@@ -491,6 +496,12 @@ class PagesController extends AppController
                 'CiselnikMmrOpatreniv01',
                 'CiselnikMmrPodOpatreniv01',
                 'CiselnikMmrGrantoveSchemav01',
+                'CiselnikCedrOperacniProgramv01',
+                'CiselnikCedrPodprogramv01',
+                'CiselnikCedrGrantoveSchemav01',
+                'CiselnikCedrPrioritav01',
+                'CiselnikCedrOpatreniv01',
+                'CiselnikCedrPodOpatreniv01',
                 'Rozhodnuti.RozpoctoveObdobi.CiselnikDotaceTitulv01'
             ]
         ])->first();
@@ -572,6 +583,12 @@ class PagesController extends AppController
                 'Dotace.CiselnikMmrOpatreniv01',
                 'Dotace.CiselnikMmrPodOpatreniv01',
                 'Dotace.CiselnikMmrGrantoveSchemav01',
+                'Dotace.CiselnikCedrOperacniProgramv01',
+                'Dotace.CiselnikCedrPodprogramv01',
+                'Dotace.CiselnikCedrGrantoveSchemav01',
+                'Dotace.CiselnikCedrPrioritav01',
+                'Dotace.CiselnikCedrOpatreniv01',
+                'Dotace.CiselnikCedrPodOpatreniv01',
                 'RozpoctoveObdobi'
 
             ]
@@ -2004,13 +2021,12 @@ class PagesController extends AppController
                         'PrijemcePomoci.obchodniJmeno'
                     ],
                     'conditions' => [
-                        'AdresaSidlo.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
+                        'PrijemcePomoci.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
                     ],
                     'contain' => [
                         'RozpoctoveObdobi',
                         'Dotace',
-                        'Dotace.PrijemcePomoci',
-                        'Dotace.PrijemcePomoci.AdresaSidlo'
+                        'Dotace.PrijemcePomoci'
                     ],
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'

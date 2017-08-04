@@ -4,7 +4,7 @@
 $this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
 ?>
 <h2>Všechna Rozhodnutí/Dotace</h2>
-<table id="datatable">
+<table id="datatable_custom">
     <thead>
     <tr>
         <th data-type="html">Příjemce Pomoci</th>
