@@ -56,8 +56,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazatele']);
     $routes->connect('/dotacni-tituly', ['controller' => 'Pages', 'action' => 'dotacniTituly']);
     $routes->connect('/get-tituly-podle-kapitol', ['controller' => 'Pages', 'action' => 'cbFiltrKapitoly']);
-    $routes->connect('/rozpoctove-obdobi', ['controller' => 'Pages', 'action' => 'rozpoctoveObdobi']);
-    $routes->connect('/rozpoctove-obdobi/:year', ['controller' => 'Pages', 'action' => 'rozpoctoveObdobi']);
     // Finalni vystupy
     $routes->connect('/fyzicke-osoby', ['controller' => 'Pages', 'action' => 'fyzickeOsoby']);
     $routes->connect('/fyzicke-osoby/ajax', ['controller' => 'Pages', 'action' => 'fyzickeOsobyAjax']);

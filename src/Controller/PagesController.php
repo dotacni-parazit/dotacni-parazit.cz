@@ -90,6 +90,7 @@ class PagesController extends AppController
         $this->loadModel('CiselnikCedrPodOpatreniv01');
         $this->loadModel('CiselnikCedrGrantoveSchemav01');
         $this->loadModel('StrukturalniFondy');
+        $this->loadComponent('Caching');
     }
 
     public function index()
@@ -98,37 +99,16 @@ class PagesController extends AppController
 
     public function cedrOperacniProgramy()
     {
-        $cedr = $this->CiselnikCedrOperacniProgramv01->find('all', [
-            'order' => [
-                'operacaniProgramKod' => 'DESC'
-            ]
-        ]);
+        $cedr = $this->CiselnikCedrOperacniProgramv01->find('all');
         $this->set(compact('cedr'));
     }
 
     public function mmrOperacniProgramy()
     {
-        $mmr = $this->CiselnikMmrOperacniProgramv01->find('all', [
-            'order' => [
-                'operacaniProgramKod' => 'DESC'
-            ]
-        ]);
+        $mmr = $this->CiselnikMmrOperacniProgramv01->find('all');
+        $counts = $this->Caching->initCacheMMROP($mmr);
 
-        $cache_tag_mmr_op_counts = 'mmr_op_dotace_counts';
-        $counts = Cache::read($cache_tag_mmr_op_counts, 'long_term');
-        if ($counts === false) {
-            $counts = [];
-            foreach ($mmr as $op) {
-                $counts[$op->idOperacniProgram] = $this->Dotace->find('all', [
-                    'conditions' => [
-                        'iriOperacniProgram' => $op->idOperacniProgram
-                    ]
-                ])->count();
-            }
-            Cache::write($cache_tag_mmr_op_counts, $counts, 'long_term');
-        }
-
-        $this->set(compact('mmr', 'counts'));
+        $this->set(compact(['mmr', 'counts']));
     }
 
     public function financniZdroje()
@@ -151,37 +131,8 @@ class PagesController extends AppController
 
     public function kapitolyStatnihoRozpoctuUkazatele()
     {
-        $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
-            'order' => [
-                'statniRozpocetUkazatelKod' => 'ASC'
-            ]
-        ]);
+        $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all');
         $this->set(compact('data'));
-    }
-
-    public function rozpoctoveObdobi()
-    {
-        $year = $this->request->getParam('year');
-        $kod = $this->request->getQuery('kod');
-        $conds = [];
-        if ($year != null) {
-            $conds['rozpoctoveObdobi'] = $year;
-        }
-        if ($kod != null) {
-            $conds['iriDotacniTitul LIKE'] = 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/DotaceTitul/v01/' . $kod . '%';
-        }
-        $data = $this->RozpoctoveObdobi->find('all', [
-            'limit' => 1000,
-            'order' => [
-                'castkaSpotrebovana' => 'DESC',
-                'rozpoctoveObdobi' => 'DESC'
-            ],
-            'conditions' => $conds,
-            'contain' => [
-                'CiselnikDotaceTitulv01'
-            ]
-        ]);
-        $this->set(compact(['data', 'year']));
     }
 
     public function dotacniTituly()

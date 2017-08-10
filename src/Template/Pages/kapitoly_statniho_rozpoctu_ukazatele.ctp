@@ -1,44 +1,36 @@
 <?php
 $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
+
 ?>
-<h2>Dynamický stroj ukazatelů kapitol státního rozpočtu</h2>
-<div id="sourcestree"></div>
-<script type="text/javascript">
-    var sources = <?= json_encode($data) ?>;
-    function unflatten(arr) {
-        var tree = [],
-            mappedArr = {},
-            arrElem,
-            mappedElem;
 
-        // First map the nodes of the array to an object -> create a hash table.
-        for (var i = 0, len = arr.length; i < len; i++) {
-            arrElem = arr[i];
-            arrElem.text = arrElem.statniRozpocetUkazatelKod + " :: " + arrElem.statniRozpocetUkazatelNazev;
-            mappedArr[arrElem.statniRozpocetUkazatelKod] = arrElem;
-            mappedArr[arrElem.statniRozpocetUkazatelKod]['children'] = [];
-        }
-
-
-        for (var statniRozpocetUkazatelKod in mappedArr) {
-            if (mappedArr.hasOwnProperty(statniRozpocetUkazatelKod)) {
-                mappedElem = mappedArr[statniRozpocetUkazatelKod];
-                // If the element is not at the root level, add it to its parent array of children.
-                if (mappedElem.statniRozpocetUkazatelNadrizenyKod) {
-                    mappedArr[mappedElem['statniRozpocetUkazatelNadrizenyKod']]['children'].push(mappedElem);
-                }
-                // If the element is at the root level, add it to first level elements array.
-                else {
-                    tree.push(mappedElem);
-                }
-            }
-        }
-        return tree;
-    }
-    var sources_tree = unflatten(sources);
-    $("#sourcestree").jstree({
-        'core': {
-            'data': sources_tree
-        }
-    });
-</script>
+<table class="datatable">
+    <thead>
+    <tr>
+        <th>Název Ukazatele</th>
+        <th>Kód Ukazatele</th>
+        <th>Kód Kapitoly Státního Rozpočtu</th>
+        <th>Platnost Od</th>
+        <th>Platnost Do</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data as $d) { ?>
+        <tr>
+            <td><?= $d->statniRozpocetUkazatelNazev ?></td>
+            <td><?= $d->statniRozpocetUkazatelKod ?></td>
+            <td><?= $d->statniRozpocetKapitolaKod ?></td>
+            <td><?= $d->zaznamPlatnostOdDatum->nice() ?></td>
+            <td><?= $d->zaznamPlatnostDoDatum->nice() ?></td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td>Název Ukazatele</td>
+        <td>Kód Ukazatele</td>
+        <td>Kód Kapitoly Státního Rozpočtu</td>
+        <td>Platnost Od</td>
+        <td>Platnost Do</td>
+    </tr>
+    </tfoot>
+</table>
