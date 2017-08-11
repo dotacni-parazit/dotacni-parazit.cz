@@ -11,6 +11,11 @@ class CachingComponent extends Component
 
     static $defaultCacheConfig = 'long_term';
 
+    public function cacheAll(){
+        $this->initCacheMMROP($this->controller->CiselnikMmrOperacniProgramv01->find('all'));
+        $this->initCachePodlePoskytovatelu($this->controller->CiselnikDotacePoskytovatelv01->find('all'));
+    }
+
     public function initCacheMMROP($mmr_ops)
     {
         $cacheTag = $this->getCacheTag('op_dotace_counts', 'mmr');
@@ -51,6 +56,57 @@ class CachingComponent extends Component
             throw new InvalidArgumentException();
 
         Cache::write($cache_tag, $content, self::$defaultCacheConfig);
+    }
+
+    public function initCachePodlePoskytovatelu($poskytovateleDotaci)
+    {
+        $counts = [];
+
+        foreach ($poskytovateleDotaci as $d) {
+            $cache_key = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
+            $cache_key_spotrebovano = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
+
+            $cnt = $this->cacheRead($cache_key);
+            $cnt_spotreba = $this->cacheRead($cache_key_spotrebovano);
+
+            if ($cnt === false) {
+                // cache overall sum
+                $cnt = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'iriPoskytovatelDotace',
+                        'SUM' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'conditions' => [
+                        'iriPoskytovatelDotace' => $d->id,
+                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                    ]
+                ])->first()->SUM;
+                $this->cacheWrite($cache_key, $cnt);
+            }
+            if ($cnt_spotreba === false) {
+                $cnt_spotreba = $this->RozpoctoveObdobi->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSpotrebovana)'
+                        ],
+                        'conditions' => [
+                            'iriPoskytovatelDotace' => $d->id,
+                            'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                        ],
+                        'contain' => [
+                            'Rozhodnuti.Dotace.PrijemcePomoci'
+                        ]
+                    ])->first()->sum + 0;
+                $this->cacheWrite($cache_key_spotrebovano, $cnt_spotreba);
+            }
+
+            $counts[$d->id] = [
+                'soucet' => $cnt,
+                'soucetSpotrebovano' => $cnt_spotreba
+            ];
+
+        }
+
+        return $counts;
     }
 
 }

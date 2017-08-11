@@ -152,86 +152,13 @@ class PagesController extends AppController
         $this->set(compact('data'));
     }
 
-    public function cbFiltrKapitoly()
-    {
-        $tituly = $this->CiselnikDotaceTitulv01->find('all', [
-            'conditions' => [
-                'statniRozpocetKapitolaKod IN' => $this->request->getData()['kapitoly']
-            ],
-            'fields' => [
-                'idDotaceTitul',
-                'dotaceTitulKod',
-                'dotaceTitulNazev',
-                'zaznamPlatnostOdDatum',
-                'zaznamPlatnostDoDatum'
-            ]
-        ])->toArray();
-        echo json_encode($tituly);
-        die();
-    }
-
-    /*
-     * Finalni vystupy
-     * **/
-
-    /*
-     * Podle poskytovatelu
-     * **/
-
     public function podlePoskytovatelu()
     {
 
         $this->set('title', 'Poskytovatelé Dotací');
 
-        $data = $this->CiselnikDotacePoskytovatelv01->find('all', [
-            'order' => [
-                'CiselnikDotacePoskytovatelv01.dotacePoskytovatelKod' => 'ASC'
-            ]
-        ]);
-        $counts = [];
-        foreach ($data as $d) {
-            $cache_key = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
-            $cache_key_spotrebovano = 'sum_rozhodnuti_podle_poskytovatele_' . sha1($d->id);
-
-            $cnt = Cache::read($cache_key, 'long_term');
-            $cnt_spotreba = Cache::read($cache_key_spotrebovano, 'long_term');
-
-            if ($cnt === false) {
-                // cache overall sum
-                $cnt = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'iriPoskytovatelDotace',
-                        'SUM' => 'SUM(castkaRozhodnuta)'
-                    ],
-                    'conditions' => [
-                        'iriPoskytovatelDotace' => $d->id,
-                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
-                    ]
-                ])->first()->SUM;
-                Cache::write($cache_key, $cnt, 'long_term');
-            }
-            if ($cnt_spotreba === false) {
-                $cnt_spotreba = $this->RozpoctoveObdobi->find('all', [
-                        'fields' => [
-                            'sum' => 'SUM(castkaSpotrebovana)'
-                        ],
-                        'conditions' => [
-                            'iriPoskytovatelDotace' => $d->id,
-                            'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
-                        ],
-                        'contain' => [
-                            'Rozhodnuti.Dotace.PrijemcePomoci'
-                        ]
-                    ])->first()->sum + 0;
-                Cache::write($cache_key_spotrebovano, $cnt_spotreba, 'long_term');
-            }
-
-            $counts[$d->id] = [
-                'soucet' => $cnt,
-                'soucetSpotrebovano' => $cnt_spotreba
-            ];
-
-        }
+        $data = $this->CiselnikDotacePoskytovatelv01->find('all');
+        $counts = $this->Caching->initCachePodlePoskytovatelu($data);
 
         $this->set(compact(['data', 'counts']));
     }
@@ -1740,7 +1667,6 @@ class PagesController extends AppController
                     ];
                 }
 
-
                 $tables[] = $tableData;
             }
             Cache::write($cache_tag, $tables, 'long_term');
@@ -1990,7 +1916,8 @@ class PagesController extends AppController
         }
     }
 
-    public function strukturalniFondy(){
+    public function strukturalniFondy()
+    {
         $data = $this->StrukturalniFondy->find('all', [
             'conditions' => [
                 'cisloANazevProgramu' => 'CZ.3.22 OP ČR - Polsko'

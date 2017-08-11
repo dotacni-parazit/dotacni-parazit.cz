@@ -55,7 +55,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/kapitoly-statniho-rozpoctu', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctu']);
     $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazatele']);
     $routes->connect('/dotacni-tituly', ['controller' => 'Pages', 'action' => 'dotacniTituly']);
-    $routes->connect('/get-tituly-podle-kapitol', ['controller' => 'Pages', 'action' => 'cbFiltrKapitoly']);
     // Finalni vystupy
     $routes->connect('/fyzicke-osoby', ['controller' => 'Pages', 'action' => 'fyzickeOsoby']);
     $routes->connect('/fyzicke-osoby/ajax', ['controller' => 'Pages', 'action' => 'fyzickeOsobyAjax']);
@@ -96,7 +95,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-mmr-operacni-program/', ['controller' => 'Pages', 'action' => 'mmrOperacniProgram']);
     $routes->connect('/detail-mmr-grantove-schema/', ['controller' => 'Pages', 'action' => 'mmrGrantoveSchema']);
     $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
-
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
