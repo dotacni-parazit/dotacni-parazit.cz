@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikDotacePoskytovatelv01Table;
 use App\Model\Table\CiselnikDotaceTitulv01Table;
@@ -50,6 +51,7 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikObecv01Table CiselnikObecv01
  * @property CiselnikOkresv01Table CiselnikOkresv01
  * @property CiselnikKrajv01Table CiselnikKrajv01
+ * @property CiselnikCedrOpatreniv01Table CiselnikCedrOpatreniv01
  * @property RozhodnutiTable Rozhodnuti
  * @property CiselnikStatv01Table CiselnikStatv01
  * @property PrijemcePomociTable PrijemcePomoci
@@ -1720,6 +1722,42 @@ class PagesController extends AppController
             'contain' => [
                 'CiselnikMmrPrioritav01',
                 'CiselnikMmrPodOpatreniv01'
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $dotace = $this->Dotace->find('all', [
+            'fields' => [
+                'idDotace',
+                'idPrijemce',
+                'projektKod',
+                'projektIdnetifikator',
+                'projektNazev',
+                'PrijemcePomoci.idPrijemce',
+                'PrijemcePomoci.obchodniJmeno',
+                'PrijemcePomoci.jmeno',
+                'PrijemcePomoci.prijmeni'
+            ],
+            'conditions' => [
+                'iriOpatreni' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'PrijemcePomoci'
+            ]
+        ])->limit(1000);
+
+        $this->set(compact(['data', 'dotace']));
+    }
+
+    public function cedrOpatreni()
+    {
+        $data = $this->CiselnikCedrOpatreniv01->find('all', [
+            'conditions' => [
+                'idOpatreni' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikCedrPrioritav01',
+                'CiselnikCedrPodOpatreniv01'
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();

@@ -33,6 +33,16 @@ class CiselnikCedrOpatreniv01Table extends Table
         $this->setTable('ciselnikCedrOpatreniv01');
         $this->setDisplayField('idOpatreni');
         $this->setPrimaryKey('idOpatreni');
+
+        $this->belongsTo('CiselnikCedrPrioritav01')
+            ->setBindingKey('idPriorita')
+            ->setForeignKey('idPriorita')
+            ->setProperty('CedrPriorita');
+
+        $this->hasMany('CiselnikCedrPodOpatreniv01')
+            ->setBindingKey('idOpatreni')
+            ->setForeignKey('idOpatreni')
+            ->setProperty('CedrPodOpatreni');
     }
 
     /**

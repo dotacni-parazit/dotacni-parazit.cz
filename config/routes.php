@@ -97,6 +97,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/detail-cedr-operacni-program/', ['controller' => 'Pages', 'action' => 'cedrOperacniProgram']);
     $routes->connect('/detail-cedr-priorita/', ['controller' => 'Pages', 'action' => 'cedrPriorita']);
+    $routes->connect('/detail-cedr-opatreni/', ['controller' => 'Pages', 'action' => 'cedrOpatreni']);
 
     $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
 
