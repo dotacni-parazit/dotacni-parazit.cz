@@ -1761,7 +1761,19 @@ class PagesController extends AppController
                 'CiselnikMmrPodOpatreniv01'
             ]
         ])->first();
-        if (empty($data)) throw new NotFoundException();
+        if (empty($data)) {
+            $podopatreni = $this->CiselnikMmrPodOpatreniv01->find('all', [
+                'conditions' => [
+                    'idPodOpatreni' => $this->request->getQuery('id')
+                ]
+            ])->first();
+            if (empty($podopatreni)) {
+                throw new NotFoundException();
+            } else {
+                $this->redirect('/detail-mmr-podopatreni/?id=' . $this->request->getQuery('id'));
+                return;
+            }
+        }
 
         $dotace = $this->Dotace->find('all', [
             'fields' => [
@@ -1797,7 +1809,19 @@ class PagesController extends AppController
                 'CiselnikCedrPodOpatreniv01'
             ]
         ])->first();
-        if (empty($data)) throw new NotFoundException();
+        if (empty($data)) {
+            $podopatreni = $this->CiselnikCedrPodOpatreniv01->find('all', [
+                'conditions' => [
+                    'idPodOpatreni' => $this->request->getQuery('id')
+                ]
+            ])->first();
+            if (empty($podopatreni)) {
+                throw new NotFoundException();
+            } else {
+                $this->redirect('/detail-cedr-podopatreni/?id=' . $this->request->getQuery('id'));
+                return;
+            }
+        }
 
         $dotace = $this->Dotace->find('all', [
             'fields' => [
@@ -1862,6 +1886,7 @@ class PagesController extends AppController
             $this->set(compact(['data']));
         }
     }
+
     public function cedrPriorita()
     {
         $data = $this->CiselnikCedrPrioritav01->find('all', [

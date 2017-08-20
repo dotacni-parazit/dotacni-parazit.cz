@@ -80,13 +80,13 @@ $this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod
             <tbody>
             <?php foreach ($dotace as $d) { ?>
                 <?php
-
+                    $jmenoPrijemce = empty($d->PrijemcePomoci->obchodniJmeno) ? $d->PrijemcePomoci->jmeno . " " . $d->PrijemcePomoci->prijmeni : $d->PrijemcePomoci->obchodniJmeno;
                 ?>
                 <tr>
                     <td><?= $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace) ?></td>
                     <td><?= $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace) ?></td>
                     <td><?= $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace) ?></td>
-                    <td><?= $this->Html->link($d->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce) ?></td>
+                    <td><?= $this->Html->link($jmenoPrijemce, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce) ?></td>
                 </tr>
             <?php } ?>
             </tbody>

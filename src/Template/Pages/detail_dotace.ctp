@@ -103,7 +103,7 @@ $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikato
         $priorita_value = $this->Html->link(
             $dotace->CedrPriorita->prioritaNazev .
             ' ( kód: ' . $dotace->CedrPriorita->prioritaKod . ')',
-            '/detail-mmr-priorita/?id=' . $dotace->CedrPriorita->idPriorita
+            '/detail-cedr-priorita/?id=' . $dotace->CedrPriorita->idPriorita
         );
     }
 

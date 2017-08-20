@@ -9,6 +9,7 @@ $this->set('title', 'Operační programy CEDR');
         <th>Číslo Programu</th>
         <th>Počet evidovaných dotací</th>
         <th>Platnost Do</th>
+        <th>Otevřít</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@ $this->set('title', 'Operační programy CEDR');
             <td><?= $c->operacaniProgramCislo ?></td>
             <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
+            <td><?= $this->Html->link('Otevřít', '/detail-cedr-operacni-program/?id=' . $c->idOperacniProgram) ?></td>
         </tr>
         <?php
     }
@@ -34,6 +36,7 @@ $this->set('title', 'Operační programy CEDR');
         <td>Číslo Programu</td>
         <td>Počet evidovaných dotací</td>
         <td>Platnost Do</td>
+        <td>Otevřít</td>
     </tr>
     </tfoot>
 </table>

@@ -18,6 +18,9 @@
     <a href="/operacni-programy-mmr">MMR OP</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">
+    <a href="/operacni-programy-cedr">CEDR OP</a>
+</div>
+<div class="homepage_tile medium-6 large-3 small-12">
     <a href="/strukturalni-fondy">Strukturální Fondy</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">

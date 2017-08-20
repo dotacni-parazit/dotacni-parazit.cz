@@ -6,7 +6,6 @@ $this->set('title', 'Číselníky');
     <li><a href="/pravni-formy">Číselník Právních Forem</a></li>
     <li><a href="/kapitoly-statniho-rozpoctu">Číselník Kapitol Státního Rozpočtu</a></li>
     <li><a href="/kapitoly-statniho-rozpoctu-ukazatele">Číselník Ukazatelů Kapitol Státního Rozpočtu</a></li>
-    <li><a href="/operacni-programy-cedr">Operační programy CEDR</a></li>
 </ul>
 <hr/>
 <strong>Zajímavost:</strong>
