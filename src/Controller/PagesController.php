@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Component\CachingComponent;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
@@ -58,6 +59,7 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikStatv01Table CiselnikStatv01
  * @property PrijemcePomociTable PrijemcePomoci
  * @property DotaceTable Dotace
+ * @property CachingComponent Caching;
  */
 class PagesController extends AppController
 {
@@ -101,6 +103,26 @@ class PagesController extends AppController
     {
     }
 
+    public function cache()
+    {
+        $this->Caching->cacheAll();
+        $this->cedrOperacniProgramy();
+        $this->mmrOperacniProgramy();
+        $this->detailKrajeCache();
+        $this->detailObceCache();
+        $this->detailOkresyCache();
+        $this->detailStatuCache();
+        $this->podlePoskytovatelu();
+        $this->podlePrijemcu();
+        $this->strukturalniFondy();
+        $this->podleSidlaPrijemce();
+        $this->podleZdrojeFinanci();
+        $this->statistics();
+        $this->dotacniTituly();
+        $this->fyzickeOsoby();
+        $this->podleZdrojeFinanciCompleteAjax();
+    }
+
     public function cedrOperacniProgramy()
     {
         $cedr = $this->CiselnikCedrOperacniProgramv01->find('all');
@@ -115,6 +137,789 @@ class PagesController extends AppController
         $counts = $this->Caching->initCacheMMROP($mmr);
 
         $this->set(compact(['mmr', 'counts']));
+    }
+
+    public function detailKrajeCache()
+    {
+        $kraje = $this->CiselnikKrajv01->find('all', [
+            'fields' => [
+                'krajKod' => 'DISTINCT(krajKod)'
+            ]
+        ])->enableHydration(false)->toArray();
+
+        foreach ($kraje as $kraj) {
+
+            $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj['krajKod']);
+            $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'CiselnikOkresv01.krajNadKod' => $kraj['krajKod'],
+                        'refundaceIndikator' => 0
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(20000)->enableHydration(false)->toArray();
+                Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
+            }
+            debug($kraj);
+            debug(count($biggest));
+        }
+    }
+
+    public function detailObceCache()
+    {
+        $obce = $this->CiselnikObecv01->find('all', [
+            'fields' => [
+                'obecKod' => 'DISTINCT(obecKod)'
+            ]
+        ])->enableHydration(false)->toArray();
+
+        foreach ($obce as $obec) {
+            debug($obec);
+
+            $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec['obecKod']);
+            $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'CiselnikObecv01.obecKod' => $obec['obecKod'],
+                        'refundaceIndikator' => 0
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(20000)->enableHydration(false)->toArray();
+                Cache::write($cache_tag_obec_top_100, $biggest, 'long_term');
+            }
+            debug(count($biggest));
+        }
+    }
+
+    public function detailOkresyCache()
+    {
+        $okresy = $this->CiselnikOkresv01->find('all', [
+            'fields' => [
+                'okresKod' => 'DISTINCT(okresKod)'
+            ]
+        ])->enableHydration(false)->toArray();
+
+        foreach ($okresy as $okres) {
+            debug($okres);
+
+            $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres['okresKod']);
+            $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'CiselnikObecv01.okresNadKod' => $okres['okresKod'],
+                        'refundaceIndikator' => 0
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(20000)->enableHydration(false)->toArray();
+                Cache::write($cache_tag_okres_top_100, $biggest, 'long_term');
+            }
+            debug(count($biggest));
+        }
+    }
+
+    public function detailStatuCache()
+    {
+        $staty = $this->CiselnikStatv01->find('all', [
+            'fields' => [
+                'statKod3Znaky' => 'DISTINCT(statKod3Znaky)'
+            ]
+        ])->enableHydration(false)->toArray();
+
+        foreach ($staty as $stat) {
+            debug($stat);
+
+            $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat['statKod3Znaky']);
+            $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
+
+            if ($biggest === false) {
+                $biggest = $this->Rozhodnuti->find('all', [
+                    'order' => [
+                        'castkaRozhodnuta' => 'DESC'
+                    ],
+                    'fields' => [
+                        'RozpoctoveObdobi.rozpoctoveObdobi',
+                        'RozpoctoveObdobi.castkaSpotrebovana',
+                        'Rozhodnuti.castkaRozhodnuta',
+                        'Rozhodnuti.idRozhodnuti',
+                        'Dotace.idDotace',
+                        'Dotace.idPrijemce',
+                        'Dotace.projektNazev',
+                        'Dotace.projektIdnetifikator',
+                        'PrijemcePomoci.obchodniJmeno'
+                    ],
+                    'conditions' => [
+                        'PrijemcePomoci.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi',
+                        'Dotace',
+                        'Dotace.PrijemcePomoci'
+                    ],
+                    'group' => [
+                        'Rozhodnuti.idRozhodnuti'
+                    ]
+                ])->limit(100)->enableHydration(false)->toArray();
+                Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
+            }
+            debug(count($biggest));
+        }
+    }
+
+    public function podlePoskytovatelu()
+    {
+
+        $this->set('title', 'Poskytovatelé Dotací');
+
+        $data = $this->CiselnikDotacePoskytovatelv01->find('all');
+        $counts = $this->Caching->initCachePodlePoskytovatelu($data);
+
+        $this->set(compact(['data', 'counts']));
+    }
+
+    public function podlePrijemcu()
+    {
+
+        $ico = $this->request->getQuery('ico');
+        $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
+        $name = $this->request->getQuery('name');
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $multiple = $this->request->getQuery('multiple');
+        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
+        $pravni_forma = $this->request->getQuery('pravniforma');
+        $pravni_forma = filter_var($pravni_forma, FILTER_SANITIZE_NUMBER_INT);
+        $multi_prijemci = null;
+
+        if (!empty($multiple)) {
+            foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
+                if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
+                $multi_prijemci .= $multi_ico . ",";
+            }
+            $multi_prijemci = substr($multi_prijemci, 0, -1);
+        }
+
+        if ($ico != null) {
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'jmeno',
+                    'prijmeni',
+                    'ico'
+                ],
+                'conditions' => [
+                    'ico' => $ico
+                ]
+            ])->limit(10000);
+            if ($ico != 0 && count($prijemci->toArray()) == 1) {
+                $this->redirect('/detail-prijemce-pomoci/' . $prijemci->first()->idPrijemce);
+            }
+            $this->set(compact('prijemci'));
+        } else if (!empty($name)) {
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'ico',
+                    'jmeno',
+                    'prijmeni'
+                ],
+                'conditions' => [
+                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
+                ]
+            ])->bind(':against', h($name))->limit(10000);
+            $this->set(compact('prijemci'));
+        } else if (!empty($multi_prijemci)) {
+            $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
+        } else if (!empty($pravni_forma)) {
+            $pf = $this->CiselnikPravniFormav01->find('all', [
+                'conditions' => [
+                    'pravniFormaKod' => $pravni_forma
+                ]
+            ])->first();
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'ico',
+                    'jmeno',
+                    'prijmeni'
+                ],
+                'conditions' => [
+                    'iriPravniForma' => $pf->id
+                ]
+            ]);
+            $this->set(compact('prijemci'));
+        } else {
+            $zvlastni_ico = $this->PrijemcePomoci->find('all', [
+                'conditions' => [
+                    'AND' => [
+                        'ico > 0',
+                        'ico < 10000'
+                    ]
+                ],
+                'fields' => ['ico', 'idPrijemce', 'obchodniJmeno'],
+                'group' => 'ico'
+            ]);
+            $this->set(compact(['zvlastni_ico']));
+        }
+
+        $pravni_formy = $this->CiselnikPravniFormav01->find('list', [
+            'fields' => [
+                'id' => 'pravniFormaKod',
+                'pravniFormaNazev'
+            ]
+        ]);
+
+        $this->set(compact(['ico', 'name', 'multiple', 'pravni_formy']));
+    }
+
+    public function strukturalniFondy()
+    {
+        $data = $this->StrukturalniFondy->find('all', [
+            'conditions' => [
+                'cisloANazevProgramu' => 'CZ.3.22 OP ČR - Polsko'
+            ]
+        ])->limit(10000);
+        $this->set(compact(['data']));
+    }
+
+    public function podleSidlaPrijemce()
+    {
+
+        $kraje = $this->CiselnikKrajv01->find('all', [
+            'fields' => [
+                'krajNazev' => 'DISTINCT(krajNazev)'
+            ],
+            'order' => [
+                'krajKod' => 'ASC'
+            ]
+        ]);
+
+        $kraje_ids = $this->CiselnikKrajv01->find('all', [
+            'fields' => [
+                'krajKod' => 'DISTINCT(CiselnikKrajv01.krajKod)'
+            ],
+            'order' => [
+                'krajKod' => 'ASC'
+            ]
+        ]);
+
+        $okresy = $this->CiselnikOkresv01->find('all', [
+            'group' => [
+                'okresKod'
+            ]
+        ]);
+        $obce = $this->CiselnikObecv01->find('all', [
+            'group' => 'obecKod'
+        ]);
+
+        $staty = $this->CiselnikStatv01->find('all', [
+            'fields' => [
+                'CiselnikStatv01.statNazev',
+                'CiselnikStatv01.id',
+                'CiselnikStatv01.statKod3Znaky'
+            ]
+        ]);
+
+        $soucet_staty = [];
+        $soucet_staty_spotrebovano = [];
+        $kraje_data = [];
+        $okresy_soucet = [];
+        $obce_soucet = [];
+
+        foreach ($staty as $stat) {
+            // soucet rozhodnutych
+            $cache_tag = "soucet_stat_" . $stat->statKod3Znaky;
+            $soucet = Cache::read($cache_tag, 'long_term');
+            if ($soucet === false) {
+                $sum = $this->Rozhodnuti->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaRozhodnuta)'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.iriStat' => $stat->id,
+                            'refundaceIndikator' => 0
+                        ],
+                        'contain' => [
+                            'Dotace.PrijemcePomoci'
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_tag, $sum, 'long_term');
+                $soucet = $sum;
+            }
+            $soucet_staty[$stat->id] = $soucet;
+
+
+            // soucet spotrebovaanych
+            $cache_tag_spotrebovano = "soucet_stat_spotrebovano_" . $stat->statKod3Znaky;
+            $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
+            if ($soucet_spotrebovano === false) {
+                $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSpotrebovana)'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.iriStat' => $stat->id,
+                            'refundaceIndikator' => 0
+                        ],
+                        'contain' => [
+                            'Rozhodnuti.Dotace.PrijemcePomoci'
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_tag_spotrebovano, $sum_spotrebovano, 'long_term');
+                $soucet_spotrebovano = $sum_spotrebovano;
+            }
+            $soucet_staty_spotrebovano[$stat->id] = $soucet_spotrebovano;
+        }
+
+        foreach ($kraje_ids as $kraj) {
+            $cache_tag_kraj = 'soucet_kraj_' . sha1($kraj->krajKod);
+            $soucet_kraj = Cache::read($cache_tag_kraj, 'long_term');
+            if ($soucet_kraj === false) {
+                $soucet = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(Rozhodnuti.castkaRozhodnuta)'
+                    ],
+                    'conditions' => [
+                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod
+                    ],
+                    'contain' => [
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                    ]
+                ])->first();
+                Cache::write($cache_tag_kraj, $soucet->sum, 'long_term');
+                $soucet_kraj = $soucet->sum;
+            }
+
+            $cache_tag_kraj_spotrebovano = 'soucet_kraj_spotrebovano_' . sha1($kraj->krajKod);
+            $soucet_kraj_spotrebovano = Cache::read($cache_tag_kraj_spotrebovano, 'long_term');
+            if ($soucet_kraj_spotrebovano === false) {
+                $soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod
+                    ],
+                    'contain' => [
+                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                    ]
+                ])->first();
+                Cache::write($cache_tag_kraj_spotrebovano, $soucet_spotrebovano->sum, 'long_term');
+                $soucet_kraj_spotrebovano = $soucet_spotrebovano->sum;
+            }
+
+            $kraje_data[$kraj->krajKod] = (object)[
+                'krajKod' => $kraj->krajKod,
+                'soucet' => $soucet_kraj,
+                'soucet_spotrebovano' => $soucet_kraj_spotrebovano,
+                'krajNazev' => $this->CiselnikKrajv01->find('all', ['conditions' => ['krajKod' => $kraj->krajKod]])->first()->krajNazev,
+                'color' => ''
+            ];
+        }
+
+        $gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($kraje_data) + 1);
+        usort($kraje_data, function ($a, $b) {
+            if ($a->soucet_spotrebovano == $b->soucet_spotrebovano) {
+                return 0;
+            }
+            return ($a->soucet_spotrebovano < $b->soucet_spotrebovano) ? -1 : 1;
+        });
+
+        $tmparr = [];
+        $cntr = 0;
+        foreach ($kraje_data as $key => $val) {
+            $val->color = $gradients[$cntr];
+            $tmparr[$val->krajKod] = $val;
+            $cntr++;
+        }
+        $kraje_data = $tmparr;
+        unset($tmparr);
+
+        foreach ($okresy as $okres) {
+            $cache_tag_okres_soucet = 'soucet_okres_' . sha1($okres->okresKod);
+            $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($okres->okresKod);
+
+            $soucet_okres = Cache::read($cache_tag_okres_soucet, 'long_term');
+            $soucet_okres_spotrebovano = Cache::read($cache_tag_okres_soucet_spotrebovano, 'long_term');
+
+            if ($soucet_okres === false) {
+                $soucet_okres = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'contain' => [
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                    ],
+                    'conditions' => [
+                        'CiselnikOkresv01.okresKod' => $okres->okresKod,
+                        'refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_okres_soucet, $soucet_okres, 'long_term');
+            }
+
+            if ($soucet_okres_spotrebovano === false) {
+                $soucet_okres_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'contain' => [
+                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
+                    ],
+                    'conditions' => [
+                        'CiselnikOkresv01.okresKod' => $okres->okresKod,
+                        'refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_okres_soucet_spotrebovano, $soucet_okres_spotrebovano, 'long_term');
+            }
+
+            $okresy_soucet[$okres->id] = (object)[
+                'soucet' => $soucet_okres,
+                'soucetSpotrebovano' => $soucet_okres_spotrebovano,
+                'okresNazev' => $okres->okresNazev,
+                'color' => '',
+                'okresKod' => $okres->okresKod,
+                'id' => $okres->id
+            ];
+        }
+
+        $okresy_gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($okresy_soucet) + 1);
+        usort($okresy_soucet, function ($a, $b) {
+            if ($a->soucetSpotrebovano == $b->soucetSpotrebovano) {
+                return 0;
+            }
+            return ($a->soucetSpotrebovano < $b->soucetSpotrebovano) ? -1 : 1;
+        });
+
+        $tmparr = [];
+        $cntr = 0;
+        foreach ($okresy_soucet as $key => $val) {
+            $val->color = $okresy_gradients[$cntr];
+            $tmparr[$val->id] = $val;
+            $cntr++;
+        }
+        $okresy_soucet = $tmparr;
+        unset($tmparr);
+
+        foreach ($obce as $obec) {
+            $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->obecKod);
+            $cache_tag_obec_soucet_spotrebovano = 'obec_soucet_spotrebovano_' . sha1($obec->obecKod);
+
+            $obec_soucet = Cache::read($cache_tag_obec_soucet, 'long_term');
+            $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
+
+            if ($obec_soucet === false) {
+                $obec_soucet = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'contain' => [
+                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                    ],
+                    'conditions' => [
+                        'CiselnikObecv01.obecKod' => $obec->obecKod,
+                        'refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_obec_soucet, $obec_soucet, 'long_term');
+            }
+
+            if ($obec_soucet_spotrebovano === false) {
+                $obec_soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'contain' => [
+                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                    ],
+                    'conditions' => [
+                        'CiselnikObecv01.obecKod' => $obec->obecKod,
+                        'refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_obec_soucet_spotrebovano, $obec_soucet_spotrebovano, 'long_term');
+            }
+
+            $obce_soucet[$obec->id] = (object)[
+                'soucet' => $obec_soucet,
+                'soucetSpotrebovano' => $obec_soucet_spotrebovano
+            ];
+        }
+
+        $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
+    }
+
+    private
+    function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
+    {
+        $colorindex = array();
+        for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {
+            $iterationdiff = $iterationnr - $iterationc;
+            $colorindex[] = '#' .
+                str_pad(dechex(intval((($ra * $iterationc) + ($rz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
+                str_pad(dechex(intval((($ga * $iterationc) + ($gz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
+                str_pad(dechex(intval((($ba * $iterationc) + ($bz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT);
+        }
+        return $colorindex;
+    }
+
+    public function podleZdrojeFinanci()
+    {
+
+        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
+        $sums = [];
+        foreach ($zdroje as $z) {
+            // soucet spotrebovana
+            $cache_tag = 'soucet_podle_zdroje_' . sha1($z->id);
+            $sum = Cache::read($cache_tag, 'long_term');
+            $sums[$z->financniZdrojKod]['SUM'] = $sum;
+            if ($sum === false) {
+                $z_sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'iriFinancniZdroj' => $z->id,
+                        'refundaceIndikator' => 0
+                    ],
+                    'contain' => [
+                        'RozpoctoveObdobi'
+                    ]
+                ])->first()->toArray()['SUM'];
+                Cache::write($cache_tag, $z_sum, 'long_term');
+                $sums[$z->financniZdrojKod]['SUM'] = $z_sum;
+            }
+
+            // soucet rozhodnuta
+            $cache_tag = 'soucet_podle_zdroje_rozhodnuta_' . sha1($z->id);
+            $sum = Cache::read($cache_tag, 'long_term');
+            $sums[$z->financniZdrojKod]['SUM2'] = $sum;
+            if ($sum === false) {
+                $z_sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'SUM' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'conditions' => [
+                        'iriFinancniZdroj' => $z->id,
+                        'refundaceIndikator' => 0
+                    ]
+                ])->first()->toArray()['SUM'];
+                Cache::write($cache_tag, $z_sum, 'long_term');
+                $sums[$z->financniZdrojKod]['SUM2'] = $z_sum;
+            }
+        }
+        $data = [];
+        foreach ($zdroje as $z) {
+            $data[$z->financniZdrojKod] = [
+                'nazev' => $z->financniZdrojNazev,
+                'castkaSpotrebovana' => $sums[$z->financniZdrojKod]['SUM'],
+                'castkaRozhodnuta' => $sums[$z->financniZdrojKod]['SUM2'],
+                'id' => $z->financniZdrojKod
+            ];
+        }
+        $sort = $this->request->getQuery('sort');
+        if ($sort) {
+            if ($sort === "sum") {
+                usort($data, function ($a, $b) {
+                    return $b['castkaSpotrebovana'] - $a['castkaSpotrebovana'];
+                });
+            } else if ($sort === "zdroj") {
+                usort($data, function ($a, $b) {
+                    return strcmp($a['nazev'], $b['nazev']);
+                });
+            }
+        }
+        $this->set(compact(['data']));
+        $this->set('title', 'Zdroj Financí / Financování');
+    }
+
+    public
+    function statistics()
+    {
+        $cache_tag = 'db_stats';
+        $tables = Cache::read($cache_tag, 'long_term');
+        if ($tables === false) {
+            $tables = [];
+            $dbtables = ConnectionManager::get('default')->schemaCollection()->listTables();
+            foreach ($dbtables as $key => $t) {
+                $tablereg = TableRegistry::get($t);
+
+                $this->loadModel($tablereg->getAlias());
+                $tableData = (object)[
+                    "name" => $tablereg->getAlias(),
+                    "total" => $this->{$tablereg->getAlias()}->find()->count(),
+                    "columns" => []
+                ];
+                $tableCount100 = $tableData->total / 100;
+
+                foreach ($tablereg->getSchema()->columns() as $raw_col) {
+                    $col_type = $tablereg->getSchema()->column($raw_col);
+                    $col_type = $col_type['type'];
+                    /** @var Query $empty_rows */
+                    $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col . ' IS NULL']);
+                    if ($col_type == 'string') $empty_rows->orWhere([$raw_col => '']);
+                    else if ($col_type == 'decimal') $empty_rows->orWhere([$raw_col => 0]);
+                    $empty_rows = $empty_rows->count();
+
+                    $top_value = $this->{$tablereg->getAlias()}->find('all', [
+                        'fields' => [
+                            $raw_col,
+                            'rsum' => 'COUNT(' . $raw_col . ')'
+                        ],
+                        'group' => [$raw_col],
+                        'order' => [
+                            'rsum' => 'DESC'
+                        ]
+                    ])->limit(1)->first();
+                    $tableData->columns[] = (object)[
+                        "empty_rows" => $empty_rows,
+                        "percent_empty" => $tableCount100 == 0 ? 0 : round($empty_rows / $tableCount100, 4),
+                        "name" => $raw_col,
+                        "most_common_value" => empty($top_value) ? '' : $top_value->{$raw_col}
+                    ];
+                }
+
+                $tables[] = $tableData;
+            }
+            Cache::write($cache_tag, $tables, 'long_term');
+        }
+        $this->set(compact(['tables']));
+    }
+
+    /*
+     * Podle prijemcu
+     * **/
+
+    public function dotacniTituly()
+    {
+        $data = $this->CiselnikDotaceTitulv01->find('all', [
+            'contain' => [
+                'CiselnikStatniRozpocetKapitolav01'
+            ],
+            'group' => [
+                'dotaceTitulKod'
+            ],
+            'order' => [
+                'CiselnikDotaceTitulv01.zaznamPlatnostDoDatum' => 'DESC'
+            ]
+        ]);
+
+        $this->set(compact('data'));
+    }
+
+    public function fyzickeOsoby()
+    {
+
+    }
+
+    public function podleZdrojeFinanciCompleteAjax()
+    {
+
+        $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
+            'conditions' => [
+                'financniZdrojKod' => $this->request->getParam('kod')
+            ]
+        ])->first();
+        if (empty($zdroj)) throw new NotFoundException();
+
+        $conditions = [
+            'iriFinancniZdroj' => $zdroj->id
+        ];
+        if (!empty($this->request->getParam('year'))) {
+            $conditions['rokRozhodnuti'] = $this->request->getParam('year');
+        }
+
+        $dotace = $this->Rozhodnuti->find('all', [
+            'conditions' => $conditions,
+            'contain' => [
+                'Dotace',
+                'Dotace.PrijemcePomoci',
+                'CiselnikFinancniZdrojv01',
+                'CiselnikFinancniProstredekCleneniv01',
+                'RozpoctoveObdobi'
+            ],
+            'order' => [
+                'castkaRozhodnuta' => 'DESC'
+            ]
+        ])->limit(20000);
+
+        $_serialize = false;
+
+        $this->set(compact(['dotace', '_serialize']));
     }
 
     public function financniZdroje()
@@ -139,34 +944,6 @@ class PagesController extends AppController
     {
         $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all');
         $this->set(compact('data'));
-    }
-
-    public function dotacniTituly()
-    {
-        $data = $this->CiselnikDotaceTitulv01->find('all', [
-            'contain' => [
-                'CiselnikStatniRozpocetKapitolav01'
-            ],
-            'group' => [
-                'dotaceTitulKod'
-            ],
-            'order' => [
-                'CiselnikDotaceTitulv01.zaznamPlatnostDoDatum' => 'DESC'
-            ]
-        ]);
-
-        $this->set(compact('data'));
-    }
-
-    public function podlePoskytovatelu()
-    {
-
-        $this->set('title', 'Poskytovatelé Dotací');
-
-        $data = $this->CiselnikDotacePoskytovatelv01->find('all');
-        $counts = $this->Caching->initCachePodlePoskytovatelu($data);
-
-        $this->set(compact(['data', 'counts']));
     }
 
     public function podlePoskytovateluDetail()
@@ -217,7 +994,7 @@ class PagesController extends AppController
                     'conditions' => [
                         'iriPoskytovatelDotace' => $poskytovatel->id,
                         'rokRozhodnuti' => $year,
-                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                        'refundaceIndikator' => 0
                     ]
                 ])->first()->SUM;
                 Cache::write($cache_key_year, $year_sum, 'long_term');
@@ -232,7 +1009,7 @@ class PagesController extends AppController
                     'conditions' => [
                         'iriPoskytovatelDotace' => $poskytovatel->id,
                         'rokRozhodnuti' => $year,
-                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                        'refundaceIndikator' => 0
                     ],
                     'contain' => [
                         'Rozhodnuti'
@@ -351,7 +1128,7 @@ class PagesController extends AppController
                 'conditions' => [
                     'iriPoskytovatelDotace' => $poskytovatel->id,
                     'rokRozhodnuti' => $year,
-                    'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                    'refundaceIndikator' => 0
                 ]
             ])->first()->toArray();
             $year_sum = $year_sum['SUM'];
@@ -406,10 +1183,6 @@ class PagesController extends AppController
 
         $this->set(compact(['dotace', 'rozhodnuti']));
     }
-
-    /*
-     * Podle prijemcu
-     * **/
 
     public function detailPrijemcePomoci()
     {
@@ -482,103 +1255,6 @@ class PagesController extends AppController
         $this->set(compact(['prijemce', 'dotace', 'prijemci']));
     }
 
-    public function podlePrijemcu()
-    {
-
-        $ico = $this->request->getQuery('ico');
-        $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
-        $name = $this->request->getQuery('name');
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $multiple = $this->request->getQuery('multiple');
-        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
-        $pravni_forma = $this->request->getQuery('pravniforma');
-        $pravni_forma = filter_var($pravni_forma, FILTER_SANITIZE_NUMBER_INT);
-        $multi_prijemci = null;
-
-        if (!empty($multiple)) {
-            foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
-                if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
-                $multi_prijemci .= $multi_ico . ",";
-            }
-            $multi_prijemci = substr($multi_prijemci, 0, -1);
-        }
-
-        if ($ico != null) {
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'jmeno',
-                    'prijmeni',
-                    'ico'
-                ],
-                'conditions' => [
-                    'ico' => $ico
-                ]
-            ])->limit(10000);
-            if ($ico != 0 && count($prijemci->toArray()) == 1) {
-                $this->redirect('/detail-prijemce-pomoci/' . $prijemci->first()->idPrijemce);
-            }
-            $this->set(compact('prijemci'));
-        } else if (!empty($name)) {
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'ico',
-                    'jmeno',
-                    'prijmeni'
-                ],
-                'conditions' => [
-                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
-                ]
-            ])->bind(':against', h($name))->limit(10000);
-            $this->set(compact('prijemci'));
-        } else if (!empty($multi_prijemci)) {
-            $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
-        } else if (!empty($pravni_forma)) {
-            $pf = $this->CiselnikPravniFormav01->find('all', [
-                'conditions' => [
-                    'pravniFormaKod' => $pravni_forma
-                ]
-            ])->first();
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'ico',
-                    'jmeno',
-                    'prijmeni'
-                ],
-                'conditions' => [
-                    'iriPravniForma' => $pf->id
-                ]
-            ]);
-            $this->set(compact('prijemci'));
-        } else {
-            $zvlastni_ico = $this->PrijemcePomoci->find('all', [
-                'conditions' => [
-                    'AND' => [
-                        'ico > 0',
-                        'ico < 10000'
-                    ]
-                ],
-                'fields' => ['ico', 'idPrijemce', 'obchodniJmeno'],
-                'group' => 'ico'
-            ]);
-            $this->set(compact(['zvlastni_ico']));
-        }
-
-        $pravni_formy = $this->CiselnikPravniFormav01->find('list', [
-            'fields' => [
-                'id' => 'pravniFormaKod',
-                'pravniFormaNazev'
-            ]
-        ]);
-
-        $this->set(compact(['ico', 'name', 'multiple', 'pravni_formy']));
-    }
-
     public function detailPrijemceMulti()
     {
         $multiple = $this->request->getParam('ico');
@@ -593,76 +1269,6 @@ class PagesController extends AppController
         }
 
         $prijemci = [];
-    }
-
-    public function podleZdrojeFinanci()
-    {
-
-        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
-        $sums = [];
-        foreach ($zdroje as $z) {
-            // soucet spotrebovana
-            $cache_tag = 'soucet_podle_zdroje_' . sha1($z->id);
-            $sum = Cache::read($cache_tag, 'long_term');
-            $sums[$z->financniZdrojKod]['SUM'] = $sum;
-            if ($sum === false) {
-                $z_sum = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'SUM' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
-                    ],
-                    'conditions' => [
-                        'iriFinancniZdroj' => $z->id,
-                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
-                    ],
-                    'contain' => [
-                        'RozpoctoveObdobi'
-                    ]
-                ])->first()->toArray()['SUM'];
-                Cache::write($cache_tag, $z_sum, 'long_term');
-                $sums[$z->financniZdrojKod]['SUM'] = $z_sum;
-            }
-
-            // soucet rozhodnuta
-            $cache_tag = 'soucet_podle_zdroje_rozhodnuta_' . sha1($z->id);
-            $sum = Cache::read($cache_tag, 'long_term');
-            $sums[$z->financniZdrojKod]['SUM2'] = $sum;
-            if ($sum === false) {
-                $z_sum = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'SUM' => 'SUM(castkaRozhodnuta)'
-                    ],
-                    'conditions' => [
-                        'iriFinancniZdroj' => $z->id,
-                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
-                    ]
-                ])->first()->toArray()['SUM'];
-                Cache::write($cache_tag, $z_sum, 'long_term');
-                $sums[$z->financniZdrojKod]['SUM2'] = $z_sum;
-            }
-        }
-        $data = [];
-        foreach ($zdroje as $z) {
-            $data[$z->financniZdrojKod] = [
-                'nazev' => $z->financniZdrojNazev,
-                'castkaSpotrebovana' => $sums[$z->financniZdrojKod]['SUM'],
-                'castkaRozhodnuta' => $sums[$z->financniZdrojKod]['SUM2'],
-                'id' => $z->financniZdrojKod
-            ];
-        }
-        $sort = $this->request->getQuery('sort');
-        if ($sort) {
-            if ($sort === "sum") {
-                usort($data, function ($a, $b) {
-                    return $b['castkaSpotrebovana'] - $a['castkaSpotrebovana'];
-                });
-            } else if ($sort === "zdroj") {
-                usort($data, function ($a, $b) {
-                    return strcmp($a['nazev'], $b['nazev']);
-                });
-            }
-        }
-        $this->set(compact(['data']));
-        $this->set('title', 'Zdroj Financí / Financování');
     }
 
     function podleZdrojeFinanciDetail()
@@ -690,7 +1296,7 @@ class PagesController extends AppController
                 ],
                 'conditions' => [
                     'iriFinancniZdroj' => $zdroj->id,
-                    'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                    'refundaceIndikator' => 0
                 ]
             ])->toList();
             Cache::write($cache_key, $zdroj_years, 'long_term');
@@ -710,7 +1316,8 @@ class PagesController extends AppController
                     ],
                     'conditions' => [
                         'iriFinancniZdroj' => $zdroj->id,
-                        'rokRozhodnuti' => $year
+                        'rokRozhodnuti' => $year,
+                        'refundaceIndikator' => 0
                     ]
                 ])->first()->SUM;
                 Cache::write($cache_key_year, $year_sum, 'long_term');
@@ -724,7 +1331,8 @@ class PagesController extends AppController
                     ],
                     'conditions' => [
                         'iriFinancniZdroj' => $zdroj->id,
-                        'rokRozhodnuti' => $year
+                        'rokRozhodnuti' => $year,
+                        'refundaceIndikator' => 0
                     ],
                     'contain' => 'Rozhodnuti'
                 ])->first()->SUM;
@@ -807,7 +1415,7 @@ class PagesController extends AppController
                 'conditions' => [
                     'iriFinancniZdroj' => $zdroj->id,
                     'rokRozhodnuti' => $year,
-                    'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                    'refundaceIndikator' => 0
                 ]
             ])->first()->toArray();
             $year_sum = $year_sum['SUM'];
@@ -815,42 +1423,6 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['year', 'zdroj', 'year_sum']));
-    }
-
-    public function podleZdrojeFinanciCompleteAjax()
-    {
-
-        $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
-            'conditions' => [
-                'financniZdrojKod' => $this->request->getParam('kod')
-            ]
-        ])->first();
-        if (empty($zdroj)) throw new NotFoundException();
-
-        $conditions = [
-            'iriFinancniZdroj' => $zdroj->id
-        ];
-        if (!empty($this->request->getParam('year'))) {
-            $conditions['rokRozhodnuti'] = $this->request->getParam('year');
-        }
-
-        $dotace = $this->Rozhodnuti->find('all', [
-            'conditions' => $conditions,
-            'contain' => [
-                'Dotace',
-                'Dotace.PrijemcePomoci',
-                'CiselnikFinancniZdrojv01',
-                'CiselnikFinancniProstredekCleneniv01',
-                'RozpoctoveObdobi'
-            ],
-            'order' => [
-                'castkaRozhodnuta' => 'DESC'
-            ]
-        ])->limit(20000);
-
-        $_serialize = false;
-
-        $this->set(compact(['dotace', '_serialize']));
     }
 
     function detailRozhodnuti()
@@ -882,11 +1454,6 @@ class PagesController extends AppController
         $this->set(compact(['rozhodnuti', 'rozpocet']));
     }
 
-    public function fyzickeOsoby()
-    {
-
-    }
-
     public function fyzickeOsobyAjax()
     {
         $osoby = $this->PrijemcePomoci->find('all', [
@@ -911,282 +1478,6 @@ class PagesController extends AppController
         $_serialize = false;
 
         $this->set(compact(['osoby', '_serialize']));
-    }
-
-    public function podleSidlaPrijemce()
-    {
-
-        $kraje = $this->CiselnikKrajv01->find('all', [
-            'fields' => [
-                'krajNazev' => 'DISTINCT(krajNazev)'
-            ],
-            'order' => [
-                'krajKod' => 'ASC'
-            ]
-        ]);
-
-        $kraje_ids = $this->CiselnikKrajv01->find('all', [
-            'fields' => [
-                'krajKod' => 'DISTINCT(CiselnikKrajv01.krajKod)'
-            ],
-            'order' => [
-                'krajKod' => 'ASC'
-            ]
-        ]);
-
-        $okresy = $this->CiselnikOkresv01->find('all', [
-            'group' => [
-                'okresKod'
-            ]
-        ]);
-        $obce = $this->CiselnikObecv01->find('all', [
-            'group' => 'obecKod'
-        ]);
-
-        $staty = $this->CiselnikStatv01->find('all', [
-            'fields' => [
-                'CiselnikStatv01.statNazev',
-                'CiselnikStatv01.id',
-                'CiselnikStatv01.statKod3Znaky'
-            ]
-        ]);
-
-        $soucet_staty = [];
-        $soucet_staty_spotrebovano = [];
-        $kraje_data = [];
-        $okresy_soucet = [];
-        $obce_soucet = [];
-
-        foreach ($staty as $stat) {
-            // soucet rozhodnutych
-            $cache_tag = "soucet_stat_" . $stat->statKod3Znaky;
-            $soucet = Cache::read($cache_tag, 'long_term');
-            if ($soucet === false) {
-                $sum = $this->Rozhodnuti->find('all', [
-                        'fields' => [
-                            'sum' => 'SUM(castkaRozhodnuta)'
-                        ],
-                        'conditions' => [
-                            'PrijemcePomoci.iriStat' => $stat->id
-                        ],
-                        'contain' => [
-                            'Dotace.PrijemcePomoci'
-                        ]
-                    ])->first()->sum + 0;
-                Cache::write($cache_tag, $sum, 'long_term');
-                $soucet = $sum;
-            }
-            $soucet_staty[$stat->id] = $soucet;
-
-
-            // soucet spotrebovaanych
-            $cache_tag_spotrebovano = "soucet_stat_spotrebovano_" . $stat->statKod3Znaky;
-            $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
-            if ($soucet_spotrebovano === false) {
-                $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                        'fields' => [
-                            'sum' => 'SUM(castkaSpotrebovana)'
-                        ],
-                        'conditions' => [
-                            'PrijemcePomoci.iriStat' => $stat->id
-                        ],
-                        'contain' => [
-                            'Rozhodnuti.Dotace.PrijemcePomoci'
-                        ]
-                    ])->first()->sum + 0;
-                Cache::write($cache_tag_spotrebovano, $sum_spotrebovano, 'long_term');
-                $soucet_spotrebovano = $sum_spotrebovano;
-            }
-            $soucet_staty_spotrebovano[$stat->id] = $soucet_spotrebovano;
-        }
-
-        foreach ($kraje_ids as $kraj) {
-            $cache_tag_kraj = 'soucet_kraj_' . sha1($kraj->krajKod);
-            $soucet_kraj = Cache::read($cache_tag_kraj, 'long_term');
-            if ($soucet_kraj === false) {
-                $soucet = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(Rozhodnuti.castkaRozhodnuta)'
-                    ],
-                    'conditions' => [
-                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod
-                    ],
-                    'contain' => [
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                    ]
-                ])->first();
-                Cache::write($cache_tag_kraj, $soucet->sum, 'long_term');
-                $soucet_kraj = $soucet->sum;
-            }
-
-            $cache_tag_kraj_spotrebovano = 'soucet_kraj_spotrebovano_' . sha1($kraj->krajKod);
-            $soucet_kraj_spotrebovano = Cache::read($cache_tag_kraj_spotrebovano, 'long_term');
-            if ($soucet_kraj_spotrebovano === false) {
-                $soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
-                    ],
-                    'conditions' => [
-                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod
-                    ],
-                    'contain' => [
-                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                    ]
-                ])->first();
-                Cache::write($cache_tag_kraj_spotrebovano, $soucet_spotrebovano->sum, 'long_term');
-                $soucet_kraj_spotrebovano = $soucet_spotrebovano->sum;
-            }
-
-            $kraje_data[$kraj->krajKod] = (object)[
-                'krajKod' => $kraj->krajKod,
-                'soucet' => $soucet_kraj,
-                'soucet_spotrebovano' => $soucet_kraj_spotrebovano,
-                'krajNazev' => $this->CiselnikKrajv01->find('all', ['conditions' => ['krajKod' => $kraj->krajKod]])->first()->krajNazev,
-                'color' => ''
-            ];
-        }
-
-        $gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($kraje_data) + 1);
-        usort($kraje_data, function ($a, $b) {
-            if ($a->soucet_spotrebovano == $b->soucet_spotrebovano) {
-                return 0;
-            }
-            return ($a->soucet_spotrebovano < $b->soucet_spotrebovano) ? -1 : 1;
-        });
-
-        $tmparr = [];
-        $cntr = 0;
-        foreach ($kraje_data as $key => $val) {
-            $val->color = $gradients[$cntr];
-            $tmparr[$val->krajKod] = $val;
-            $cntr++;
-        }
-        $kraje_data = $tmparr;
-        unset($tmparr);
-
-        foreach ($okresy as $okres) {
-            $cache_tag_okres_soucet = 'soucet_okres_' . sha1($okres->okresKod);
-            $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($okres->okresKod);
-
-            $soucet_okres = Cache::read($cache_tag_okres_soucet, 'long_term');
-            $soucet_okres_spotrebovano = Cache::read($cache_tag_okres_soucet_spotrebovano, 'long_term');
-
-            if ($soucet_okres === false) {
-                $soucet_okres = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaRozhodnuta)'
-                    ],
-                    'contain' => [
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                    ],
-                    'conditions' => [
-                        'CiselnikOkresv01.okresKod' => $okres->okresKod
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_okres_soucet, $soucet_okres, 'long_term');
-            }
-
-            if ($soucet_okres_spotrebovano === false) {
-                $soucet_okres_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaSpotrebovana)'
-                    ],
-                    'contain' => [
-                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                    ],
-                    'conditions' => [
-                        'CiselnikOkresv01.okresKod' => $okres->okresKod
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_okres_soucet_spotrebovano, $soucet_okres_spotrebovano, 'long_term');
-            }
-
-            $okresy_soucet[$okres->id] = (object)[
-                'soucet' => $soucet_okres,
-                'soucetSpotrebovano' => $soucet_okres_spotrebovano,
-                'okresNazev' => $okres->okresNazev,
-                'color' => '',
-                'okresKod' => $okres->okresKod,
-                'id' => $okres->id
-            ];
-        }
-
-        $okresy_gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($okresy_soucet) + 1);
-        usort($okresy_soucet, function ($a, $b) {
-            if ($a->soucetSpotrebovano == $b->soucetSpotrebovano) {
-                return 0;
-            }
-            return ($a->soucetSpotrebovano < $b->soucetSpotrebovano) ? -1 : 1;
-        });
-
-        $tmparr = [];
-        $cntr = 0;
-        foreach ($okresy_soucet as $key => $val) {
-            $val->color = $okresy_gradients[$cntr];
-            $tmparr[$val->id] = $val;
-            $cntr++;
-        }
-        $okresy_soucet = $tmparr;
-        unset($tmparr);
-
-        foreach ($obce as $obec) {
-            $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->obecKod);
-            $cache_tag_obec_soucet_spotrebovano = 'obec_soucet_spotrebovano_' . sha1($obec->obecKod);
-
-            $obec_soucet = Cache::read($cache_tag_obec_soucet, 'long_term');
-            $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
-
-            if ($obec_soucet === false) {
-                $obec_soucet = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaRozhodnuta)'
-                    ],
-                    'contain' => [
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
-                    ],
-                    'conditions' => [
-                        'CiselnikObecv01.obecKod' => $obec->obecKod
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_obec_soucet, $obec_soucet, 'long_term');
-            }
-
-            if ($obec_soucet_spotrebovano === false) {
-                $obec_soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaSpotrebovana)'
-                    ],
-                    'contain' => [
-                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
-                    ],
-                    'conditions' => [
-                        'CiselnikObecv01.obecKod' => $obec->obecKod
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_obec_soucet_spotrebovano, $obec_soucet_spotrebovano, 'long_term');
-            }
-
-            $obce_soucet[$obec->id] = (object)[
-                'soucet' => $obec_soucet,
-                'soucetSpotrebovano' => $obec_soucet_spotrebovano
-            ];
-        }
-
-        $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
-    }
-
-    private
-    function lineargradient($ra, $ga, $ba, $rz, $gz, $bz, $iterationnr)
-    {
-        $colorindex = array();
-        for ($iterationc = 1; $iterationc <= $iterationnr; $iterationc++) {
-            $iterationdiff = $iterationnr - $iterationc;
-            $colorindex[] = '#' .
-                str_pad(dechex(intval((($ra * $iterationc) + ($rz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
-                str_pad(dechex(intval((($ga * $iterationc) + ($gz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT) .
-                str_pad(dechex(intval((($ba * $iterationc) + ($bz * $iterationdiff)) / $iterationnr)), 2, "0", STR_PAD_RIGHT);
-        }
-        return $colorindex;
     }
 
     public
@@ -1267,7 +1558,8 @@ class PagesController extends AppController
                         'sum' => 'SUM(castkaSpotrebovana)'
                     ],
                     'conditions' => [
-                        'iriDotacniTitul' => $r->idDotaceTitul
+                        'iriDotacniTitul' => $r->idDotaceTitul,
+                        'refundaceIndikator' => 0
                     ]
                 ])->first()->sum;
                 Cache::write($cache_tag_spotrebovano, $soucet_spotrebovano, 'long_term');
@@ -1323,7 +1615,8 @@ class PagesController extends AppController
                     'sum' => 'SUM(castkaSpotrebovana)'
                 ],
                 'conditions' => [
-                    'iriDotacniTitul' => $titul->idDotaceTitul
+                    'iriDotacniTitul' => $titul->idDotaceTitul,
+                    'refundaceIndikator' => 0
                 ]
             ])->first()->sum;
             Cache::write($cache_tag_spotrebovano, $soucet_spotrebovano, 'long_term');
@@ -1368,153 +1661,6 @@ class PagesController extends AppController
         $_serialize = false;
 
         $this->set(compact(['dotace', '_serialize']));
-    }
-
-    public function detailKrajeCache()
-    {
-        $kraje = $this->CiselnikKrajv01->find('all', [
-            'fields' => [
-                'krajKod' => 'DISTINCT(krajKod)'
-            ]
-        ])->enableHydration(false)->toArray();
-
-        foreach ($kraje as $kraj) {
-
-            $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj['krajKod']);
-            $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
-
-            if ($biggest === false) {
-                $biggest = $this->Rozhodnuti->find('all', [
-                    'order' => [
-                        'castkaRozhodnuta' => 'DESC'
-                    ],
-                    'fields' => [
-                        'RozpoctoveObdobi.rozpoctoveObdobi',
-                        'RozpoctoveObdobi.castkaSpotrebovana',
-                        'Rozhodnuti.castkaRozhodnuta',
-                        'Rozhodnuti.idRozhodnuti',
-                        'Dotace.idDotace',
-                        'Dotace.idPrijemce',
-                        'Dotace.projektNazev',
-                        'Dotace.projektIdnetifikator',
-                        'PrijemcePomoci.obchodniJmeno'
-                    ],
-                    'conditions' => [
-                        'CiselnikOkresv01.krajNadKod' => $kraj['krajKod']
-                    ],
-                    'contain' => [
-                        'RozpoctoveObdobi',
-                        'Dotace',
-                        'Dotace.PrijemcePomoci',
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
-                    ],
-                    'group' => [
-                        'Rozhodnuti.idRozhodnuti'
-                    ]
-                ])->limit(20000)->enableHydration(false)->toArray();
-                Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
-            }
-            debug($kraj);
-            debug(count($biggest));
-        }
-    }
-
-    public function detailOkresyCache()
-    {
-        $okresy = $this->CiselnikOkresv01->find('all', [
-            'fields' => [
-                'okresKod' => 'DISTINCT(okresKod)'
-            ]
-        ])->enableHydration(false)->toArray();
-
-        foreach ($okresy as $okres) {
-            debug($okres);
-
-            $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres['okresKod']);
-            $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
-
-            if ($biggest === false) {
-                $biggest = $this->Rozhodnuti->find('all', [
-                    'order' => [
-                        'castkaRozhodnuta' => 'DESC'
-                    ],
-                    'fields' => [
-                        'RozpoctoveObdobi.rozpoctoveObdobi',
-                        'RozpoctoveObdobi.castkaSpotrebovana',
-                        'Rozhodnuti.castkaRozhodnuta',
-                        'Rozhodnuti.idRozhodnuti',
-                        'Dotace.idDotace',
-                        'Dotace.idPrijemce',
-                        'Dotace.projektNazev',
-                        'Dotace.projektIdnetifikator',
-                        'PrijemcePomoci.obchodniJmeno'
-                    ],
-                    'conditions' => [
-                        'CiselnikObecv01.okresNadKod' => $okres['okresKod']
-                    ],
-                    'contain' => [
-                        'RozpoctoveObdobi',
-                        'Dotace',
-                        'Dotace.PrijemcePomoci',
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
-                    ],
-                    'group' => [
-                        'Rozhodnuti.idRozhodnuti'
-                    ]
-                ])->limit(20000)->enableHydration(false)->toArray();
-                Cache::write($cache_tag_okres_top_100, $biggest, 'long_term');
-            }
-            debug(count($biggest));
-        }
-    }
-
-    public function detailObceCache()
-    {
-        $obce = $this->CiselnikObecv01->find('all', [
-            'fields' => [
-                'obecKod' => 'DISTINCT(obecKod)'
-            ]
-        ])->enableHydration(false)->toArray();
-
-        foreach ($obce as $obec) {
-            debug($obec);
-
-            $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec['obecKod']);
-            $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
-
-            if ($biggest === false) {
-                $biggest = $this->Rozhodnuti->find('all', [
-                    'order' => [
-                        'castkaRozhodnuta' => 'DESC'
-                    ],
-                    'fields' => [
-                        'RozpoctoveObdobi.rozpoctoveObdobi',
-                        'RozpoctoveObdobi.castkaSpotrebovana',
-                        'Rozhodnuti.castkaRozhodnuta',
-                        'Rozhodnuti.idRozhodnuti',
-                        'Dotace.idDotace',
-                        'Dotace.idPrijemce',
-                        'Dotace.projektNazev',
-                        'Dotace.projektIdnetifikator',
-                        'PrijemcePomoci.obchodniJmeno'
-                    ],
-                    'conditions' => [
-                        'CiselnikObecv01.obecKod' => $obec['obecKod']
-                    ],
-                    'contain' => [
-                        'RozpoctoveObdobi',
-                        'Dotace',
-                        'Dotace.PrijemcePomoci',
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
-                    ],
-                    'group' => [
-                        'Rozhodnuti.idRozhodnuti'
-                    ]
-                ])->limit(20000)->enableHydration(false)->toArray();
-                Cache::write($cache_tag_obec_top_100, $biggest, 'long_term');
-            }
-            debug(count($biggest));
-        }
     }
 
     public
@@ -1640,59 +1786,6 @@ class PagesController extends AppController
     function ciselniky()
     {
 
-    }
-
-    public
-    function statistics()
-    {
-        $cache_tag = 'db_stats';
-        $tables = Cache::read($cache_tag, 'long_term');
-        if ($tables === false) {
-            $tables = [];
-            $dbtables = ConnectionManager::get('default')->schemaCollection()->listTables();
-            foreach ($dbtables as $key => $t) {
-                $tablereg = TableRegistry::get($t);
-
-                $this->loadModel($tablereg->getAlias());
-                $tableData = (object)[
-                    "name" => $tablereg->getAlias(),
-                    "total" => $this->{$tablereg->getAlias()}->find()->count(),
-                    "columns" => []
-                ];
-                $tableCount100 = $tableData->total / 100;
-
-                foreach ($tablereg->getSchema()->columns() as $raw_col) {
-                    $col_type = $tablereg->getSchema()->column($raw_col);
-                    $col_type = $col_type['type'];
-                    /** @var Query $empty_rows */
-                    $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col . ' IS NULL']);
-                    if ($col_type == 'string') $empty_rows->orWhere([$raw_col => '']);
-                    else if ($col_type == 'decimal') $empty_rows->orWhere([$raw_col => 0]);
-                    $empty_rows = $empty_rows->count();
-
-                    $top_value = $this->{$tablereg->getAlias()}->find('all', [
-                        'fields' => [
-                            $raw_col,
-                            'rsum' => 'COUNT(' . $raw_col . ')'
-                        ],
-                        'group' => [$raw_col],
-                        'order' => [
-                            'rsum' => 'DESC'
-                        ]
-                    ])->limit(1)->first();
-                    $tableData->columns[] = (object)[
-                        "empty_rows" => $empty_rows,
-                        "percent_empty" => $tableCount100 == 0 ? 0 : round($empty_rows / $tableCount100, 4),
-                        "name" => $raw_col,
-                        "most_common_value" => empty($top_value) ? '' : $top_value->{$raw_col}
-                    ];
-                }
-
-                $tables[] = $tableData;
-            }
-            Cache::write($cache_tag, $tables, 'long_term');
-        }
-        $this->set(compact(['tables']));
     }
 
     public function mmrPodOpatreni()
@@ -2078,65 +2171,6 @@ class PagesController extends AppController
         if ($biggest === false) $biggest = [];
 
         $this->set(compact(['stat', 'historie', 'biggest']));
-    }
-
-
-    public function detailStatuCache()
-    {
-        $staty = $this->CiselnikStatv01->find('all', [
-            'fields' => [
-                'statKod3Znaky' => 'DISTINCT(statKod3Znaky)'
-            ]
-        ])->enableHydration(false)->toArray();
-
-        foreach ($staty as $stat) {
-            debug($stat);
-
-            $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat['statKod3Znaky']);
-            $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
-
-            if ($biggest === false) {
-                $biggest = $this->Rozhodnuti->find('all', [
-                    'order' => [
-                        'castkaRozhodnuta' => 'DESC'
-                    ],
-                    'fields' => [
-                        'RozpoctoveObdobi.rozpoctoveObdobi',
-                        'RozpoctoveObdobi.castkaSpotrebovana',
-                        'Rozhodnuti.castkaRozhodnuta',
-                        'Rozhodnuti.idRozhodnuti',
-                        'Dotace.idDotace',
-                        'Dotace.idPrijemce',
-                        'Dotace.projektNazev',
-                        'Dotace.projektIdnetifikator',
-                        'PrijemcePomoci.obchodniJmeno'
-                    ],
-                    'conditions' => [
-                        'PrijemcePomoci.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
-                    ],
-                    'contain' => [
-                        'RozpoctoveObdobi',
-                        'Dotace',
-                        'Dotace.PrijemcePomoci'
-                    ],
-                    'group' => [
-                        'Rozhodnuti.idRozhodnuti'
-                    ]
-                ])->limit(100)->enableHydration(false)->toArray();
-                Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
-            }
-            debug(count($biggest));
-        }
-    }
-
-    public function strukturalniFondy()
-    {
-        $data = $this->StrukturalniFondy->find('all', [
-            'conditions' => [
-                'cisloANazevProgramu' => 'CZ.3.22 OP ČR - Polsko'
-            ]
-        ])->limit(10000);
-        $this->set(compact(['data']));
     }
 
 }

@@ -36,25 +36,6 @@ class CachingComponent extends Component
         return $cache;
     }
 
-    public function initCacheCEDROP($cedr_ops)
-    {
-        $cacheTag = $this->getCacheTag('op_dotace_counts', 'cedr');
-        $cache = $this->cacheRead($cacheTag);
-        if ($cache === false) {
-            $counts = [];
-            foreach ($cedr_ops as $op) {
-                $counts[$op->idOperacniProgram] = $this->getController()->Dotace->find('all', [
-                    'conditions' => [
-                        'iriOperacniProgram' => $op->idOperacniProgram
-                    ]
-                ])->count();
-            }
-            $this->cacheWrite($cacheTag, $counts);
-            return $counts;
-        }
-        return $cache;
-    }
-
     public function getCacheTag($type = null, $name = null, $unique = null)
     {
         if (empty($type) || empty($name))
@@ -98,7 +79,7 @@ class CachingComponent extends Component
                     ],
                     'conditions' => [
                         'iriPoskytovatelDotace' => $d->id,
-                        'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                        'refundaceIndikator' => 0
                     ]
                 ])->first()->SUM;
                 $this->cacheWrite($cache_key, $cnt);
@@ -110,7 +91,7 @@ class CachingComponent extends Component
                         ],
                         'conditions' => [
                             'iriPoskytovatelDotace' => $d->id,
-                            'iriCleneniFinancnichProstredku !=' => 'http://cedropendata.mfcr.cz/c3lod/cedr/resource/ciselnik/FinancniProstredekCleneni/v01/15/20070101'
+                            'refundaceIndikator' => 0
                         ],
                         'contain' => [
                             'Rozhodnuti.Dotace.PrijemcePomoci'
@@ -127,6 +108,25 @@ class CachingComponent extends Component
         }
 
         return $counts;
+    }
+
+    public function initCacheCEDROP($cedr_ops)
+    {
+        $cacheTag = $this->getCacheTag('op_dotace_counts', 'cedr');
+        $cache = $this->cacheRead($cacheTag);
+        if ($cache === false) {
+            $counts = [];
+            foreach ($cedr_ops as $op) {
+                $counts[$op->idOperacniProgram] = $this->getController()->Dotace->find('all', [
+                    'conditions' => [
+                        'iriOperacniProgram' => $op->idOperacniProgram
+                    ]
+                ])->count();
+            }
+            $this->cacheWrite($cacheTag, $counts);
+            return $counts;
+        }
+        return $cache;
     }
 
 }
