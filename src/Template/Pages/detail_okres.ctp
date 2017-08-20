@@ -11,7 +11,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
-        <li><a href="#obce">Okresy v kraji</a></li>
+        <li><a href="#obce">Obce v okresu (dle CEDR)</a></li>
         <li><a href="#historie">Historie kraje v evidenci CEDR</a></li>
         <li><a href="#biggest">100 nejvyšších rozhodnutí</a></li>
     </ul>

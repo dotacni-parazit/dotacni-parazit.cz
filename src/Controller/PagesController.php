@@ -1411,7 +1411,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->enableHydration(false)->toArray();
+                ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
             }
             debug($kraj);
@@ -1461,7 +1461,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->enableHydration(false)->toArray();
+                ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_okres_top_100, $biggest, 'long_term');
             }
             debug(count($biggest));
@@ -1510,7 +1510,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->enableHydration(false)->toArray();
+                ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_obec_top_100, $biggest, 'long_term');
             }
             debug(count($biggest));
@@ -1605,7 +1605,6 @@ class PagesController extends AppController
                 'CiselnikOkresv01'
             ]
         ])->first();
-
         if (empty($obec)) throw new NotFoundException();
 
         $historie = $this->CiselnikObecv01->find('all', [
@@ -1614,11 +1613,16 @@ class PagesController extends AppController
             ]
         ]);
 
-        $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec->obecKod);
-        $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
-        if ($biggest === false) $biggest = [];
-
-        $this->set(compact(['obec', 'historie', 'biggest']));
+        if ($this->request->is('ajax')) {
+            $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec->obecKod);
+            $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
+            if ($biggest === false) $biggest = [];
+            $_serialize = false;
+            $this->set(compact(['obec', 'historie', 'biggest', '_serialize']));
+        } else {
+            $biggest = [];
+            $this->set(compact(['obec', 'historie', 'biggest']));
+        }
     }
 
     public
