@@ -13,7 +13,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#obecne">Obecné informace</a></li>
         <li><a href="#obce">Obce v okresu (dle CEDR)</a></li>
         <li><a href="#historie">Historie kraje v evidenci CEDR</a></li>
-        <li><a href="#biggest">100 nejvyšších rozhodnutí</a></li>
+        <li><a href="#biggest">Dotační Rozhodnutí</a></li>
     </ul>
     <div id="obecne">
         <table class="datatable datatable_simple">
@@ -132,7 +132,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </table>
     </div>
     <div id="biggest">
-        <table class="datatable datatable_simple">
+        <div>Až 20.000 rozhodnutí</div>
+        <hr/>
+        <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
                 <th data-type="html">Rozhodnutí</th>
@@ -144,24 +146,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($biggest as $b) { ?>
-                <?php
-                $b = (object)$b;
-                $b->Dotace = (object)$b->Dotace;
-                $b->Dotace->PrijemcePomoci = (object)$b->Dotace->PrijemcePomoci;
-                $b->RozpoctoveObdobi = (object)$b->RozpoctoveObdobi;
 
-                $dotace_nazev = (empty($b->Dotace->projektNazev) ? $b->Dotace->projektIdnetifikator : $b->Dotace->projektNazev);
-                ?>
-                <tr>
-                    <td><?= $this->Html->link('[R]', '/detail-rozhodnuti/' . $b->idRozhodnuti) ?></td>
-                    <td><?= $this->Html->link($dotace_nazev, '/detail-dotace/' . $b->Dotace->idDotace) ?></td>
-                    <td><?= $this->Html->link($b->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $b->Dotace->idPrijemce) ?></td>
-                    <td class="text-right"><?= Number::currency($b->castkaRozhodnuta) ?></td>
-                    <td class="text-right"><?= isset($b->RozpoctoveObdobi->castkaSpotrebovana) ? Number::currency($b->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
-                    <td><?= isset($b->RozpoctoveObdobi->rozpoctoveObdobi) ? $b->RozpoctoveObdobi->rozpoctoveObdobi : 'N/A' ?></td>
-                </tr>
-            <?php } ?>
             </tbody>
             <tfoot>
             <tr>

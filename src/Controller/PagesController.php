@@ -1584,11 +1584,16 @@ class PagesController extends AppController
             ]
         ]);
 
-        $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres->okresKod);
-        $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
-        if ($biggest === false) $biggest = [];
-
-        $this->set(compact(['okres', 'obce', 'historie', 'biggest']));
+        if ($this->request->is('ajax')) {
+            $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres->okresKod);
+            $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
+            if ($biggest === false) $biggest = [];
+            $_serialize = false;
+            $this->set(compact(['okres', 'historie', 'biggest', '_serialize']));
+        } else {
+            $biggest = [];
+            $this->set(compact(['okres', 'obce', 'historie', 'biggest']));
+        }
     }
 
     public
