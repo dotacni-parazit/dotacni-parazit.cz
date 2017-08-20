@@ -17,10 +17,7 @@ foreach ($dotace as $d) {
         $displayDotace = substr($displayDotace, 5);
     }
 
-    $prijemcePomoci = $d->Dotace->PrijemcePomoci->obchodniJmeno;
-    if (empty($prijemcePomoci)) {
-        $prijemcePomoci = $d->Dotace->PrijemcePomoci->jmeno . ' ' . $d->Dotace->PrijemcePomoci->prijmeni . ' (Fyzicka osoba)';
-    }
+    $prijemcePomoci = empty($d->Dotace->PrijemcePomoci->obchodniJmeno) ? $d->Dotace->PrijemcePomoci->jmeno . ' ' . $d->Dotace->PrijemcePomoci->prijmeni : $d->Dotace->PrijemcePomoci->obchodniJmeno;
 
     $data_arr[] = [
         $this->Html->link('[R]', '/detail-rozhodnuti/' . $d->idRozhodnuti),

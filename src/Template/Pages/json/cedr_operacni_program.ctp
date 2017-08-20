@@ -12,11 +12,12 @@ if (!$cache_data) {
     $total = 0;
 
     foreach ($dotace as $d) {
+        $jmenoPrijemce = empty($d->PrijemcePomoci->obchodniJmeno) ? $d->PrijemcePomoci->jmeno . " " . $d->PrijemcePomoci->prijmeni : $d->PrijemcePomoci->obchodniJmeno;
         $data_arr[] = [
             $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace),
             $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace),
             $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace),
-            $this->Html->link($d->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce)
+            $this->Html->link($jmenoPrijemce, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce)
         ];
         $total++;
     }
