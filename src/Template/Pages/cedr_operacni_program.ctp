@@ -8,7 +8,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
-        <li><a href="#priority">Podřízené MMR Priority</a></li>
+        <li><a href="#priority">Podřízené CEDR Priority</a></li>
         <li><a href="#dotace">Dotace</a></li>
     </ul>
     <div id="obecne">
@@ -64,7 +64,7 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
         </table>
     </div>
     <div id="priority">
-        <h2>Podřízené MMR Priority</h2>
+        <h2>Podřízené CEDR Priority</h2>
         <table class="datatable datatable_simple">
             <thead>
             <tr>
@@ -77,14 +77,14 @@ $this->set('title', $data->operacaniProgramNazev . ' (kód: ' . $data->operacani
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($data->MmrPriorita as $p) { ?>
+            <?php foreach ($data->CedrPriorita as $p) { ?>
                 <tr>
-                    <td><?= $this->Html->link($p->prioritaNazev, '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
+                    <td><?= $this->Html->link($p->prioritaNazev, '/detail-cedr-priorita/?id=' . $p->idPriorita) ?></td>
                     <td><?= $p->prioritaKod ?></td>
                     <td><?= $counts[$p->idPriorita] ?></td>
                     <td><?= $p->zaznamPlatnostOdDatum->year ?></td>
                     <td><?= $p->zaznamPlatnostDoDatum->year ?></td>
-                    <td><?= $this->Html->link('Otevřít', '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
+                    <td><?= $this->Html->link('Otevřít', '/detail-cedr-priorita/?id=' . $p->idPriorita) ?></td>
                 </tr>
             <?php } ?>
             </tbody>

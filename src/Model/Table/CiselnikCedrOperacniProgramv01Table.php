@@ -33,6 +33,11 @@ class CiselnikCedrOperacniProgramv01Table extends Table
         $this->setTable('ciselnikCedrOperacniProgramv01');
         $this->setDisplayField('idOperacniProgram');
         $this->setPrimaryKey('idOperacniProgram');
+
+        $this->hasMany('CiselnikCedrPrioritav01')
+            ->setForeignKey('idOperacniProgram')
+            ->setBindingKey('idOperacniProgram')
+            ->setProperty('CedrPriorita');
     }
 
     /**

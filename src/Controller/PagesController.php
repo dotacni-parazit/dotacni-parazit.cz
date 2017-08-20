@@ -100,7 +100,9 @@ class PagesController extends AppController
     public function cedrOperacniProgramy()
     {
         $cedr = $this->CiselnikCedrOperacniProgramv01->find('all');
-        $this->set(compact('cedr'));
+        $counts = $this->Caching->initCacheCEDROP($cedr);
+
+        $this->set(compact('cedr', 'counts'));
     }
 
     public function mmrOperacniProgramy()
@@ -1812,6 +1814,62 @@ class PagesController extends AppController
             }
 
             Cache::write($cache_tag_mmr_priorita_dotace_count, $counts, 'long_term');
+        }
+
+        if ($this->request->is('ajax')) {
+            $dotace = $this->Dotace->find('all', [
+                'fields' => [
+                    'idDotace',
+                    'idPrijemce',
+                    'projektKod',
+                    'projektIdnetifikator',
+                    'projektNazev',
+                    'PrijemcePomoci.idPrijemce',
+                    'PrijemcePomoci.obchodniJmeno',
+                    'PrijemcePomoci.jmeno',
+                    'PrijemcePomoci.prijmeni'
+                ],
+                'conditions' => [
+                    'iriOperacniProgram' => $this->request->getQuery('id')
+                ],
+                'contain' => [
+                    'PrijemcePomoci'
+                ]
+            ])->limit(50000);
+
+            $_serialize = false;
+            $this->set(compact(['data', 'dotace', '_serialize']));
+        } else {
+            $this->set(compact(['data', 'counts']));
+        }
+    }
+
+    public function cedrOperacniProgram()
+    {
+        $data = $this->CiselnikCedrOperacniProgramv01->find('all', [
+            'conditions' => [
+                'idOperacniProgram' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikCedrPrioritav01'
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $cache_tag_cedr_priorita_dotace_count = 'cedr_priorita_count_dotace_' . sha1($data->idOperacniProgram);
+        $counts = Cache::read($cache_tag_cedr_priorita_dotace_count, 'long_term');
+        if ($counts === false) {
+            $counts = [];
+
+            foreach ($data->CedrPriorita as $p) {
+                $counts[$p->idPriorita] = $this->Dotace->find('all', [
+                    'conditions' => [
+                        'iriPriorita' => $p->idPriorita
+                    ]
+                ])->count();
+            }
+
+            Cache::write($cache_tag_cedr_priorita_dotace_count, $counts, 'long_term');
         }
 
         if ($this->request->is('ajax')) {

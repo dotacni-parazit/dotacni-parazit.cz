@@ -11,8 +11,8 @@ $this->set('title', 'Zdroje Financí / Financování');
         <thead>
         <tr>
             <th data-type="html"><a href="?sort=zdroj">Zdroj</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka rozhodnutá"</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka spotřebovaná"</a></th>
+            <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
+            <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
             <th data-type="html" class="nosearch small-2 medium-1 large-2">Otevřít</th>
         </tr>
         </thead>
@@ -33,9 +33,9 @@ $this->set('title', 'Zdroje Financí / Financování');
         </tbody>
         <tfoot>
         <tr>
-            <th><a href="?sort=poskytovatel">Zdroj</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka rozhodnutá"</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka spotřebovaná"</a></th>
+            <th>Zdroj</th>
+            <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
+            <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
             <th>Otevřít</th>
         </tr>
         </tfoot>
@@ -46,9 +46,9 @@ $this->set('title', 'Zdroje Financí / Financování');
     <table id="zahranicni">
         <thead>
         <tr>
-            <th data-type="html"><a href="?sort=zdroj">Zdroj</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka rozhodnutá"</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka spotřebovaná"</a></th>
+            <th data-type="html">Zdroj</th>
+            <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
+            <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
             <th data-type="html" class="nosearch small-2 medium-1 large-2">Otevřít</th>
         </tr>
         </thead>
@@ -69,9 +69,9 @@ $this->set('title', 'Zdroje Financí / Financování');
         </tbody>
         <tfoot>
         <tr>
-            <th><a href="?sort=poskytovatel">Zdroj</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka rozhodnutá"</a></th>
-            <th data-type="currency" class="nosearch"><a href="?sort=sum">Součet "částka spotřebovaná"</a></th>
+            <th>Zdroj</th>
+            <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
+            <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
             <th>Otevřít</th>
         </tr>
         </tfoot>

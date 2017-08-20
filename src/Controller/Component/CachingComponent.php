@@ -11,9 +11,10 @@ class CachingComponent extends Component
 
     static $defaultCacheConfig = 'long_term';
 
-    public function cacheAll(){
-        $this->initCacheMMROP($this->controller->CiselnikMmrOperacniProgramv01->find('all'));
-        $this->initCachePodlePoskytovatelu($this->controller->CiselnikDotacePoskytovatelv01->find('all'));
+    public function cacheAll()
+    {
+        $this->initCacheMMROP($this->getController()->CiselnikMmrOperacniProgramv01->find('all'));
+        $this->initCachePodlePoskytovatelu($this->getController()->CiselnikDotacePoskytovatelv01->find('all'));
     }
 
     public function initCacheMMROP($mmr_ops)
@@ -23,7 +24,26 @@ class CachingComponent extends Component
         if ($cache === false) {
             $counts = [];
             foreach ($mmr_ops as $op) {
-                $counts[$op->idOperacniProgram] = $this->controller->Dotace->find('all', [
+                $counts[$op->idOperacniProgram] = $this->getController()->Dotace->find('all', [
+                    'conditions' => [
+                        'iriOperacniProgram' => $op->idOperacniProgram
+                    ]
+                ])->count();
+            }
+            $this->cacheWrite($cacheTag, $counts);
+            return $counts;
+        }
+        return $cache;
+    }
+
+    public function initCacheCEDROP($cedr_ops)
+    {
+        $cacheTag = $this->getCacheTag('op_dotace_counts', 'cedr');
+        $cache = $this->cacheRead($cacheTag);
+        if ($cache === false) {
+            $counts = [];
+            foreach ($cedr_ops as $op) {
+                $counts[$op->idOperacniProgram] = $this->getController()->Dotace->find('all', [
                     'conditions' => [
                         'iriOperacniProgram' => $op->idOperacniProgram
                     ]
@@ -71,7 +91,7 @@ class CachingComponent extends Component
 
             if ($cnt === false) {
                 // cache overall sum
-                $cnt = $this->Rozhodnuti->find('all', [
+                $cnt = $this->getController()->Rozhodnuti->find('all', [
                     'fields' => [
                         'iriPoskytovatelDotace',
                         'SUM' => 'SUM(castkaRozhodnuta)'
@@ -84,7 +104,7 @@ class CachingComponent extends Component
                 $this->cacheWrite($cache_key, $cnt);
             }
             if ($cnt_spotreba === false) {
-                $cnt_spotreba = $this->RozpoctoveObdobi->find('all', [
+                $cnt_spotreba = $this->getController()->RozpoctoveObdobi->find('all', [
                         'fields' => [
                             'sum' => 'SUM(castkaSpotrebovana)'
                         ],

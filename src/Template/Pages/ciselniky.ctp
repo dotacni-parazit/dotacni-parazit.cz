@@ -10,7 +10,6 @@ $this->set('title', 'Číselníky');
 </ul>
 <hr/>
 <strong>Zajímavost:</strong>
-<ul>
-    <li><a href="/rozpoctove-obdobi">Transakce a.k.a. Rozpočtové Období</a></li>
+<ul> 
     <li><a href="/db-statistiky">Statistika využití databáze</a></li>
 </ul>

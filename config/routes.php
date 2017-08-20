@@ -19,7 +19,6 @@
  */
 
 use Cake\Core\Plugin;
-use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
@@ -89,11 +88,15 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-dotacni-titul/:kod', ['controller' => 'Pages', 'action' => 'detailDotacniTitul'], ['kod' => '[0-9]{10}']);
     $routes->connect('/detail-dotacni-titul/:kod/rok/', ['controller' => 'Pages', 'action' => 'detailDotacniTitulRok'], ['kod' => '[0-9]{10}']);
     $routes->connect('/detail-dotacni-titul/:kod/ajax/', ['controller' => 'Pages', 'action' => 'detailDotacniTitulRokAjax'], ['kod' => '[0-9]{10}']);
+
     $routes->connect('/detail-mmr-podopatreni/', ['controller' => 'Pages', 'action' => 'mmrPodOpatreni']);
     $routes->connect('/detail-mmr-opatreni/', ['controller' => 'Pages', 'action' => 'mmrOpatreni']);
     $routes->connect('/detail-mmr-priorita/', ['controller' => 'Pages', 'action' => 'mmrPriorita']);
     $routes->connect('/detail-mmr-operacni-program/', ['controller' => 'Pages', 'action' => 'mmrOperacniProgram']);
     $routes->connect('/detail-mmr-grantove-schema/', ['controller' => 'Pages', 'action' => 'mmrGrantoveSchema']);
+
+    $routes->connect('/detail-cedr-operacni-program/', ['controller' => 'Pages', 'action' => 'cedrOperacniProgram']);
+
     $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
 
     // fallback
