@@ -1787,6 +1787,46 @@ class PagesController extends AppController
             $this->set(compact(['data']));
         }
     }
+    public function cedrPriorita()
+    {
+        $data = $this->CiselnikCedrPrioritav01->find('all', [
+            'conditions' => [
+                'idPriorita' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikCedrOperacniProgramv01',
+                'CiselnikCedrPodprogramv01',
+                'CiselnikCedrOpatreniv01'
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        if ($this->request->is('ajax')) {
+            $dotace = $this->Dotace->find('all', [
+                'fields' => [
+                    'idDotace',
+                    'idPrijemce',
+                    'projektKod',
+                    'projektIdnetifikator',
+                    'projektNazev',
+                    'PrijemcePomoci.idPrijemce',
+                    'PrijemcePomoci.obchodniJmeno',
+                    'PrijemcePomoci.jmeno',
+                    'PrijemcePomoci.prijmeni'
+                ],
+                'conditions' => [
+                    'iriPriorita' => $this->request->getQuery('id')
+                ],
+                'contain' => [
+                    'PrijemcePomoci'
+                ]
+            ])->limit(50000);
+            $_serialize = false;
+            $this->set(compact(['data', 'dotace', '_serialize']));
+        } else {
+            $this->set(compact(['data']));
+        }
+    }
 
     public function mmrOperacniProgram()
     {
