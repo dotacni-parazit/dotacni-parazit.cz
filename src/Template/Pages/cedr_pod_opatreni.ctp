@@ -3,7 +3,7 @@
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
-$this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod . ') - MMR PodOpatření');
+$this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod . ') - CEDR PodOpatření');
 ?>
 <div id="tabs">
     <ul>
@@ -46,8 +46,8 @@ $this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod
             </tr>
 
             <tr>
-                <td>Nadřazené Opatření MMR</td>
-                <td><?= $this->Html->link($data->MmrOpatreni->opatreniNazev . ' (' . $data->MmrOpatreni->opatreniKod . ')', '/detail-mmr-opatreni/?id=' . $data->idOpatreni) ?></td>
+                <td>Nadřazené Opatření CEDR</td>
+                <td><?= $this->Html->link($data->CedrOpatreni->opatreniNazev . ' (' . $data->CedrOpatreni->opatreniKod . ')', '/detail-cedr-opatreni/?id=' . $data->idOpatreni) ?></td>
             </tr>
 
             <tr>
@@ -66,7 +66,7 @@ $this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod
     </div>
 
     <div id="dotace">
-        <h2>Dotace v MMR PodOpatření</h2>
+        <h2>Dotace v CEDR PodOpatření</h2>
         <div>Max. 1.000 záznamů</div>
         <table class="datatable">
             <thead>

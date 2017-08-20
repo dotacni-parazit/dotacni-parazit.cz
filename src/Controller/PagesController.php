@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
+use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
 use App\Model\Table\CiselnikDotacePoskytovatelv01Table;
 use App\Model\Table\CiselnikDotaceTitulv01Table;
 use App\Model\Table\CiselnikFinancniZdrojv01Table;
@@ -52,6 +53,7 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikOkresv01Table CiselnikOkresv01
  * @property CiselnikKrajv01Table CiselnikKrajv01
  * @property CiselnikCedrOpatreniv01Table CiselnikCedrOpatreniv01
+ * @property CiselnikCedrPodOpatreniv01Table CiselnikCedrPodOpatreniv01
  * @property RozhodnutiTable Rozhodnuti
  * @property CiselnikStatv01Table CiselnikStatv01
  * @property PrijemcePomociTable PrijemcePomoci
@@ -1686,6 +1688,41 @@ class PagesController extends AppController
             ],
             'contain' => [
                 'CiselnikMmrOpatreniv01'
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $dotace = $this->Dotace->find('all', [
+            'fields' => [
+                'idDotace',
+                'idPrijemce',
+                'projektKod',
+                'projektIdnetifikator',
+                'projektNazev',
+                'PrijemcePomoci.idPrijemce',
+                'PrijemcePomoci.obchodniJmeno',
+                'PrijemcePomoci.jmeno',
+                'PrijemcePomoci.prijmeni'
+            ],
+            'conditions' => [
+                'iriPodopatreni' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'PrijemcePomoci'
+            ]
+        ])->limit(1000);
+
+        $this->set(compact(['data', 'dotace']));
+    }
+
+    public function cedrPodOpatreni()
+    {
+        $data = $this->CiselnikCedrPodOpatreniv01->find('all', [
+            'conditions' => [
+                'idPodOpatreni' => $this->request->getQuery('id')
+            ],
+            'contain' => [
+                'CiselnikCedrOpatreniv01'
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
