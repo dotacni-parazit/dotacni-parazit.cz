@@ -1548,11 +1548,17 @@ class PagesController extends AppController
             ]
         ]);
 
-        $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj->krajKod);
-        $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
-        if ($biggest === false) $biggest = [];
+        if ($this->request->is('ajax')) {
+            $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj->krajKod);
+            $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
+            if ($biggest === false) $biggest = [];
+            $_serialize = false;
+            $this->set(compact(['kraj', 'historie', 'biggest', '_serialize']));
+        } else {
+            $biggest = [];
+            $this->set(compact(['kraj', 'okresy', 'historie', 'biggest']));
+        }
 
-        $this->set(compact(['kraj', 'okresy', 'historie', 'biggest']));
     }
 
     public
