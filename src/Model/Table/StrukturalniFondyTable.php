@@ -31,6 +31,11 @@ class StrukturalniFondyTable extends Table
         parent::initialize($config);
 
         $this->setTable('strukturalniFondy');
+
+        $this->belongsTo('CiselnikMmrPrioritav01')
+            ->setForeignKey('cisloPrioritniOsy')
+            ->setBindingKey('prioritaKod')
+            ->setProperty('MmrPriorita');
     }
 
     /**

@@ -30,6 +30,7 @@ use App\Model\Table\DotaceTable;
 use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
+use App\Model\Table\StrukturalniFondyTable;
 use Cake\Cache\Cache;
 use Cake\Database\Query;
 use Cake\Datasource\ConnectionManager;
@@ -60,6 +61,7 @@ use Cake\ORM\TableRegistry;
  * @property PrijemcePomociTable PrijemcePomoci
  * @property DotaceTable Dotace
  * @property CachingComponent Caching;
+ * @property StrukturalniFondyTable StrukturalniFondy
  */
 class PagesController extends AppController
 {
@@ -120,7 +122,6 @@ class PagesController extends AppController
         $this->statistics();
         $this->dotacniTituly();
         $this->fyzickeOsoby();
-        $this->podleZdrojeFinanciCompleteAjax();
     }
 
     public function cedrOperacniProgramy()
@@ -447,12 +448,16 @@ class PagesController extends AppController
 
     public function strukturalniFondy()
     {
-        $data = $this->StrukturalniFondy->find('all', [
-            'conditions' => [
-                'cisloANazevProgramu' => 'CZ.3.22 OP ČR - Polsko'
+        $ops = $this->StrukturalniFondy->find('all', [
+            'fields' => [
+                'OP' => 'cisloANazevProgramu',
+                'CNT' => 'COUNT(*)'
+            ],
+            'group' => [
+                'cisloANazevProgramu'
             ]
-        ])->limit(10000);
-        $this->set(compact(['data']));
+        ])->hydrate(false)->toArray();
+        $this->set(compact(['ops']));
     }
 
     public function podleSidlaPrijemce()
@@ -860,10 +865,6 @@ class PagesController extends AppController
         $this->set(compact(['tables']));
     }
 
-    /*
-     * Podle prijemcu
-     * **/
-
     public function dotacniTituly()
     {
         $data = $this->CiselnikDotaceTitulv01->find('all', [
@@ -880,6 +881,10 @@ class PagesController extends AppController
 
         $this->set(compact('data'));
     }
+
+    /*
+     * Podle prijemcu
+     * **/
 
     public function fyzickeOsoby()
     {
@@ -920,6 +925,57 @@ class PagesController extends AppController
         $_serialize = false;
 
         $this->set(compact(['dotace', '_serialize']));
+    }
+
+    public function strukturalniFondyDetail()
+    {
+        $op = $this->StrukturalniFondy->find('all', [
+            'conditions' => [
+                'cisloANazevProgramu' => filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING)
+            ]
+        ])->first();
+        if (empty($op)) throw new NotFoundException();
+
+        $op_kod = explode(' ', filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING));
+        $op_kod = $op_kod[0];
+
+        $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
+            'conditions' => [
+                'operacaniProgramKod' => $op_kod
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $priority = $this->StrukturalniFondy->find('all', [
+            'conditions' => [
+                'cisloANazevProgramu' => filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING),
+                'CiselnikMmrPrioritav01.idOperacniProgram' => $data->idOperacniProgram
+            ],
+            'fields' => [
+                'cisloPrioritniOsy',
+                'CNT' => 'COUNT(*)',
+                'CiselnikMmrPrioritav01.prioritaNazev'
+            ],
+            'group' => [
+                'cisloPrioritniOsy'
+            ],
+            'contain' => [
+                'CiselnikMmrPrioritav01'
+            ]
+        ]);
+
+        if ($this->request->is('ajax')) {
+            $fondy = $this->StrukturalniFondy->find('all', [
+                'conditions' => [
+                    'cisloANazevProgramu' => $this->request->getQuery('op')
+                ]
+            ])->limit(50000);
+
+            $_serialize = false;
+            $this->set(compact(['op', 'data', 'fondy', '_serialize']));
+        } else {
+            $this->set(compact(['op', 'data', 'priority']));
+        }
     }
 
     public function financniZdroje()

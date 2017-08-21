@@ -101,6 +101,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-cedr-podopatreni/', ['controller' => 'Pages', 'action' => 'cedrPodOpatreni']);
 
     $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
+    $routes->connect('/strukturalni-fondy-detail/', ['controller' => 'Pages', 'action' => 'strukturalniFondyDetail']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);

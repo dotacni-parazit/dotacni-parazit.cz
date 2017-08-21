@@ -29,7 +29,7 @@ class CiselnikMmrPrioritav01Table extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('ciselnikMmrPrioritav01');
+        $this->setTable('cedr.ciselnikMmrPrioritav01');
         $this->setDisplayField('idPriorita');
         $this->setPrimaryKey('idPriorita');
 
