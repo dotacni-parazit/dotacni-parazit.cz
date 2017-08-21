@@ -41,17 +41,17 @@ $this->set('title', $data->operacaniProgramNazev . ' - Strukturální Fondy');
 
             <tr>
                 <td>Platnost Od</td>
-                <td><?= date('d. m. Y', $data->zaznamPlatnostOdDatum->timestamp) ?></td>
+                <td><?= $data->zaznamPlatnostOdDatum == false ? "" : date('d. m. Y', $data->zaznamPlatnostOdDatum->timestamp) ?></td>
             </tr>
 
             <tr>
                 <td>Platnost Do</td>
-                <td><?= date('d. m. Y', $data->zaznamPlatnostDoDatum->timestamp) ?></td>
+                <td><?= $data->zaznamPlatnostDoDatum == false ? "" : date('d. m. Y', $data->zaznamPlatnostDoDatum->timestamp) ?></td>
             </tr>
 
             <tr>
                 <td>Odkaz na CEDR</td>
-                <td><?= $this->Html->link($data->idOperacniProgram) ?></td>
+                <td><?= $data->idOperacniProgram == false ? "" : $this->Html->link($data->idOperacniProgram) ?></td>
             </tr>
 
             </tbody>
@@ -77,7 +77,7 @@ $this->set('title', $data->operacaniProgramNazev . ' - Strukturální Fondy');
             <tbody>
             <?php foreach ($priority as $p) { ?>
                 <tr>
-                    <td><?= $this->Html->link($p->MmrPriorita->prioritaNazev, '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) ?></td>
+                    <td><?= !empty($p->MmrPriorita) ? $this->Html->link($p->MmrPriorita->prioritaNazev, '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) : "N/A" ?></td>
                     <td><?= $this->Html->link($p->cisloPrioritniOsy, '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) ?></td>
                     <td><?= $p->CNT ?></td>
                     <td><?= $this->Html->link('Otevřít', '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) ?></td>

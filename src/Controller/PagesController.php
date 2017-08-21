@@ -540,6 +540,7 @@ class PagesController extends AppController
                             'refundaceIndikator' => 0
                         ],
                         'contain' => [
+                            'Rozhodnuti',
                             'Rozhodnuti.Dotace.PrijemcePomoci'
                         ]
                     ])->first()->sum + 0;
@@ -929,14 +930,16 @@ class PagesController extends AppController
 
     public function strukturalniFondyDetail()
     {
+        $req_op = filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING);
+
         $op = $this->StrukturalniFondy->find('all', [
             'conditions' => [
-                'cisloANazevProgramu' => filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING)
+                'cisloANazevProgramu' => $req_op
             ]
         ])->first();
         if (empty($op)) throw new NotFoundException();
 
-        $op_kod = explode(' ', filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING));
+        $op_kod = explode(' ', $req_op);
         $op_kod = $op_kod[0];
 
         $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
@@ -944,30 +947,54 @@ class PagesController extends AppController
                 'operacaniProgramKod' => $op_kod
             ]
         ])->first();
-        if (empty($data)) throw new NotFoundException();
+        if (empty($data) && strpos($req_op, 'ROP') === false && strpos($req_op, 'OP Praha') === false) throw new NotFoundException();
 
-        $priority = $this->StrukturalniFondy->find('all', [
-            'conditions' => [
-                'cisloANazevProgramu' => filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING),
-                'CiselnikMmrPrioritav01.idOperacniProgram' => $data->idOperacniProgram
-            ],
-            'fields' => [
-                'cisloPrioritniOsy',
-                'CNT' => 'COUNT(*)',
-                'CiselnikMmrPrioritav01.prioritaNazev'
-            ],
-            'group' => [
-                'cisloPrioritniOsy'
-            ],
-            'contain' => [
-                'CiselnikMmrPrioritav01'
-            ]
-        ]);
+        $is_special_op = strpos($req_op, 'ROP') !== false || strpos($req_op, 'OP Praha') !== false;
+
+        if ($is_special_op) {
+            $priority = $this->StrukturalniFondy->find('all', [
+                'conditions' => [
+                    'cisloANazevProgramu' => $req_op
+                ],
+                'fields' => [
+                    'cisloPrioritniOsy',
+                    'CNT' => 'COUNT(*)'
+                ],
+                'group' => [
+                    'cisloPrioritniOsy'
+                ]
+            ]);
+            $data = (object)[
+                'operacaniProgramKod' => $op->cisloANazevProgramu,
+                'operacaniProgramNazev' => $op->cisloANazevProgramu,
+                'idOperacniProgram' => false,
+                'zaznamPlatnostDoDatum' => false,
+                'zaznamPlatnostOdDatum' => false
+            ];
+        } else {
+            $priority = $this->StrukturalniFondy->find('all', [
+                'conditions' => [
+                    'cisloANazevProgramu' => $req_op,
+                    'CiselnikMmrPrioritav01.idOperacniProgram' => $data->idOperacniProgram
+                ],
+                'fields' => [
+                    'cisloPrioritniOsy',
+                    'CNT' => 'COUNT(*)',
+                    'CiselnikMmrPrioritav01.prioritaNazev'
+                ],
+                'group' => [
+                    'cisloPrioritniOsy'
+                ],
+                'contain' => [
+                    'CiselnikMmrPrioritav01'
+                ]
+            ]);
+        }
 
         if ($this->request->is('ajax')) {
             $fondy = $this->StrukturalniFondy->find('all', [
                 'conditions' => [
-                    'cisloANazevProgramu' => $this->request->getQuery('op')
+                    'cisloANazevProgramu' => $req_op
                 ]
             ])->limit(50000);
 
@@ -1603,7 +1630,8 @@ class PagesController extends AppController
                         'Rozhodnuti'
                     ],
                     'conditions' => [
-                        'iriDotacniTitul' => $r->idDotaceTitul
+                        'iriDotacniTitul' => $r->idDotaceTitul,
+                        'Rozhodnuti.refundaceIndikator' => 0
                     ]
                 ])->first()->sum;
                 Cache::write($cache_tag_rozhodnuto, $soucet_rozhodnuto, 'long_term');
@@ -1615,7 +1643,10 @@ class PagesController extends AppController
                     ],
                     'conditions' => [
                         'iriDotacniTitul' => $r->idDotaceTitul,
-                        'refundaceIndikator' => 0
+                        'Rozhodnuti.refundaceIndikator' => 0
+                    ],
+                    'contain' => [
+                        'Rozhodnuti'
                     ]
                 ])->first()->sum;
                 Cache::write($cache_tag_spotrebovano, $soucet_spotrebovano, 'long_term');
