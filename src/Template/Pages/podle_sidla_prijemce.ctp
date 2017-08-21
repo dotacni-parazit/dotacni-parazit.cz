@@ -60,7 +60,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <br/>
     </div>
     <div id="obce_list" style="width: 100%;">
-        <table class="datatable">
+        <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
                 <th>Název obce</th>
@@ -69,13 +69,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($obce as $o) { ?>
-                <tr>
-                    <td><?= $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod) ?></td>
-                    <td style="text-align: right;"><?= Number::currency($obce_soucet[$o->id]->soucet) ?></td>
-                    <td style="text-align: right;"><?= Number::currency($obce_soucet[$o->id]->soucetSpotrebovano) ?></td>
-                </tr>
-            <?php } ?>
             </tbody>
             <tfoot>
             <tr>
@@ -366,11 +359,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     infoel.show();
                 })
                 .mousemove(function (e) {
-                    var xpos = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX;
-                    var ypos = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
                     var infoel = $("#info-" + key);
                     if (infoel.length > 0) {
-                        infoel.css('left', xpos + 40).css('top', ypos);
+                        infoel.css('left', e.clientX + 30).css('top', e.clientY);
                     }
                 })
                 .mouseout(function (event) {
@@ -404,16 +395,14 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     $(path, $("#czech_districts_by_frettie g#okresy")).css("fill", okresy_soucet[id]["color"]).css("opacity", "1").css("fill-opacity", "1");
                     var infoel = $("#info-okres-" + key, $("#okresy_map"));
                     if (infoel.length === 0) {
-                        infoel = $("#okresy_map").append("<div id='info-okres-" + key + "' style='padding:10px;position:absolute;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + okresy_soucet[id]["okresNazev"] + "</strong><br/>Součet rozhodnuto: " + okresy_soucet[id]["soucet"] + "<br/>Součet spotřebováno: " + okresy_soucet[id]["soucetSpotrebovano"] + "<br/></div>");
+                        infoel = $("#okresy_map").append("<div id='info-okres-" + key + "' style='padding:10px;position:fixed;left:0;top:0;background-color:white;border:1px solid black;'><strong>" + okresy_soucet[id]["okresNazev"] + "</strong><br/>Součet rozhodnuto: " + okresy_soucet[id]["soucet"] + "<br/>Součet spotřebováno: " + okresy_soucet[id]["soucetSpotrebovano"] + "<br/></div>");
                     }
                     infoel.show();
                 })
                 .mousemove(function (e) {
-                    var xpos = (e.offsetX || (event.pageX - $(event.target).offset().left));
-                    var ypos = (e.offsetY || (event.pageY - $(event.target).offset().top));
                     var infoel = $("#info-okres-" + key, $("#okresy_map"));
                     if (infoel.length > 0) {
-                        infoel.css('left', xpos + 40).css('top', ypos);
+                        infoel.css('left', e.clientX + 30).css('top', e.clientY);
                     }
                 })
                 .mouseout(function (event) {

@@ -486,6 +486,7 @@ class PagesController extends AppController
                 'okresKod'
             ]
         ]);
+
         $obce = $this->CiselnikObecv01->find('all', [
             'group' => 'obecKod'
         ]);
@@ -498,11 +499,64 @@ class PagesController extends AppController
             ]
         ]);
 
+        if ($this->request->is('ajax')) {
+
+            $obce_soucet = [];
+
+            foreach ($obce as $obec) {
+                $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->obecKod);
+                $cache_tag_obec_soucet_spotrebovano = 'obec_soucet_spotrebovano_' . sha1($obec->obecKod);
+
+                $obec_soucet = Cache::read($cache_tag_obec_soucet, 'long_term');
+                $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
+
+                if ($obec_soucet === false) {
+                    $obec_soucet = $this->Rozhodnuti->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaRozhodnuta)'
+                        ],
+                        'contain' => [
+                            'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                        ],
+                        'conditions' => [
+                            'CiselnikObecv01.obecKod' => $obec->obecKod,
+                            'refundaceIndikator' => 0
+                        ]
+                    ])->first()->sum;
+                    Cache::write($cache_tag_obec_soucet, $obec_soucet, 'long_term');
+                }
+
+                if ($obec_soucet_spotrebovano === false) {
+                    $obec_soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSpotrebovana)'
+                        ],
+                        'contain' => [
+                            'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
+                        ],
+                        'conditions' => [
+                            'CiselnikObecv01.obecKod' => $obec->obecKod,
+                            'refundaceIndikator' => 0
+                        ]
+                    ])->first()->sum;
+                    Cache::write($cache_tag_obec_soucet_spotrebovano, $obec_soucet_spotrebovano, 'long_term');
+                }
+
+                $obce_soucet[$obec->id] = (object)[
+                    'soucet' => $obec_soucet,
+                    'soucetSpotrebovano' => $obec_soucet_spotrebovano
+                ];
+            }
+
+            $_serialize = false;
+            $this->set(compact(['obce', 'obce_soucet', '_serialize']));
+            return;
+        }
+
         $soucet_staty = [];
         $soucet_staty_spotrebovano = [];
         $kraje_data = [];
         $okresy_soucet = [];
-        $obce_soucet = [];
 
         foreach ($staty as $stat) {
             // soucet rozhodnutych
@@ -681,52 +735,7 @@ class PagesController extends AppController
         $okresy_soucet = $tmparr;
         unset($tmparr);
 
-        foreach ($obce as $obec) {
-            $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->obecKod);
-            $cache_tag_obec_soucet_spotrebovano = 'obec_soucet_spotrebovano_' . sha1($obec->obecKod);
-
-            $obec_soucet = Cache::read($cache_tag_obec_soucet, 'long_term');
-            $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
-
-            if ($obec_soucet === false) {
-                $obec_soucet = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaRozhodnuta)'
-                    ],
-                    'contain' => [
-                        'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
-                    ],
-                    'conditions' => [
-                        'CiselnikObecv01.obecKod' => $obec->obecKod,
-                        'refundaceIndikator' => 0
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_obec_soucet, $obec_soucet, 'long_term');
-            }
-
-            if ($obec_soucet_spotrebovano === false) {
-                $obec_soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaSpotrebovana)'
-                    ],
-                    'contain' => [
-                        'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01'
-                    ],
-                    'conditions' => [
-                        'CiselnikObecv01.obecKod' => $obec->obecKod,
-                        'refundaceIndikator' => 0
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_obec_soucet_spotrebovano, $obec_soucet_spotrebovano, 'long_term');
-            }
-
-            $obce_soucet[$obec->id] = (object)[
-                'soucet' => $obec_soucet,
-                'soucetSpotrebovano' => $obec_soucet_spotrebovano
-            ];
-        }
-
-        $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'obce', 'okresy_soucet', 'obce_soucet']));
+        $this->set(compact(['staty', 'soucet_staty', 'soucet_staty_spotrebovano', 'kraje_data', 'okresy', 'okresy_soucet']));
     }
 
     private
