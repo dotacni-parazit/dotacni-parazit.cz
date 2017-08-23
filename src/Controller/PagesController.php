@@ -1517,6 +1517,27 @@ class PagesController extends AppController
         $this->set(compact(['year', 'zdroj', 'year_sum']));
     }
 
+    function detailRozpoctoveObdobi()
+    {
+        $data = $this->RozpoctoveObdobi->find('all', [
+            'conditions' => [
+                'idObdobi' => $this->request->getParam('id')
+            ],
+            'contain' => [
+                'Rozhodnuti',
+                'CiselnikDotaceTitulv01',
+                'CiselnikUcelZnakv01',
+                'Rozhodnuti.CiselnikDotacePoskytovatelv01',
+                'Rozhodnuti.CiselnikFinancniProstredekCleneniv01',
+                'Rozhodnuti.CiselnikFinancniZdrojv01',
+                'Rozhodnuti.Dotace'
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
+    }
+
     function detailRozhodnuti()
     {
         $id = $this->request->getParam('id');

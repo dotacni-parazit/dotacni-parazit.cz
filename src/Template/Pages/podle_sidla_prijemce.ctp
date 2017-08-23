@@ -60,7 +60,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <br/>
     </div>
     <div id="obce_list" style="width: 100%;">
-        <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
                 <th>Název obce</th>

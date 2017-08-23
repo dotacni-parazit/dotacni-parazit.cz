@@ -86,18 +86,18 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
     </tr>
 
     <tr>
-        <td>Indikátor Refundace?</td>
-        <td><?= $rozhodnuti['refundaceIndikator'] ?></td>
+        <td>Refundace?</td>
+        <td><?= $rozhodnuti['refundaceIndikator'] ? 'ANO' : 'NE' ?></td>
     </tr>
 
     <tr>
-        <td>Indikátor Návratnosti?</td>
-        <td><?= $rozhodnuti['navratnostIndikator'] ?></td>
+        <td>Návratnost?</td>
+        <td><?= $rozhodnuti['navratnostIndikator'] ? 'ANO' : 'NE' ?></td>
     </tr>
 
     <tr>
-        <td>Indikátor Investice?</td>
-        <td><?= $rozhodnuti['investiceIndikator'] ?></td>
+        <td>Investice?</td>
+        <td><?= $rozhodnuti['investiceIndikator'] ? 'ANO' : 'NE' ?></td>
     </tr>
 
     </tbody>
