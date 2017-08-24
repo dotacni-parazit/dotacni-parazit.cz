@@ -38,7 +38,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 </tr>
                 <tr>
                     <td>Nadřízený Ukazatel Státního Rozpočtu</td>
-                    <td><?= $u->statniRozpocetUkazatelNadrizenyKod ?></td>
+                    <td><?= $this->Html->link($u->statniRozpocetUkazatelNadrizenyKod, '/kapitoly-statniho-rozpoctu-ukazatele/' . $u->zaznamPlatnostOdDatum->year . '/' . $u->statniRozpocetUkazatelNadrizenyKod) ?></td>
                 </tr>
                 <tr>
                     <td>Název Ukazatele</td>
@@ -113,7 +113,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </thead>
             <tbody>
             <?php
-            foreach($dotacniTituly as $d){
+            foreach ($dotacniTituly as $d) {
                 ?>
                 <tr>
                     <td><?= $d->dotaceTitulNazev ?></td>
@@ -122,7 +122,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= $d->zaznamPlatnostDoDatum->nice() ?></td>
                     <td><?= $this->Html->link('Otevřit', '/detail-dotacni-titul/' . $d->dotaceTitulKod) ?></td>
                 </tr>
-            <?php
+                <?php
             }
             ?>
             </tbody>
