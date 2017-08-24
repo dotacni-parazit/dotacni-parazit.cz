@@ -1,29 +1,27 @@
 <?php
 $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
 ?>
-
-<table class="datatable">
+<div>
+    Filtrovat: <span id="yearsfilter">
+            <a href="javascript:filterYear('')"> "Zobrazit vše"</a>
+        <?php foreach ($roky as $y) { ?>, <a
+                href="javascript:filterYear('<?= $y['ROK'] ?>')"> <?= $y['ROK'] ?></a><?php
+        } ?>
+    </span>
+</div>
+<hr/>
+<table id="datatable" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>
         <th data-type="html">Název Ukazatele</th>
         <th data-type="html">Kód Ukazatele</th>
         <th data-type="html">Kapitola Státního Rozpočtu</th>
-        <th>Počet Dotačních Titulů</th>
+        <th data-type="number">Počet Dotačních Titulů</th>
         <th data-type="datetime">Platnost</th>
         <th data-type="html">Otevřít</th>
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($data as $d) { ?>
-        <tr>
-            <td><?= $this->Html->link($d->statniRozpocetUkazatelNazev, '/kapitoly-statniho-rozpoctu-ukazatele/' . $d->zaznamPlatnostOdDatum->year . '/'. $d->statniRozpocetUkazatelKod) ?></td>
-            <td><?= $this->Html->link($d->statniRozpocetUkazatelKod, '/kapitoly-statniho-rozpoctu-ukazatele/' . $d->zaznamPlatnostOdDatum->year . '/'. $d->statniRozpocetUkazatelKod) ?></td>
-            <td><?= $this->Html->link($d->statniRozpocetKapitolaKod, '/kapitoly-statniho-rozpoctu-ukazatele/' . $d->zaznamPlatnostOdDatum->year . '/'. $d->statniRozpocetUkazatelKod) ?></td>
-            <td><?= isset($ukazatele_counts[$d->id]) ? $ukazatele_counts[$d->id] : 0 ?></td>
-            <td><?= $d->zaznamPlatnostOdDatum->year ?></td>
-            <td><?= $this->Html->link('Otevřít', '/kapitoly-statniho-rozpoctu-ukazatele/' . $d->zaznamPlatnostOdDatum->year . '/' . $d->statniRozpocetUkazatelKod) ?></td>
-        </tr>
-    <?php } ?>
     </tbody>
     <tfoot>
     <tr>
@@ -36,3 +34,10 @@ $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
     </tr>
     </tfoot>
 </table>
+
+<script type="text/javascript">
+    function filterYear(year) {
+        table.column(4).search("" + year).draw();
+        return false;
+    }
+</script>

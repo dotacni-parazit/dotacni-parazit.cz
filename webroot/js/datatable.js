@@ -40,6 +40,7 @@ function setupDataTable(selector) {
             .search(this.value)
             .draw();
     });
+
     return ttable;
 }
 var table;
@@ -52,4 +53,5 @@ $(document).ready(function () {
         setupDataTable($(this))
     });
 
+    if (undefined !== typeof tableSetupComplete) tableSetupComplete();
 });

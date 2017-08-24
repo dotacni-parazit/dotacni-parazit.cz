@@ -1037,28 +1037,42 @@ class PagesController extends AppController
 
     public function kapitolyStatnihoRozpoctuUkazatele()
     {
-        $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
-            'conditions' => [
-                'statniRozpocetUkazatelNadrizenyKod' => ''
-            ],
-            'order' => [
-                'zaznamPlatnostDoDatum' => 'DESC'
-            ]
-        ]);
+        if ($this->request->is('ajax')) {
+            $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
+                'conditions' => [
+                    'statniRozpocetUkazatelNadrizenyKod' => ''
+                ],
+                'order' => [
+                    'zaznamPlatnostDoDatum' => 'DESC'
+                ]
+            ]);
 
-        $ukazatele_counts = $this->CiselnikDotaceTitulStatniRozpocetUkazatelv01->find('list', [
-            'fields' => [
-                'idStatniRozpocetUkazatel' => 'idStatniRozpocetUkazatel',
-                'CNT' => 'COUNT(idDotaceTitul)'
-            ],
-            'keyField' => 'idStatniRozpocetUkazatel',
-            'valueField' => 'CNT',
-            'group' => [
-                'idStatniRozpocetUkazatel'
-            ]
-        ])->enableHydration(false)->toArray();
+            $ukazatele_counts = $this->CiselnikDotaceTitulStatniRozpocetUkazatelv01->find('list', [
+                'fields' => [
+                    'idStatniRozpocetUkazatel' => 'idStatniRozpocetUkazatel',
+                    'CNT' => 'COUNT(idDotaceTitul)'
+                ],
+                'keyField' => 'idStatniRozpocetUkazatel',
+                'valueField' => 'CNT',
+                'group' => [
+                    'idStatniRozpocetUkazatel'
+                ]
+            ])->enableHydration(false)->toArray();
 
-        $this->set(compact('data', 'ukazatele_counts'));
+            $_serialize = false;
+
+            $this->set(compact('data', 'ukazatele_counts', '_serialize'));
+        }else{
+            $roky = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
+                'fields' => [
+                    'ROK' => 'DISTINCT(YEAR(zaznamPlatnostOdDatum))'
+                ],
+                'order' => [
+                    'ROK' => 'DESC'
+                ]
+            ])->enableHydration(false)->toArray();
+            $this->set(compact('roky'));
+        }
     }
 
     public function kapitolyStatnihoRozpoctuUkazateleDetail()
