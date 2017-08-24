@@ -64,6 +64,7 @@ use Cake\ORM\TableRegistry;
  * @property CachingComponent Caching;
  * @property StrukturalniFondyTable StrukturalniFondy
  * @property CiselnikDotaceTitulStatniRozpocetUkazatelv01Table CiselnikDotaceTitulStatniRozpocetUkazatelv01
+ * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
  */
 class PagesController extends AppController
 {
@@ -101,6 +102,7 @@ class PagesController extends AppController
         $this->loadModel('CiselnikCedrGrantoveSchemav01');
         $this->loadModel('StrukturalniFondy');
         $this->loadModel('CiselnikDotaceTitulStatniRozpocetUkazatelv01');
+        $this->loadModel('CiselnikUcelZnakv01');
         $this->loadComponent('Caching');
     }
 
@@ -1062,7 +1064,7 @@ class PagesController extends AppController
             $_serialize = false;
 
             $this->set(compact('data', 'ukazatele_counts', '_serialize'));
-        }else{
+        } else {
             $roky = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
                 'fields' => [
                     'ROK' => 'DISTINCT(YEAR(zaznamPlatnostOdDatum))'
@@ -1671,8 +1673,27 @@ class PagesController extends AppController
         $this->set(compact(['osoby', '_serialize']));
     }
 
-    public
-    function detailDotacniTitul()
+    public function znakUceluDotacnichTitulu()
+    {
+        if ($this->request->is('ajax')) {
+            $znaky = $this->CiselnikUcelZnakv01->find('all');
+            $_serialize = false;
+
+            $this->set(compact(['znaky', '_serialize']));
+        } else {
+            $roky = $this->CiselnikUcelZnakv01->find('all', [
+                'fields' => [
+                    'ROK' => 'DISTINCT(YEAR(zaznamPlatnostOdDatum))'
+                ],
+                'order' => [
+                    'ROK' => 'DESC'
+                ]
+            ])->enableHydration(false)->toArray();
+            $this->set(compact(['roky']));
+        }
+    }
+
+    public function detailDotacniTitul()
     {
         $titul = $this->CiselnikDotaceTitulv01->find('all', [
             'conditions' => [

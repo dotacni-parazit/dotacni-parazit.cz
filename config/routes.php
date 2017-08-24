@@ -106,6 +106,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazatele']);
     $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele/:year/:id', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazateleDetail'], ['id' => '[a-zA-Z0-9]+', 'year' => '[0-9]{4}']);
 
+    $routes->connect('/ucel-znak-dotacnich-titulu', ['controller' => 'Pages', 'action' => 'znakUceluDotacnichTitulu']);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

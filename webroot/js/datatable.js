@@ -52,6 +52,4 @@ $(document).ready(function () {
     $('.datatable').each(function () {
         setupDataTable($(this))
     });
-
-    if (undefined !== typeof tableSetupComplete) tableSetupComplete();
 });
