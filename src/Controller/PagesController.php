@@ -806,8 +806,6 @@ class PagesController extends AppController
 
     public function podlePrijemcu()
     {
-        $name = $this->request->getQuery('name');
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
         $multiple = $this->request->getQuery('multiple');
         $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
         $multi_prijemci = null;
@@ -821,19 +819,7 @@ class PagesController extends AppController
         }
 
         if (!empty($name)) {
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'ico',
-                    'jmeno',
-                    'prijmeni'
-                ],
-                'conditions' => [
-                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
-                ]
-            ])->bind(':against', h($name))->limit(10000);
-            $this->set(compact('prijemci'));
+
         } else if (!empty($multi_prijemci)) {
             $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
         } else if (!empty($pravni_forma)) {
@@ -984,8 +970,11 @@ class PagesController extends AppController
                         'obchodniJmeno',
                         'jmeno',
                         'prijmeni',
-                        'ico'
+                        'ico',
+                        'CiselnikStatv01.statNazev',
+                        'CiselnikStatv01.statKod3Znaky'
                     ],
+                    'contain' => ['CiselnikStatv01'],
                     'conditions' => [
                         'ico' => $ico
                     ]
@@ -997,6 +986,37 @@ class PagesController extends AppController
         } else {
             $this->set(compact(['ico']));
         }
+    }
+
+    public function prijemceDotaciJmeno()
+    {
+
+        $name = $this->request->getQuery('name');
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
+
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            $data = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'ico',
+                    'jmeno',
+                    'prijmeni',
+                    'CiselnikStatv01.statKod3Znaky',
+                    'CiselnikStatv01.statNazev'
+                ],
+                'contain' => ['CiselnikStatv01'],
+                'conditions' => [
+                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
+                ]
+            ])->bind(':against', h($name))->limit(50000);
+
+            $this->set(compact(['data', '_serialize', 'name']));
+        } else {
+            $this->set(compact(['name']));
+        }
+
     }
 
     public function podleZdrojeFinanciCompleteAjax()

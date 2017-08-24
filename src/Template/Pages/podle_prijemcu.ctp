@@ -27,13 +27,7 @@ $this->set('title', 'Příjemci dotací');
     </div>
     <div id="tabs-2">
         <h2>Podle jména</h2>
-        <?php
-        echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('name', ['label' => 'Obchodní jméno / Jméno / Příjmení (alespoň 3 písmena)', 'value' => $name]);
-        echo $this->Form->submit('Hledat!');
-        echo $this->Form->end();
-        echo 'použijte * pro hledání částí slova, např. "techn*" najde "technologie"';
-        ?>
+
     </div>
     <div id="tabs-3">
         <h2>Více příjemců zároveň (IČO)</h2>
