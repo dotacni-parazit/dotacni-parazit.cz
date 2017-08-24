@@ -12,6 +12,7 @@ $this->set('title', 'Příjemci dotací');
         <li><a href="#tabs-2">Podle Jména Příjemce</a></li>
         <li><a href="#tabs-4">Podle Právní Formy</a></li>
         <li><a href="#tabs-3">Více příjemců zároveň</a></li>
+        <li><a href="#tabs-6">Seznam zváštních IČO</a></li>
     </ul>
     <div id="tabs-5">
         <div class="homepage_tile"><a href="/fyzicke-osoby">FO Nepodnikající</a></div>
@@ -22,13 +23,7 @@ $this->set('title', 'Příjemci dotací');
     </div>
     <div id="tabs-1">
         <h2>Podle IČO</h2>
-        <?php
-        echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('ico', ['label' => 'IČO (pouze čísla)', 'value' => $ico]);
-        echo $this->Form->submit('Hledat!');
-        echo $this->Form->end();
-        echo '("0" jsou "Fyzické osoby")';
-        ?>
+
     </div>
     <div id="tabs-2">
         <h2>Podle jména</h2>
@@ -43,7 +38,7 @@ $this->set('title', 'Příjemci dotací');
     <div id="tabs-3">
         <h2>Více příjemců zároveň (IČO)</h2>
         <?php
-        echo $this->Form->create(null, ['type'=>'get']);
+        echo $this->Form->create(null, ['type' => 'get']);
         echo $this->Form->input('multiple', ['label' => 'IČO několika příjemců', 'value' => $multiple]);
         echo $this->Form->submit('Zobrazit!');
         echo $this->Form->end();
@@ -52,12 +47,20 @@ $this->set('title', 'Příjemci dotací');
     </div>
     <div id="tabs-4">
         <h2>Podle Právní Formy</h2>
-        <?php
-        echo $this->Form->create(null, ['type'=>'get']);
-        echo $this->Form->input('pravniforma', ['options' => $pravni_formy, 'type' => 'select']);
-        echo $this->Form->submit('Zobrazit!');
-        echo $this->Form->end();
-        ?>
+
+    </div>
+    <div id="tabs-6">
+        <h2>Seznam Zvláštností</h2>
+        <ul>
+            <?php
+            foreach ($zvlastni_ico as $ic) {
+                ?>
+                <li><a href="?ico=<?= $ic->ico ?>">IČO: <?= $ic->ico . ' (' . $ic->obchodniJmeno . ')' ?></a></li>
+                <?php
+            }
+            ?>
+            <li><a href="?ico=99999999">IČO: 99999999</a></li>
+        </ul>
     </div>
 </div>
 <br class="clear"/>
@@ -96,28 +99,4 @@ if (!empty($prijemci)) {
         </tr>
         </tfoot>
     </table>
-    <?php
-} else {
-    ?>
-    <h2>Seznam Zvláštností</h2>
-    <ul>
-        <?php
-        foreach ($zvlastni_ico as $ic) {
-            ?>
-            <li><a href="?ico=<?= $ic->ico ?>">IČO: <?= $ic->ico . ' (' . $ic->obchodniJmeno . ')' ?></a></li>
-            <?php
-        }
-        ?>
-        <li><a href="?ico=99999999">IČO: 99999999</a></li>
-    </ul>
-    <?php
-}
-?>
-<script type="text/javascript">
-    $(function () {
-        $("#tabs").tabs({
-            collapsible: true,
-            active: <?= empty($name) ? '0' : '1' ?>
-        });
-    });
-</script>
+<?php } ?>

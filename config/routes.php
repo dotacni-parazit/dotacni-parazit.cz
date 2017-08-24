@@ -64,7 +64,12 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/podle-poskytovatelu/:id/complete/ajax', ['controller' => 'Pages', 'action' => 'podlePoskytovateluDetailCompleteAjax'], ['id' => '\d+']);
     $routes->connect('/podle-poskytovatelu/:id/complete/ajax/:year', ['controller' => 'Pages', 'action' => 'podlePoskytovateluDetailCompleteAjax'], ['id' => '\d+', 'year' => '\d+']);
 
-    $routes->connect('/podle-prijemcu/', ['controller' => 'Pages', 'action' => 'podlePrijemcu']);
+    $routes->connect('/podle-prijemcu/', ['controller' => 'Pages', 'action' => 'podlePrijemcuIndex']);
+    $routes->connect('/prijemce-dotaci/pravnicke-osoby', ['controller' => 'Pages', 'action' => 'prijemceDotaciPravnickaOsoba']);
+    $routes->connect('/prijemce-dotaci/fyzicke-osoby', ['controller' => 'Pages', 'action' => 'prijemceDotaciFyzickaOsoba']);
+    $routes->connect('/prijemce-dotaci/ico', ['controller' => 'Pages', 'action' => 'prijemceDotaciIco']);
+    $routes->connect('/prijemce-dotaci/jmeno', ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno']);
+    $routes->connect('/prijemce-dotaci/pravni-forma', ['controller' => 'Pages', 'action' => 'prijemceDotaciPravniForma']);
     $routes->connect('/podle-prijemcu/multiple/:ico', ['controller' => 'Pages', 'action' => 'detailPrijemceMulti'], ['ico' => '[0-9\,]+']);
 
     $routes->connect('/podle-zdroje-financi', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanci']);

@@ -120,7 +120,6 @@ class PagesController extends AppController
         $this->detailOkresyCache();
         $this->detailStatuCache();
         $this->podlePoskytovatelu();
-        $this->podlePrijemcu();
         $this->strukturalniFondy();
         $this->podleSidlaPrijemce();
         $this->podleZdrojeFinanci();
@@ -352,103 +351,6 @@ class PagesController extends AppController
         $counts = $this->Caching->initCachePodlePoskytovatelu($data);
 
         $this->set(compact(['data', 'counts']));
-    }
-
-    public function podlePrijemcu()
-    {
-
-        $ico = $this->request->getQuery('ico');
-        $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
-        $name = $this->request->getQuery('name');
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $multiple = $this->request->getQuery('multiple');
-        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
-        $pravni_forma = $this->request->getQuery('pravniforma');
-        $pravni_forma = filter_var($pravni_forma, FILTER_SANITIZE_NUMBER_INT);
-        $multi_prijemci = null;
-
-        if (!empty($multiple)) {
-            foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
-                if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
-                $multi_prijemci .= $multi_ico . ",";
-            }
-            $multi_prijemci = substr($multi_prijemci, 0, -1);
-        }
-
-        if ($ico != null) {
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'jmeno',
-                    'prijmeni',
-                    'ico'
-                ],
-                'conditions' => [
-                    'ico' => $ico
-                ]
-            ])->limit(10000);
-            if ($ico != 0 && count($prijemci->toArray()) == 1) {
-                $this->redirect('/detail-prijemce-pomoci/' . $prijemci->first()->idPrijemce);
-            }
-            $this->set(compact('prijemci'));
-        } else if (!empty($name)) {
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'ico',
-                    'jmeno',
-                    'prijmeni'
-                ],
-                'conditions' => [
-                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
-                ]
-            ])->bind(':against', h($name))->limit(10000);
-            $this->set(compact('prijemci'));
-        } else if (!empty($multi_prijemci)) {
-            $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
-        } else if (!empty($pravni_forma)) {
-            $pf = $this->CiselnikPravniFormav01->find('all', [
-                'conditions' => [
-                    'pravniFormaKod' => $pravni_forma
-                ]
-            ])->first();
-            $prijemci = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'ico',
-                    'jmeno',
-                    'prijmeni'
-                ],
-                'conditions' => [
-                    'iriPravniForma' => $pf->id
-                ]
-            ]);
-            $this->set(compact('prijemci'));
-        } else {
-            $zvlastni_ico = $this->PrijemcePomoci->find('all', [
-                'conditions' => [
-                    'AND' => [
-                        'ico > 0',
-                        'ico < 10000'
-                    ]
-                ],
-                'fields' => ['ico', 'idPrijemce', 'obchodniJmeno'],
-                'group' => 'ico'
-            ]);
-            $this->set(compact(['zvlastni_ico']));
-        }
-
-        $pravni_formy = $this->CiselnikPravniFormav01->find('list', [
-            'fields' => [
-                'id' => 'pravniFormaKod',
-                'pravniFormaNazev'
-            ]
-        ]);
-
-        $this->set(compact(['ico', 'name', 'multiple', 'pravni_formy']));
     }
 
     public function strukturalniFondy()
@@ -897,13 +799,204 @@ class PagesController extends AppController
         $this->set(compact('data'));
     }
 
+    public function fyzickeOsoby()
+    {
+
+    }
+
+    public function podlePrijemcu()
+    {
+        $name = $this->request->getQuery('name');
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $multiple = $this->request->getQuery('multiple');
+        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
+        $multi_prijemci = null;
+
+        if (!empty($multiple)) {
+            foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
+                if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
+                $multi_prijemci .= $multi_ico . ",";
+            }
+            $multi_prijemci = substr($multi_prijemci, 0, -1);
+        }
+
+        if (!empty($name)) {
+            $prijemci = $this->PrijemcePomoci->find('all', [
+                'fields' => [
+                    'idPrijemce',
+                    'obchodniJmeno',
+                    'ico',
+                    'jmeno',
+                    'prijmeni'
+                ],
+                'conditions' => [
+                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
+                ]
+            ])->bind(':against', h($name))->limit(10000);
+            $this->set(compact('prijemci'));
+        } else if (!empty($multi_prijemci)) {
+            $this->redirect('/podle-prijemcu/multiple/' . $multi_prijemci);
+        } else if (!empty($pravni_forma)) {
+
+        } else {
+            $zvlastni_ico = $this->PrijemcePomoci->find('all', [
+                'conditions' => [
+                    'AND' => [
+                        'ico > 0',
+                        'ico < 10000'
+                    ]
+                ],
+                'fields' => ['ico', 'idPrijemce', 'obchodniJmeno'],
+                'group' => 'ico'
+            ]);
+            $this->set(compact(['zvlastni_ico']));
+        }
+
+        $this->set(compact(['ico', 'name', 'multiple', 'pravni_formy']));
+    }
+
+    public function podlePrijemcuIndex()
+    {
+
+    }
+
     /*
      * Podle prijemcu
      * **/
 
-    public function fyzickeOsoby()
+    public function prijemceDotaciPravniForma()
     {
 
+        $spf_filtr = [
+            1 => [703, 721],
+            2 => [100],
+            3 => [101, 102, 103, 104, 105, 106, 107, 108, 150],
+            4 => [116, 117, 118, 141, 145, 233, 234, 251, 353, 361, 401, 442, 701, 705, 706, 731, 741, 745, 751, 761, 921, 922],
+            5 => [111, 112, 113, 114, 115, 121, 151, 201, 205, 231, 232, 241, 242, 300, 301, 320, 330, 352, 501, 521, 531, 532, 533, 705, 931, 932, 933],
+            6 => [314, 321, 325, 331, 341, 343, 352, 381, 400, 500, 601, 771, 801, 802, 804, 805, 901, 941, 950],
+            7 => [601, 602, 603, 611, 621, 625, 631, 641, 661],
+            8 => [310, 312, 313, 431, 435, 436, 437, 541, 702],
+            9 => [361, 911],
+            10 => [711, 715, 732],
+            11 => [421],
+            12 => [391, 651, 671],
+            13 => [0, 950, 999]
+        ];
+
+        $pravni_forma = $this->request->getQuery('pravniforma');
+        $pravni_forma = filter_var($pravni_forma, FILTER_SANITIZE_NUMBER_INT);
+        $spolecna_pravni_forma = $this->request->getQuery('spf');
+        $spolecna_pravni_forma = filter_var($spolecna_pravni_forma, FILTER_SANITIZE_NUMBER_INT);
+
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            $conditions = [];
+            $filter_id = 1;
+            if (!empty($pravni_forma)) {
+                $filter_id = 2 . '_' . $pravni_forma;
+
+                $pf = $this->CiselnikPravniFormav01->find('all', [
+                    'conditions' => [
+                        'pravniFormaKod' => $pravni_forma
+                    ]
+                ])->first();
+                if (empty($pf)) throw new NotFoundException();
+
+                $conditions = [
+                    'iriPravniForma' => $pf->id
+                ];
+            } else if (!empty($spolecna_pravni_forma)) {
+                $filter_id = 3 . '_' . $spolecna_pravni_forma;
+                $pf = $this->CiselnikPravniFormav01->find('all', [
+                    'conditions' => [
+                        'pravniFormaKod IN' => $spf_filtr[$spolecna_pravni_forma]
+                    ]
+                ])->enableHydration(false)->toArray();
+                if (empty($pf)) throw new NotFoundException();
+
+                $pf_array = [];
+                foreach ($pf as $p) {
+                    $pf_array[] = $p['id'];
+                }
+
+                $conditions = [
+                    'iriPravniForma IN' => $pf_array
+                ];
+            }
+
+            if ($filter_id == 1) {
+                $data = [];
+            } else {
+                $data = $this->PrijemcePomoci->find('all', [
+                    'fields' => [
+                        'idPrijemce',
+                        'ico',
+                        'obchodniJmeno',
+                        'CiselnikStatv01.statKod3Znaky',
+                        'CiselnikStatv01.statNazev'
+                    ],
+                    'contain' => [
+                        'CiselnikStatv01'
+                    ],
+                    'conditions' => $conditions
+                ])->limit(50000);
+            }
+            $this->set(compact(['_serialize', 'data', 'filter_id']));
+        } else {
+            $pravni_formy = $this->CiselnikPravniFormav01->find('list', [
+                'fields' => [
+                    'id' => 'pravniFormaKod',
+                    'pravniFormaNazev'
+                ]
+            ]);
+            $spolecne_pravni_formy = [
+                1 => 'Církevní Instituce',
+                2 => 'Fyzická Osoba Nepodnikatel',
+                3 => 'Fyzická Osoba Podnikatel',
+                4 => 'Nezisková Organizace',
+                5 => 'Právnická Osoba Podnikající',
+                6 => 'Veřejná Instituce',
+                7 => 'Vzdělávací Instituce',
+                8 => 'Finanční Instituce',
+                9 => 'Veřejnoprávní Média',
+                10 => 'Politická Strana',
+                11 => 'Zahraniční Osoba',
+                12 => 'Zdravotnická Instituce',
+                13 => 'Ostatní'
+            ];
+            $this->set(compact(['pravni_formy', 'spolecne_pravni_formy', 'pravni_forma', 'spolecna_pravni_forma']));
+        }
+    }
+
+    public function prijemceDotaciIco()
+    {
+
+        $ico = $this->request->getQuery('ico');
+        $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
+        $ico = $ico == 0 ? null : $ico;
+
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            if (!empty($ico)) {
+                $data = $this->PrijemcePomoci->find('all', [
+                    'fields' => [
+                        'idPrijemce',
+                        'obchodniJmeno',
+                        'jmeno',
+                        'prijmeni',
+                        'ico'
+                    ],
+                    'conditions' => [
+                        'ico' => $ico
+                    ]
+                ])->limit(50000);
+            } else {
+                $data = [];
+            }
+            $this->set(compact(['_serialize', 'data']));
+        } else {
+            $this->set(compact(['ico']));
+        }
     }
 
     public function podleZdrojeFinanciCompleteAjax()
