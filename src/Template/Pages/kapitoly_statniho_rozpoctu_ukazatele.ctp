@@ -5,7 +5,7 @@ $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
     Filtrovat: <span id="yearsfilter">
             <a href="javascript:filterYear('')"> "Zobrazit vše"</a>
         <?php foreach ($roky as $y) { ?>, <a
-                href="javascript:filterYear('<?= $y['ROK'] ?>')"> <?= $y['ROK'] ?></a><?php
+                href="javascript:filterYear('<?= $y['ROK'] ?>')" id="f<?= $y['ROK'] ?>"> <?= $y['ROK'] ?></a><?php
         } ?>
     </span>
 </div>
@@ -16,7 +16,7 @@ $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
         <th data-type="html">Název Ukazatele</th>
         <th data-type="html">Kód Ukazatele</th>
         <th data-type="html">Kapitola Státního Rozpočtu</th>
-        <th data-type="number">Počet Dotačních Titulů</th>
+        <th data-type="num">Počet Dotačních Titulů</th>
         <th data-type="datetime">Platnost</th>
         <th data-type="html">Otevřít</th>
     </tr>
@@ -35,9 +35,18 @@ $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
     </tfoot>
 </table>
 
+<style type="text/css">
+    .hilight_underline {
+        text-decoration: underline;
+        font-size: 150%;
+    }
+</style>
+
 <script type="text/javascript">
     function filterYear(year) {
         table.column(4).search("" + year).draw();
+        $("#yearsfilter a").removeClass("hilight_underline");
+        $("#yearsfilter #f"+year).addClass("hilight_underline");
         return false;
     }
 </script>
