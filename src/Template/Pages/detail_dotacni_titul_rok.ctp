@@ -12,77 +12,95 @@ $props = [
     "zaznamPlatnostOdDatum" => "Začátek platnosti",
     "zaznamPlatnostDoDatum" => "Konec platnosti"
 ];
+
+$this->Html->script('jquery-ui.min.js', ['block' => true]);
+$this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
+<div id="tabs">
+    <ul>
+        <li><a href="#obecne">Obecné informace</a></li>
+        <li><a href="#rozhodnuti">Rozhodnutí / Dotace</a></li>
+    </ul>
+    <div id="obecne">
+        <table>
+            <thead>
+            <tr>
+                <th>Vlastnost</th>
+                <th>Hodnota</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($props as $key => $val) { ?>
+                <tr>
+                    <td><?= $val ?></td>
+                    <td><?= $titul->{$key} ?></td>
+                </tr>
+            <?php } ?>
 
-<table>
-    <thead>
-    <tr>
-        <th>Vlastnost</th>
-        <th>Hodnota</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($props as $key => $val) { ?>
-        <tr>
-            <td><?= $val ?></td>
-            <td><?= $titul->{$key} ?></td>
-        </tr>
-    <?php } ?>
+            <tr>
+                <td>Kapitola Státního Rozpočtu</td>
+                <td><?= $this->Html->link(
+                        $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaNazev
+                        . " (" . $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod . ")",
+                        "/podle-poskytovatelu/" . $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Vlastnost</td>
+                <td>Hodnota</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="rozhodnuti">
+        <h2>Rozhodnutí / Dotace</h2>
 
-    <tr>
-        <td>Kapitola Státního Rozpočtu</td>
-        <td><?= $this->Html->link(
-                $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaNazev
-                . " (" . $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod . ")",
-                "/podle-poskytovatelu/" . $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <td>Vlastnost</td>
-        <td>Hodnota</td>
-    </tr>
-    </tfoot>
-</table>
-<h2>Rozhodnutí / Dotace</h2>
+        <hr/>
+        <span id="soucet"></span><br/>
+        <span id="soucetSpotrebovana"></span>
+        <hr/>
 
-<hr/>
-<span id="soucet"></span><br/>
-<span id="soucetSpotrebovana"></span>
-<hr/>
-
-<table id="datatable_ajax">
-    <thead>
-    <tr>
-        <th data-type="html" class="nosearch medium-1 large-1 small-1">Rozhodnutí</th>
-        <th data-type="html">Dotace</th>
-        <th data-type="html">Jméno příjemce</th>
-        <th class="medium-1 large-1">Rozpočtové Období</th>
-        <th data-type="currency" class="nosearch">Částka rozhodnutá</th>
-        <th data-type="currency" class="nosearch">Částka spotřebovaná</th>
-        <th>Poskytovatel Dotace</th>
-        <th>Finanční Zdroj</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-    <tr>
-        <td>Rozhodnutí</td>
-        <td>Dotace</td>
-        <td>Jméno příjemce</td>
-        <td>Rozpočtové Období</td>
-        <td>Částka rozhodnutá</td>
-        <td>Částka spotřebovaná</td>
-        <td>Poskytovatel Dotace</td>
-        <td>Finanční Zdroj</td>
-    </tr>
-    </tfoot>
-</table>
+        <table id="datatable_ajax">
+            <thead>
+            <tr>
+                <th data-type="html" class="nosearch medium-1 large-1 small-1">Rozhodnutí</th>
+                <th data-type="html">Dotace</th>
+                <th data-type="html">Jméno příjemce</th>
+                <th class="medium-1 large-1">Rozpočtové Období</th>
+                <th data-type="currency" class="nosearch">Částka rozhodnutá</th>
+                <th data-type="currency" class="nosearch">Částka spotřebovaná</th>
+                <th>Poskytovatel Dotace</th>
+                <th>Finanční Zdroj</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Rozhodnutí</td>
+                <td>Dotace</td>
+                <td>Jméno příjemce</td>
+                <td>Rozpočtové Období</td>
+                <td>Částka rozhodnutá</td>
+                <td>Částka spotřebovaná</td>
+                <td>Poskytovatel Dotace</td>
+                <td>Finanční Zdroj</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
 
 <script type="text/javascript">
     var table;
     $(document).ready(function () {
+
+        $("#tabs").tabs({
+            collapsible: true,
+            active: <?= empty($name) ? '0' : '1' ?>
+        });
+
         table = $('#datatable_ajax').DataTable({
             fixedColumns: true,
             paging: true,
