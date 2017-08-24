@@ -13,6 +13,7 @@ use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
 use App\Model\Table\CiselnikDotacePoskytovatelv01Table;
+use App\Model\Table\CiselnikDotaceTitulStatniRozpocetUkazatelv01Table;
 use App\Model\Table\CiselnikDotaceTitulv01Table;
 use App\Model\Table\CiselnikFinancniZdrojv01Table;
 use App\Model\Table\CiselnikKrajv01Table;
@@ -62,6 +63,7 @@ use Cake\ORM\TableRegistry;
  * @property DotaceTable Dotace
  * @property CachingComponent Caching;
  * @property StrukturalniFondyTable StrukturalniFondy
+ * @property CiselnikDotaceTitulStatniRozpocetUkazatelv01Table CiselnikDotaceTitulStatniRozpocetUkazatelv01
  */
 class PagesController extends AppController
 {
@@ -98,6 +100,7 @@ class PagesController extends AppController
         $this->loadModel('CiselnikCedrPodOpatreniv01');
         $this->loadModel('CiselnikCedrGrantoveSchemav01');
         $this->loadModel('StrukturalniFondy');
+        $this->loadModel('CiselnikDotaceTitulStatniRozpocetUkazatelv01');
         $this->loadComponent('Caching');
     }
 
@@ -456,7 +459,7 @@ class PagesController extends AppController
             'group' => [
                 'cisloANazevProgramu'
             ]
-        ])->hydrate(false)->toArray();
+        ])->enableHydration(false)->toArray();
         $this->set(compact(['ops']));
     }
 
@@ -1034,8 +1037,69 @@ class PagesController extends AppController
 
     public function kapitolyStatnihoRozpoctuUkazatele()
     {
-        $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all');
-        $this->set(compact('data'));
+        $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
+            'conditions' => [
+                'statniRozpocetUkazatelNadrizenyKod' => ''
+            ],
+            'order' => [
+                'zaznamPlatnostDoDatum' => 'DESC'
+            ]
+        ]);
+
+        $ukazatele_counts = $this->CiselnikDotaceTitulStatniRozpocetUkazatelv01->find('list', [
+            'fields' => [
+                'idStatniRozpocetUkazatel' => 'idStatniRozpocetUkazatel',
+                'CNT' => 'COUNT(idDotaceTitul)'
+            ],
+            'keyField' => 'idStatniRozpocetUkazatel',
+            'valueField' => 'CNT',
+            'group' => [
+                'idStatniRozpocetUkazatel'
+            ]
+        ])->enableHydration(false)->toArray();
+
+        $this->set(compact('data', 'ukazatele_counts'));
+    }
+
+    public function kapitolyStatnihoRozpoctuUkazateleDetail()
+    {
+        $kodUkazatele = $this->request->getParam('id');
+        $rokUkazatele = $this->request->getParam('year');
+
+        $ukazatele = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
+            'conditions' => [
+                'statniRozpocetUkazatelKod' => $kodUkazatele,
+                'zaznamPlatnostOdDatum' => $rokUkazatele . '-01-01 00:00:00'
+            ],
+            'contain' => [
+                'CiselnikStatniRozpocetKapitolav01'
+            ]
+        ])->limit(1)->enableHydration(false)->toArray();
+        if (empty($ukazatele)) throw new NotFoundException();
+
+        $podrizene = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
+            'conditions' => [
+                'statniRozpocetUkazatelNadrizenyKod' => $kodUkazatele,
+                'zaznamPlatnostOdDatum' => $rokUkazatele . '-01-01 00:00:00'
+            ],
+            'group' => [
+                'statniRozpocetUkazatelKod'
+            ],
+            'order' => [
+                'zaznamPlatnostDoDatum' => 'DESC'
+            ]
+        ]);
+
+        $dotacniTituly = $this->CiselnikDotaceTitulv01->find('all', [
+            'conditions' => [
+                'CiselnikDotaceTitulStatniRozpocetUkazatelv01.idStatniRozpocetUkazatel' => $ukazatele[0]['id']
+            ],
+            'contain' => [
+                'CiselnikDotaceTitulStatniRozpocetUkazatelv01'
+            ]
+        ]);
+
+        $this->set(compact(['kodUkazatele', 'ukazatele', 'podrizene', 'dotacniTituly']));
     }
 
     public function podlePoskytovateluDetail()

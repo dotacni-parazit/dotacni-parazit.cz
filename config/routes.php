@@ -52,7 +52,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/financni-zdroje', ['controller' => 'Pages', 'action' => 'financniZdroje']);
     $routes->connect('/pravni-formy', ['controller' => 'Pages', 'action' => 'pravniFormy']);
     $routes->connect('/kapitoly-statniho-rozpoctu', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctu']);
-    $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazatele']);
     $routes->connect('/dotacni-tituly', ['controller' => 'Pages', 'action' => 'dotacniTituly']);
     // Finalni vystupy
     $routes->connect('/fyzicke-osoby', ['controller' => 'Pages', 'action' => 'fyzickeOsoby']);
@@ -84,7 +83,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-obce/:id', ['controller' => 'Pages', 'action' => 'detailObce'], ['id' => '5[0-9]{5}']);
     $routes->connect('/detail-okres/:id', ['controller' => 'Pages', 'action' => 'detailOkres'], ['id' => '3[0-9]{3}']);
     $routes->connect('/detail-kraje/:id', ['controller' => 'Pages', 'action' => 'detailKraje'], ['id' => '3[0-9]']);
-    $routes->connect('/detail-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);
     $routes->connect('/detail-dotacni-titul/:kod', ['controller' => 'Pages', 'action' => 'detailDotacniTitul'], ['kod' => '[0-9]{10}']);
     $routes->connect('/detail-dotacni-titul/:kod/rok/', ['controller' => 'Pages', 'action' => 'detailDotacniTitulRok'], ['kod' => '[0-9]{10}']);
     $routes->connect('/detail-dotacni-titul/:kod/ajax/', ['controller' => 'Pages', 'action' => 'detailDotacniTitulRokAjax'], ['kod' => '[0-9]{10}']);
@@ -103,7 +101,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
     $routes->connect('/strukturalni-fondy-detail/', ['controller' => 'Pages', 'action' => 'strukturalniFondyDetail']);
 
-    $routes->connect('/detail-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);
+    $routes->connect('/detail-rozpoctove-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);
+
+    $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazatele']);
+    $routes->connect('/kapitoly-statniho-rozpoctu-ukazatele/:year/:id', ['controller' => 'Pages', 'action' => 'kapitolyStatnihoRozpoctuUkazateleDetail'], ['id' => '[a-zA-Z0-9]+', 'year' => '[0-9]{4}']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);

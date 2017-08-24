@@ -31,6 +31,16 @@ class CiselnikDotaceTitulStatniRozpocetUkazatelv01Table extends Table
         parent::initialize($config);
 
         $this->setTable('ciselnikDotaceTitul_StatniRozpocetUkazatelv01');
+
+        $this->belongsTo('CiselnikStatniRozpocetUkazatelv01')
+            ->setForeignKey('id')
+            ->setBindingKey('idStatniRozpocetUkazatel')
+            ->setProperty('StatniRozpocetUkazatel');
+
+        $this->belongsTo('CiselnikDotaceTitulv01')
+            ->setForeignKey('id')
+            ->setBindingKey('idDotaceTitul')
+            ->setProperty('DotaceTitul');
     }
 
     /**

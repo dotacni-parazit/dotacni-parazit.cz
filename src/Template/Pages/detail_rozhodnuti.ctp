@@ -131,7 +131,7 @@ $this->set('title', empty($dotace->projektNazev) ? $dotace->projektIdnetifikator
         $r = (object)$r;
         ?>
         <tr>
-            <td><?= $this->Html->link($r->idObdobi, '/detail-obdobi/' . $r->idObdobi) ?></td>
+            <td><?= $this->Html->link($r->idObdobi, '/detail-rozpoctove-obdobi/' . $r->idObdobi) ?></td>
             <td><?= $r->rozpoctoveObdobi ?></td>
             <td style="text-align: right"><?= Number::currency($r->castkaCerpana) ?></td>
             <td style="text-align: right"><?= Number::currency($r->castkaUvolnena) ?></td>

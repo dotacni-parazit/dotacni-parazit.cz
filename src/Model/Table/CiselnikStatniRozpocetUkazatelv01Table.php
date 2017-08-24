@@ -1,8 +1,7 @@
 <?php
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -33,6 +32,11 @@ class CiselnikStatniRozpocetUkazatelv01Table extends Table
         $this->setTable('ciselnikStatniRozpocetUkazatelv01');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('CiselnikStatniRozpocetKapitolav01')
+            ->setProperty('StatniRozpocetKapitola')
+            ->setBindingKey('statniRozpocetKapitolaKod')
+            ->setForeignKey('statniRozpocetKapitolaKod');
     }
 
     /**

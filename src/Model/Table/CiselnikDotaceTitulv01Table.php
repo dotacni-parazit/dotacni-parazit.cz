@@ -44,6 +44,11 @@ class CiselnikDotaceTitulv01Table extends Table
             ->setBindingKey('iriDotacniTitul')
             ->setForeignKey('idDotaceTitul')
             ->setProperty('RozpoctoveObdobi');
+
+        $this->hasOne('CiselnikDotaceTitulStatniRozpocetUkazatelv01')
+            ->setBindingKey('idDotaceTitul')
+            ->setForeignKey('idDotaceTitul')
+            ->setProperty('StatniRozpocetUkazatel');
     }
 
     /**
