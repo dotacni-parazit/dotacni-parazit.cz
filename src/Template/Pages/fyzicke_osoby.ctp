@@ -4,6 +4,17 @@
 $this->set('title', 'Fyzické osoby - Přijemci Dotací')
 ?>
 <h2>Všechny Fyzické osoby evidované v CEDR-III jako Příjemci dotací</h2>
+<hr/>
+Filtr Příjmení: <br/>
+<?php
+$letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+for ($index = 0; $index < strlen($letters); $index++) {
+    $char = $letters[$index];
+    echo '<a href="javascript:filterLetter(\'' . $char . '\')">' . $char . '</a> ';
+}
+?>
+| <a href="javascript:filterLetter('')">Zobrazit vše</a>
+<hr/>
 <table id="datatable" style="width: 100%;" data-ajax="/fyzicke-osoby/ajax">
     <thead>
     <tr>
@@ -32,3 +43,8 @@ $this->set('title', 'Fyzické osoby - Přijemci Dotací')
     </tr>
     </tfoot>
 </table>
+<script type="text/javascript">
+    function filterLetter(letter) {
+        table.column(1).search('^' + letter, true, false).draw();
+    }
+</script>
