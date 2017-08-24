@@ -7,7 +7,7 @@ $this->set('title', 'Zdroje Financí / Financování');
 <div style="float: left; border: 0 solid black;border-right-width: 1px;padding: 10px;"
      class="small-12 medium-12 large-6">
     <h2>Tuzemské</h2>
-    <table id="tuzemske">
+    <table id="datatable" class="datatable_simple">
         <thead>
         <tr>
             <th data-type="html"><a href="?sort=zdroj">Zdroj</a></th>
@@ -33,17 +33,17 @@ $this->set('title', 'Zdroje Financí / Financování');
         </tbody>
         <tfoot>
         <tr>
-            <th>Zdroj</th>
-            <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
-            <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
-            <th>Otevřít</th>
+            <td>Zdroj</td>
+            <td data-type="currency" class="nosearch">Součet "částka rozhodnutá"</td>
+            <td data-type="currency" class="nosearch">Součet "částka spotřebovaná"</td>
+            <td>Otevřít</td>
         </tr>
         </tfoot>
     </table>
 </div>
 <div style="float: left;  padding: 10px;" class="medium-12 large-6 small-12">
     <h2>Zahraniční</h2>
-    <table id="zahranicni">
+    <table id="datatable2" class="datatable_simple">
         <thead>
         <tr>
             <th data-type="html">Zdroj</th>
@@ -69,70 +69,11 @@ $this->set('title', 'Zdroje Financí / Financování');
         </tbody>
         <tfoot>
         <tr>
-            <th>Zdroj</th>
-            <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
-            <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
-            <th>Otevřít</th>
+            <td>Zdroj</td>
+            <td data-type="currency" class="nosearch">Součet "částka rozhodnutá"</td>
+            <td data-type="currency" class="nosearch">Součet "částka spotřebovaná"</td>
+            <td>Otevřít</td>
         </tr>
         </tfoot>
     </table>
 </div>
-<br class="clear">
-<script type="text/javascript">
-    $(document).ready(function () {
-        var tableTuzemske = $("#tuzemske").DataTable({
-            fixedColumns: false,
-            paging: false,
-            "pageLength": 100,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
-            },
-            "stateSave": false,
-            "stateDuration": 60 * 60 * 24 * 7,
-            dom: 't'
-        });
-        var tableZahranicni = $("#zahranicni").DataTable({
-            fixedColumns: false,
-            paging: false,
-            "pageLength": 100,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
-            },
-            "stateSave": false,
-            "stateDuration": 60 * 60 * 24 * 7,
-            dom: 't'
-        });
-
-        $('#tuzemske thead th').each(function (i) {
-            var title = $('#tuzemske thead th').eq($(this).index()).text();
-            if ($(this).hasClass('nosearch')) {
-                $(this).text(title);
-                return;
-            }
-            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
-        });
-
-        $(tableTuzemske.table().container()).on('keyup', 'thead input', function () {
-            tableTuzemske
-                .column($(this).data('index'))
-                .search(this.value)
-                .draw();
-        });
-
-        $('#zahranicni thead th').each(function (i) {
-            var title = $('#zahranicni thead th').eq($(this).index()).text();
-            if ($(this).hasClass('nosearch')) {
-                $(this).text(title);
-                return;
-            }
-            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
-        });
-
-        $(tableZahranicni.table().container()).on('keyup', 'thead input', function () {
-            tableZahranicni
-                .column($(this).data('index'))
-                .search(this.value)
-                .draw();
-        });
-    });
-</script>

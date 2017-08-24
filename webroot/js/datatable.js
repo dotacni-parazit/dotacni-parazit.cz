@@ -15,10 +15,30 @@ function setupDataTable(selector) {
     $e = (typeof(selector) === 'string') ? $(selector) : selector;
     var ttable = $($e).DataTable({
         fixedColumns: true,
-        paging: true,
+        paging: !$($e).hasClass('datatable_simple'),
         "pageLength": 100,
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
+            "emptyTable": "Tabulka neobsahuje žádná data",
+            "info": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
+            "infoEmpty": "Zobrazuji 0 až 0 z 0 záznamů",
+            "infoFiltered": "(filtrováno z celkem _MAX_ záznamů)",
+            "infoPostFix": "",
+            "infoThousands": " ",
+            "lengthMenu": "Zobraz záznamů _MENU_",
+            "loadingRecords": "Načítám...",
+            "processing": "Provádím...",
+            "search": "Hledat:",
+            "zeroRecords": "Žádné záznamy nebyly nalezeny",
+            "paginate": {
+                "first": "První",
+                "last": "Poslední",
+                "next": "Další",
+                "previous": "Předchozí"
+            },
+            "aria": {
+                "sortAscending": ": aktivujte pro řazení sloupce vzestupně",
+                "sortDescending": ": aktivujte pro řazení sloupce sestupně"
+            }
         },
         "stateSave": true,
         ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
@@ -27,10 +47,10 @@ function setupDataTable(selector) {
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
     });
 
-    $('thead th', $e).each(function (i) {
-        var title = $('thead th', $e).eq($(this).index()).text();
+    $($e).find('thead th').each(function (i) {
+        var title = $($e).find('thead th').eq($(this).index()).text();
         if (!$(this).hasClass('nosearch')) {
-            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
+            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="' + title + '" data-index="' + i + '" />');
         }
     });
 
@@ -43,9 +63,9 @@ function setupDataTable(selector) {
 
     return ttable;
 }
+
 var table;
 $(document).ready(function () {
-
     table = setupDataTable('#datatable');
 
     setupDataTable('#datatable2');
