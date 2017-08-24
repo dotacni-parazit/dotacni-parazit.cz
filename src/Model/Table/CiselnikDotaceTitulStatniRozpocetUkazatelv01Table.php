@@ -33,13 +33,13 @@ class CiselnikDotaceTitulStatniRozpocetUkazatelv01Table extends Table
         $this->setTable('ciselnikDotaceTitul_StatniRozpocetUkazatelv01');
 
         $this->belongsTo('CiselnikStatniRozpocetUkazatelv01')
-            ->setForeignKey('id')
-            ->setBindingKey('idStatniRozpocetUkazatel')
+            ->setForeignKey('idStatniRozpocetUkazatel')
+            ->setBindingKey('id')
             ->setProperty('StatniRozpocetUkazatel');
 
         $this->belongsTo('CiselnikDotaceTitulv01')
-            ->setForeignKey('id')
-            ->setBindingKey('idDotaceTitul')
+            ->setForeignKey('idDotaceTitul')
+            ->setBindingKey('id')
             ->setProperty('DotaceTitul');
     }
 

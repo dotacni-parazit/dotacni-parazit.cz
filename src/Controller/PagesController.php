@@ -1679,7 +1679,8 @@ class PagesController extends AppController
                 'dotaceTitulKod' => $this->request->getParam('kod')
             ],
             'contain' => [
-                'CiselnikStatniRozpocetKapitolav01'
+                'CiselnikStatniRozpocetKapitolav01',
+                'CiselnikDotaceTitulStatniRozpocetUkazatelv01.CiselnikStatniRozpocetUkazatelv01'
             ]
         ])->first();
         if (!$titul) throw new NotFoundException();

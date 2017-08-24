@@ -13,6 +13,7 @@ $props = [
     "zaznamPlatnostDoDatum" => "Konec platnosti"
 ];
 
+debug($titul);
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
@@ -45,6 +46,16 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                         . " (" . $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod . ")",
                         "/podle-poskytovatelu/" . $titul->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
             </tr>
+
+            <tr>
+                <td>Ukazatel Státního Rozpočtu</td>
+                <td><?= $this->Html->link(
+                        $titul->StatniRozpocetUkazatel->StatniRozpocetUkazatel->statniRozpocetUkazatelNazev
+                        . " (" . $titul->StatniRozpocetUkazatel->StatniRozpocetUkazatel->statniRozpocetUkazatelKod . ")",
+                        "/kapitoly-statniho-rozpoctu-ukazatele/" . $titul->StatniRozpocetUkazatel->StatniRozpocetUkazatel->zaznamPlatnostOdDatum->year . "/"
+                        . $titul->StatniRozpocetUkazatel->StatniRozpocetUkazatel->statniRozpocetUkazatelKod) ?></td>
+            </tr>
+
             </tbody>
             <tfoot>
             <tr>
