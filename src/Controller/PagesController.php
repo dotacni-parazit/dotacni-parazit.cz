@@ -809,17 +809,6 @@ class PagesController extends AppController
 
     public function podlePrijemcu()
     {
-        $multiple = $this->request->getQuery('multiple');
-        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
-        $multi_prijemci = null;
-
-        if (!empty($multiple)) {
-            foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
-                if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
-                $multi_prijemci .= $multi_ico . ",";
-            }
-            $multi_prijemci = substr($multi_prijemci, 0, -1);
-        }
 
         if (!empty($name)) {
 
@@ -936,6 +925,9 @@ class PagesController extends AppController
                 'fields' => [
                     'id' => 'pravniFormaKod',
                     'pravniFormaNazev'
+                ],
+                'order' => [
+                    'pravniFormaNazev'
                 ]
             ]);
             $spolecne_pravni_formy = [
@@ -963,6 +955,14 @@ class PagesController extends AppController
         $ico = $this->request->getQuery('ico');
         $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
         $ico = $ico == 0 ? null : $ico;
+
+        $multiple = $this->request->getQuery('multiple');
+        $multiple = filter_var($multiple, FILTER_SANITIZE_STRING);
+        $multi_prijemci = null;
+
+        if (!empty($multiple)) {
+            $this->redirect('/podle-prijemcu/multiple/' . $multiple);
+        }
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1549,6 +1549,7 @@ class PagesController extends AppController
         $ico = [];
         foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
             if (!filter_var($multi_ico, FILTER_SANITIZE_NUMBER_INT)) continue;
+            if ($ico == 0) continue;
             $ico[] = $multi_ico;
         }
 
@@ -1557,6 +1558,76 @@ class PagesController extends AppController
         }
 
         $prijemci = [];
+        $info = [];
+        $aliasy = [];
+        foreach ($ico as $ic) {
+            $ids = $this->PrijemcePomoci->find('list', [
+                'conditions' => [
+                    'ico' => $ic
+                ],
+                'keyField' => 'idPrijemce',
+                'valueField' => 'ico'
+            ])->enableHydration(false)->toArray();
+            if (!empty($ids)) {
+                $prijemci = array_merge($prijemci, $ids);
+                $info[] = $this->PrijemcePomoci->find('all', [
+                    'conditions' => [
+                        'idPrijemce' => array_keys($ids)[0]
+                    ],
+                    'contain' => [
+                        'CiselnikStatv01',
+                        'CiselnikPravniFormav01',
+                        'Osoba'
+                    ]
+                ])->first();
+                foreach (array_keys($ids) as $id) {
+                    $alias = $this->PrijemcePomoci->find('all', [
+                        'fields' => [
+                            'obchodniJmeno',
+                            'jmeno',
+                            'prijmeni',
+                            'idPrijemce'
+                        ],
+                        'conditions' => [
+                            'idPrijemce' => $id
+                        ]
+                    ])->enableHydration(false)->toArray();
+                    $aliasy = array_merge($aliasy, $alias);
+                }
+            }
+        }
+        if (empty($prijemci)) throw new NotFoundException();
+
+        if ($this->request->is('ajax')) {
+            $dotace = $this->Rozhodnuti->find('all', [
+                'conditions' => [
+                    'Dotace.idPrijemce IN' => array_keys($ids)
+                ],
+                'contain' => [
+                    'CiselnikFinancniProstredekCleneniv01',
+                    'CiselnikFinancniZdrojv01',
+                    'Dotace.CiselnikMmrOperacniProgramv01',
+                    'Dotace.CiselnikMmrPodprogramv01',
+                    'Dotace.CiselnikMmrPrioritav01',
+                    'Dotace.CiselnikMmrOpatreniv01',
+                    'Dotace.CiselnikMmrPodOpatreniv01',
+                    'Dotace.CiselnikMmrGrantoveSchemav01',
+                    'Dotace.CiselnikCedrOperacniProgramv01',
+                    'Dotace.CiselnikCedrPodprogramv01',
+                    'Dotace.CiselnikCedrGrantoveSchemav01',
+                    'Dotace.CiselnikCedrPrioritav01',
+                    'Dotace.CiselnikCedrOpatreniv01',
+                    'Dotace.CiselnikCedrPodOpatreniv01',
+                    'RozpoctoveObdobi',
+                    'CiselnikDotacePoskytovatelv01',
+                    'Dotace.PrijemcePomoci'
+                ]
+            ]);
+            $_serialize = false;
+            $this->set(compact(['_serialize', 'dotace']));
+        } else {
+            $this->set(compact(['prijemci', 'info', 'aliasy']));
+        }
     }
 
     function podleZdrojeFinanciDetail()

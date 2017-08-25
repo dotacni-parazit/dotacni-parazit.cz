@@ -14,7 +14,7 @@ if (!$cache_data) {
     foreach ($data as $d) {
 
         $data_arr[] = [
-            $d->obchodniJmeno,
+            empty($d->obchodniJmeno) ? $d->prijmeni . ' ' . $d->jmeno : $d->obchodniJmeno,
             $d->ico,
             empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/'.$d->Stat->statKod3Znaky),
             $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $d->idPrijemce)
