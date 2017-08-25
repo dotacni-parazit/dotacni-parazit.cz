@@ -1630,6 +1630,10 @@ class PagesController extends AppController
         }
     }
 
+    function podlePoskytovateluIndex(){
+
+    }
+
     function podleZdrojeFinanciDetail()
     {
 

@@ -1,47 +1,26 @@
 <?php $this->set('title', 'Dotační Parazit'); ?>
+
+<h2>Základní</h2>
+
 <div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/podle-poskytovatelu">Poskytovatelé</a>
+    <a href="/podle-prijemcu">Struktura Příjemců</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/podle-zdroje-financi">Zdroje Financování</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/dotacni-tituly">Dotační Tituly</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/podle-prijemcu">Příjemci</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/podle-sidla-prijemce">Podle sídla příjemce</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/operacni-programy-mmr">MMR OP</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/operacni-programy-cedr">CEDR OP</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/strukturalni-fondy">Strukturální Fondy</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/kapitoly-statniho-rozpoctu-ukazatele">Ukazatele kapitol státního rozpočtu</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/ucel-znak-dotacnich-titulu">Účel Dotačních Titulů</a>
+    <a href="/podle-poskytovatelu/index">Struktura Poskytovatelů</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">
     <a href="/ciselniky">Číselníky</a>
 </div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/vlastni-sestavy">Sestavy</a>
-</div>
-<div class="homepage_tile medium-6 large-3 small-12">
-    <a href="/podle-politickych-vazeb">Politické Vazby</a>
-</div>
+
+<hr/>
+<h2>Informace</h2>
 <div class="homepage_tile medium-6 large-3 small-12">
     <a href="/opendata">OpenData</a>
 </div>
 <div class="homepage_tile medium-6 large-3 small-12">
-    <a href="#">Novinky</a>
+    <a href="https://blog.dotacni-parazit.cz">Blog</a>
+</div>
+<div class="homepage_tile medium-6 large-3 small-12">
+    <a href="/vlastni-sestavy">Sestavy</a>
 </div>
 <br class="clear"/>
