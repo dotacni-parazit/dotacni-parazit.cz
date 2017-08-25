@@ -1,7 +1,6 @@
 <?php
 
 use Cake\Cache\Cache;
-use Cake\I18n\Number;
 
 
 $cache_key = 'ucel_znak_dotacni_tituly';
@@ -18,7 +17,9 @@ if (!$cache_data) {
             $d->ucelZnakNazev,
             $d->ucelZnakKod,
             $d->statniRozpocetKapitolaKod,
-            empty($d->zaznamPlatnostOdDatum) ? 'N/A' : $d->zaznamPlatnostOdDatum->year
+            isset($counts[$d->idUcelZnak]) ? $counts[$d->idUcelZnak] : 0,
+            empty($d->zaznamPlatnostOdDatum) ? 'N/A' : $d->zaznamPlatnostOdDatum->year,
+            $this->Html->link('Otevřít', '/ucel-znak-dotacnich-titulu/detail/' . $d->zaznamPlatnostOdDatum->year . '/' . $d->ucelZnakKod)
         ];
         $total++;
     }

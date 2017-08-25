@@ -31,6 +31,16 @@ class CiselnikUcelZnakDotacniTitulv01Table extends Table
         parent::initialize($config);
 
         $this->setTable('ciselnikUcelZnak_DotacniTitulv01');
+
+        $this->belongsTo('CiselnikDotaceTitulv01')
+            ->setProperty('DotaceTitul')
+            ->setBindingKey('idDotaceTitul')
+            ->setForeignKey('idDotaceTitul');
+
+        $this->belongsTo('CiselnikUcelZnakv01')
+            ->setProperty('UcelZnak')
+            ->setBindingKey('idUcelZnak')
+            ->setForeignKey('idUcelZnak');
     }
 
     /**

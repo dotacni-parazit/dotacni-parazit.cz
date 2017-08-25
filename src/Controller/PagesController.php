@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
+use App\Model\Entity\CiselnikUcelZnakDotacniTitulv01;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
@@ -65,6 +66,7 @@ use Cake\ORM\TableRegistry;
  * @property StrukturalniFondyTable StrukturalniFondy
  * @property CiselnikDotaceTitulStatniRozpocetUkazatelv01Table CiselnikDotaceTitulStatniRozpocetUkazatelv01
  * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
+ * @property CiselnikUcelZnakDotacniTitulv01 CiselnikUcelZnakDotacniTitulv01
  */
 class PagesController extends AppController
 {
@@ -103,6 +105,7 @@ class PagesController extends AppController
         $this->loadModel('StrukturalniFondy');
         $this->loadModel('CiselnikDotaceTitulStatniRozpocetUkazatelv01');
         $this->loadModel('CiselnikUcelZnakv01');
+        $this->loadModel('CiselnikUcelZnakDotacniTitulv01');
         $this->loadComponent('Caching');
     }
 
@@ -1790,9 +1793,20 @@ class PagesController extends AppController
     {
         if ($this->request->is('ajax')) {
             $znaky = $this->CiselnikUcelZnakv01->find('all');
+            $counts = $this->CiselnikUcelZnakDotacniTitulv01->find('list', [
+                'fields' => [
+                    'idUcelZnak',
+                    'CNT' => 'COUNT(*)'
+                ],
+                'keyField' => 'idUcelZnak',
+                'valueField' => 'CNT',
+                'group' => [
+                    'idUcelZnak'
+                ]
+            ])->enableHydration(false)->toArray();
             $_serialize = false;
 
-            $this->set(compact(['znaky', '_serialize']));
+            $this->set(compact(['znaky', 'counts', '_serialize']));
         } else {
             $roky = $this->CiselnikUcelZnakv01->find('all', [
                 'fields' => [
@@ -1804,6 +1818,28 @@ class PagesController extends AppController
             ])->enableHydration(false)->toArray();
             $this->set(compact(['roky']));
         }
+    }
+
+    public function znakUceluDotacnichTituluDetail()
+    {
+        $rok = $this->request->getParam('rok');
+        $rok = filter_var($rok, FILTER_SANITIZE_NUMBER_INT);
+        $kod = $this->request->getParam('kod');
+        $kod = filter_var($kod, FILTER_SANITIZE_NUMBER_INT);
+
+        $data = $this->CiselnikUcelZnakv01->find('all', [
+            'conditions' => [
+                'ucelZnakKod' => $kod,
+                'zaznamPlatnostOdDatum' => $rok . '-01-01 00:00:00'
+            ],
+            'contain' => [
+                'CiselnikUcelZnakDotacniTitulv01',
+                'CiselnikUcelZnakDotacniTitulv01.CiselnikDotaceTitulv01'
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact('data'));
     }
 
     public function detailDotacniTitul()

@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\CiselnikUcelZnakDotacniTitulv01;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -33,6 +34,11 @@ class CiselnikUcelZnakv01Table extends Table
         $this->setTable('ciselnikUcelZnakv01');
         $this->setDisplayField('idUcelZnak');
         $this->setPrimaryKey('idUcelZnak');
+
+        $this->hasMany('CiselnikUcelZnakDotacniTitulv01')
+            ->setForeignKey('idUcelZnak')
+            ->setBindingKey('idUcelZnak')
+            ->setProperty('DotacniTituly');
     }
 
     /**

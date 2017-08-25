@@ -16,7 +16,9 @@ $this->set('title', 'Znaky Účelu Dotačních Titulů');
         <th data-type="html">Název</th>
         <th data-type="html">Kód</th>
         <th data-type="num">Kapitola Státního Rozpočtu</th>
+        <th data-type="num">Počet Dotačních Titulů</th>
         <th data-type="num">Platnost Rok</th>
+        <th data-type="html">Otevřít</th>
     </tr>
     </thead>
     <tbody>
@@ -27,7 +29,9 @@ $this->set('title', 'Znaky Účelu Dotačních Titulů');
         <td>Název</td>
         <td>Kód</td>
         <td>Kapitola Státního Rozpočtu</td>
+        <td>Počet Dotačních Titulů</td>
         <td>Platnost Rok</td>
+        <td>Otevřít</td>
     </tr>
     </tfoot>
 </table>
