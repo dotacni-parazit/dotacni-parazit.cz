@@ -11,14 +11,13 @@ use Cake\I18n\Number;
 $data_arr = [];
 $total = 0;
 
-/** @var \App\Model\Entity\InvesticniPobidky $p */
+
+/** @var \App\Model\Entity\InvesticniPobidky[] $pobidky */
 foreach ($pobidky as $p) {
 
     $data_arr[] = [
-        $p->name,
-        $p->ico,
-        $p->vymazanoOR,
-        $p->poznamka,
+        $this->Html->link($p->name, ['controller'=>'Pages', 'action' => 'prijemceDotaciJmeno', 'name'=> $p->name]),
+        $this->Html->link($p->ico, ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $p->ico]),
         $p->sektor,
         $p->druhInvesticniAkce,
         $p->zemePuvodu,
@@ -28,7 +27,8 @@ foreach ($pobidky as $p) {
         $p->vytvorenaPracovniMista,
         Number::toPercentage($p->miraVerejnePodpory * 100),
         $p->okres . ", " . $p->kraj,
-        ($p->rozhodnutiDen == 0 ? 1 : $p->rozhodnutiDen) . "." . $p->rozhodnutiMesic . "." . $p->rozhodnutiRok
+        ($p->rozhodnutiDen == 0 ? 1 : $p->rozhodnutiDen) . "." . $p->rozhodnutiMesic . " " . $p->rozhodnutiRok,
+        $p->zruseniRozhodnutiNeboOdstoupeni
     ];
 
     $total++;

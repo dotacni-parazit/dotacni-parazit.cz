@@ -7,18 +7,17 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
     <tr>
         <th>Společnost</th>
         <th>IČO</th>
-        <th>Vymazán z OR</th>
-        <th>Poznámka</th>
         <th>Sektor</th>
         <th>Druh Investiční Akce</th>
         <th>Země Původu</th>
-        <th>Investice EUR</th>
-        <th>USD</th>
-        <th>CZK</th>
+        <th data-type="currency">Investice EUR</th>
+        <th data-type="currency">USD</th>
+        <th data-type="currency">CZK</th>
         <th>Vytvořená Pracovní Místa</th>
         <th>Míra Veřejné Podpory</th>
         <th>Okres, Kraj</th>
         <th>Datum Rozhodnutí</th>
+        <th>Projekt nerealizován</th>
     </tr>
     </thead>
     <tbody>
@@ -28,8 +27,6 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
     <tr>
         <td>Společnost</td>
         <td>IČO</td>
-        <td>Vymazán z OR</td>
-        <td>Poznámka</td>
         <td>Sektor</td>
         <td>Druh Investiční Akce</td>
         <td>Země Původu</td>
@@ -40,6 +37,7 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <td>Míra Veřejné Podpory</td>
         <td>Okres, Kraj</td>
         <td>Datum Rozhodnutí</td>
+        <td>Projekt nerealizován</td>
     </tr>
     </tfoot>
 </table>

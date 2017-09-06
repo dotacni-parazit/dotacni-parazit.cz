@@ -17,6 +17,11 @@ function setupDataTable(selector) {
         fixedColumns: true,
         paging: !$($e).hasClass('datatable_simple'),
         "pageLength": 100,
+        initComplete: function () {
+            if (typeof initCallback === "function") {
+                initCallback(ttable);
+            }
+        },
         "language": {
             "emptyTable": "Tabulka neobsahuje žádná data",
             "info": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
