@@ -312,33 +312,87 @@ class PagesController extends AppController
             $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
 
             if ($biggest === false) {
-                $biggest = $this->Rozhodnuti->find('all', [
-                    'order' => [
-                        'castkaRozhodnuta' => 'DESC'
-                    ],
-                    'fields' => [
-                        'RozpoctoveObdobi.rozpoctoveObdobi',
-                        'RozpoctoveObdobi.castkaSpotrebovana',
-                        'Rozhodnuti.castkaRozhodnuta',
-                        'Rozhodnuti.idRozhodnuti',
-                        'Dotace.idDotace',
-                        'Dotace.idPrijemce',
-                        'Dotace.projektNazev',
-                        'Dotace.projektIdnetifikator',
-                        'PrijemcePomoci.obchodniJmeno'
-                    ],
-                    'conditions' => [
-                        'PrijemcePomoci.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
-                    ],
-                    'contain' => [
-                        'RozpoctoveObdobi',
-                        'Dotace',
-                        'Dotace.PrijemcePomoci'
-                    ],
-                    'group' => [
-                        'Rozhodnuti.idRozhodnuti'
-                    ]
-                ])->limit(10000)->enableHydration(false)->toArray();
+                if ($stat['statKod3Znaky'] === 'CZE') {
+                    $biggest = $this->Rozhodnuti->find('list', [
+                        'order' => [
+                            'castkaRozhodnuta' => 'DESC'
+                        ],
+                        'fields' => [
+                            'Rozhodnuti.castkaRozhodnuta',
+                            'Rozhodnuti.idDotace'
+                        ],
+                        'keyField' => 'idDotace',
+                        'valueField' => 'castkaRozhodnuta'
+                    ])->limit(28000)->enableHydration(false)->toArray();
+                    $step2 = $this->Dotace->find('list', [
+                        'conditions' => [
+                            'idDotace IN' => array_keys($biggest),
+                            'PrijemcePomoci.iriStat' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/CZE/19930101'
+                        ],
+                        'contain' => [
+                            'PrijemcePomoci'
+                        ],
+                        'fields' => [
+                            'idDotace',
+                            'PrijemcePomoci.iriStat'
+                        ],
+                        'keyField' => 'idDotace',
+                        'valueField' => 'PrijemcePomoci.iriStat'
+                    ])->limit(20000)->enableHydration(false)->toArray();
+                    $idDotaci = array_keys($step2);
+                    $biggest = $this->Rozhodnuti->find('all', [
+                        'order' => [
+                            'castkaRozhodnuta' => 'DESC'
+                        ],
+                        'fields' => [
+                            'RozpoctoveObdobi.rozpoctoveObdobi',
+                            'RozpoctoveObdobi.castkaSpotrebovana',
+                            'Rozhodnuti.castkaRozhodnuta',
+                            'Rozhodnuti.idRozhodnuti',
+                            'Dotace.idDotace',
+                            'Dotace.idPrijemce',
+                            'Dotace.projektNazev',
+                            'Dotace.projektIdnetifikator',
+                            'PrijemcePomoci.obchodniJmeno'
+                        ],
+                        'conditions' => [
+                            'Rozhodnuti.idDotace IN' => $idDotaci
+                        ],
+                        'contain' => [
+                            'RozpoctoveObdobi',
+                            'Dotace',
+                            'Dotace.PrijemcePomoci'
+                        ]
+                    ])->enableHydration(false)->toArray();
+                } else {
+                    $biggest = $this->Rozhodnuti->find('all', [
+                        'order' => [
+                            'castkaRozhodnuta' => 'DESC'
+                        ],
+                        'fields' => [
+                            'RozpoctoveObdobi.rozpoctoveObdobi',
+                            'RozpoctoveObdobi.castkaSpotrebovana',
+                            'Rozhodnuti.castkaRozhodnuta',
+                            'Rozhodnuti.idRozhodnuti',
+                            'Dotace.idDotace',
+                            'Dotace.idPrijemce',
+                            'Dotace.projektNazev',
+                            'Dotace.projektIdnetifikator',
+                            'PrijemcePomoci.obchodniJmeno'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.iriStat LIKE' => 'http://cedropendata.mfcr.cz/c3lod/csu/resource/ciselnik/Stat/v01/' . $stat['statKod3Znaky'] . '%'
+                        ],
+                        'contain' => [
+                            'RozpoctoveObdobi',
+                            'Dotace',
+                            'Dotace.PrijemcePomoci'
+                        ],
+                        'group' => [
+                            'Rozhodnuti.idRozhodnuti'
+                        ]
+                    ])->limit(20000)->enableHydration(false)->toArray();
+                }
                 Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
             }
             debug(count($biggest));
@@ -1630,7 +1684,8 @@ class PagesController extends AppController
         }
     }
 
-    function podlePoskytovateluIndex(){
+    function podlePoskytovateluIndex()
+    {
 
     }
 
