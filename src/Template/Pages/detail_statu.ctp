@@ -100,9 +100,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="biggest">
-        <div>Až 10.000 rozhodnutí</div>
+        <div>Až 20.000 rozhodnutí</div>
         <hr/>
-        <table class="datatable datatable_simple" style="width: 100%;" data-ajax="<?= $this->request->here(false) ?>">
+        <table class="datatable" style="width: 100%;" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
                 <th data-type="html">Rozhodnutí</th>
