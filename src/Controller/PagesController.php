@@ -28,7 +28,9 @@ use App\Model\Table\CiselnikPravniFormav01Table;
 use App\Model\Table\CiselnikStatniRozpocetKapitolav01Table;
 use App\Model\Table\CiselnikStatniRozpocetUkazatelv01Table;
 use App\Model\Table\CiselnikStatv01Table;
+use App\Model\Table\CiselnikUcelZnakv01Table;
 use App\Model\Table\DotaceTable;
+use App\Model\Table\InvesticniPobidkyTable;
 use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
@@ -67,6 +69,7 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikDotaceTitulStatniRozpocetUkazatelv01Table CiselnikDotaceTitulStatniRozpocetUkazatelv01
  * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
  * @property CiselnikUcelZnakDotacniTitulv01 CiselnikUcelZnakDotacniTitulv01
+ * @property InvesticniPobidkyTable InvesticniPobidky
  */
 class PagesController extends AppController
 {
@@ -74,6 +77,7 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('InvesticniPobidky');
         $this->loadModel('Rozhodnuti');
         $this->loadModel('Dotace');
         $this->loadModel('PrijemcePomoci');
@@ -363,7 +367,7 @@ class PagesController extends AppController
                             'Dotace',
                             'Dotace.PrijemcePomoci'
                         ]
-                    ])->enableHydration(false)->toArray();
+                    ])->limit(20000)->enableHydration(false)->toArray();
                 } else {
                     $biggest = $this->Rozhodnuti->find('all', [
                         'order' => [
@@ -2677,6 +2681,15 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['stat', 'historie', 'biggest']));
+    }
+
+    public function investicniPobidkyCzechInvest()
+    {
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            $pobidky = $this->InvesticniPobidky->find('all');
+            $this->set(compact(['_serialize', 'pobidky']));
+        }
     }
 
 }

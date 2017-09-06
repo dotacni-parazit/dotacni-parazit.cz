@@ -113,6 +113,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/ucel-znak-dotacnich-titulu', ['controller' => 'Pages', 'action' => 'znakUceluDotacnichTitulu']);
     $routes->connect('/ucel-znak-dotacnich-titulu/detail/:rok/:kod', ['controller' => 'Pages', 'action' => 'znakUceluDotacnichTituluDetail'], ['kod' => '[a-zA-Z0-9]+', 'year' => '[0-9]{4}']);
 
+    $routes->connect('/investicni-pobidky', ['controller' => 'Pages', 'action' => 'investicniPobidkyCzechInvest']);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });
