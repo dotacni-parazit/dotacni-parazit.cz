@@ -1,7 +1,5 @@
 <?php
 
-use Cake\I18n\Number;
-
 $this->set('title', $stat->statNazevZkraceny . ' - Detail Státu');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
@@ -11,7 +9,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
         <li><a href="#historie">Historie státu v evidenci CEDR</a></li>
-        <li><a href="#biggest">100 nejvyšších rozhodnutí</a></li>
+        <li><a href="#biggest">Dotační Rozhodnutí</a></li>
     </ul>
     <div id="obecne">
         <h2>Obecné informace</h2>
@@ -102,7 +100,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="biggest">
-        <table class="datatable datatable_simple">
+        <div>Až 10.000 rozhodnutí</div>
+        <hr/>
+        <table class="datatable datatable_simple" style="width: 100%;" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
                 <th data-type="html">Rozhodnutí</th>
@@ -114,24 +114,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($biggest as $b) { ?>
-                <?php
-                $b = (object)$b;
-                $b->Dotace = (object)$b->Dotace;
-                $b->Dotace->PrijemcePomoci = (object)$b->Dotace->PrijemcePomoci;
-                $b->RozpoctoveObdobi = (object)$b->RozpoctoveObdobi;
-
-                $dotace_nazev = (empty($b->Dotace->projektNazev) ? $b->Dotace->projektIdnetifikator : $b->Dotace->projektNazev);
-                ?>
-                <tr>
-                    <td><?= $this->Html->link('[R]', '/detail-rozhodnuti/' . $b->idRozhodnuti) ?></td>
-                    <td><?= $this->Html->link($dotace_nazev, '/detail-dotace/' . $b->Dotace->idDotace) ?></td>
-                    <td><?= $this->Html->link($b->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $b->Dotace->idPrijemce) ?></td>
-                    <td class="text-right"><?= Number::currency($b->castkaRozhodnuta) ?></td>
-                    <td class="text-right"><?= isset($b->RozpoctoveObdobi->castkaSpotrebovana) ? Number::currency($b->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
-                    <td><?= isset($b->RozpoctoveObdobi->rozpoctoveObdobi) ? $b->RozpoctoveObdobi->rozpoctoveObdobi : 'N/A' ?></td>
-                </tr>
-            <?php } ?>
             </tbody>
             <tfoot>
             <tr>

@@ -102,7 +102,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/detail-cedr-opatreni/', ['controller' => 'Pages', 'action' => 'cedrOpatreni']);
     $routes->connect('/detail-cedr-podopatreni/', ['controller' => 'Pages', 'action' => 'cedrPodOpatreni']);
 
-    $routes->connect('/strukturalni-fondy/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
+    $routes->connect('/strukturalni-fondy-2007-2013/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
     $routes->connect('/strukturalni-fondy-detail/', ['controller' => 'Pages', 'action' => 'strukturalniFondyDetail']);
 
     $routes->connect('/detail-rozpoctove-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);

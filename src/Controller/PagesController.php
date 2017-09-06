@@ -338,7 +338,7 @@ class PagesController extends AppController
                     'group' => [
                         'Rozhodnuti.idRozhodnuti'
                     ]
-                ])->limit(100)->enableHydration(false)->toArray();
+                ])->limit(10000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
             }
             debug(count($biggest));
@@ -2607,9 +2607,19 @@ class PagesController extends AppController
             ]
         ]);
 
-        $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat->statKod3Znaky);
-        $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
-        if ($biggest === false) $biggest = [];
+
+        if ($this->request->is('ajax')) {
+
+            $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat->statKod3Znaky);
+            $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
+            if ($biggest === false) $biggest = [];
+
+            $_serialize = false;
+            $this->set(compact(['stat', 'historie', 'biggest', '_serialize']));
+        } else {
+            $biggest = [];
+            $this->set(compact(['stat', 'historie', 'biggest']));
+        }
 
         $this->set(compact(['stat', 'historie', 'biggest']));
     }

@@ -62,3 +62,7 @@ table thead a:hover, table tfoot a:hover, table a:hover, table tbody a:hover {
 table tr th {
     padding: 0.5625rem 0.625rem;
 }
+
+.datatable {
+    width: 100%;
+}
