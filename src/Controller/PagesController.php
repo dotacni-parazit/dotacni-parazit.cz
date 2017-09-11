@@ -949,7 +949,7 @@ class PagesController extends AppController
                 ];
             } else if (!empty($spolecna_pravni_forma)) {
                 $filter_id = 3 . '_' . $spolecna_pravni_forma;
-                if (is_array($spf_filtr[$spolecna_pravni_forma])) {
+                if (is_array($spf_filtr[$spolecna_pravni_forma][0])) {
                     $conds = ['OR' => [
                         'pravniFormaKod IN' => $spf_filtr[$spolecna_pravni_forma][0],
                         [
