@@ -1610,6 +1610,15 @@ class PagesController extends AppController
             ]
         ]);
 
+        if ($prijemce->ico != 0) {
+            $strukturalniFondy = $this->StrukturalniFondy->find('all', [
+                'conditions' => [
+                    'zadatelIco' => $prijemce->ico
+                ]
+            ])->enableHydration(false)->toArray();
+            $this->set(compact(['strukturalniFondy']));
+        }
+
         $this->set(compact(['prijemce', 'dotace', 'prijemci']));
     }
 

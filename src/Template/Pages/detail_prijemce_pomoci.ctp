@@ -13,9 +13,12 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
         <?php if (!empty($prijemci->toArray()) && count($prijemci->toArray()) > 1) { ?>
-        <li><a href="#aliasy">Aliasy příjemce pomoci</a></li>
+            <li><a href="#aliasy">Aliasy příjemce pomoci</a></li>
         <?php } ?>
         <li><a href="#rozhodnuti">Rozhodnutí</a></li>
+        <?php if (!empty($strukturalniFondy)) { ?>
+            <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
+        <?php } ?>
     </ul>
     <div id="obecne">
 
@@ -161,6 +164,53 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <br/>
                 <?php } ?>
             </div>
+        </div>
+    <?php } ?>
+    <?php if (!empty($strukturalniFondy)) { ?>
+        <div id="strukturalniFondy">
+            <table class="datatable">
+                <thead>
+                <tr>
+                    <th>Číslo a název programu</th>
+                    <th>Číslo Projektu</th>
+                    <th>Název Projektu</th>
+                    <th>Zdroje celkem</th>
+                    <th>Veřejné zdroje celkem</th>
+                    <th>EU zdroje</th>
+                    <th>Vyúčtované veřejné zdroje celkem</th>
+                    <th>Proplacené EU zdroje</th>
+                    <th>Místo realizace</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($strukturalniFondy as $f) { ?>
+                    <tr>
+                        <td><?= $f["cisloANazevProgramu"] ?></td>
+                        <td><?= $f["cisloProjektu"] ?></td>
+                        <td><?= $f["nazevProjektu"] ?></td>
+                        <td><?= Number::currency($f["celkoveZdroje"]) ?></td>
+                        <td><?= Number::currency($f["verejneZdrojeCelkem"]) ?></td>
+                        <td><?= Number::currency($f["euZdroje"]) ?></td>
+                        <td><?= Number::currency($f["vyuctovaneVerejneCelkem"]) ?></td>
+                        <td><?= Number::currency($f["proplaceneEuZdroje"]) ?></td>
+                        <td><?= $f['kodNUTS'] . ' (' . $f['nazevNUTS'] . ')' ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Číslo a název programu</td>
+                    <td>Číslo Projektu</td>
+                    <td>Název Projektu</td>
+                    <td>Zdroje celkem</td>
+                    <td>Veřejné zdroje celkem</td>
+                    <td>EU zdroje</td>
+                    <td>Vyúčtované veřejné zdroje celkem</td>
+                    <td>Proplacené EU zdroje</td>
+                    <th>Místo realizace</th>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     <?php } ?>
 </div>
