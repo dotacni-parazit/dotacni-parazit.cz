@@ -36,7 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#politickeStrany">Politické Strany</a></li>
     </ul>
     <div id="cedr">
-        <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&cedr=cedr">
+        <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -60,7 +60,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="czechinvest">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&czechinvest=czechinvest">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&czechinvest=czechinvest">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -86,7 +87,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="strukturalniFondy">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&strukturalni-fondy=strukturalni-fondy">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy=strukturalni-fondy">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -114,7 +116,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="dotInfo">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&dotinfo=dotinfo">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&dotinfo=dotinfo">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -140,7 +142,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="politickeStrany">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&politickeStrany=politickeStrany">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&politickeStrany=politickeStrany">
             <thead>
             <tr>
                 <th>Jméno</th>
