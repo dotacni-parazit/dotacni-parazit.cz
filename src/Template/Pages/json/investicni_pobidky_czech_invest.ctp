@@ -28,7 +28,7 @@ foreach ($pobidky as $p) {
         Number::toPercentage($p->miraVerejnePodpory * 100),
         $p->okres . ", " . $p->kraj,
         ($p->rozhodnutiDen == 0 ? 1 : $p->rozhodnutiDen) . "." . $p->rozhodnutiMesic . " " . $p->rozhodnutiRok,
-        $p->zruseniRozhodnutiNeboOdstoupeni
+        $p->zruseniRozhodnutiNeboOdstoupeni == "x" ? "Nerealizováno" : "OK"
     ];
 
     $total++;

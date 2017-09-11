@@ -17,7 +17,7 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <th>Míra Veřejné Podpory</th>
         <th>Okres, Kraj</th>
         <th>Datum Rozhodnutí</th>
-        <th>Projekt nerealizován</th>
+        <th>Stav Realizace</th>
     </tr>
     </thead>
     <tbody>

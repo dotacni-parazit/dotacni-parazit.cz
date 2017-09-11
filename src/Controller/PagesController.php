@@ -907,17 +907,18 @@ class PagesController extends AppController
             1 => [703, 721],
             2 => [100],
             3 => [101, 102, 103, 104, 105, 106, 107, 108, 150],
-            4 => [116, 117, 118, 141, 145, 233, 234, 251, 353, 361, 401, 442, 701, 705, 706, 731, 741, 745, 751, 761, 921, 922],
+            4 => [[116, 117, 118, 141, 145, 233, 234, 251, 353, 401, 442, 701, 705, 706, 731, 741, 745, 751, 761, 921, 922], [361 => 2001]],
             5 => [111, 112, 113, 114, 115, 121, 151, 201, 205, 231, 232, 241, 242, 300, 301, 320, 330, 352, 501, 521, 531, 532, 533, 705, 931, 932, 933],
             6 => [314, 321, 325, 331, 341, 343, 352, 381, 400, 500, 601, 771, 801, 802, 804, 805, 901, 941, 950],
             7 => [601, 602, 603, 611, 621, 625, 631, 641, 661],
             8 => [310, 312, 313, 431, 435, 436, 437, 541, 702],
-            9 => [361, 911],
+            9 => [[911], [361 => 2002]],
             10 => [711, 715, 732],
             11 => [421],
             12 => [391, 651, 671],
             13 => [0, 950, 999]
         ];
+        // ošetřit: 361,
 
         $pravni_forma = $this->request->getQuery('pravniforma');
         $pravni_forma = filter_var($pravni_forma, FILTER_SANITIZE_NUMBER_INT);
@@ -943,11 +944,22 @@ class PagesController extends AppController
                 ];
             } else if (!empty($spolecna_pravni_forma)) {
                 $filter_id = 3 . '_' . $spolecna_pravni_forma;
-                $pf = $this->CiselnikPravniFormav01->find('all', [
-                    'conditions' => [
+                if (is_array($spf_filtr[$spolecna_pravni_forma])) {
+                    $conds = ['OR' => [
+                        'pravniFormaKod IN' => $spf_filtr[$spolecna_pravni_forma][0],
+                        [
+                            'pravniFormaKod' => array_keys($spf_filtr[$spolecna_pravni_forma][1])[0],
+                            'YEAR(zaznamPlatnostOdDatum)' => $spf_filtr[$spolecna_pravni_forma][1][array_keys($spf_filtr[$spolecna_pravni_forma][1])[0]]
+                        ]
+                    ]];
+                } else {
+                    $conds = [
                         'pravniFormaKod IN' => $spf_filtr[$spolecna_pravni_forma]
-                    ]
-                ])->enableHydration(false)->toArray();
+                    ];
+                }
+                $pf = $this->CiselnikPravniFormav01->find('all', [
+                    'conditions' => $conds
+                ]); //->enableHydration(false)->toArray();
                 if (empty($pf)) throw new NotFoundException();
 
                 $pf_array = [];
