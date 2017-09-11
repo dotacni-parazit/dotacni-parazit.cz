@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property string $notes
  * @property \Cake\I18n\Time $modified
  *
- * @property \App\Model\Entity\Owner[] $owners
+ * @property \App\Model\Entity\Company $owner
  * @property \App\Model\Entity\Company $company
  */
 class Owner extends Entity

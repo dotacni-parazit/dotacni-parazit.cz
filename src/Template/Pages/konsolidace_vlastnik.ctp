@@ -91,6 +91,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <thead>
             <tr>
                 <th>Společnost</th>
+                <th>IČO</th>
                 <th>Holding</th>
                 <th>Rok</th>
                 <th class="nosearch">Podíl holdingu</th>
@@ -100,6 +101,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php foreach ($subsidiaries as $s) { ?>
                 <tr>
                     <td><?= $s->subsidiary->name ?></td>
+                    <td><?= $s->subsidiary->ico ?></td>
                     <td><?= $s->company->name ?></td>
                     <td><?= $s->year ?></td>
                     <td><?= Number::toPercentage($s->shares_percent) ?></td>
@@ -109,6 +111,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tfoot>
             <tr>
                 <td>Společnost</td>
+                <td>IČO</td>
                 <td>Holding</td>
                 <td>Rok</td>
                 <td>Podíl holdingu</td>

@@ -45,8 +45,9 @@ class OwnersTable extends Table
             'foreignKey' => 'holding_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('Owners', [
-            'foreignKey' => 'owner_id'
+        $this->belongsTo('Owner', [
+            'foreignKey' => 'owner_id',
+            'className' => 'Companies'
         ]);
     }
 

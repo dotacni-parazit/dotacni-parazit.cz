@@ -72,8 +72,8 @@ class CompaniesTable extends Table
         $this->belongsToMany('Subsidiaries', [
             'joinTable' => 'consolidations',
             'className' => 'Companies',
-            'targetForeignKey' => 'holding_id',
-            'foreignKey' => 'subsidiary_id'
+            'targetForeignKey' => 'subsidiary_id',
+            'foreignKey' => 'holding_id'
         ]);
     }
 

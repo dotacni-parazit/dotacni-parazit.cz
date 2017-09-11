@@ -117,6 +117,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/konsolidace-holdingy', ['controller' => 'Pages', 'action' => 'konsolidaceIndex']);
     $routes->connect('/konsolidace-holdingy/detail-vlastnik/:id', ['controller' => 'Pages', 'action' => 'konsolidaceVlastnik'], ['id' => '[0-9]+']);
+    $routes->connect('/konsolidace-holdingy/detail/:id', ['controller' => 'Pages', 'action' => 'konsolidaceHolding'], ['id' => '[0-9]+']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);

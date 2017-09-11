@@ -2813,7 +2813,8 @@ class PagesController extends AppController
     {
         $owner = $this->Companies->find('all', [
             'conditions' => [
-                'Companies.id' => $this->request->getParam('id')
+                'Companies.id' => $this->request->getParam('id'),
+                'type_id' => 4
             ],
             'contain' => [
                 'Holdings',
@@ -2821,7 +2822,7 @@ class PagesController extends AppController
             ]
         ])->first();
         $id_holdingu = [];
-        foreach($owner->holdings as $h) $id_holdingu[] = $h->id;
+        foreach ($owner->holdings as $h) $id_holdingu[] = $h->id;
         if (empty($owner)) throw new NotFoundException();
         $holdingy = $this->Owners->find('all', [
             'conditions' => [
@@ -2843,6 +2844,43 @@ class PagesController extends AppController
         ]);
 
         $this->set(compact(['owner', 'holdingy', 'subsidiaries']));
+    }
+
+    public function konsolidaceHolding()
+    {
+        $holding = $this->Companies->find('all', [
+            'conditions' => [
+                'Companies.id' => $this->request->getParam('id'),
+                'type_id' => 1
+            ],
+            'contain' => [
+                'Subsidiaries',
+                'States'
+            ]
+        ])->first();
+        if (empty($holding)) throw new NotFoundException();
+
+        $owners = $this->Owners->find('all', [
+            'conditions' => [
+                'holding_id' => $holding->id
+            ],
+            'contain' => [
+                'Owner'
+            ]
+        ]);
+
+        $subsidiaries = $this->Consolidations->find('all', [
+            'conditions' => [
+                'holding_id' => $holding->id
+            ],
+            'contain' => [
+                'Subsidiaries',
+                'Attachments',
+                'Subsidiaries.States'
+            ]
+        ]);
+
+        $this->set(compact(['holding', 'owners', 'subsidiaries']));
     }
 
 }

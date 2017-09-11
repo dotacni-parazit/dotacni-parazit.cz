@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Type $type
  * @property \App\Model\Entity\Audit[] $audits
  * @property \App\Model\Entity\Report[] $reports
+ * @property Company[] $subsidiaries
  */
 class Company extends Entity
 {
