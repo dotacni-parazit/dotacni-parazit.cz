@@ -115,4 +115,5 @@ button.dt-button, div.dt-button, a.dt-button {
     display: block;
     text-align: center;
     color: #35002f;
+    width: 400%;
 }
