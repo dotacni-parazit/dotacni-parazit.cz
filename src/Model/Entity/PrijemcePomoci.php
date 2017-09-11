@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property string $iriEkonomikaSubjekt
  * @property \Cake\I18n\Time $dPlatnost
  * @property \Cake\I18n\Time $dtAktualizace
+ * @property CiselnikStatv01 Stat
  */
 class PrijemcePomoci extends Entity
 {

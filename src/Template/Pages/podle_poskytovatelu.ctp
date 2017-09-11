@@ -3,7 +3,7 @@ use Cake\I18n\Number;
 
 $this->set('title', 'Poskytovatelé dotací');
 ?>
-<table id="datatable" class="datatable_simple">
+<table id="datatable" class="datatable_simple" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>
         <th>Poskytovatel</th>
@@ -12,17 +12,6 @@ $this->set('title', 'Poskytovatelé dotací');
     </tr>
     </thead>
     <tbody>
-    <?php
-    foreach ($data as $d) {
-        ?>
-        <tr>
-            <td><?= $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod) ?></td>
-            <td style="text-align: right"><?= Number::currency($counts[$d->id]['soucet']) ?></td>
-            <td style="text-align: right"><?= Number::currency($counts[$d->id]['soucetSpotrebovano']) ?></td>
-        </tr>
-        <?php
-    }
-    ?>
     </tbody>
     <tfoot>
     <tr>

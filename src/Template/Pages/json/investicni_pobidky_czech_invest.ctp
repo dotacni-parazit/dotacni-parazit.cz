@@ -16,12 +16,12 @@ $total = 0;
 foreach ($pobidky as $p) {
 
     $data_arr[] = [
-        $this->Html->link($p->name, ['controller'=>'Pages', 'action' => 'prijemceDotaciJmeno', 'name'=> $p->name]),
+        $this->Html->link($p->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $p->name]),
         $this->Html->link($p->ico, ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $p->ico]),
         $p->sektor,
         $p->druhInvesticniAkce,
         $p->zemePuvodu,
-        Number::currency($p->investiceCZK * 1000000, 'CZK'),
+        \App\View\DPUTILS::currency($p->investiceCZK * 1000000, 'CZK'),
         $p->vytvorenaPracovniMista,
         Number::toPercentage($p->miraVerejnePodpory * 100),
         $p->okres . ", " . $p->kraj,

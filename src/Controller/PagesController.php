@@ -410,10 +410,14 @@ class PagesController extends AppController
 
         $this->set('title', 'Poskytovatelé Dotací');
 
-        $data = $this->CiselnikDotacePoskytovatelv01->find('all');
-        $counts = $this->Caching->initCachePodlePoskytovatelu($data);
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            $data = $this->CiselnikDotacePoskytovatelv01->find('all');
+            $counts = $this->Caching->initCachePodlePoskytovatelu($data);
 
-        $this->set(compact(['data', 'counts']));
+            $this->set(compact(['data', 'counts', '_serialize']));
+        }
+
     }
 
     public function strukturalniFondy()
@@ -1041,7 +1045,22 @@ class PagesController extends AppController
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
-            if (!empty($ico)) {
+            $ajax_type = 'cedr';
+            if ($this->request->getQuery('czechinvest') == 'czechinvest') {
+                $data = $this->InvesticniPobidky->find('all', [
+                    'conditions' => [
+                        'ico' => $ico
+                    ]
+                ]);
+                $ajax_type = 'czechinvest';
+            } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
+                $data = $this->StrukturalniFondy->find('all', [
+                    'conditions' => [
+                        'zadatelIco' => $ico
+                    ]
+                ]);
+                $ajax_type = 'strukturalniFondy';
+            } else if ($this->request->getQuery('cedr') == 'cedr') {
                 $data = $this->PrijemcePomoci->find('all', [
                     'fields' => [
                         'idPrijemce',
@@ -1060,7 +1079,7 @@ class PagesController extends AppController
             } else {
                 $data = [];
             }
-            $this->set(compact(['_serialize', 'data']));
+            $this->set(compact(['_serialize', 'data', 'ico', 'ajax_type']));
         } else {
             $this->set(compact(['ico']));
         }

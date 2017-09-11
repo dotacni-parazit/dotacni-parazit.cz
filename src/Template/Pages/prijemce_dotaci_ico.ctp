@@ -30,13 +30,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs2">
     <ul>
         <li><a href="#cedr">CEDR</a></li>
-        <li><a href="#cedr">Investiční pobídky</a></li>
-        <li><a href="#cedr">Strukturální Fondy</a></li>
-        <li><a href="#cedr">DotInfo</a></li>
-        <li><a href="#cedr">Politické Strany</a></li>
+        <li><a href="#czechinvest">Investiční pobídky</a></li>
+        <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
+        <li><a href="#dotInfo">DotInfo</a></li>
+        <li><a href="#politickeStrany">Politické Strany</a></li>
     </ul>
     <div id="cedr">
-        <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>">
+        <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&cedr=cedr">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -53,6 +53,112 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Jméno</td>
                 <td>IČO</td>
                 <td>Státní Příslušnost</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="czechinvest">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&czechinvest=czechinvest">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th>Investice CZK</th>
+                <th>Datum Rozhodnutí</th>
+                <th>Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Investice CZK</td>
+                <td>Datum Rozhodnutí</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="strukturalniFondy">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&strukturalni-fondy=strukturalni-fondy">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th>Veřejné Zdroje Celkem</th>
+                <th>Číslo Projektu</th>
+                <th>Název Projektu</th>
+                <td>Otevřít</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Veřejné Zdroje Celkem</td>
+                <td>Číslo Projektu</td>
+                <td>Název Projektu</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="dotInfo">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&dotinfo=dotinfo">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th>Investice CZK</th>
+                <th>Datum Rozhodnutí</th>
+                <th>Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Investice CZK</td>
+                <td>Datum Rozhodnutí</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="politickeStrany">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>&politickeStrany=politickeStrany">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th>Investice CZK</th>
+                <th>Datum Rozhodnutí</th>
+                <th>Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Investice CZK</td>
+                <td>Datum Rozhodnutí</td>
                 <td>Otevřít</td>
             </tr>
             </tfoot>

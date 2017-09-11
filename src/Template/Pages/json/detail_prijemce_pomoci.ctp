@@ -25,9 +25,9 @@ if (!$cache_data) {
                     $i->sektor,
                     $i->druhInvesticniAkce,
                     $i->vytvorenaPracovniMista,
-                    Number::currency($i->investiceCZK * 1000000),
+                    \App\View\DPUTILS::currency($i->investiceCZK * 1000000),
                     Number::toPercentage($i->miraVerejnePodpory * 100),
-                    Number::currency($i->stropVerejnePodpory * 1000000),
+                    \App\View\DPUTILS::currency($i->stropVerejnePodpory * 1000000),
                     ($i->rozhodnutiDen == 0 ? "" : $i->rozhodnutiDen . " ") . $i->rozhodnutiMesic . " " . $i->rozhodnutiRok
                 ];
 
@@ -43,11 +43,11 @@ if (!$cache_data) {
                     $f->cisloANazevProgramu,
                     $f->cisloProjektu,
                     $f->nazevProjektu,
-                    Number::currency($f->celkoveZdroje),
-                    Number::currency($f->verejneZdrojeCelkem),
-                    Number::currency($f->euZdroje),
-                    Number::currency($f->vyuctovaneVerejneCelkem),
-                    Number::currency($f->proplaceneEuZdroje),
+                    \App\View\DPUTILS::currency($f->celkoveZdroje),
+                    \App\View\DPUTILS::currency($f->verejneZdrojeCelkem),
+                    \App\View\DPUTILS::currency($f->euZdroje),
+                    \App\View\DPUTILS::currency($f->vyuctovaneVerejneCelkem),
+                    \App\View\DPUTILS::currency($f->proplaceneEuZdroje),
                     $f->kodNUTS . ' (' . $f->nazevNUTS . ')'
                 ];
 
@@ -71,9 +71,9 @@ if (!$cache_data) {
                 }
                 $data_arr[] = [
                     $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]),
-                    Number::currency($d->castkaPozadovana),
-                    Number::currency($d->castkaRozhodnuta),
-                    !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
+                    \App\View\DPUTILS::currency($d->castkaPozadovana),
+                    \App\View\DPUTILS::currency($d->castkaRozhodnuta),
+                    !empty($d->RozpoctoveObdobi) ? \App\View\DPUTILS::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
                     $d->rokRozhodnuti,
                     $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev,
                     $d->FinancniZdroj->financniZdrojNazev,

@@ -2,7 +2,8 @@
 
 use Cake\Cache\Cache;
 
-$cache_key = 'podle_sidla_prijemce_obce_ajax';
+
+$cache_key = 'ajax_podle_poskytovatelu';
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -10,14 +11,15 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-
-    foreach ($obce as $o) {
+    /** @var \App\Model\Entity\CiselnikDotacePoskytovatelv01[] $data */
+    foreach ($data as $d) {
 
         $data_arr[] = [
-            $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod),
-            \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucet),
-            \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
+            $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod),
+            \App\View\DPUTILS::currency($counts[$d->id]['soucet']),
+            \App\View\DPUTILS::currency($counts[$d->id]['soucetSpotrebovano'])
         ];
+
         $total++;
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 use Cake\Cache\Cache;
-use Cake\I18n\Number;
 
 
 $cache_key = 'strukturalni_fondy_detail_' . sha1($data->operacaniProgramKod);
@@ -18,13 +17,13 @@ if (!$cache_data) {
             '<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>',
             '<span title="' . $d->popisProjektu . '">' . $d->cisloProjektu . '</span>',
             $d->zadatel . ' (IČ: ' . $d->zadatelIco . ')',
-            Number::currency($d->celkoveZdroje),
-            Number::currency($d->verejneZdrojeCelkem),
-            Number::currency($d->euZdroje),
-            Number::currency($d->vyuctovaneVerejneCelkem),
-            Number::currency($d->proplaceneEuZdroje),
-            Number::currency($d->certifikovaneVerejneCelkem),
-            Number::currency($d->certifikovaneEUZdroje)
+            \App\View\DPUTILS::currency($d->celkoveZdroje),
+            \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
+            \App\View\DPUTILS::currency($d->euZdroje),
+            \App\View\DPUTILS::currency($d->vyuctovaneVerejneCelkem),
+            \App\View\DPUTILS::currency($d->proplaceneEuZdroje),
+            \App\View\DPUTILS::currency($d->certifikovaneVerejneCelkem),
+            \App\View\DPUTILS::currency($d->certifikovaneEUZdroje)
         ];
         $total++;
     }

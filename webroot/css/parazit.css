@@ -116,3 +116,7 @@ button.dt-button, div.dt-button, a.dt-button {
     color: #35002f;
     width: 400%;
 }
+
+.right {
+    text-align: right;
+}

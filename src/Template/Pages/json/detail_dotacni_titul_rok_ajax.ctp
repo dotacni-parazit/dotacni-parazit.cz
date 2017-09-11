@@ -1,5 +1,4 @@
 <?php
-use Cake\I18n\Number;
 
 $data_arr = [];
 $total = 0;
@@ -24,8 +23,8 @@ foreach ($dotace as $d) {
         $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]),
         $this->Html->link($prijemcePomoci, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce),
         $d->rokRozhodnuti,
-        Number::currency($d->castkaRozhodnuta),
-        Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana),
+        \App\View\DPUTILS::currency($d->castkaRozhodnuta),
+        \App\View\DPUTILS::currency($d->RozpoctoveObdobi->castkaSpotrebovana),
         $d->PoskytovatelDotace->dotacePoskytovatelNazev,
         $d->FinancniZdroj->financniZdrojNazev
     ];
