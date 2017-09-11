@@ -111,8 +111,7 @@ button.dt-button, div.dt-button, a.dt-button {
 .dataTables_empty {
     font-size: 3em;
     margin: 10%;
-    padding: 10%;
-    display: block;
+    padding: 10% !important;
     text-align: center;
     color: #35002f;
     width: 400%;

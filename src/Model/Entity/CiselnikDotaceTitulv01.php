@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property string $dotaceTitulNazevZkraceny
  * @property \Cake\I18n\Time $zaznamPlatnostOdDatum
  * @property \Cake\I18n\Time $zaznamPlatnostDoDatum
+ * @property CiselnikStatniRozpocetKapitolav01 CiselnikStatniRozpocetKapitola
  */
 class CiselnikDotaceTitulv01 extends Entity
 {

@@ -847,19 +847,22 @@ class PagesController extends AppController
 
     public function dotacniTituly()
     {
-        $data = $this->CiselnikDotaceTitulv01->find('all', [
-            'contain' => [
-                'CiselnikStatniRozpocetKapitolav01'
-            ],
-            'group' => [
-                'dotaceTitulKod'
-            ],
-            'order' => [
-                'CiselnikDotaceTitulv01.zaznamPlatnostDoDatum' => 'DESC'
-            ]
-        ]);
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            $data = $this->CiselnikDotaceTitulv01->find('all', [
+                'contain' => [
+                    'CiselnikStatniRozpocetKapitolav01'
+                ],
+                'group' => [
+                    'dotaceTitulKod'
+                ],
+                'order' => [
+                    'CiselnikDotaceTitulv01.zaznamPlatnostDoDatum' => 'DESC'
+                ]
+            ]);
+            $this->set(compact(['data', '_serialize']));
+        }
 
-        $this->set(compact('data'));
     }
 
     public function fyzickeOsoby()
@@ -2732,6 +2735,7 @@ class PagesController extends AppController
             $this->set(compact(['stat', 'historie', 'biggest', '_serialize']));
         } else {
             $biggest = [];
+            $this->set(compact(['stat', 'historie', 'biggest']));
             $this->set(compact(['stat', 'historie', 'biggest']));
         }
 

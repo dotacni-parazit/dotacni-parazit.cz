@@ -2,7 +2,7 @@
 $this->set('title', 'Dotační tituly podle kapitoly státního rozpočtu');
 ?>
 
-<table id="datatable">
+<table id="datatable" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>
         <th data-type="html">Kapitola Státního Rozpočtu</th>
@@ -12,14 +12,6 @@ $this->set('title', 'Dotační tituly podle kapitoly státního rozpočtu');
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($data as $d) { ?>
-        <tr>
-            <td><?= $this->Html->link($d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaNazev, '/podle-zdroje-financi/t' . $d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
-            <td><?= $this->Html->link($d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod, '/podle-zdroje-financi/t' . $d->CiselnikStatniRozpocetKapitola->statniRozpocetKapitolaKod) ?></td>
-            <td><?= $this->Html->link($d->dotaceTitulNazev, '/detail-dotacni-titul/' . $d->dotaceTitulKod) ?></td>
-            <td><?= $this->Html->link($d->dotaceTitulKod, '/detail-dotacni-titul/' . $d->dotaceTitulKod) ?></td>
-        </tr>
-    <?php } ?>
     </tbody>
     <tfoot>
     <tr>
