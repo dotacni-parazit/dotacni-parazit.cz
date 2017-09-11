@@ -4,15 +4,20 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Cache Entity
+ * Owner Entity
  *
  * @property int $id
- * @property int $ico
- * @property string $name
- * @property int $type_id
+ * @property int $owner_id
+ * @property int $holding_id
+ * @property float $shares_percent
+ * @property int $year
+ * @property string $notes
  * @property \Cake\I18n\Time $modified
+ *
+ * @property \App\Model\Entity\Owner[] $owners
+ * @property \App\Model\Entity\Company $company
  */
-class Holding extends Entity
+class Owner extends Entity
 {
 
     /**
