@@ -20,6 +20,11 @@ $title = $this->fetch('title');
         'jquery.sumoselect.min',
         '//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js',
         '//cdn.datatables.net/plug-ins/1.10.15/sorting/currency.js',
+        '//cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js',
+        '//cdn.datatables.net/buttons/1.4.1/js/buttons.flash.min.js',
+        '//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js',
+        '//cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js',
+        '//cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js',
         'datatable.js'
     ]);
     ?>

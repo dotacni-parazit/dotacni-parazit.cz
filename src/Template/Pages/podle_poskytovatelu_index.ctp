@@ -17,14 +17,11 @@ $this->set('title', 'Podle Poskytovatelů');
     <a href="/operacni-programy-cedr">Ostatní Programy CEDR</a>
 </div>
 <div class="homepage_tile medium-4 large-4 small-4">
+    <a href="/investicni-pobidky">Investiční Pobídky (CzechInvest)</a>
+</div>
+<div class="homepage_tile medium-4 large-4 small-4">
     <a href="/strukturalni-fondy-2007-2013">Strukturalni-Fondy.cz<br/>(2007-2013)</a>
 </div>
 <div class="homepage_tile medium-4 large-4 small-4">
     <a href="/strukturalni-fondy-2014-2020">Strukturalni-Fondy.cz<br/>(2014-2020)</a>
-</div>
-<div class="homepage_tile medium-4 large-4 small-4">
-    <a href="/investicni-pobidky">Investiční Pobídky (CzechInvest)</a>
-</div>
-<div class="homepage_tile medium-4 large-4 small-4">
-    <a href="/investicni-pobidky">Investiční Pobídky (CzechInvest)</a>
 </div>

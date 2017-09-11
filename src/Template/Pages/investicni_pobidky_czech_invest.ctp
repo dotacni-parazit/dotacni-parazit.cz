@@ -10,9 +10,7 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <th>Sektor</th>
         <th>Druh Investiční Akce</th>
         <th>Země Původu</th>
-        <th data-type="currency">Investice EUR</th>
-        <th data-type="currency">USD</th>
-        <th data-type="currency">CZK</th>
+        <th data-type="currency"> Investice CZK</th>
         <th>Vytvořená Pracovní Místa</th>
         <th>Míra Veřejné Podpory</th>
         <th>Okres, Kraj</th>
@@ -30,9 +28,7 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <td>Sektor</td>
         <td>Druh Investiční Akce</td>
         <td>Země Původu</td>
-        <td>Investice EUR</td>
-        <td>USD</td>
-        <td>CZK</td>
+        <td>Investice CZK</td>
         <td>Vytvořená Pracovní Místa</td>
         <td>Míra Veřejné Podpory</td>
         <td>Okres, Kraj</td>

@@ -27,31 +27,47 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 </div>
 <hr/>
-<table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>">
-    <thead>
-    <tr>
-        <th>Jméno</th>
-        <th>IČO</th>
-        <th>Státní Příslušnost</th>
-        <th>Otevřít</th>
-    </tr>
-    </thead>
-    <tbody>
+<div id="tabs2">
+    <ul>
+        <li><a href="#cedr">CEDR</a></li>
+        <li><a href="#cedr">Investiční pobídky</a></li>
+        <li><a href="#cedr">Strukturální Fondy</a></li>
+        <li><a href="#cedr">DotInfo</a></li>
+        <li><a href="#cedr">Politické Strany</a></li>
+    </ul>
+    <div id="cedr">
+        <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th>Státní Příslušnost</th>
+                <th>Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
 
-    </tbody>
-    <tfoot>
-    <tr>
-        <td>Jméno</td>
-        <td>IČO</td>
-        <td>Státní Příslušnost</td>
-        <td>Otevřít</td>
-    </tr>
-    </tfoot>
-</table>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Státní Příslušnost</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
+            collapsible: true,
+            active: <?= empty($multiple) ? '0' : '1' ?>
+        });
+
+        $("#tabs2").tabs({
             collapsible: true,
             active: <?= empty($multiple) ? '0' : '1' ?>
         });

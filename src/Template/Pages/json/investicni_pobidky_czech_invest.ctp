@@ -21,8 +21,6 @@ foreach ($pobidky as $p) {
         $p->sektor,
         $p->druhInvesticniAkce,
         $p->zemePuvodu,
-        Number::currency($p->investiceEUR * 1000000, 'EUR'),
-        Number::currency($p->investiceUSD * 1000000, 'USD'),
         Number::currency($p->investiceCZK * 1000000, 'CZK'),
         $p->vytvorenaPracovniMista,
         Number::toPercentage($p->miraVerejnePodpory * 100),

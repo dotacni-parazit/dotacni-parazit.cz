@@ -48,7 +48,10 @@ function setupDataTable(selector) {
         "stateSave": true,
         ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
         "stateDuration": 60 * 60 * 24 * 7,
-        dom: $($e).hasClass('datatable_simple') ? 't' : 'r<"clear">ip<"clear">lf<"clear">t',
+        dom: $($e).hasClass('datatable_simple') ? 'tB' : 'r<"clear">ip<"clear">lf<"clear">tB',
+        buttons: [
+            'csv', 'excel', 'print'
+        ],
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
     });
 

@@ -70,6 +70,7 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
  * @property CiselnikUcelZnakDotacniTitulv01 CiselnikUcelZnakDotacniTitulv01
  * @property InvesticniPobidkyTable InvesticniPobidky
+ * @property HoldingTable Holding
  */
 class PagesController extends AppController
 {
@@ -78,6 +79,7 @@ class PagesController extends AppController
     {
         parent::initialize();
         $this->loadModel('InvesticniPobidky');
+        $this->loadModel('Holding');
         $this->loadModel('Rozhodnuti');
         $this->loadModel('Dotace');
         $this->loadModel('PrijemcePomoci');
@@ -2743,6 +2745,18 @@ class PagesController extends AppController
             $pobidky = $this->InvesticniPobidky->find('all');
             $this->set(compact(['_serialize', 'pobidky']));
         }
+    }
+
+    public function konsolidaceIndex()
+    {
+        $holdingy = $this->Holding->find('all', [
+            'contain' => [
+            ],
+            'conditions' => [
+                'type_id' => 1
+            ]
+        ]);
+        $this->set(compact('holdingy'));
     }
 
 }

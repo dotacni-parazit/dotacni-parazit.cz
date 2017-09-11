@@ -10,6 +10,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#spf">Společná Právní Forma</a></li>
     </ul>
     <div id="pf">
+        <div class="alert alert-info">
+            Právní forma dle evidence CEDR, <a href="/opendata#pravni-forma">Více informací ...</a>
+        </div>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
         echo $this->Form->input('pravniforma', ['options' => $pravni_formy, 'value' => $pravni_forma, 'type' => 'select', 'label' => 'Právní Forma']);
@@ -18,6 +21,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         ?>
     </div>
     <div id="spf">
+        <div class="alert alert-info">
+            Společná právní forma - Sdružení jednotlivých právních forem dle evidence CEDR, <a href="/opendata#spolecna-pravni-forma">Více informací ...</a>
+        </div>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
         echo $this->Form->input('spf', ['options' => $spolecne_pravni_formy, 'value' => $spolecna_pravni_forma, 'type' => 'select', 'label' => 'Právní Forma']);
