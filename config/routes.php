@@ -69,7 +69,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/prijemce-dotaci/ico', ['controller' => 'Pages', 'action' => 'prijemceDotaciIco']);
     $routes->connect('/prijemce-dotaci/jmeno', ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno']);
     $routes->connect('/prijemce-dotaci/pravni-forma', ['controller' => 'Pages', 'action' => 'prijemceDotaciPravniForma']);
-    $routes->connect('/podle-prijemcu/multiple/:ico', ['controller' => 'Pages', 'action' => 'detailPrijemceMulti'], ['ico' => '[0-9\,]+']);
+    $routes->connect('/podle-prijemcu/multiple/:ico', ['controller' => 'Pages', 'action' => 'detailPrijemceMulti'], ['ico' => '[0-9\, ]+']);
 
     $routes->connect('/podle-zdroje-financi', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanci']);
     $routes->connect('/podle-zdroje-financi/:kod', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetail'], ['kod' => '[tz0-9]{2,5}']);

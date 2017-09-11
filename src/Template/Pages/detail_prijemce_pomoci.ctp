@@ -16,7 +16,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php if (!empty($prijemci->toArray()) && count($prijemci->toArray()) > 1) { ?>
             <li><a href="#aliasy">Aliasy příjemce pomoci</a></li>
         <?php } ?>
-        <li><a href="#rozhodnuti">Rozhodnutí</a></li>
+        <li><a href="#rozhodnuti">Rozhodnutí dle CEDR</a></li>
         <?php if (!empty($strukturalniFondy)) { ?>
             <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
         <?php } ?>
