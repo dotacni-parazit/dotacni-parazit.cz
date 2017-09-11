@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -16,6 +17,10 @@ use Cake\ORM\Entity;
  * @property float $rokRozhodnuti
  * @property bool $investiceIndikator
  * @property bool $navratnostIndikator
+ * @property \App\Model\Entity\Dotace $Dotace
+ * @property \App\Model\Entity\CiselnikFinancniZdrojv01 $FinancniZdroj
+ * @property \App\Model\Entity\CiselnikFinancniProstredekCleneniv01 $CleneniFinancnichProstredku
+ * @property \App\Model\Entity\RozpoctoveObdobi $RozpoctoveObdobi
  * @property \Cake\I18n\Time $dPlatnost
  * @property \Cake\I18n\Time $dtAktualizace
  */

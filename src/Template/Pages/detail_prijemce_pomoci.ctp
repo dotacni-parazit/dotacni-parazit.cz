@@ -1,6 +1,7 @@
 <?php
 
-use Cake\I18n\Number;
+/** @var \App\Model\Entity\PrijemcePomoci $prijemce */
+/** @var \App\Model\Entity\PrijemcePomoci $prijemci */
 
 $jmeno_prijemce = empty($prijemce->obchodniJmeno) ? $prijemce->jmeno . ' ' . $prijemce->prijmeni : $prijemce->obchodniJmeno;
 
@@ -18,6 +19,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#rozhodnuti">Rozhodnutí</a></li>
         <?php if (!empty($strukturalniFondy)) { ?>
             <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
+        <?php } ?>
+        <?php if (!empty($investicniPobidky)) { ?>
+            <li><a href="#investicniPobidky">Investiční Pobídky - CzechInvest</a></li>
         <?php } ?>
     </ul>
     <div id="obecne">
@@ -97,7 +101,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <span id="soucet"></span><br/>
         <span id="soucetSpotrebovana"></span>
         <hr/>
-        <table id="datatable">
+        <table id="datatable"  data-ajax="<?= $this->request->here(false) ?>?dotace=dotace">
             <thead>
             <tr>
                 <th data-type="html" class="large-2 medium-2">Dotace (kod nebo identifikator projektu)</th>
@@ -111,33 +115,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php
-            foreach ($dotace as $d) {
-                $displayDotace = $d->Dotace->projektNazev;
-                if ($d->Dotace->projekKod === $d->Dotace->projektIdnetifikator && !empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ")";
-                } else if (!empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ", " . $d->Dotace->projektIdnetifikator . ")";
-                } else if (!empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektIdnetifikator . ")";
-                }
-                if (strpos($displayDotace, '<br/>') === 0) {
-                    $displayDotace = substr($displayDotace, 5);
-                }
-                ?>
-                <tr>
-                    <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
-                    <td style="text-align: right"><?= Number::currency($d->castkaPozadovana) ?></td>
-                    <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
-                    <td style="text-align: right"><?= !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
-                    <td><?= $d->rokRozhodnuti ?></td>
-                    <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
-                    <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>
-                    <td><?= $d->Dotace->idPrijemce == $prijemce->idPrijemce ? 'YES' : 'NO' ?></td>
-                </tr>
-                <?php
-            }
-            ?>
+
             </tbody>
             <tfoot>
             <tr>
@@ -168,7 +146,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
     <?php if (!empty($strukturalniFondy)) { ?>
         <div id="strukturalniFondy">
-            <table class="datatable">
+            <table class="datatable"  data-ajax="<?= $this->request->here(false) ?>?strukturalni-fondy=strukturalni-fondy">
                 <thead>
                 <tr>
                     <th>Číslo a název programu</th>
@@ -183,19 +161,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($strukturalniFondy as $f) { ?>
-                    <tr>
-                        <td><?= $f["cisloANazevProgramu"] ?></td>
-                        <td><?= $f["cisloProjektu"] ?></td>
-                        <td><?= $f["nazevProjektu"] ?></td>
-                        <td><?= Number::currency($f["celkoveZdroje"]) ?></td>
-                        <td><?= Number::currency($f["verejneZdrojeCelkem"]) ?></td>
-                        <td><?= Number::currency($f["euZdroje"]) ?></td>
-                        <td><?= Number::currency($f["vyuctovaneVerejneCelkem"]) ?></td>
-                        <td><?= Number::currency($f["proplaceneEuZdroje"]) ?></td>
-                        <td><?= $f['kodNUTS'] . ' (' . $f['nazevNUTS'] . ')' ?></td>
-                    </tr>
-                <?php } ?>
+
                 </tbody>
                 <tfoot>
                 <tr>
@@ -208,6 +174,37 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td>Vyúčtované veřejné zdroje celkem</td>
                     <td>Proplacené EU zdroje</td>
                     <th>Místo realizace</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    <?php } ?>
+    <?php if (!empty($investicniPobidky)) { ?>
+        <div id="investicniPobidky">
+            <table class="datatable" data-ajax="<?= $this->request->here(false) ?>?czechinvest=czechinvest">
+                <thead>
+                <tr>
+                    <th>Sektor</th>
+                    <th>Druh pobídky</th>
+                    <th>Vytvořená pracovní místa</th>
+                    <th>Investice Celkem</th>
+                    <th>Míra veřejné podpory</th>
+                    <th>Strop veřejné podpory</th>
+                    <th>Datum rozhodnutí</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Sektor</td>
+                    <td>Druh pobídky</td>
+                    <td>Vytvořená pracovní místa</td>
+                    <td>Investice Celkem</td>
+                    <td>Míra veřejné podpory</td>
+                    <td>Strop veřejné podpory</td>
+                    <td>Datum rozhodnutí</td>
                 </tr>
                 </tfoot>
             </table>

@@ -1586,40 +1586,72 @@ class PagesController extends AppController
             $id_vsech_prijemcu[] = $p->idPrijemce;
         }
 
-        $dotace = $this->Rozhodnuti->find('all', [
-            'conditions' => [
-                'Dotace.idPrijemce IN' => $id_vsech_prijemcu
-            ],
-            'contain' => [
-                'CiselnikFinancniProstredekCleneniv01',
-                'CiselnikFinancniZdrojv01',
-                'Dotace.CiselnikMmrOperacniProgramv01',
-                'Dotace.CiselnikMmrPodprogramv01',
-                'Dotace.CiselnikMmrPrioritav01',
-                'Dotace.CiselnikMmrOpatreniv01',
-                'Dotace.CiselnikMmrPodOpatreniv01',
-                'Dotace.CiselnikMmrGrantoveSchemav01',
-                'Dotace.CiselnikCedrOperacniProgramv01',
-                'Dotace.CiselnikCedrPodprogramv01',
-                'Dotace.CiselnikCedrGrantoveSchemav01',
-                'Dotace.CiselnikCedrPrioritav01',
-                'Dotace.CiselnikCedrOpatreniv01',
-                'Dotace.CiselnikCedrPodOpatreniv01',
-                'RozpoctoveObdobi'
+        if ($this->request->is('ajax')) {
+            $this->set('_serialize', false);
+            if ($this->request->getQuery('dotace') == 'dotace') {
+                $dotace = $this->Rozhodnuti->find('all', [
+                    'conditions' => [
+                        'Dotace.idPrijemce IN' => $id_vsech_prijemcu
+                    ],
+                    'contain' => [
+                        'CiselnikFinancniProstredekCleneniv01',
+                        'CiselnikFinancniZdrojv01',
+                        'Dotace.CiselnikMmrOperacniProgramv01',
+                        'Dotace.CiselnikMmrPodprogramv01',
+                        'Dotace.CiselnikMmrPrioritav01',
+                        'Dotace.CiselnikMmrOpatreniv01',
+                        'Dotace.CiselnikMmrPodOpatreniv01',
+                        'Dotace.CiselnikMmrGrantoveSchemav01',
+                        'Dotace.CiselnikCedrOperacniProgramv01',
+                        'Dotace.CiselnikCedrPodprogramv01',
+                        'Dotace.CiselnikCedrGrantoveSchemav01',
+                        'Dotace.CiselnikCedrPrioritav01',
+                        'Dotace.CiselnikCedrOpatreniv01',
+                        'Dotace.CiselnikCedrPodOpatreniv01',
+                        'RozpoctoveObdobi'
 
-            ]
-        ]);
+                    ]
+                ]);
+                $this->set(compact(['dotace', 'prijemce']));
+                $this->set('ajax_type', 'dotace');
+            } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
+                $strukturalniFondy = $this->StrukturalniFondy->find('all', [
+                    'conditions' => [
+                        'zadatelIco' => $prijemce->ico
+                    ]
+                ]);
+                $this->set(compact(['strukturalniFondy', 'prijemce']));
+                $this->set('ajax_type', 'strukturalniFondy');
+            } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
+                $investicniPobidky = $this->InvesticniPobidky->find('all', [
+                    'conditions' => [
+                        'ico' => $prijemce->ico
+                    ]
+                ]);
+                $this->set(compact(['investicniPobidky', 'prijemce']));
+                $this->set('ajax_type', 'czechinvest');
+            } else {
+                $this->set('_serialize', true);
+                throw new NotFoundException($this->request->getQueryParams());
+            }
+        } else {
 
-        if ($prijemce->ico != 0) {
-            $strukturalniFondy = $this->StrukturalniFondy->find('all', [
-                'conditions' => [
-                    'zadatelIco' => $prijemce->ico
-                ]
-            ])->enableHydration(false)->toArray();
-            $this->set(compact(['strukturalniFondy']));
+            if ($prijemce->ico != 0) {
+                $strukturalniFondy = $this->StrukturalniFondy->find('all', [
+                    'conditions' => [
+                        'zadatelIco' => $prijemce->ico
+                    ]
+                ])->count();
+                $investicniPobidky = $this->InvesticniPobidky->find('all', [
+                    'conditions' => [
+                        'ico' => $prijemce->ico
+                    ]
+                ])->count();
+                $this->set(compact(['strukturalniFondy', 'investicniPobidky']));
+            }
+
+            $this->set(compact(['prijemce', 'prijemci']));
         }
-
-        $this->set(compact(['prijemce', 'dotace', 'prijemci']));
     }
 
     public function detailPrijemceMulti()
