@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * Consolidations Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Companies
- * @property \Cake\ORM\Association\BelongsTo $Companies
+ * @property \Cake\ORM\Association\BelongsTo $Subsidiaries
  * @property \Cake\ORM\Association\BelongsTo $Attachments
  *
  * @method \App\Model\Entity\Consolidation get($primaryKey, $options = [])
@@ -42,9 +42,10 @@ class ConsolidationsTable extends Table
             'foreignKey' => 'holding_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Companies', [
+        $this->belongsTo('Subsidiaries', [
             'foreignKey' => 'subsidiary_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
+            'className' => 'Companies'
         ]);
         $this->belongsTo('Attachments', [
             'foreignKey' => 'attachment_id'

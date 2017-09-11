@@ -57,6 +57,24 @@ class CompaniesTable extends Table
         $this->hasMany('Reports', [
             'foreignKey' => 'company_id'
         ]);
+        $this->belongsToMany('Owner', [
+            'joinTable' => 'owners',
+            'className' => 'Companies',
+            'targetForeignKey' => 'owner_id',
+            'foreignKey' => 'holding_id'
+        ]);
+        $this->belongsToMany('Holdings', [
+            'joinTable' => 'owners',
+            'className' => 'Companies',
+            'targetForeignKey' => 'holding_id',
+            'foreignKey' => 'owner_id'
+        ]);
+        $this->belongsToMany('Subsidiaries', [
+            'joinTable' => 'consolidations',
+            'className' => 'Companies',
+            'targetForeignKey' => 'holding_id',
+            'foreignKey' => 'subsidiary_id'
+        ]);
     }
 
     /**

@@ -29,8 +29,11 @@ use App\Model\Table\CiselnikStatniRozpocetKapitolav01Table;
 use App\Model\Table\CiselnikStatniRozpocetUkazatelv01Table;
 use App\Model\Table\CiselnikStatv01Table;
 use App\Model\Table\CiselnikUcelZnakv01Table;
+use App\Model\Table\CompaniesTable;
+use App\Model\Table\ConsolidationsTable;
 use App\Model\Table\DotaceTable;
 use App\Model\Table\InvesticniPobidkyTable;
+use App\Model\Table\OwnersTable;
 use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
@@ -70,7 +73,9 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
  * @property CiselnikUcelZnakDotacniTitulv01 CiselnikUcelZnakDotacniTitulv01
  * @property InvesticniPobidkyTable InvesticniPobidky
- * @property HoldingTable Holding
+ * @property CompaniesTable Companies
+ * @property ConsolidationsTable Consolidations
+ * @property OwnersTable Owners
  */
 class PagesController extends AppController
 {
@@ -78,8 +83,10 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('Owners');
+        $this->loadModel('Consolidations');
         $this->loadModel('InvesticniPobidky');
-        $this->loadModel('Holding');
+        $this->loadModel('Companies');
         $this->loadModel('Rozhodnuti');
         $this->loadModel('Dotace');
         $this->loadModel('PrijemcePomoci');
@@ -2791,14 +2798,51 @@ class PagesController extends AppController
 
     public function konsolidaceIndex()
     {
-        $holdingy = $this->Holding->find('all', [
+        $holdingy = $this->Companies->find('all', [
             'contain' => [
+                'Owner'
             ],
             'conditions' => [
                 'type_id' => 1
             ]
         ]);
         $this->set(compact('holdingy'));
+    }
+
+    public function konsolidaceVlastnik()
+    {
+        $owner = $this->Companies->find('all', [
+            'conditions' => [
+                'Companies.id' => $this->request->getParam('id')
+            ],
+            'contain' => [
+                'Holdings',
+                'States'
+            ]
+        ])->first();
+        $id_holdingu = [];
+        foreach($owner->holdings as $h) $id_holdingu[] = $h->id;
+        if (empty($owner)) throw new NotFoundException();
+        $holdingy = $this->Owners->find('all', [
+            'conditions' => [
+                'holding_id IN' => $id_holdingu
+            ],
+            'contain' => [
+                'Companies'
+            ]
+        ]);
+        $subsidiaries = $this->Consolidations->find('all', [
+            'conditions' => [
+                'holding_id IN' => $id_holdingu
+            ],
+            'contain' => [
+                'Subsidiaries',
+                'Companies',
+                'Attachments'
+            ]
+        ]);
+
+        $this->set(compact(['owner', 'holdingy', 'subsidiaries']));
     }
 
 }

@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $Owners
  * @property \Cake\ORM\Association\BelongsTo $Companies
- * @property \Cake\ORM\Association\HasMany $Owners
  *
  * @method \App\Model\Entity\Owner get($primaryKey, $options = [])
  * @method \App\Model\Entity\Owner newEntity($data = null, array $options = [])
@@ -42,10 +41,6 @@ class OwnersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Owners', [
-            'foreignKey' => 'owner_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'holding_id',
             'joinType' => 'INNER'

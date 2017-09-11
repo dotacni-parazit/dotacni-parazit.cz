@@ -13,8 +13,8 @@ $this->set('title', 'Konsolidace holdingů');
     <tbody>
     <?php foreach ($holdingy as $h) { ?>
         <tr>
-            <td><?= "" ?></td>
-            <td><?= $h->name . " (" . $h->ico . ")" ?></td>
+            <td><?= $this->Html->link($h->owner[0]->name, '/konsolidace-holdingy/detail-vlastnik/' . $h->owner[0]->id) ?></td>
+            <td><?= $this->Html->link($h->name . " (" . $h->ico . ")", '/konsolidace-holdingy/detail/' . $h->id) ?></td>
             <td><?= $this->Html->link('Otevřít', '/konsolidace-holdingy/detail/' . $h->id) ?></td>
         </tr>
     <?php } ?>

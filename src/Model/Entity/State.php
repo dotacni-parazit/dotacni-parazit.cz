@@ -4,21 +4,15 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Consolidation Entity
+ * State Entity
  *
  * @property int $id
- * @property int $holding_id
- * @property int $subsidiary_id
- * @property int $attachment_id
- * @property int $year
- * @property float $shares_percent
- * @property string $notes
+ * @property string $name
+ * @property string $kod
  *
- * @property \App\Model\Entity\Company $company
- * @property \App\Model\Entity\Company $subsidiary
- * @property \App\Model\Entity\Attachment $attachment
+ * @property \App\Model\Entity\Company[] $companies
  */
-class Consolidation extends Entity
+class State extends Entity
 {
 
     /**
