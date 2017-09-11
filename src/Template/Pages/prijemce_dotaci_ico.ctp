@@ -33,7 +33,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#czechinvest">Investiční pobídky</a></li>
         <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
         <li><a href="#dotInfo">DotInfo</a></li>
-        <li><a href="#politickeStrany">Politické Strany</a></li>
+        <li><a href="#politickeStrany">Dárci Politických Stran</a></li>
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">

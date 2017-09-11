@@ -1093,23 +1093,42 @@ class PagesController extends AppController
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
-            $data = $this->PrijemcePomoci->find('all', [
-                'fields' => [
-                    'idPrijemce',
-                    'obchodniJmeno',
-                    'ico',
-                    'jmeno',
-                    'prijmeni',
-                    'CiselnikStatv01.statKod3Znaky',
-                    'CiselnikStatv01.statNazev'
-                ],
-                'contain' => ['CiselnikStatv01'],
-                'conditions' => [
-                    "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
-                ]
-            ])->bind(':against', h($name))->limit(50000);
-
-            $this->set(compact(['data', '_serialize', 'name']));
+            $ajax_type = 'empty';
+            if ($this->request->getQuery('cedr') == 'cedr') {
+                $data = $this->PrijemcePomoci->find('all', [
+                    'fields' => [
+                        'idPrijemce',
+                        'obchodniJmeno',
+                        'ico',
+                        'jmeno',
+                        'prijmeni',
+                        'CiselnikStatv01.statKod3Znaky',
+                        'CiselnikStatv01.statNazev'
+                    ],
+                    'contain' => ['CiselnikStatv01'],
+                    'conditions' => [
+                        "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name))->limit(50000);
+                $ajax_type = 'cedr';
+            } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
+                $data = $this->InvesticniPobidky->find('all', [
+                    'conditions' => [
+                        "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $ajax_type = 'czechinvest';
+            } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
+                $data = $this->StrukturalniFondy->find('all', [
+                    'conditions' => [
+                        "MATCH (zadatel) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $ajax_type = 'strukturalniFondy';
+            } else {
+                $data = [];
+            }
+            $this->set(compact(['data', '_serialize', 'name', 'ajax_type']));
         } else {
             $this->set(compact(['name']));
         }

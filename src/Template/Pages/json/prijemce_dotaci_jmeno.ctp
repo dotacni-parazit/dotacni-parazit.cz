@@ -2,8 +2,8 @@
 
 use Cake\Cache\Cache;
 
-
-$cache_key = 'prijemce_jmeno_ajax_' . sha1($name);
+$cache_key = 'prijemce_jmeno_ajax_' . sha1($name) . '_' . $ajax_type;
+Cache::delete($cache_key,  'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -13,12 +13,42 @@ if (!$cache_data) {
 
     foreach ($data as $d) {
 
-        $data_arr[] = [
-            empty($d->obchodniJmeno) ? $d->prijmeni . ' ' . $d->jmeno : $d->obchodniJmeno,
-            $d->ico,
-            empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/'.$d->Stat->statKod3Znaky),
-            $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $d->idPrijemce)
-        ];
+        switch($ajax_type){
+            case 'cedr':
+
+                /** @var \App\Model\Entity\PrijemcePomoci $d */
+                $data_arr[] = [
+                    empty($d->obchodniJmeno) ? $d->prijmeni . ' ' . $d->jmeno : $d->obchodniJmeno,
+                    $d->ico,
+                    empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/'.$d->Stat->statKod3Znaky),
+                    $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $d->idPrijemce)
+                ];
+                break;
+            case 'czechinvest':
+
+                /** @var \App\Model\Entity\InvesticniPobidky $d */
+                $data_arr[] = [
+                    $d->name,
+                    $d->ico,
+                    \App\View\DPUTILS::currency($d->investiceCZK * 1000000),
+                    ($d->rozhodnutiDen == 0 ? 1 : $d->rozhodnutiDen) . "." . $d->rozhodnutiMesic . " " . $d->rozhodnutiRok,
+                    $this->Html->link('Otevřít', '/investicni-pobidky/detail/' . $d->id)
+                ];
+                break;
+            case 'strukturalniFondy':
+
+                /** @var \App\Model\Entity\StrukturalniFondy $d */
+                $data_arr[] = [
+                    $d->zadatel,
+                    $d->zadatelIco,
+                    \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
+                    $d->cisloProjektu,
+                    $d->nazevProjektu,
+                    $this->Html->link('Otevřít', '/strukturalni-fondy-detail-dotace/' . $d->id)
+                ];
+                break;
+        }
+
         $total++;
     }
 
