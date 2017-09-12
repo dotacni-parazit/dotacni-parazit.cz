@@ -104,6 +104,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/strukturalni-fondy-2007-2013/', ['controller' => 'Pages', 'action' => 'strukturalniFondy']);
     $routes->connect('/strukturalni-fondy-detail/', ['controller' => 'Pages', 'action' => 'strukturalniFondyDetail']);
+    $routes->connect('/strukturalni-fondy-detail-dotace/:id', ['controller' => 'Pages', 'action' => 'strukturalniFondyDetailDotace'], ['id' => '[0-9]+']);
 
     $routes->connect('/detail-rozpoctove-obdobi/:id', ['controller' => 'Pages', 'action' => 'detailRozpoctoveObdobi'], ['id' => '[A-F0-9]{40}']);
 
@@ -114,6 +115,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/ucel-znak-dotacnich-titulu/detail/:rok/:kod', ['controller' => 'Pages', 'action' => 'znakUceluDotacnichTituluDetail'], ['kod' => '[a-zA-Z0-9]+', 'year' => '[0-9]{4}']);
 
     $routes->connect('/investicni-pobidky', ['controller' => 'Pages', 'action' => 'investicniPobidkyCzechInvest']);
+    $routes->connect('/investicni-pobidky/detail/:id', ['controller' => 'Pages', 'action' => 'investicniPobidkyCzechInvestDetail'], ['id' => '[0-9]+']);
 
     $routes->connect('/konsolidace-holdingy', ['controller' => 'Pages', 'action' => 'konsolidaceIndex']);
     $routes->connect('/konsolidace-holdingy/detail-vlastnik/:id', ['controller' => 'Pages', 'action' => 'konsolidaceVlastnik'], ['id' => '[0-9]+']);

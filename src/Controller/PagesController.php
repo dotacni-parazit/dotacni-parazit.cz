@@ -9,10 +9,10 @@
 namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
-use App\Model\Entity\CiselnikUcelZnakDotacniTitulv01;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
+use App\Model\Table\CiselnikCedrPrioritav01Table;
 use App\Model\Table\CiselnikDotacePoskytovatelv01Table;
 use App\Model\Table\CiselnikDotaceTitulStatniRozpocetUkazatelv01Table;
 use App\Model\Table\CiselnikDotaceTitulv01Table;
@@ -28,6 +28,7 @@ use App\Model\Table\CiselnikPravniFormav01Table;
 use App\Model\Table\CiselnikStatniRozpocetKapitolav01Table;
 use App\Model\Table\CiselnikStatniRozpocetUkazatelv01Table;
 use App\Model\Table\CiselnikStatv01Table;
+use App\Model\Table\CiselnikUcelZnakDotacniTitulv01Table;
 use App\Model\Table\CiselnikUcelZnakv01Table;
 use App\Model\Table\CompaniesTable;
 use App\Model\Table\ConsolidationsTable;
@@ -71,11 +72,12 @@ use Cake\ORM\TableRegistry;
  * @property StrukturalniFondyTable StrukturalniFondy
  * @property CiselnikDotaceTitulStatniRozpocetUkazatelv01Table CiselnikDotaceTitulStatniRozpocetUkazatelv01
  * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
- * @property CiselnikUcelZnakDotacniTitulv01 CiselnikUcelZnakDotacniTitulv01
+ * @property CiselnikUcelZnakDotacniTitulv01Table CiselnikUcelZnakDotacniTitulv01
  * @property InvesticniPobidkyTable InvesticniPobidky
  * @property CompaniesTable Companies
  * @property ConsolidationsTable Consolidations
  * @property OwnersTable Owners
+ * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
  */
 class PagesController extends AppController
 {
@@ -879,6 +881,18 @@ class PagesController extends AppController
     public function fyzickeOsoby()
     {
 
+    }
+
+    public function strukturalniFondyDetailDotace()
+    {
+        $data = $this->StrukturalniFondy->find('all', [
+            'conditions' => [
+                'id' => $this->request->getParam('id')
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
     }
 
     public function podlePrijemcu()
@@ -1721,6 +1735,7 @@ class PagesController extends AppController
         $prijemci = [];
         $info = [];
         $aliasy = [];
+        $ids = [];
         foreach ($ico as $ic) {
             $ids = $this->PrijemcePomoci->find('list', [
                 'conditions' => [
@@ -2794,6 +2809,18 @@ class PagesController extends AppController
             $pobidky = $this->InvesticniPobidky->find('all');
             $this->set(compact(['_serialize', 'pobidky']));
         }
+    }
+
+    public function investicniPobidkyCzechInvestDetail()
+    {
+        $data = $this->InvesticniPobidky->find('all', [
+            'conditions' => [
+                'id' => $this->request->getParam('id')
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
     }
 
     public function konsolidaceIndex()
