@@ -16,6 +16,7 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <th>Okres, Kraj</th>
         <th>Datum Rozhodnutí</th>
         <th>Stav Realizace</th>
+        <th>Otevřít</th>
     </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <td>Okres, Kraj</td>
         <td>Datum Rozhodnutí</td>
         <td>Projekt nerealizován</td>
+        <td>Otevřít</td>
     </tr>
     </tfoot>
 </table>
