@@ -1,5 +1,6 @@
 <?php
 /** @var \App\Model\Entity\Owner[] $owners */
+/** @var array $subsidiaries_sums */
 
 /** @var \App\Model\Entity\Consolidation[] $subsidiaries */
 
@@ -10,6 +11,7 @@ $this->set('title', $holding->name . ' - Detail Holdingu');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
+
 ?>
 <div id="tabs">
 
@@ -89,14 +91,26 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="subsidiaries">
+        <div class="alert alert-info">
+            V každém řádku je zobrazen součet částek "Rozhodnutí [Částka Rozhodnuta]", "Rozpočtové Období [Částka
+            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]" a "Strukturální Fondy [Veřejné Zdroje
+            Celkem]",
+            za daný rok, ve kterém byla společnost součástí holdingu.
+            <br/><br/>
+            Součty jsou dělány podle IČO, takže údaj nemusí být přesný.
+        </div>
         <table class="datatable datatable_simple">
             <thead>
             <tr>
                 <th>Konsolidovaná Společnost</th>
                 <th>IČO</th>
                 <th>Rok</th>
-                <th>Vlastnický Podíl</th>
+                <th class="nosearch">Vlastnický Podíl</th>
                 <th>Státní příslušnost</th>
+                <th class="nosearch" data-type="currency">Součet Rozhodnutí</th>
+                <th class="nosearch" data-type="currency">Součet Spotřebováno</th>
+                <th class="nosearch" data-type="currency">Součet Pobídek CzechInvest</th>
+                <th class="nosearch" data-type="currency">Součet Strukturálních Fondů</th>
             </tr>
             </thead>
             <tbody>
@@ -107,6 +121,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= $s->year ?></td>
                     <td><?= Number::toPercentage($s->shares_percent) ?></td>
                     <td><?= $s->subsidiary->state->name ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][0]) ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][1]) ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][2] * 1000000) ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][3]) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -117,6 +135,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Rok</th>
                 <th>Vlastnický Podíl</th>
                 <th>Státní příslušnost</th>
+                <th class="nosearch">Součet Rozhodnutí</th>
+                <th class="nosearch">Součet Spotřebováno</th>
+                <th class="nosearch">Součet Pobídek CzechInvest</th>
+                <th class="nosearch">Součet Strukturálních Fondů</th>
             </tr>
             </tfoot>
         </table>
@@ -125,8 +147,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="attachments">
         <table class="datatable datatable_simple">
             <thead>
-            <th class="nosearch">Název</th>
-            <th class="nosearch">Odkaz (PDF)</th>
+            <tr>
+                <th class="nosearch">Název</th>
+                <th class="nosearch">Odkaz (PDF)</th>
+            </tr>
             </thead>
             <tbody>
             <?php
@@ -143,8 +167,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php } ?>
             </tbody>
             <tfoot>
-            <td>Název</td>
-            <td>Odkaz (PDF)</td>
+            <tr>
+                <td>Název</td>
+                <td>Odkaz (PDF)</td>
+            </tr>
             </tfoot>
         </table>
     </div>

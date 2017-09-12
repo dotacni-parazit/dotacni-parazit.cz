@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
+use App\Model\Entity\Consolidation;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
@@ -2859,18 +2860,118 @@ class PagesController extends AppController
                 'Companies'
             ]
         ]);
+
+
+        /** @var Consolidation[] $subsidiaries */
         $subsidiaries = $this->Consolidations->find('all', [
             'conditions' => [
                 'holding_id IN' => $id_holdingu
             ],
             'contain' => [
                 'Subsidiaries',
-                'Companies',
-                'Attachments'
+                'Attachments',
+                'Subsidiaries.States',
+                'Companies'
             ]
         ]);
 
-        $this->set(compact(['owner', 'holdingy', 'subsidiaries']));
+        $subsidiaries_sums = $this->cacheSouctyPodleIco($subsidiaries);
+
+        $this->set(compact(['owner', 'holdingy', 'subsidiaries', 'subsidiaries_sums']));
+    }
+
+    private function cacheSouctyPodleIco($subsidiaries)
+    {
+        /** @var Consolidation[] $subsidiaries */
+        $subsidiaries_sums = [];
+
+        foreach ($subsidiaries as $s) {
+            if ($s->subsidiary->ico < 1) {
+                $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [0, 0, 0, 0];
+                continue;
+            }
+            if ($s->year < 1900 || $s->year > 2030) continue;
+            if (isset($subsidiaries_sums[$s->subsidiary->ico]) && isset($subsidiaries_sums[$s->subsidiary->ico][$s->year])) continue;
+
+            $cache_tag_ico_sum_rozhodnuti = 'sum_rozhodnuti_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+            $cache_tag_ico_sum_spotrebovano = 'sum_spotrebovano_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+            $cache_tag_ico_sum_pobidky = 'sum_pobidky_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+            $cache_tag_ico_sum_strukturalni_fondy = 'sum_strukturalni_fondy_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+
+            //Cache::delete($cache_tag_ico_sum_spotrebovano, 'long_term');
+            //Cache::delete($cache_tag_ico_sum_rozhodnuti, 'long_term');
+            //Cache::delete($cache_tag_ico_sum_pobidky, 'long_term');
+            //Cache::delete($cache_tag_ico_sum_strukturalni_fondy, 'long_term');
+
+            $sum_rozhodnuti = Cache::read($cache_tag_ico_sum_rozhodnuti, 'long_term');
+            $sum_spotrebovano = Cache::read($cache_tag_ico_sum_spotrebovano, 'long_term');
+            $sum_pobidky = Cache::read($cache_tag_ico_sum_pobidky, 'long_term');
+            $sum_strukturalni_fondy = Cache::read($cache_tag_ico_sum_strukturalni_fondy, 'long_term');
+
+            if ($sum_rozhodnuti === false) {
+                $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaRozhodnuta)'
+                        ],
+                        'contain' => [
+                            'Dotace.PrijemcePomoci'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.ico' => $s->subsidiary->ico,
+                            'rokRozhodnuti' => $s->year,
+                            'refundaceIndikator' => 0
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_tag_ico_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
+            }
+
+            if ($sum_spotrebovano === false) {
+                $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSpotrebovana)'
+                        ],
+                        'contain' => [
+                            'Rozhodnuti',
+                            'Rozhodnuti.Dotace.PrijemcePomoci'
+                        ],
+                        'conditions' => [
+                            'PrijemcePomoci.ico' => $s->subsidiary->ico,
+                            'rozpoctoveObdobi' => $s->year,
+                            'refundaceIndikator' => 0
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_tag_ico_sum_spotrebovano, $sum_spotrebovano, 'long_term');
+            }
+
+            if ($sum_pobidky === false) {
+                $sum_pobidky = $this->InvesticniPobidky->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(investiceCZK)'
+                        ],
+                        'conditions' => [
+                            'rozhodnutiRok' => $s->year,
+                            'ico' => $s->subsidiary->ico
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_tag_ico_sum_pobidky, $sum_pobidky, 'long_term');
+            }
+
+            if ($sum_strukturalni_fondy === false) {
+                $sum_strukturalni_fondy = $this->StrukturalniFondy->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(verejneZdrojeCelkem)'
+                    ],
+                    'conditions' => [
+                        'zadatelIco' => $s->subsidiary->ico,
+                        'YEAR(datumPodpisuSmlouvy)' => $s->year
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_ico_sum_strukturalni_fondy, $sum_strukturalni_fondy, 'long_term');
+            }
+
+            $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [$sum_rozhodnuti, $sum_spotrebovano, $sum_pobidky, $sum_strukturalni_fondy];
+        }
+        return $subsidiaries_sums;
     }
 
     public function konsolidaceHolding()
@@ -2896,6 +2997,7 @@ class PagesController extends AppController
             ]
         ]);
 
+        /** @var Consolidation[] $subsidiaries */
         $subsidiaries = $this->Consolidations->find('all', [
             'conditions' => [
                 'holding_id' => $holding->id
@@ -2907,7 +3009,9 @@ class PagesController extends AppController
             ]
         ]);
 
-        $this->set(compact(['holding', 'owners', 'subsidiaries']));
+        $subsidiaries_sums = $this->cacheSouctyPodleIco($subsidiaries);
+
+        $this->set(compact(['holding', 'owners', 'subsidiaries', 'subsidiaries_sums']));
     }
 
 }
