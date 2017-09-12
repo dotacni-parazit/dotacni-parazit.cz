@@ -100,8 +100,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($subsidiaries as $s) { ?>
                 <tr>
-                    <td><?= $s->subsidiary->name ?></td>
-                    <td><?= $s->subsidiary->ico ?></td>
+                    <td><?= $this->Html->link($s->subsidiary->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $s->subsidiary->name]) ?></td>
+                    <td><?= $this->Html->link($s->subsidiary->ico, ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $s->subsidiary->ico]) ?></td>
                     <td><?= $s->company->name ?></td>
                     <td><?= $s->year ?></td>
                     <td><?= Number::toPercentage($s->shares_percent) ?></td>
