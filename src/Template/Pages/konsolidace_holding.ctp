@@ -1,5 +1,6 @@
 <?php
 /** @var \App\Model\Entity\Owner[] $owners */
+
 /** @var \App\Model\Entity\Consolidation[] $subsidiaries */
 
 use Cake\I18n\Number;
@@ -11,11 +12,14 @@ $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
 <div id="tabs">
+
     <ul>
         <li><a href="#obecne">Informace o Holdingu</a></li>
         <li><a href="#owners">Vlastnická Historie</a></li>
         <li><a href="#subsidiaries">Konsolidované společnosti</a></li>
+        <li><a href="#attachments">Výkazy Holdingu</a></li>
     </ul>
+
     <div id="obecne">
         <table class="datatable datatable_simple">
             <thead>
@@ -55,6 +59,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
+
     <div id="owners">
         <table class="datatable datatable_simple">
             <thead>
@@ -82,6 +87,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
+
     <div id="subsidiaries">
         <table class="datatable datatable_simple">
             <thead>
@@ -94,7 +100,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php foreach($subsidiaries as $s){ ?>
+            <?php foreach ($subsidiaries as $s) { ?>
                 <tr>
                     <td><?= $s->subsidiary->name ?></td>
                     <td><?= $s->subsidiary->ico ?></td>
@@ -112,6 +118,33 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Vlastnický Podíl</th>
                 <th>Státní příslušnost</th>
             </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="attachments">
+        <table class="datatable datatable_simple">
+            <thead>
+            <th class="nosearch">Název</th>
+            <th class="nosearch">Odkaz (PDF)</th>
+            </thead>
+            <tbody>
+            <?php
+            $shown_ids = [];
+            foreach ($subsidiaries as $s) {
+                if (in_array($s->attachment_id, $shown_ids)) continue;
+                if (empty($s->attachment)) continue;
+                $shown_ids[] = $s->attachment_id;
+                ?>
+                <tr>
+                    <td><?= $s->attachment->name ?></td>
+                    <td><?= $this->Html->link(str_replace("data.dotacni-parazit.cz", "dotacni-parazit.cz", $s->attachment->url)) ?></td>
+                </tr>
+            <?php } ?>
+            </tbody>
+            <tfoot>
+            <td>Název</td>
+            <td>Odkaz (PDF)</td>
             </tfoot>
         </table>
     </div>
