@@ -66,7 +66,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th>Investice CZK</th>
+                <th data-type="currency">Investice CZK</th>
                 <th>Datum Rozhodnutí</th>
                 <th>Otevřít</th>
             </tr>
@@ -93,7 +93,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th>Veřejné Zdroje Celkem</th>
+                <th data-type="currency">Veřejné Zdroje Celkem</th>
                 <th>Číslo Projektu</th>
                 <th>Název Projektu</th>
                 <td>Otevřít</td>
@@ -121,7 +121,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th>Investice CZK</th>
+                <th data-type="currency">Investice CZK</th>
                 <th>Datum Rozhodnutí</th>
                 <th>Otevřít</th>
             </tr>
@@ -148,9 +148,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th>Investice CZK</th>
-                <th>Datum Rozhodnutí</th>
-                <th>Otevřít</th>
+                <th class="nosearch" data-type="currency">Součet darů politickým stranám</th>
             </tr>
             </thead>
             <tbody>
@@ -160,9 +158,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <td>Jméno</td>
                 <td>IČO</td>
-                <td>Investice CZK</td>
-                <td>Datum Rozhodnutí</td>
-                <td>Otevřít</td>
+                <td>Součet darů politickým stranám</td>
             </tr>
             </tfoot>
         </table>

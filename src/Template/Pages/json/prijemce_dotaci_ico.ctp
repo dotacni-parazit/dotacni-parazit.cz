@@ -40,6 +40,17 @@ foreach ($data as $d) {
                 $this->Html->link('Otevřít', '/strukturalni-fondy-detail-dotace/' . $d->id)
             ];
             break;
+        case 'politickeStrany':
+
+            /** @var \App\Model\Entity\Company $d */
+            /** @var array $sums */
+            $data_arr[] = [
+                $d->name,
+                $d->ico,
+                \App\View\DPUTILS::currency(isset($sums[$d->id]) ? $sums[$d->id] : 0)
+            ];
+
+            break;
     }
     $total++;
 }

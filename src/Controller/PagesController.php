@@ -1102,6 +1102,37 @@ class PagesController extends AppController
                         'ico' => $ico
                     ]
                 ])->limit(50000);
+            } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
+                $ajax_type = 'politickeStrany';
+                $data = $this->Companies->find('all', [
+                    'conditions' => [
+                        'type_id' => 5,
+                        'ico' => $ico
+                    ]
+                ]);
+                //die(print_r($data->toArray()));
+                $sums = [];
+                foreach ($data as $d) {
+                    if ($d->ico == 0) {
+                        $sums[0] = 0;
+                        continue;
+                    }
+                    $cache_tag = 'darce_politicke_strany_sum_' . $d->id;
+                    $sum = Cache::read($cache_tag, 'long_term');
+                    if ($sum === false) {
+                        $sum = $this->Transactions->find('all', [
+                            'fields' => [
+                                'sum' => 'SUM(amount)'
+                            ],
+                            'conditions' => [
+                                'donor_id' => $d->id
+                            ]
+                        ])->first()->sum;
+                        Cache::write($cache_tag, $sum, 'long_term');
+                    }
+                    $sums[$d->id] = $sum;
+                }
+                $this->set(compact('sums'));
             } else {
                 $data = [];
             }
@@ -1151,6 +1182,38 @@ class PagesController extends AppController
                     ]
                 ])->bind(':against', h($name));
                 $ajax_type = 'strukturalniFondy';
+            } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
+                $ajax_type = 'politickeStrany';
+                $data = $this->Companies->find('all', [
+                    'conditions' => [
+                        "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $sums = [];
+                foreach ($data as $d) {
+                    if ($d->ico == 0) {
+                        $sums[0] = 0;
+                        continue;
+                    }
+                    if ($d->type_id != 5) {
+                        continue;
+                    }
+                    $cache_tag = 'darce_politicke_strany_sum_' . $d->id;
+                    $sum = Cache::read($cache_tag, 'long_term');
+                    if ($sum === false) {
+                        $sum = $this->Transactions->find('all', [
+                            'fields' => [
+                                'sum' => 'SUM(amount)'
+                            ],
+                            'conditions' => [
+                                'donor_id' => $d->id
+                            ]
+                        ])->first()->sum;
+                        Cache::write($cache_tag, $sum, 'long_term');
+                    }
+                    $sums[$d->id] = $sum;
+                }
+                $this->set(compact('sums'));
             } else {
                 $data = [];
             }
