@@ -54,6 +54,20 @@ if (!$cache_data) {
                 $total++;
             }
             break;
+        case "politickeDary":
+
+            /** @var \App\Model\Entity\Transaction[] $politickeDary */
+            foreach ($politickeDary as $p) {
+
+                $data_arr[] = [
+                    $this->Html->link($p->recipient->name, '/dary-politickym-stranam/detail/' . $p->recipient->id),
+                    $p->year,
+                    \App\View\DPUTILS::currency($p->amount)
+                ];
+
+                $total++;
+            }
+            break;
         case "dotace":
 
             /** @var \App\Model\Entity\Rozhodnuti[] $dotace */

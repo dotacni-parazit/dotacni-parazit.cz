@@ -50,7 +50,7 @@ class TransactionsTable extends Table
         $this->belongsTo('Recipient', [
             'foreignKey' => 'recipient_id',
             'joinType' => 'INNER',
-            'className' => 'Recipient'
+            'className' => 'Companies'
         ]);
         $this->belongsTo('Attachments', [
             'foreignKey' => 'attachment_id'

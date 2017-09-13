@@ -23,6 +23,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php if (!empty($investicniPobidky)) { ?>
             <li><a href="#investicniPobidky">Investiční Pobídky - CzechInvest</a></li>
         <?php } ?>
+        <?php if (!empty($politickeDary)) { ?>
+            <li><a href="#politickeDary">Dary politickým stranám</a></li>
+        <?php } ?>
     </ul>
     <div id="obecne">
 
@@ -205,6 +208,29 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td>Míra veřejné podpory</td>
                     <td>Strop veřejné podpory</td>
                     <td>Datum rozhodnutí</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    <?php } ?>
+    <?php if (!empty($politickeDary)) { ?>
+        <div id="politickeDary">
+            <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>?politickeDary=politickeDary">
+                <thead>
+                <tr>
+                    <th>Strana</th>
+                    <th>Rok</th>
+                    <th>Výše Daru</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Strana</td>
+                    <td>Rok</td>
+                    <td>Výše Daru</td>
                 </tr>
                 </tfoot>
             </table>

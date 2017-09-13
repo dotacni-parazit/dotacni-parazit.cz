@@ -1762,6 +1762,27 @@ class PagesController extends AppController
                 ]);
                 $this->set(compact(['investicniPobidky', 'prijemce']));
                 $this->set('ajax_type', 'czechinvest');
+            } else if ($this->request->getQuery('politickeDary') == 'politickeDary') {
+                $me = $this->Companies->find('all', [
+                    'conditions' => [
+                        'type_id' => 5,
+                        'ico' => $prijemce->ico
+                    ]
+                ]);
+                $darce_id = [];
+                foreach ($me as $m) {
+                    $darce_id[] = $m->id;
+                }
+                $politickeDary = $this->Transactions->find('all', [
+                    'conditions' => [
+                        'donor_id IN' => $darce_id
+                    ],
+                    'contain' => [
+                        'Recipient'
+                    ]
+                ]);
+                $ajax_type = 'politickeDary';
+                $this->set(compact(['politickeDary', 'ajax_type', 'prijemce']));
             } else {
                 $this->set('_serialize', true);
                 throw new NotFoundException($this->request->getQueryParams());
@@ -1779,7 +1800,13 @@ class PagesController extends AppController
                         'ico' => $prijemce->ico
                     ]
                 ])->count();
-                $this->set(compact(['strukturalniFondy', 'investicniPobidky']));
+                $politickeDary = $this->Companies->find('all', [
+                    'conditions' => [
+                        'ico' => $prijemce->ico,
+                        'type_id' => 5
+                    ]
+                ])->count();
+                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary']));
             }
 
             $this->set(compact(['prijemce', 'prijemci']));
