@@ -121,6 +121,9 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/konsolidace-holdingy/detail-vlastnik/:id', ['controller' => 'Pages', 'action' => 'konsolidaceVlastnik'], ['id' => '[0-9]+']);
     $routes->connect('/konsolidace-holdingy/detail/:id', ['controller' => 'Pages', 'action' => 'konsolidaceHolding'], ['id' => '[0-9]+']);
 
+    $routes->connect('/dary-politickym-stranam', ['controller' => 'Pages', 'action' => 'daryPolitickymStranam']);
+    $routes->connect('/dary-politickym-stranam/detail/:id', ['controller' => 'Pages', 'action' => 'daryPolitickymStranamDetail'], ['id' => '[0-9]+']);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

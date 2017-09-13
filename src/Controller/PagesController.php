@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
+use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
@@ -40,6 +41,7 @@ use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
 use App\Model\Table\StrukturalniFondyTable;
+use App\Model\Table\TransactionsTable;
 use Cake\Cache\Cache;
 use Cake\Database\Query;
 use Cake\Datasource\ConnectionManager;
@@ -76,6 +78,7 @@ use Cake\ORM\TableRegistry;
  * @property CiselnikUcelZnakDotacniTitulv01Table CiselnikUcelZnakDotacniTitulv01
  * @property InvesticniPobidkyTable InvesticniPobidky
  * @property CompaniesTable Companies
+ * @property TransactionsTable Transactions
  * @property ConsolidationsTable Consolidations
  * @property OwnersTable Owners
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
@@ -86,6 +89,7 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('Transactions');
         $this->loadModel('Owners');
         $this->loadModel('Consolidations');
         $this->loadModel('InvesticniPobidky');
@@ -3012,6 +3016,82 @@ class PagesController extends AppController
         $subsidiaries_sums = $this->cacheSouctyPodleIco($subsidiaries);
 
         $this->set(compact(['holding', 'owners', 'subsidiaries', 'subsidiaries_sums']));
+    }
+
+    public function daryPolitickymStranam()
+    {
+        $data = $this->Companies->find('all', [
+            'conditions' => [
+                'type_id' => 3
+            ]
+        ]);
+        $sums = [];
+        $years = [2012, 2013, 2014, 2015, 2016];
+
+        /** @var Company $strana */
+        foreach ($data as $strana) {
+            foreach ($years as $y) {
+                $cache_tag = 'sum_politicka_strana_' . $strana->id . '_rok_' . $y;
+                $sum = Cache::read($cache_tag, 'long_term');
+                if ($sum === false) {
+                    $sum = $this->Transactions->find('all', [
+                            'fields' => [
+                                'sum' => 'SUM(amount)'
+                            ],
+                            'conditions' => [
+                                'year' => $y,
+                                'recipient_id' => $strana->id
+                            ]
+                        ])->first()->sum + 0;
+                    Cache::write($cache_tag, $sum, 'long_term');
+                }
+                $sums[$strana->id][$y] = $sum;
+            }
+        }
+
+        $this->set(compact(['data', 'sums']));
+    }
+
+    public function daryPolitickymStranamDetail()
+    {
+        $strana = $this->Companies->find('all', [
+            'conditions' => [
+                'type_id' => 3,
+                'id' => $this->request->getParam('id')
+            ]
+        ])->first();
+        if (empty($strana)) throw new NotFoundException();
+
+        $sums = [];
+        $years = [2012, 2013, 2014, 2015, 2016];
+        foreach ($years as $y) {
+            $cache_tag = 'sum_politicka_strana_' . $strana->id . '_rok_' . $y;
+            $sum = Cache::read($cache_tag, 'long_term');
+            if ($sum === false) {
+                $sum = $this->Transactions->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(amount)'
+                        ],
+                        'conditions' => [
+                            'year' => $y,
+                            'recipient_id' => $strana->id
+                        ]
+                    ])->first()->sum + 0;
+                Cache::write($cache_tag, $sum, 'long_term');
+            }
+            $sums[$strana->id][$y] = $sum;
+        }
+
+        $transactions = $this->Transactions->find('all', [
+            'conditions' => [
+                'recipient_id' => $strana->id
+            ],
+            'contain' => [
+                'Donor'
+            ]
+        ]);
+
+        $this->set(compact(['strana', 'sums', 'transactions']));
     }
 
 }

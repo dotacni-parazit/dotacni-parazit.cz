@@ -18,7 +18,7 @@ $this->set('title', 'Podle Příjemců Pomoci');
     <a href="/podle-sidla-prijemce">Podle sídla příjemce</a>
 </div>
 <div class="homepage_tile medium-4 large-4 small-4">
-    <a href="/podle-politickych-vazeb">Dotace dárců politických stran</a>
+    <a href="/dary-politickym-stranam">Dotace dárců politických stran</a>
 </div>
 <div class="homepage_tile medium-4 large-4 small-4">
     <a href="/konsolidace-holdingy">Konsolidovaní Příjemci Dotací</a>
