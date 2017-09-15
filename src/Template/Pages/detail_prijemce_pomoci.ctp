@@ -1,6 +1,9 @@
 <?php
 
 /** @var \App\Model\Entity\PrijemcePomoci $prijemce */
+
+use Cake\Routing\Router;
+
 /** @var \App\Model\Entity\PrijemcePomoci $prijemci */
 
 $jmeno_prijemce = empty($prijemce->obchodniJmeno) ? $prijemce->jmeno . ' ' . $prijemce->prijmeni : $prijemce->obchodniJmeno;
@@ -13,6 +16,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
+        <li><a href="#hlidacsmluv">Smlouvy (Hlídač Smluv)</a></li>
         <?php if (!empty($prijemci->toArray()) && count($prijemci->toArray()) > 1) { ?>
             <li><a href="#aliasy">Aliasy příjemce pomoci</a></li>
         <?php } ?>
@@ -182,6 +186,34 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </table>
         </div>
     <?php } ?>
+    <div id="hlidacsmluv">
+        <table class="datatable"
+               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => $prijemce->ico]) ?>">
+            <thead>
+            <tr>
+                <th data-type="html">Název Smlouvy</th>
+                <th data-type="html">Vkladatel</th>
+                <th data-type="currency">Hodnota Smlouvy</th>
+                <th data-type="html">Plátce</th>
+                <th data-type="html">Příjemce</th>
+                <th class="nosearch">Odkazy</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Název Smlouvy</td>
+                <td>Vkladatel</td>
+                <td>Hodnota Smlouvy</td>
+                <td>Plátce</td>
+                <td>Příjemce</td>
+                <td>Odkazy</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <?php if (!empty($investicniPobidky)) { ?>
         <div id="investicniPobidky">
             <table class="datatable" data-ajax="<?= $this->request->here(false) ?>?czechinvest=czechinvest">

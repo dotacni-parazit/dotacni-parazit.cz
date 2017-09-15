@@ -1,6 +1,7 @@
 <?php
 
 use Cake\I18n\Number;
+use Cake\Routing\Router;
 
 $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Dotace');
 
@@ -11,9 +12,38 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
+        <li><a href="#hlidacsmluv">Smlouvy (Hlídač Smluv)</a></li>
         <li><a href="#prijemce">Příjemce pomoci</a></li>
         <li><a href="#rozhodnuti">Rozhodnutí</a></li>
     </ul>
+    <div id="hlidacsmluv">
+        <table class="datatable"
+               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => $dotace->PrijemcePomoci->ico]) ?>">
+            <thead>
+            <tr>
+                <th data-type="html">Název Smlouvy</th>
+                <th data-type="html">Vkladatel</th>
+                <th data-type="currency">Hodnota Smlouvy</th>
+                <th data-type="html">Plátce</th>
+                <th data-type="html">Příjemce</th>
+                <th class="nosearch">Odkazy</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Název Smlouvy</td>
+                <td>Vkladatel</td>
+                <td>Hodnota Smlouvy</td>
+                <td>Plátce</td>
+                <td>Příjemce</td>
+                <td>Odkazy</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="obecne">
         <table>
             <thead>

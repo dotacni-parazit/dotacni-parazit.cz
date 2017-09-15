@@ -43,11 +43,15 @@ use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
 use App\Model\Table\StrukturalniFondyTable;
 use App\Model\Table\TransactionsTable;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 use Cake\Database\Query;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Client;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
+use Cake\View\Helper\HtmlHelper;
+use Cake\View\View;
 
 
 /**
@@ -3195,6 +3199,79 @@ class PagesController extends AppController
         ]);
 
         $this->set(compact(['strana', 'sums', 'transactions', 'audits']));
+    }
+
+    public function hlidacSmluv()
+    {
+        if ($this->request->is('ajax')) {
+            $apiAuth = "Token bd4f624f72c54f7fadb3c01125300dd9";
+            $http = new Client();
+            $params = ['ico' => 'ico:', 'identifikatorProjektu' => ''];
+            $ico = [];
+            $identifikatorProjektu = [];
+
+            foreach ($params as $p => $prefix) {
+                $search = filter_var($this->request->getQuery($p), FILTER_SANITIZE_STRING);
+                if (!empty($search)) {
+                    $resp = $http->get("https://www.hlidacsmluv.cz/Api/v1/search", [
+                        'query' => $prefix . $search,
+                        'page' => 0,
+                        'order' => 0
+                    ], [
+                        'headers' => [
+                            'Authorization' => $apiAuth
+                        ]
+                    ]);
+
+                    ${$p} = empty($resp->body()) ? [] : json_decode($resp->body())->items;
+                }
+            }
+
+            $data_arr = [];
+            $total = 0;
+
+            $html = new HtmlHelper(new View());
+
+            foreach ($identifikatorProjektu as $i) {
+                $data_arr[] = [
+                    $html->link($i->predmet, $i->odkaz),
+                    $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
+                    DPUTILS::currency($i->hodnotaBezDph),
+                    $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
+                    $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Prijemce[0]->ico]),
+                    $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/'.$i->identifikator->idSmlouvy) . '<br/>' .
+                    $html->link('Registr Smluv', $i->odkaz)
+                ];
+                $total++;
+            }
+
+            if (empty($data_arr)) {
+                foreach ($ico as $i) {
+                    $data_arr[] = [
+                        $html->link($i->predmet, $i->odkaz),
+                        $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
+                        DPUTILS::currency($i->hodnotaBezDph),
+                        $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
+                        $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Prijemce[0]->ico]),
+                        $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/'.$i->identifikator->idSmlouvy) . '<br/>' .
+                        $html->link('Registr Smluv', $i->odkaz)
+                    ];
+                    $total++;
+                }
+            }
+
+            $out = [
+                'draw' => 1,
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $data_arr
+            ];
+
+            echo json_encode($out);
+            die();
+        } else {
+            throw new NotFoundException();
+        }
     }
 
 }
