@@ -47,7 +47,8 @@ class AuditsTable extends Table
         ]);
         $this->belongsTo('Auditors', [
             'foreignKey' => 'auditor_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
+            'className' => 'Companies'
         ]);
     }
 

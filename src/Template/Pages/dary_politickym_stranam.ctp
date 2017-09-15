@@ -4,7 +4,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', 'Dary Politickým Stranám');
+$this->set('title', 'Dotace Dárců Politických Stran');
 ?>
 <div class="alert alert-info">
     Součet, tj. součet darů politické straně za daný rok pouze od právnických osob

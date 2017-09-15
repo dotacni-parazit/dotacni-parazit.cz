@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Controller\Component\CachingComponent;
 use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
+use App\Model\Table\AuditsTable;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
 use App\Model\Table\CiselnikCedrPodOpatreniv01Table;
@@ -82,6 +83,7 @@ use Cake\ORM\TableRegistry;
  * @property ConsolidationsTable Consolidations
  * @property OwnersTable Owners
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
+ * @property AuditsTable Audits
  */
 class PagesController extends AppController
 {
@@ -89,6 +91,7 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('Audits');
         $this->loadModel('Transactions');
         $this->loadModel('Owners');
         $this->loadModel('Consolidations');
@@ -3177,11 +3180,21 @@ class PagesController extends AppController
                 'recipient_id' => $strana->id
             ],
             'contain' => [
-                'Donor'
+                'Donor',
+                'Attachments'
             ]
         ]);
 
-        $this->set(compact(['strana', 'sums', 'transactions']));
+        $audits = $this->Audits->find('all', [
+            'conditions' => [
+                'company_id' => $strana->id
+            ],
+            'contain' => [
+                'Auditors'
+            ]
+        ]);
+
+        $this->set(compact(['strana', 'sums', 'transactions', 'audits']));
     }
 
 }

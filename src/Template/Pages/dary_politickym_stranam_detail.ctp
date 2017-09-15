@@ -16,6 +16,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <ul>
         <li><a href="#obecne">Obecné Informace</a></li>
         <li><a href="#donations">Dary politické straně</a></li>
+        <li><a href="#audits">Auditoři</a></li>
+        <li><a href="#finals">Výroční Zprávy</a></li>
     </ul>
     <div id="obecne">
         <table class="datatable datatable_simple">
@@ -97,6 +99,68 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Dárce IČO</td>
                 <td>Rok</td>
                 <td>Částka</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="audits">
+        <table class="datatable datatable_simple">
+            <thead>
+            <tr>
+                <th>Auditorská Společnost</th>
+                <th>Auditor</th>
+                <th>Rok Auditu</th>
+                <th>Auditovaný dokument</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($audits as $a) { ?>
+                <tr>
+                    <td><?= $a->auditor->name . ' (IČ: ' . $a->auditor->ico . ')' ?></td>
+                    <td><?= $a->name . ' (' . $a->permission . ')' ?></td>
+                    <td><?= $a->year ?></td>
+                    <td></td>
+                </tr>
+            <?php } ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Auditorská Společnost</td>
+                <td>Auditor</td>
+                <td>Rok Auditu</td>
+                <td>Auditovaný dokument</td>
+            </tr>
+            </tfoot>
+        </table>
+        <?php ?>
+    </div>
+    <div id="finals">
+        <table class="datatable datatable_simple">
+            <thead>
+            <tr>
+                <th>Název Dokumentu</th>
+                <th class="nosearch">URL Adresa (PDF)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $already_done = [];
+            foreach($transactions as $t){
+                if(in_array($t->attachment_id, $already_done)) continue;
+                ?>
+                <tr>
+                    <td><?= $t->attachment->name ?></td>
+                    <td><?= $this->Html->link($t->attachment->url) ?></td>
+                </tr>
+                <?php
+                $already_done[] = $t->attachment_id;
+            }
+            ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Název Dokumentu</td>
+                <td class="nosearch">URL Adresa (PDF)</td>
             </tr>
             </tfoot>
         </table>
