@@ -11,6 +11,8 @@ namespace App\Controller;
 use App\Controller\Component\CachingComponent;
 use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
+use App\Model\Entity\Dotace;
+use App\Model\Entity\MFCRPAP;
 use App\Model\Table\AuditsTable;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
@@ -37,6 +39,7 @@ use App\Model\Table\CompaniesTable;
 use App\Model\Table\ConsolidationsTable;
 use App\Model\Table\DotaceTable;
 use App\Model\Table\InvesticniPobidkyTable;
+use App\Model\Table\MFCRPAPTable;
 use App\Model\Table\OwnersTable;
 use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
@@ -88,6 +91,7 @@ use Cake\View\View;
  * @property OwnersTable Owners
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
  * @property AuditsTable Audits
+ * @property MFCRPAPTable MFCRPAP
  */
 class PagesController extends AppController
 {
@@ -95,6 +99,7 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('MFCRPAP');
         $this->loadModel('Audits');
         $this->loadModel('Transactions');
         $this->loadModel('Owners');
@@ -3232,7 +3237,7 @@ class PagesController extends AppController
                     $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
                     isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
                     $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
-                    $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Prijemce[0]->ico]),
+                    isset($i->Prijemce[0]) ? $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => isset($i->Prijemce[0]->ico) ? $i->Prijemce[0]->ico : 0]) : "",
                     $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
                     $html->link('Registr Smluv', $i->odkaz)
                 ];
@@ -3251,6 +3256,45 @@ class PagesController extends AppController
         } else {
             throw new NotFoundException();
         }
+    }
+
+    public function icoDotaceDistance()
+    {
+        $prijemce = $this->PrijemcePomoci->find('all', ['limit' => 100]);
+        foreach ($prijemce as $p) {
+            /** @var MFCRPAP $mfcr_pap */
+            $mfcr_pap = $this->MFCRPAP->find('all', ['conditions' => ['ico' => $p->ico]])->first();
+            /** @var Dotace $first_dotace */
+            $first_dotace = $this->Dotace->find('all', [
+                'conditions' => [
+                    'PrijemcePomoci.ico' => $p->ico
+                ],
+                'contain' => [
+                    'PrijemcePomoci'
+                ],
+                'order' => [
+                    'podpisDatum' => 'DESC'
+                ],
+                'limit' => 1
+            ])->first();
+            /** @var Dotace $last_dotace */
+            /*$last_dotace = $this->Dotace->find('all', [
+                'conditions' => [
+                    'PrijemcePomoci.ico' => $p->ico
+                ],
+                'contain' => [
+                    'PrijemcePomoci'
+                ],
+                'order' => [
+                    'podpisDatum' => 'ASC'
+                ],
+                'limit' => 1
+            ])->first();*/
+            $mfcr_pap->distance_start_days = !empty($first_dotace) ? (($first_dotace->podpisDatum->timestamp - $mfcr_pap->start->timestamp) / 86400) : null;
+            //$mfcr_pap->distance_end_days = !empty($last_dotace) ? (($last_dotace->podpisDatum->timestamp - $mfcr_pap->start->timestamp) / 86400) : null;
+            $this->MFCRPAP->save($mfcr_pap);
+        }
+        die();
     }
 
 }

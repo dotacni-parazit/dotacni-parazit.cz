@@ -125,6 +125,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/dary-politickym-stranam/detail/:id', ['controller' => 'Pages', 'action' => 'daryPolitickymStranamDetail'], ['id' => '[0-9]+']);
 
     $routes->connect('/hlidac-smluv/ajax', ['controller' => 'Pages', 'action' => 'hlidacSmluv']);
+    $routes->connect('/distance', ['controller' => 'Pages', 'action' => 'icoDotaceDistance']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
