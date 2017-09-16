@@ -3206,58 +3206,37 @@ class PagesController extends AppController
         if ($this->request->is('ajax')) {
             $apiAuth = "Token bd4f624f72c54f7fadb3c01125300dd9";
             $http = new Client();
-            $params = ['ico' => 'ico:', 'identifikatorProjektu' => ''];
-            $ico = [];
-            $identifikatorProjektu = [];
+            $params = (object)[
+                'projektIdnetifikator' => $this->request->getQuery('identifikatorProjektu'),
+                'ico' => $this->request->getQuery('ico'),
+                'podpisDatum' => $this->request->getQuery('podpisDatum')
+            ];
 
-            foreach ($params as $p => $prefix) {
-                $search = filter_var($this->request->getQuery($p), FILTER_SANITIZE_STRING);
-                if (!empty($search)) {
-                    $resp = $http->get("https://www.hlidacsmluv.cz/Api/v1/search", [
-                        'query' => $prefix . $search,
-                        'page' => 0,
-                        'order' => 0
-                    ], [
-                        'headers' => [
-                            'Authorization' => $apiAuth
-                        ]
-                    ]);
-
-                    ${$p} = empty($resp->body()) ? [] : json_decode($resp->body())->items;
-                }
-            }
+            $data_string = $http->post('http://localhost:8080/smlouvy/search', json_encode($params), [
+                'headers' => [
+                    'Content-Type' => 'application/json; charset=UTF-8',
+                    ''
+                ]
+            ])->body();
+            $data_obj = json_decode($data_string);
 
             $data_arr = [];
             $total = 0;
 
             $html = new HtmlHelper(new View());
 
-            foreach ($identifikatorProjektu as $i) {
+            foreach ($data_obj as $i) {
                 $data_arr[] = [
+                    $i->rank,
                     $html->link($i->predmet, $i->odkaz),
                     $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
-                    DPUTILS::currency($i->hodnotaBezDph),
+                    isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
                     $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
                     $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Prijemce[0]->ico]),
-                    $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/'.$i->identifikator->idSmlouvy) . '<br/>' .
+                    $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
                     $html->link('Registr Smluv', $i->odkaz)
                 ];
                 $total++;
-            }
-
-            if (empty($data_arr)) {
-                foreach ($ico as $i) {
-                    $data_arr[] = [
-                        $html->link($i->predmet, $i->odkaz),
-                        $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
-                        DPUTILS::currency($i->hodnotaBezDph),
-                        $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
-                        $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Prijemce[0]->ico]),
-                        $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/'.$i->identifikator->idSmlouvy) . '<br/>' .
-                        $html->link('Registr Smluv', $i->odkaz)
-                    ];
-                    $total++;
-                }
             }
 
             $out = [

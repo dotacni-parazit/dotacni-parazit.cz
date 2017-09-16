@@ -3,6 +3,7 @@
 use Cake\I18n\Number;
 use Cake\Routing\Router;
 
+/** @var \App\Model\Entity\Dotace $dotace */
 $this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Dotace');
 
 
@@ -18,9 +19,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="hlidacsmluv">
         <table class="datatable"
-               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => $dotace->PrijemcePomoci->ico]) ?>">
+               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => $dotace->PrijemcePomoci->ico, 'podpisDatum' => $dotace->podpisDatum->format("Y-m-d\TH:i:s")]) ?>">
             <thead>
             <tr>
+                <th>Míra Shody</th>
                 <th data-type="html">Název Smlouvy</th>
                 <th data-type="html">Vkladatel</th>
                 <th data-type="currency">Hodnota Smlouvy</th>
@@ -34,6 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
+                <th>Míra Shody</th>
                 <td>Název Smlouvy</td>
                 <td>Vkladatel</td>
                 <td>Hodnota Smlouvy</td>

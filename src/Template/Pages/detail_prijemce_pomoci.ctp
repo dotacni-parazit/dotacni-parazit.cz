@@ -191,6 +191,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => $prijemce->ico]) ?>">
             <thead>
             <tr>
+                <th>Míra Shody</th>
                 <th data-type="html">Název Smlouvy</th>
                 <th data-type="html">Vkladatel</th>
                 <th data-type="currency">Hodnota Smlouvy</th>
@@ -204,6 +205,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
+                <th>Míra Shody</th>
                 <td>Název Smlouvy</td>
                 <td>Vkladatel</td>
                 <td>Hodnota Smlouvy</td>
