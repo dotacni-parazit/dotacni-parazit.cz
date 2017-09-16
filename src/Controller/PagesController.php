@@ -3260,12 +3260,23 @@ class PagesController extends AppController
 
     public function icoDotaceDistance()
     {
-        $prijemce = $this->PrijemcePomoci->find('all', ['limit' => 100]);
+        $prijemce = $this->PrijemcePomoci->find('all', [
+            'fields' => [
+                'ico' => 'DISTINCT(ico)'
+            ]
+        ]);
         foreach ($prijemce as $p) {
             /** @var MFCRPAP $mfcr_pap */
             $mfcr_pap = $this->MFCRPAP->find('all', ['conditions' => ['ico' => $p->ico]])->first();
+            if(empty($mfcr_pap)) continue;
+            if($mfcr_pap->distance_start_days == 0) continue;
             /** @var Dotace $first_dotace */
             $first_dotace = $this->Dotace->find('all', [
+                'fields' => [
+                    'Dotace.idDotace',
+                    'Dotace.podpisDatum',
+                    'PrijemcePomoci.ico'
+                ],
                 'conditions' => [
                     'PrijemcePomoci.ico' => $p->ico
                 ],
@@ -3274,24 +3285,10 @@ class PagesController extends AppController
                 ],
                 'order' => [
                     'podpisDatum' => 'DESC'
-                ],
-                'limit' => 1
-            ])->first();
-            /** @var Dotace $last_dotace */
-            /*$last_dotace = $this->Dotace->find('all', [
-                'conditions' => [
-                    'PrijemcePomoci.ico' => $p->ico
-                ],
-                'contain' => [
-                    'PrijemcePomoci'
-                ],
-                'order' => [
-                    'podpisDatum' => 'ASC'
-                ],
-                'limit' => 1
-            ])->first();*/
-            $mfcr_pap->distance_start_days = !empty($first_dotace) ? (($first_dotace->podpisDatum->timestamp - $mfcr_pap->start->timestamp) / 86400) : null;
-            //$mfcr_pap->distance_end_days = !empty($last_dotace) ? (($last_dotace->podpisDatum->timestamp - $mfcr_pap->start->timestamp) / 86400) : null;
+                ]
+            ])->limit(1)->first();
+
+            $mfcr_pap->distance_start_days = (is_object($first_dotace) && is_object($first_dotace->podpisDatum) && is_object($mfcr_pap->start)) ? (($first_dotace->podpisDatum->timestamp - $mfcr_pap->start->timestamp) / 86400) : 0;
             $this->MFCRPAP->save($mfcr_pap);
         }
         die();
