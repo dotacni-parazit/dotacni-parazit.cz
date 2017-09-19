@@ -4,7 +4,6 @@ use Cake\Cache\Cache;
 
 /** @var string $ajax_type */
 $cache_key = 'prijemce_jmeno_ajax_' . sha1($name) . '_' . $ajax_type;
-Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -50,16 +49,13 @@ if (!$cache_data) {
                 break;
             case 'politickeStrany':
 
-                /** @var \App\Model\Entity\Company $d */
-                /** @var array $sums */
+                /** @var \App\Model\Entity\Transaction $d */
 
-                if ($d->type_id != 5) {
-                    continue;
-                }
                 $data_arr[] = [
-                    $d->name,
-                    $d->ico,
-                    \App\View\DPUTILS::currency(isset($sums[$d->id]) ? $sums[$d->id] : 0)
+                    $d->donor->name,
+                    $this->Html->link($d->recipient->name, '/dary-politickym-stranam/detail/' . $d->recipient->id),
+                    $d->year,
+                    \App\View\DPUTILS::currency($d->amount)
                 ];
 
                 break;

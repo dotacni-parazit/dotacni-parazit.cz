@@ -131,9 +131,10 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
                data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&politickeStrany=politickeStrany">
             <thead>
             <tr>
-                <th>Jméno</th>
-                <th>IČO</th>
-                <th>Součet darů politickým stranám</th>
+                <th>Dárce</th>
+                <th>Strana</th>
+                <th>Rok</th>
+                <th>Výše Daru</th>
             </tr>
             </thead>
             <tbody>
@@ -141,9 +142,10 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
             </tbody>
             <tfoot>
             <tr>
-                <td>Jméno</td>
-                <td>IČO</td>
-                <td>Součet darů politickým stranám</td>
+                <td>Dárce</td>
+                <td>Strana</td>
+                <td>Rok</td>
+                <td>Výše Daru</td>
             </tr>
             </tfoot>
         </table>

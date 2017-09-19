@@ -146,9 +146,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&politickeStrany=politickeStrany">
             <thead>
             <tr>
-                <th>Jméno</th>
-                <th>IČO</th>
-                <th class="nosearch" data-type="currency">Součet darů politickým stranám</th>
+                <th>Dárce</th>
+                <th>Strana</th>
+                <th>Rok</th>
+                <th>Výše Daru</th>
             </tr>
             </thead>
             <tbody>
@@ -156,9 +157,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <td>Jméno</td>
-                <td>IČO</td>
-                <td>Součet darů politickým stranám</td>
+                <td>Dárce</td>
+                <td>Strana</td>
+                <td>Rok</td>
+                <td>Výše Daru</td>
             </tr>
             </tfoot>
         </table>

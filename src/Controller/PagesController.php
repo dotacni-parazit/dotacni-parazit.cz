@@ -1122,29 +1122,27 @@ class PagesController extends AppController
                         'ico' => $ico
                     ]
                 ]);
-                //die(print_r($data->toArray()));
-                $sums = [];
+                $darce_id = [];
                 foreach ($data as $d) {
                     if ($d->ico == 0) {
                         $sums[0] = 0;
                         continue;
                     }
-                    $cache_tag = 'darce_politicke_strany_sum_' . $d->id;
-                    $sum = Cache::read($cache_tag, 'long_term');
-                    if ($sum === false) {
-                        $sum = $this->Transactions->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(amount)'
-                            ],
-                            'conditions' => [
-                                'donor_id' => $d->id
-                            ]
-                        ])->first()->sum;
-                        Cache::write($cache_tag, $sum, 'long_term');
+                    if ($d->type_id != 5) {
+                        continue;
                     }
-                    $sums[$d->id] = $sum;
+                    $darce_id[] = $d->id;
                 }
-                $this->set(compact('sums'));
+
+                $data = $this->Transactions->find('all', [
+                    'conditions' => [
+                        'donor_id IN' => $darce_id
+                    ],
+                    'contain' => [
+                        'Recipient',
+                        'Donor'
+                    ]
+                ]);
             } else {
                 $data = [];
             }
@@ -1201,7 +1199,7 @@ class PagesController extends AppController
                         "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
                     ]
                 ])->bind(':against', h($name));
-                $sums = [];
+                $darce_id = [];
                 foreach ($data as $d) {
                     if ($d->ico == 0) {
                         $sums[0] = 0;
@@ -1210,22 +1208,18 @@ class PagesController extends AppController
                     if ($d->type_id != 5) {
                         continue;
                     }
-                    $cache_tag = 'darce_politicke_strany_sum_' . $d->id;
-                    $sum = Cache::read($cache_tag, 'long_term');
-                    if ($sum === false) {
-                        $sum = $this->Transactions->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(amount)'
-                            ],
-                            'conditions' => [
-                                'donor_id' => $d->id
-                            ]
-                        ])->first()->sum;
-                        Cache::write($cache_tag, $sum, 'long_term');
-                    }
-                    $sums[$d->id] = $sum;
+                    $darce_id[] = $d->id;
                 }
-                $this->set(compact('sums'));
+
+                $data = $this->Transactions->find('all', [
+                    'conditions' => [
+                        'donor_id IN' => $darce_id
+                    ],
+                    'contain' => [
+                        'Recipient',
+                        'Donor'
+                    ]
+                ]);
             } else {
                 $data = [];
             }

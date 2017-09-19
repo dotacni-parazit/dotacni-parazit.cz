@@ -42,12 +42,13 @@ foreach ($data as $d) {
             break;
         case 'politickeStrany':
 
-            /** @var \App\Model\Entity\Company $d */
-            /** @var array $sums */
+            /** @var \App\Model\Entity\Transaction $d */
+
             $data_arr[] = [
-                $d->name,
-                $d->ico,
-                \App\View\DPUTILS::currency(isset($sums[$d->id]) ? $sums[$d->id] : 0)
+                $d->donor->name,
+                $this->Html->link($d->recipient->name, '/dary-politickym-stranam/detail/' . $d->recipient->id),
+                $d->year,
+                \App\View\DPUTILS::currency($d->amount)
             ];
 
             break;
