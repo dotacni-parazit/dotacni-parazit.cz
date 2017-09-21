@@ -16,8 +16,6 @@ $title = $this->fetch('title');
     <?php
     echo $this->Html->script([
         'jquery.min.js',
-        'jstree.min.js',
-        'jquery.sumoselect.min',
         '//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js',
         '//cdn.datatables.net/plug-ins/1.10.16/sorting/currency.js',
         '//cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js',
@@ -28,11 +26,10 @@ $title = $this->fetch('title');
         'datatable.js'
     ]);
     ?>
+    <script src="/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <?= $this->Html->css('base.css?em=' . rand()) ?>
-    <?php //echo $this->Html->css('cake.css?em='.rand()) ?>
-    <?= $this->Html->css('jstree-theme/style.css') ?>
-    <?= $this->Html->css('sumoselect.min.css') ?>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <?= $this->Html->css('//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css') ?>
     <?= $this->Html->css('parazit.css?em=' . rand()) ?>
 
