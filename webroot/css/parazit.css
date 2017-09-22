@@ -1,34 +1,32 @@
+html, body {
+    font-family: 'PT Serif', serif;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+}
+
 .clear {
     clear: both;
 }
 
-.homepage_tile {
-    float: left;
-    text-align: center;
+.homepage_row {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.homepage_tile a {
+.homepage_row a {
     border: 1px solid #9c4c8a;
-    padding: 20% 0;
+    border-radius: 0 10px 10px 10px;
     display: block;
-    height: 100%;
-    width: 98%;
+    padding: 15% 0;
     margin: 5px 0;
-    font-size: 2em;
-    color: #351a2f;
-    background: #fff;
-}
-
-.homepage_tile a:hover {
-    text-decoration: underline;
+    text-align: center;
+    font-size: 1.5em;
 }
 
 table tbody tr:nth-child(even) {
     background-color: #EEE;
-}
-
-.container, nav {
-    padding: 1%;
 }
 
 #prijemce_aliasy {
@@ -42,7 +40,12 @@ hr {
 }
 
 h1 {
-    color: #462B40;
+    color: white;
+    font-size: 2em;
+    display: table-cell;
+    vertical-align: middle;
+    height: 64px;
+    padding-left: 20px;
 }
 
 table thead, table tbody tr:nth-child(even), table tfoot {
@@ -50,20 +53,21 @@ table thead, table tbody tr:nth-child(even), table tfoot {
 }
 
 table thead a, table tfoot a, table a, table tbody a, a, a:visited, a:link, a:active {
-    text-decoration: none;
-    color: #000;
+    text-decoration: underline #808080;
+    color: black;
 }
 
 table thead a:hover, table tfoot a:hover, table a:hover, table tbody a:hover {
     text-decoration: underline;
-    color: #000;
+    color: dimgray;
 }
 
 table tr th {
     padding: 0.5625rem 0.625rem;
 }
 
-.datatable {
+.datatable, #datatable {
+    max-width: 100%;
     width: 100%;
 }
 
@@ -119,4 +123,35 @@ button.dt-button, div.dt-button, a.dt-button {
 
 .right {
     text-align: right;
+}
+
+nav {
+    background-color: #35002f;
+    padding: 2% 0 0 0;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid black;
+    background: #35002f;
+    font-weight: normal;
+    color: #fff;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget button, .ui-widget textarea {
+    max-width: 100%;
+}
+
+.homepage a {
+    text-decoration: none;
+}
+
+.homepage a:hover {
+    color: #35002f;
 }

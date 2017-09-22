@@ -1134,15 +1134,19 @@ class PagesController extends AppController
                     $darce_id[] = $d->id;
                 }
 
-                $data = $this->Transactions->find('all', [
-                    'conditions' => [
-                        'donor_id IN' => $darce_id
-                    ],
-                    'contain' => [
-                        'Recipient',
-                        'Donor'
-                    ]
-                ]);
+                if (empty($darce_id)) {
+                    $data = [];
+                } else {
+                    $data = $this->Transactions->find('all', [
+                        'conditions' => [
+                            'donor_id IN' => $darce_id
+                        ],
+                        'contain' => [
+                            'Recipient',
+                            'Donor'
+                        ]
+                    ]);
+                }
             } else {
                 $data = [];
             }
@@ -1210,16 +1214,19 @@ class PagesController extends AppController
                     }
                     $darce_id[] = $d->id;
                 }
-
-                $data = $this->Transactions->find('all', [
-                    'conditions' => [
-                        'donor_id IN' => $darce_id
-                    ],
-                    'contain' => [
-                        'Recipient',
-                        'Donor'
-                    ]
-                ]);
+                if (empty($darce_id)) {
+                    $data = [];
+                } else {
+                    $data = $this->Transactions->find('all', [
+                        'conditions' => [
+                            'donor_id IN' => $darce_id
+                        ],
+                        'contain' => [
+                            'Recipient',
+                            'Donor'
+                        ]
+                    ]);
+                }
             } else {
                 $data = [];
             }

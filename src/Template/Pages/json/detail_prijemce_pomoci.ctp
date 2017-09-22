@@ -9,6 +9,7 @@ use Cake\I18n\Number;
 
 $cache_key = 'detail_prijemce_pomoci' . sha1($prijemce->idPrijemce) . '_' . $ajax_type;
 if (!isset($ajax_type)) throw new \Cake\Network\Exception\NotFoundException();
+Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {

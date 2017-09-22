@@ -61,7 +61,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <span id="soucetSpotrebovana"></span>
         <hr/>
 
-        <table id="datatable_ajax">
+        <table id="datatable" data-ajax="/detail-dotacni-titul/3040000001/ajax/?id=<?= $idTitul ?>">
             <thead>
             <tr>
                 <th data-type="html" class="nosearch medium-1 large-1 small-1">Rozhodnutí</th>
@@ -101,26 +101,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             active: <?= empty($name) ? '0' : '1' ?>
         });
 
-        table = $('#datatable_ajax').DataTable({
-            fixedColumns: true,
-            paging: true,
-            serverSide: false,
-            processing: true,
-            "stateSave": true,
-            "stateDuration": 60 * 60 * 24 * 7,
-            dom: 'r<"clear">ip<"clear">lf<"clear">t',
-            ajax: '/detail-dotacni-titul/3040000001/ajax/?id=<?= $idTitul ?>',
-            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
-            }
-        });
-
-        $('#datatable_ajax thead th').each(function (i) {
-            var title = $('#datatable_ajax thead th').eq($(this).index()).text();
-            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
-        });
-
         $(table.table().container()).on('keyup change', 'thead input', function () {
             table
                 .column($(this).data('index'))
@@ -131,7 +111,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         function printSum() {
             var soucet = 0, soucetSpotrebovano = 0;
 
-            $("#datatable_ajax").dataTable().api().rows().every(function (index, tableLoop, rowLoop) {
+            $("#datatable").dataTable().api().rows().every(function (index, tableLoop, rowLoop) {
                 //if (this.data()[5].lastIndexOf('p)') !== 0) {
                 soucet += this.data()[4].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
                 soucetSpotrebovano += this.data()[5].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
@@ -142,7 +122,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             $("#soucetSpotrebovana").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetSpotrebovano) + " Kč");
         }
 
-        $("#datatable_ajax").dataTable().fnSettings().aoDrawCallback.push({
+        $("#datatable").dataTable().fnSettings().aoDrawCallback.push({
             'sName': 'showSum',
             'fn': function () {
                 printSum();

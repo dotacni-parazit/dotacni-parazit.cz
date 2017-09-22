@@ -42,7 +42,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Jméno</th>
                 <th>IČO</th>
                 <th>Státní Příslušnost</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -66,9 +66,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th data-type="currency">Investice CZK</th>
-                <th>Datum Rozhodnutí</th>
-                <th>Otevřít</th>
+                <th class="nosearch" data-type="currency">Investice CZK</th>
+                <th class="nosearch">Datum Rozhodnutí</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -93,10 +93,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th data-type="currency">Veřejné Zdroje Celkem</th>
+                <th class="nosearch" data-type="currency">Veřejné Zdroje Celkem</th>
                 <th>Číslo Projektu</th>
                 <th>Název Projektu</th>
-                <td>Otevřít</td>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -121,9 +121,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th data-type="currency">Investice CZK</th>
-                <th>Datum Rozhodnutí</th>
-                <th>Otevřít</th>
+                <th class="nosearch" data-type="currency">Investice CZK</th>
+                <th class="nosearch">Datum Rozhodnutí</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -149,7 +149,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Dárce</th>
                 <th>Strana</th>
                 <th>Rok</th>
-                <th>Výše Daru</th>
+                <th class="nosearch">Výše Daru</th>
             </tr>
             </thead>
             <tbody>

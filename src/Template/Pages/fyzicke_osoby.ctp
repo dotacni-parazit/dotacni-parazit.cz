@@ -15,7 +15,7 @@ for ($index = 0; $index < strlen($letters); $index++) {
 ?>
 | <a href="javascript:filterLetter('')">Zobrazit vše</a>
 <hr/>
-<table id="datatable" style="width: 100%;" data-ajax="/fyzicke-osoby/ajax">
+<table id="datatable" data-ajax="/fyzicke-osoby/ajax">
     <thead>
     <tr>
         <th>Jméno</th>

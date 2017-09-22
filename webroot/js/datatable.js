@@ -45,9 +45,13 @@ function setupDataTable(selector) {
                 "sortDescending": ": aktivujte pro řazení sloupce sestupně"
             }
         },
+        "autoWidth": true,
+        scrollX: false,
+        scrollCollapse: true,
+        colReorder: true,
         ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
         "stateDuration": 60 * 60 * 24 * 7,
-        dom: $($e).hasClass('datatable_simple') ? 'tB' : 'r<"clear">ip<"clear">lf<"clear">tB',
+        dom: $($e).hasClass('datatable_simple') ? '<"table-responsive"t>B' : 'r<"clear">ip<"clear">lf<"clear"><"table-responsive"t>B',
         buttons: [
             'csv', 'excel', 'print'
         ],

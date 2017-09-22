@@ -10,7 +10,7 @@ $this->set('title', 'Poskytovatel dotací - ' . $poskytovatel->dotacePoskytovate
 <br/>
 <br/>
 <h2>Rozhodnutí/Dotace za rok <?= $year ?></h2>
-<table id="datatable">
+<table id="datatable" data-ajax="/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax/<?= $year ?>">
     <thead>
     <tr>
         <th data-type="html">Příjemce Pomoci</th>
@@ -34,34 +34,3 @@ $this->set('title', 'Poskytovatel dotací - ' . $poskytovatel->dotacePoskytovate
     </tr>
     </tfoot>
 </table>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var table_custom = $('#datatable_custom').DataTable({
-            fixedColumns: true,
-            paging: true,
-            serverSide: false,
-            processing: true,
-            "stateSave": true,
-            "stateDuration": 60 * 60 * 24 * 7,
-            dom: 'r<"clear">ip<"clear">lf<"clear">t',
-            ajax: '/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax/<?= $year ?>',
-            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Czech.json"
-            }
-        });
-
-        $('#datatable_custom thead th').each(function (i) {
-            var title = $('#datatable_custom thead th').eq($(this).index()).text();
-            $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="Search ' + title + '" data-index="' + i + '" />');
-        });
-
-        $(table_custom.table().container()).on('keyup change', 'thead input', function () {
-            table_custom
-                .column($(this).data('index'))
-                .search(this.value)
-                .draw();
-        });
-    });
-</script>
