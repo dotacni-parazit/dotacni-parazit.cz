@@ -129,6 +129,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/opendata', ['controller' => 'Pages', 'action' => 'openData']);
     $routes->connect('/dotinfo', ['controller' => 'Pages', 'action' => 'dotinfo']);
+    $routes->connect('/dotinfo/poskytovatel/:ico', ['controller' => 'Pages', 'action' => 'dotinfoPoskytovatel'], ['ico' => '[0-9]+']);
     $routes->connect('/detail-dotinfo/:id', ['controller' => 'Pages', 'action' => 'dotinfoDetail'], ['id' => '[0-9]+']);
 
     // fallback

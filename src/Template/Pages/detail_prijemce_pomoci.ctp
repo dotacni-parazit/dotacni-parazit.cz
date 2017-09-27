@@ -24,6 +24,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php if (!empty($strukturalniFondy)) { ?>
             <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
         <?php } ?>
+        <?php if (!empty($dotinfo)) { ?>
+            <li><a href="#dotinfo">DotInfo</a></li>
+        <?php } ?>
         <?php if (!empty($investicniPobidky)) { ?>
             <li><a href="#investicniPobidky">Investiční Pobídky - CzechInvest</a></li>
         <?php } ?>
@@ -216,6 +219,33 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
+    <?php if(!empty($dotinfo)) { ?>
+    <div id="dotinfo">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>?dotinfo=dotinfo">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th>Dotace</th>
+                <th data-type="currency">Částka Schválená</th>
+                <th data-type="html">Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Dotace</td>
+                <td data-type="currency">Částka Schválená</td>
+                <td data-type="html">Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <?php } ?>
     <?php if (!empty($investicniPobidky)) { ?>
         <div id="investicniPobidky">
             <table class="datatable" data-ajax="<?= $this->request->here(false) ?>?czechinvest=czechinvest">

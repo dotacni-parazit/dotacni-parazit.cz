@@ -1828,6 +1828,14 @@ class PagesController extends AppController
                 ]);
                 $ajax_type = 'politickeDary';
                 $this->set(compact(['politickeDary', 'ajax_type', 'prijemce']));
+            } else if ($this->request->getQuery('dotinfo') == 'dotinfo') {
+                $ajax_type = 'dotinfo';
+                $dotinfo = $this->Dotinfo->find('all', [
+                    'conditions' => [
+                        'ucastnikIco' => $prijemce->ico
+                    ]
+                ]);
+                $this->set(compact(['dotinfo', 'ajax_type', 'prijemce']));
             } else {
                 $this->set('_serialize', true);
                 throw new NotFoundException($this->request->getQueryParams());
@@ -1851,7 +1859,12 @@ class PagesController extends AppController
                         'type_id' => 5
                     ]
                 ])->count();
-                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary']));
+                $dotinfo = $this->Dotinfo->find('all', [
+                    'conditions' => [
+                        'ucastnikIco' => $prijemce->ico
+                    ]
+                ])->count();
+                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary', 'dotinfo']));
             }
 
             $this->set(compact(['prijemce', 'prijemci']));
@@ -3374,6 +3387,54 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['poskytovatele', 'sums']));
+    }
+
+    public function dotinfoPoskytovatel()
+    {
+        $poskytovatel = $this->Dotinfo->find('all', [
+            'conditions' => [
+                'poskytovatelIco' => $this->request->getParam('ico')
+            ]
+        ])->first();
+        if (empty($poskytovatel)) throw new NotFoundException();
+
+        if ($this->request->is('ajax')) {
+            $data = $this->Dotinfo->find('all', [
+                'conditions' => [
+                    'poskytovatelIco' => $poskytovatel->poskytovatelIco
+                ]
+            ]);
+            $_serialize = false;
+            $this->set(compact(['poskytovatel', 'data', '_serialize']));
+        } else {
+
+            $aliasy = $this->Dotinfo->find('all', [
+                'fields' => [
+                    'nazev' => 'poskytovatelNazev',
+                    'count' => 'COUNT(*)'
+                ],
+                'conditions' => [
+                    'poskytovatelIco' => $this->request->getParam('ico')
+                ]
+            ]);
+
+            $sum = $this->Dotinfo->find('all', [
+                'fields' => [
+                    'sum' => 'SUM(castkaSchvalena)'
+                ],
+                'conditions' => [
+                    'poskytovatelIco' => $poskytovatel->poskytovatelIco
+                ]
+            ])->first()->sum;
+
+            $count = $this->Dotinfo->find('all', [
+                'conditions' => [
+                    'poskytovatelIco' => $poskytovatel->poskytovatelIco
+                ]
+            ])->count();
+
+            $this->set(compact(['poskytovatel', 'aliasy', 'sum', 'count']));
+        }
     }
 
     public function dotinfoDetail()

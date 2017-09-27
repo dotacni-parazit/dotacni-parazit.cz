@@ -18,6 +18,24 @@ if (!$cache_data) {
     $total = 0;
 
     switch ($ajax_type) {
+        case "dotinfo":
+
+            /** @var \App\Model\Entity\Dotinfo[] $dotinfo */
+            foreach($dotinfo as $d){
+                $data_arr[] = [
+                    $d->ucastnikObchodniJmeno,
+                    \App\View\DPUTILS::ico($d->ucastnikIco),
+                    '<span title="' . $d->ucelDotace . '">' . (empty($d->dotaceNazev) ? 'Neuvedeno' : $d->dotaceNazev) . '</span>',
+                    \App\View\DPUTILS::currency($d->castkaSchvalena),
+                    $this->Html->link('Otevřít', '/detail-dotinfo/' . $d->id) . '<br/>' .
+                    $this->Html->link('Otevřít DotInfo.cz', 'https://www.dotinfo.cz/dotace/' . $d->dotinfoId)
+                ];
+
+                $total++;
+            }
+
+            break;
+
         case "czechinvest":
 
             /** @var \App\Model\Entity\InvesticniPobidky[] $investicniPobidky */

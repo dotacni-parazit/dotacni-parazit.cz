@@ -52,6 +52,10 @@ $this->set('title', empty($data->dotaceNazev) ? (empty($data->idDotace) ? '' : $
         <td>Částka žádaná</td>
         <td><?= Number::currency($data->castkaPozadovana) ?></td>
     </tr>
+    <tr>
+        <td>Otevřít DotInfo.cz</td>
+        <td><?= $this->Html->link('https://www.dotinfo.cz/dotace/' . $data->dotinfoId) ?></td>
+    </tr>
 
     </tbody>
 

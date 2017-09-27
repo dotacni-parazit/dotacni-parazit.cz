@@ -49,7 +49,7 @@ h1 {
 }
 
 table thead, table tbody tr:nth-child(even), table tfoot {
-    background: #C6BBC3;
+    background: #f7f0f6;
 }
 
 table thead a, table tfoot a, table a, table tbody a, a, a:visited, a:link, a:active {

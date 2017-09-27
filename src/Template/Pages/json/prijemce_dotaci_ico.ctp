@@ -13,7 +13,7 @@ foreach ($data as $d) {
             $data_arr[] = [
                 $d->ucastnikObchodniJmeno,
                 \App\View\DPUTILS::ico($d->ucastnikIco),
-                '<span title="' . str_replace("\"", "", $d->dotaceNazev) . ' - ' . str_replace("\"", "", $d->ucelDotace) . '">' . (empty($d->idDotace) ? 'Neuvedeno' : $d->idDotace) . '</span>',
+                '<span title="' . $d->ucelDotace . '">' . (empty($d->dotaceNazev) ? 'Neuvedeno' : $d->dotaceNazev) . '</span>',
                 \App\View\DPUTILS::currency($d->castkaSchvalena),
                 $this->Html->link('Otevřít', '/detail-dotinfo/' . $d->id) . '<br/>' .
                 $this->Html->link('Otevřít DotInfo.cz', 'https://www.dotinfo.cz/dotace/' . $d->dotinfoId)

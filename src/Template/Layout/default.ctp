@@ -40,7 +40,7 @@ $title = $this->fetch('title');
 <nav class="container-fluid">
     <div class="row-fluid">
         <div class="col">
-            <a href="/" style="float: left;"><img src="/img/brouk_64.png"></a>
+            <a href="/" style="float: left;"><img src="/img/brouk_64.png" title="Dotační Parazit"></a>
             <h1><?= empty($title) ? 'Dotační Parazit' : $title ?></h1>
             <br class="clear"/>
         </div>
