@@ -13,7 +13,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#rozhodnuti">Rozhodnutí</a></li>
     </ul>
     <div id="historie">
-        <table>
+        <table class="datatable">
             <thead>
             <tr>
                 <th><a href="?sort=year">Rok</a></th>
@@ -27,20 +27,20 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             foreach ($year_to_sum as $key => $value) {
                 ?>
                 <tr>
-                    <td><?= $this->Html->link($key, '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
-                    <td style="text-align: right"><?= $this->Html->link(Number::currency($value[0], 'CZK', ['zero' => '0,00 Kč']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
-                    <td style="text-align: right"><?= $this->Html->link(Number::currency($value[1], 'CZK', ['zero' => '0,00 Kč']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
-                    <td><?= $this->Html->link('Otevřít', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
+                    <td><?= $key ?></td>
+                    <td style="text-align: right"><?= Number::currency($value[0]) ?></td>
+                    <td style="text-align: right"><?= Number::currency($value[1]) ?></td>
+                    <td style="text-align: right"><?= $this->Html->link('Otevřít', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok/' . $key) ?></td>
                 </tr>
                 <?php
             }
             ?>
 
             <tr>
-                <td><?= $this->Html->link('Součet', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/rok') ?></td>
-                <td style="text-align: right"><?= $this->Html->link(Number::currency($sum, 'CZK', ['zero' => '0,00 Kč']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
-                <td style="text-align: right"><?= $this->Html->link(Number::currency($sum_spotrebovano, 'CZK', ['zero' => '0,00 Kč']), '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
-                <td><?= $this->Html->link('Otevřít Kompletní Výpis', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
+                <td><?= 'Součet' ?></td>
+                <td style="text-align: right"><?= Number::currency($sum) ?></td>
+                <td style="text-align: right"><?= Number::currency($sum_spotrebovano)?></td>
+                <td style="text-align: right"><?= $this->Html->link('Otevřít Kompletní Výpis', '/podle-poskytovatelu/' . $poskytovatel->dotacePoskytovatelKod . '/complete') ?></td>
             </tr>
 
             </tbody>

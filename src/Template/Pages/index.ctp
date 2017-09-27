@@ -18,7 +18,11 @@
 </form>
 <hr/>
 
-<div class="row"><h2>Základní</h2></div>
+<div class="row">
+    <div class="col">
+        <h2>Základní</h2>
+    </div>
+</div>
 
 <div class="row homepage_row homepage">
     <div class="col-lg-4 col-sm-9 col-md-4">
@@ -32,7 +36,11 @@
     </div>
 </div>
 
-<div class="row"><h2>Informace</h2></div>
+<div class="row">
+    <div class="col">
+        <h2>Informace</h2>
+    </div>
+</div>
 
 <div class="row homepage_row homepage">
     <div class="col-lg-4 col-sm-9 col-md-4">

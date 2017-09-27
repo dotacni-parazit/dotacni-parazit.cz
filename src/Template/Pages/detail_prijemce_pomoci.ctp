@@ -191,7 +191,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
     <div id="hlidacsmluv">
         <table class="datatable"
-               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => \App\View\DPUTILS::ico($prijemce->ico)]) ?>">
+               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => $prijemce->ico]) ?>">
             <thead>
             <tr>
                 <th>Míra Shody</th>

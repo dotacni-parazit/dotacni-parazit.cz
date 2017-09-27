@@ -146,6 +146,7 @@ class PagesController extends AppController
 
     public function index()
     {
+        $this->set('crumbs', ['Hlavní stránka' => 'self']);
         if (!empty($this->request->getQuery('type')) && !empty($this->request->getQuery('query'))) {
             $query = $this->request->getQuery('query');
             switch ($this->request->getQuery('type')) {
@@ -183,6 +184,7 @@ class PagesController extends AppController
 
     public function cedrOperacniProgramy()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Operační programy CEDR' => 'self']);
         $cedr = $this->CiselnikCedrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheCEDROP($cedr);
 
@@ -191,6 +193,7 @@ class PagesController extends AppController
 
     public function mmrOperacniProgramy()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Operační programy MMR' => 'self']);
         $mmr = $this->CiselnikMmrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheMMROP($mmr);
 
@@ -452,6 +455,8 @@ class PagesController extends AppController
     public function podlePoskytovatelu()
     {
 
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační úřady' => 'self']);
+
         $this->set('title', 'Poskytovatelé Dotací');
 
         if ($this->request->is('ajax')) {
@@ -466,6 +471,7 @@ class PagesController extends AppController
 
     public function strukturalniFondy()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy' => 'self']);
         $ops = $this->StrukturalniFondy->find('all', [
             'fields' => [
                 'OP' => 'cisloANazevProgramu',
@@ -480,6 +486,7 @@ class PagesController extends AppController
 
     public function podleSidlaPrijemce()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Sídlo Příjemce' => 'self']);
 
         $kraje = $this->CiselnikKrajv01->find('all', [
             'fields' => [
@@ -772,6 +779,7 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanci()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Zdroje Financí' => 'self']);
 
         $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
         $sums = [];
@@ -840,9 +848,9 @@ class PagesController extends AppController
         $this->set('title', 'Zdroj Financí / Financování');
     }
 
-    public
-    function statistics()
+    public function statistics()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Statistika využití databáze' => 'self']);
         $cache_tag = 'db_stats';
         $tables = Cache::read($cache_tag, 'long_term');
         if ($tables === false) {
@@ -895,6 +903,7 @@ class PagesController extends AppController
 
     public function dotacniTituly()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační tituly' => 'self']);
         if ($this->request->is('ajax')) {
             $_serialize = false;
             $data = $this->CiselnikDotaceTitulv01->find('all', [
@@ -915,6 +924,7 @@ class PagesController extends AppController
 
     public function fyzickeOsoby()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Fyzické osoby' => 'self']);
 
     }
 
@@ -958,7 +968,7 @@ class PagesController extends AppController
 
     public function podlePrijemcuIndex()
     {
-
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => 'self']);
     }
 
     /*
@@ -967,6 +977,7 @@ class PagesController extends AppController
 
     public function prijemceDotaciPravniForma()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Právní Forma' => 'self']);
 
         $spf_filtr = [
             1 => [703, 721],
@@ -1086,6 +1097,7 @@ class PagesController extends AppController
 
     public function prijemceDotaciIco()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'IČO Příjemce' => 'self']);
 
         $ico = $this->request->getQuery('ico');
         $ico = filter_var($ico, FILTER_SANITIZE_NUMBER_INT);
@@ -1183,6 +1195,7 @@ class PagesController extends AppController
 
     public function prijemceDotaciJmeno()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Jméno Příjemce' => 'self']);
 
         $name = $this->request->getQuery('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
@@ -1384,24 +1397,28 @@ class PagesController extends AppController
 
     public function financniZdroje()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Finanční zdroje' => 'self']);
         $sources = $this->CiselnikFinancniZdrojv01->find('all');
         $this->set(compact('sources'));
     }
 
     public function pravniFormy()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Právní formy' => 'self']);
         $data = $this->CiselnikPravniFormav01->find('all');
         $this->set(compact('data'));
     }
 
     public function kapitolyStatnihoRozpoctu()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Kapitoly státního rozpočtu' => 'self']);
         $data = $this->CiselnikStatniRozpocetKapitolav01->find('all');
         $this->set(compact('data'));
     }
 
     public function kapitolyStatnihoRozpoctuUkazatele()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Ukazatele kapitol státního rozpočtu' => 'self']);
         if ($this->request->is('ajax')) {
             $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
                 'conditions' => [
@@ -1483,6 +1500,7 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetail()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační úřady' => '/podle-poskytovatelu', 'Detail poskytovatele dotací' => 'self']);
 
         $kod = filter_var($this->request->getParam('id'), FILTER_SANITIZE_NUMBER_INT);
 
@@ -1721,6 +1739,7 @@ class PagesController extends AppController
 
     public function detailPrijemcePomoci()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Detail Příjemce' => 'self']);
 
         $prijemce = $this->PrijemcePomoci->find('all', [
             'conditions' => [
@@ -1873,6 +1892,7 @@ class PagesController extends AppController
 
     public function detailPrijemceMulti()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Detail Příjemce (Více IČO zároveň)' => 'self']);
         $multiple = $this->request->getParam('ico');
         $ico = [];
         foreach (explode(",", str_replace(" ", ",", $multiple)) as $multi_ico) {
@@ -1961,11 +1981,12 @@ class PagesController extends AppController
 
     function podlePoskytovateluIndex()
     {
-
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => 'self']);
     }
 
     function podleZdrojeFinanciDetail()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační úřady' => '/podle-poskytovatelu', 'Detail finančního zdroje' => 'self']);
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -2073,6 +2094,8 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciDetailComplete()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační úřady' => '/podle-poskytovatelu', 'Detail finančního zdroje (kompletní)' => 'self']);
+
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
                 'financniZdrojKod' => $this->request->getParam('kod')
@@ -2087,6 +2110,7 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciDetailRok()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační úřady' => '/podle-poskytovatelu', 'Detail finančního zdroje (rok)' => 'self']);
         $year = $this->request->getParam('year');
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -2196,6 +2220,7 @@ class PagesController extends AppController
 
     public function znakUceluDotacnichTitulu()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Účel dotačních titulů' => 'self']);
         if ($this->request->is('ajax')) {
             $znaky = $this->CiselnikUcelZnakv01->find('all');
             $counts = $this->CiselnikUcelZnakDotacniTitulv01->find('list', [
@@ -2249,6 +2274,7 @@ class PagesController extends AppController
 
     public function detailDotacniTitul()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační tituly' => '/dotacni-tituly', 'Detail dotačního titulu' => 'self']);
         $titul = $this->CiselnikDotaceTitulv01->find('all', [
             'conditions' => [
                 'dotaceTitulKod' => $this->request->getParam('kod')
@@ -2553,14 +2579,14 @@ class PagesController extends AppController
         }
     }
 
-    public
-    function ciselniky()
+    public function ciselniky()
     {
-
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => 'self']);
     }
 
     public function mmrPodOpatreni()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Operační programy MMR' => '/operacni-programy-mmr', 'MMR PodOpatření' => 'self']);
         $data = $this->CiselnikMmrPodOpatreniv01->find('all', [
             'conditions' => [
                 'idPodOpatreni' => $this->request->getQuery('id')
@@ -2631,6 +2657,7 @@ class PagesController extends AppController
 
     public function mmrOpatreni()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Operační programy MMR' => '/operacni-programy-mmr', 'MMR Opatření' => 'self']);
         $data = $this->CiselnikMmrOpatreniv01->find('all', [
             'conditions' => [
                 'idOpatreni' => $this->request->getQuery('id')
@@ -2727,6 +2754,7 @@ class PagesController extends AppController
 
     public function mmrPriorita()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Operační programy MMR' => '/operacni-programy-mmr', 'MMR Priorita' => 'self']);
         $data = $this->CiselnikMmrPrioritav01->find('all', [
             'conditions' => [
                 'idPriorita' => $this->request->getQuery('id')
@@ -2809,6 +2837,7 @@ class PagesController extends AppController
 
     public function mmrOperacniProgram()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Operační programy MMR' => '/operacni-programy-mmr', 'Detail OP' => 'self']);
         $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
             'conditions' => [
                 'idOperacniProgram' => $this->request->getQuery('id')
@@ -2957,6 +2986,7 @@ class PagesController extends AppController
 
     public function investicniPobidkyCzechInvest()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Investiční Pobídky - CzechInvest' => 'self']);
         if ($this->request->is('ajax')) {
             $_serialize = false;
             $pobidky = $this->InvesticniPobidky->find('all');
@@ -2978,6 +3008,7 @@ class PagesController extends AppController
 
     public function konsolidaceIndex()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Konsolidovaní příjemci' => 'self']);
         $holdingy = $this->Companies->find('all', [
             'contain' => [
                 'Owner'
@@ -2991,6 +3022,7 @@ class PagesController extends AppController
 
     public function konsolidaceVlastnik()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Konsolidovaní příjemci' => '/konsolidace-holdingy', 'Detail vlastníka holdingů' => 'self']);
         $owner = $this->Companies->find('all', [
             'conditions' => [
                 'Companies.id' => $this->request->getParam('id'),
@@ -3128,6 +3160,7 @@ class PagesController extends AppController
 
     public function konsolidaceHolding()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Konsolidovaní příjemci' => '/konsolidace-holdingy', 'Detail holdingu' => 'self']);
         $holding = $this->Companies->find('all', [
             'conditions' => [
                 'Companies.id' => $this->request->getParam('id'),
@@ -3168,6 +3201,7 @@ class PagesController extends AppController
 
     public function daryPolitickymStranam()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Dárci politických stran' => 'self']);
         $data = $this->Companies->find('all', [
             'conditions' => [
                 'type_id' => 3
@@ -3202,6 +3236,7 @@ class PagesController extends AppController
 
     public function daryPolitickymStranamDetail()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Dárci politických stran' => '/dary-politickym-stranam', 'Detail politické strany' => 'self']);
         $strana = $this->Companies->find('all', [
             'conditions' => [
                 'type_id' => 3,
@@ -3347,11 +3382,13 @@ class PagesController extends AppController
 
     public function openData()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'OpenData' => 'self']);
 
     }
 
     public function dotinfo()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'DotInfo.cz' => 'self']);
         $poskytovatele = $this->Dotinfo->find('all', [
             'fields' => [
                 'ico' => 'DISTINCT(poskytovatelIco)'

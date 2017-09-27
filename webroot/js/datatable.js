@@ -31,7 +31,6 @@ function setupDataTable(selector) {
             "infoThousands": " ",
             "lengthMenu": "Zobraz záznamů _MENU_",
             "loadingRecords": "Načítám...",
-            "processing": "Provádím...",
             "search": "Hledat:",
             "zeroRecords": "Žádné záznamy nebyly nalezeny",
             "paginate": {

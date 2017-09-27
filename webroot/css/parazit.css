@@ -19,6 +19,7 @@ h1, h2, h3 {
     border: 1px solid #9c4c8a;
     border-radius: 0 10px 10px 10px;
     display: block;
+    min-height: 6em;
     padding: 15% 0;
     margin: 5px 0;
     text-align: center;

@@ -1,7 +1,7 @@
 <?php
 
 
-$this->set('title', 'Statistiky využití databáze');
+$this->set('title', 'Statistika využití databáze');
 ?>
 <?php foreach ($tables as $t) { ?>
     <div class="table_stats">

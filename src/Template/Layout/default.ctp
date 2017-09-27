@@ -46,6 +46,17 @@ $title = $this->fetch('title');
         </div>
     </div>
 </nav>
+<?php if (isset($crumbs) && !empty($crumbs)) { ?>
+    <ol class="breadcrumb">
+        <?php foreach ($crumbs as $name => $href) { ?>
+            <li class="breadcrumb-item <?= $href == 'self' ? 'active' : '' ?>">
+                <?php if ($href != 'self') { ?><a href="<?= $href ?>"> <?php } ?>
+                    <?= $name ?>
+                    <?php if ($href != 'self') { ?></a><?php } ?>
+            </li>
+        <?php } ?>
+    </ol>
+<?php } ?>
 <div class="container-fluid">
     <div class="row-fluid top30">
         <div class="col">

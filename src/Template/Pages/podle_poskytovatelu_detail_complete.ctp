@@ -3,7 +3,6 @@
 
 $this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací')
 ?>
-<h2>Všechna Rozhodnutí/Dotace</h2>
 <table id="datatable" data-ajax="/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax">
     <thead>
     <tr>
