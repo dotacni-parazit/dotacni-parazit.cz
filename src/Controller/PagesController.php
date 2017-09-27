@@ -1695,6 +1695,7 @@ class PagesController extends AppController
 
     public function detailDotace()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Detail Dotace' => 'self']);
 
         $dotace = $this->Dotace->find('all', [
             'conditions' => [

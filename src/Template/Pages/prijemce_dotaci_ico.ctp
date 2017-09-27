@@ -4,7 +4,7 @@ $this->set('title', 'Vyhledávání IČO - Příjemci Pomoci');
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
-<div id="tabs">
+<div id="tabs2">
     <ul>
         <li><a href="#search">Vyhledávání podle IČO</a></li>
         <li><a href="#multiple">Výběr více IČO zároveň</a></li>
@@ -27,13 +27,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 </div>
 <hr/>
-<div id="tabs2">
+<div id="tabs">
     <ul>
-        <li><a href="#cedr">CEDR</a></li>
-        <li><a href="#czechinvest">Investiční pobídky</a></li>
-        <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
-        <li><a href="#dotInfo">DotInfo</a></li>
-        <li><a href="#politickeStrany">Dárci Politických Stran</a></li>
+        <li id="tab-cedr"><a href="#cedr">CEDR</a></li>
+        <li id="tab-czechinvest"><a href="#czechinvest">Investiční pobídky</a></li>
+        <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy</a></li>
+        <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
+        <li id="tab-politickeStrany"><a href="#politickeStrany">Dárci Politických Stran</a></li>
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
@@ -169,9 +169,12 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
 <script type="text/javascript">
     $(function () {
-        $("#tabs").tabs({
-            collapsible: true,
-            active: <?= empty($multiple) ? '0' : '1' ?>
+        var tabs;
+        $(function () {
+            tabs = $("#tabs").tabs({
+                collapsible: true,
+                active: <?= empty($multiple) ? '0' : '1' ?>
+            });
         });
 
         $("#tabs2").tabs({
@@ -179,4 +182,43 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             active: <?= empty($multiple) ? '0' : '1' ?>
         });
     });
+    function initCallback(table) {
+        console.log(table);
+        var ajax;
+        // table.context[0].ajax
+        if (table.hasOwnProperty('context')) ajax = table.context[0];
+        if (ajax.hasOwnProperty('ajax')) ajax = ajax.ajax;
+        if (typeof ajax !== 'undefined') ajax = ajax.split("=").pop();
+        var count = table.rows()[0].length;
+        if (count === 0) {
+            switch (ajax) {
+                case 'cedr':
+                    $("#cedr").remove();
+                    $("#tab-cedr").remove();
+                    break;
+                case 'politickeStrany':
+                    $("#politickeStrany").remove();
+                    $("#tab-politickeStrany").remove();
+                    break;
+                case 'czechinvest':
+                    $("#czechinvest").remove();
+                    $("#tab-czechinvest").remove();
+                    break;
+                case 'dotinfo':
+                    $("#dotInfo").remove();
+                    $("#tab-dotinfo").remove();
+                    break;
+                case 'strukturalni-fondy':
+                    $("#strukturalniFondy").remove();
+                    $("#tab-strukturalni-fondy").remove();
+                    break;
+            }
+            $("#tabs").tabs("refresh");
+        }
+        if ($("#tabs div").children().length === 0) {
+            if ($("input#ico").text() !== "00000000") {
+                $("#tabs").append("<h2>Nic nebylo nalezeno</h2>");
+            }
+        }
+    }
 </script>

@@ -19,7 +19,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="hlidacsmluv">
         <table class="datatable"
-               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => \App\View\DPUTILS::ico($dotace->PrijemcePomoci->ico), 'podpisDatum' => $dotace->podpisDatum->format("Y-m-d\TH:i:s")]) ?>">
+               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => $dotace->PrijemcePomoci->ico, 'podpisDatum' => $dotace->podpisDatum->format("Y-m-d\TH:i:s")]) ?>">
             <thead>
             <tr>
                 <th>Míra Shody</th>
