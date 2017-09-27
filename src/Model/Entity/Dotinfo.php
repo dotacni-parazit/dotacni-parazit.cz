@@ -4,14 +4,23 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Cache Entity
+ * Dotinfo Entity
  *
  * @property int $id
- * @property string $identifier
- * @property string $value
- * @property \Cake\I18n\Time $modified
+ * @property string $idDotace
+ * @property string $projektIdentifikator
+ * @property string $dotaceNazev
+ * @property string $ucastnikObchodniJmeno
+ * @property int $ucastnikIco
+ * @property string $ucelDotace
+ * @property string $poskytovatelNazev
+ * @property int $poskytovatelIco
+ * @property int $castkaPozadovana
+ * @property int $castkaSchvalena
+ * @property string $datumPoskytnuti
+ * @property string $dotinfoId
  */
-class Cache extends Entity
+class Dotinfo extends Entity
 {
 
     /**

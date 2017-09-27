@@ -23,7 +23,7 @@ $this->set('title', $data->name . '- Detail Pobídky CzechInvest');
 
     <tr>
         <td>IČO Příjemce</td>
-        <td><?= $data->ico ?></td>
+        <td><?= \App\View\DPUTILS::ico($data->ico) ?></td>
     </tr>
 
     <tr>

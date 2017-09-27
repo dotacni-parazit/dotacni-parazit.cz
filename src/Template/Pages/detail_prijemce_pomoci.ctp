@@ -50,7 +50,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php if ($prijemce->ico != 0) { ?>
                 <tr>
                     <td>IČ (IČO)</td>
-                    <td><?= $prijemce->ico == 0 ? "N/A" : $prijemce->ico ?></td>
+                    <td><?= $prijemce->ico == 0 ? "N/A" : \App\View\DPUTILS::ico($prijemce->ico) ?></td>
                 </tr>
             <?php } ?>
 
@@ -188,7 +188,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
     <div id="hlidacsmluv">
         <table class="datatable"
-               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => $prijemce->ico]) ?>">
+               data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => \App\View\DPUTILS::ico($prijemce->ico)]) ?>">
             <thead>
             <tr>
                 <th>Míra Shody</th>

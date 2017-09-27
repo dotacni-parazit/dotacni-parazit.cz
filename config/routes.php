@@ -127,6 +127,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/hlidac-smluv/ajax', ['controller' => 'Pages', 'action' => 'hlidacSmluv']);
     $routes->connect('/distance', ['controller' => 'Pages', 'action' => 'icoDotaceDistance']);
 
+    $routes->connect('/opendata', ['controller' => 'Pages', 'action' => 'openData']);
+    $routes->connect('/dotinfo', ['controller' => 'Pages', 'action' => 'dotinfo']);
+    $routes->connect('/detail-dotinfo/:id', ['controller' => 'Pages', 'action' => 'dotinfoDetail'], ['id' => '[0-9]+']);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

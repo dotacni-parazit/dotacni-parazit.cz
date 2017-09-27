@@ -13,7 +13,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="obecne">
         <?php foreach ($info as $i) { ?>
-            <h2>IČO: <?= $i->ico ?></h2>
+            <h2>IČO: <?= \App\View\DPUTILS::ico($i->ico) ?></h2>
             <table class="datatable datatable_simple">
                 <thead>
                 <tr>
@@ -34,7 +34,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
                 <tr>
                     <td>IČO</td>
-                    <td><?= $i->ico ?></td>
+                    <td><?= \App\View\DPUTILS::ico($i->ico) ?></td>
                 </tr>
 
                 <tr>

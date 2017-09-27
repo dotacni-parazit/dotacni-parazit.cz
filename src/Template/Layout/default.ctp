@@ -59,9 +59,11 @@ $title = $this->fetch('title');
     <div id="sitefooter" style="margin: 4em 0 0 0; text-align: center;">
         <a href="http://goodgovernance.cz/" style="display: block;"><img src="/img/good_governance_logo.png"></a>
         <div id="footercontent"
-             style="color: #fff; width: 100%; text-align: center; padding: 2em 0; background: #35002f; margin: 1em 0 0 0;">
+             style="color: #fff; width: 100%; text-align: center; padding: 2em 0; background: #46223E; margin: 1em 0 0 0;">
             &copy; Copyright <a href="http://goodgovernance.cz/" style="color: #fff; text-decoration: underline;">Good
                 Governance</a> - Centrum of Excellence for Good Governance
+            <br/>
+            <a style="color: white;" href="mailto:info@dotacni-parazit.cz">info@dotacni-parazit.cz</a>
         </div>
     </div>
 </footer>

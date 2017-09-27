@@ -1,5 +1,23 @@
 <?php $this->set('title', 'Dotační Parazit'); ?>
 
+<form>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-9">
+            <input name="query" placeholder="Zadejte Název nebo IČO" style="width: 100%; font-size: 1em;">
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-2">
+            <select style="width: 100%; background: white; font-size: 1.4em;" name="type">
+                <option value="1">Příjemce Dotací</option>
+                <option value="2">Poskytovatel Dotací</option>
+            </select>
+        </div>
+        <div class="col-1">
+            <input type="submit" value="Hledat!" style="background: white;">
+        </div>
+    </div>
+</form>
+<hr/>
+
 <div class="row"><h2>Základní</h2></div>
 
 <div class="row homepage_row homepage">

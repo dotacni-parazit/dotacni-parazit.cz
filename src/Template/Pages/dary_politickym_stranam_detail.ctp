@@ -36,7 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>IČO</td>
-                <td><?= str_pad($strana->ico, 8, '0', STR_PAD_LEFT) ?></td>
+                <td><?= \App\View\DPUTILS::ico($strana->ico) ?></td>
             </tr>
 
             <tr>
@@ -87,7 +87,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php foreach ($transactions as $t) { ?>
                 <tr>
                     <td><?= $this->Html->link($t->donor->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $t->donor->name]) ?></td>
-                    <td><?= $this->Html->link(str_pad($t->donor->ico, 8, '0', STR_PAD_LEFT), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $t->donor->ico]) ?></td>
+                    <td><?= $this->Html->link(\App\View\DPUTILS::ico($t->donor->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $t->donor->ico]) ?></td>
                     <td><?= $t->year ?></td>
                     <td><?= Number::currency($t->amount) ?></td>
                 </tr>
@@ -116,7 +116,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($audits as $a) { ?>
                 <tr>
-                    <td><?= $a->auditor->name . ' (IČ: ' . $a->auditor->ico . ')' ?></td>
+                    <td><?= $a->auditor->name . ' (IČ: ' . \App\View\DPUTILS::ico($a->auditor->ico) . ')' ?></td>
                     <td><?= $a->name . ' (' . $a->permission . ')' ?></td>
                     <td><?= $a->year ?></td>
                     <td></td>

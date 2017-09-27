@@ -1,10 +1,6 @@
 <?php
 $this->set('title', 'Finanční zdroje');
 ?>
-
-<h2>Dynamický strom Finančních zdrojů</h2>
-<div id="sourcestree"></div>
-<h2>Tabulka Finančních Zdrojů</h2>
 <table>
     <thead>
     <tr>

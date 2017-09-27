@@ -33,4 +33,7 @@ $this->set('title', 'Podle Poskytovatelů');
     <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="/strukturalni-fondy-2014-2020">Strukturalni-Fondy.cz<br/>(2014-2020)</a>
     </div>
+    <div class="col-lg-4 col-sm-9 col-md-4">
+        <a href="/dotinfo">DotInfo.cz<br/><br/></a>
+    </div>
 </div>

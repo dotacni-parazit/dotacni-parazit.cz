@@ -38,6 +38,7 @@ use App\Model\Table\CiselnikUcelZnakv01Table;
 use App\Model\Table\CompaniesTable;
 use App\Model\Table\ConsolidationsTable;
 use App\Model\Table\DotaceTable;
+use App\Model\Table\DotinfoTable;
 use App\Model\Table\InvesticniPobidkyTable;
 use App\Model\Table\MFCRPAPTable;
 use App\Model\Table\OwnersTable;
@@ -87,6 +88,7 @@ use Cake\View\View;
  * @property InvesticniPobidkyTable InvesticniPobidky
  * @property CompaniesTable Companies
  * @property TransactionsTable Transactions
+ * @property DotinfoTable Dotinfo
  * @property ConsolidationsTable Consolidations
  * @property OwnersTable Owners
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
@@ -99,6 +101,7 @@ class PagesController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadModel('Dotinfo');
         $this->loadModel('MFCRPAP');
         $this->loadModel('Audits');
         $this->loadModel('Transactions');
@@ -143,6 +146,21 @@ class PagesController extends AppController
 
     public function index()
     {
+        if (!empty($this->request->getQuery('type')) && !empty($this->request->getQuery('query'))) {
+            $query = $this->request->getQuery('query');
+            switch ($this->request->getQuery('type')) {
+                case 1:
+                    if (is_numeric($query)) {
+                        $this->redirect('/prijemce-dotaci/ico?ico=' . $this->request->getQuery('query'));
+                    } else {
+                        $this->redirect('/prijemce-dotaci/jmeno?name=' . $this->request->getQuery('query'));
+                    }
+                    break;
+                case 2:
+                    $this->redirect('/poskytovatel-dotaci/jmeno?name=' . $this->request->getQuery('query'));
+                    break;
+            }
+        }
     }
 
     public function cache()
@@ -1114,6 +1132,13 @@ class PagesController extends AppController
                         'ico' => $ico
                     ]
                 ])->limit(50000);
+            } else if ($this->request->getQuery('dotinfo') == 'dotinfo') {
+                $data = $this->Dotinfo->find('all', [
+                    'conditions' => [
+                        'ucastnikIco' => $ico
+                    ]
+                ]);
+                $ajax_type = 'dotinfo';
             } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
                 $ajax_type = 'politickeStrany';
                 $data = $this->Companies->find('all', [
@@ -1227,6 +1252,13 @@ class PagesController extends AppController
                         ]
                     ]);
                 }
+            } else if ($this->request->getQuery('dotinfo') == 'dotinfo') {
+                $ajax_type = 'dotinfo';
+                $data = $this->Dotinfo->find('all', [
+                    'conditions' => [
+                        "MATCH (ucastnikObchodniJmeno) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
             } else {
                 $data = [];
             }
@@ -3298,6 +3330,62 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['distance']));
+    }
+
+    public function openData()
+    {
+
+    }
+
+    public function dotinfo()
+    {
+        $poskytovatele = $this->Dotinfo->find('all', [
+            'fields' => [
+                'ico' => 'DISTINCT(poskytovatelIco)'
+            ],
+            'order' => [
+                'ico' => 'ASC'
+            ]
+        ])->enableHydration(false)->toArray();
+        $ids = [];
+        foreach ($poskytovatele as $p) {
+            $ids[] = $p['ico'];
+        }
+        $poskytovatele = $this->Dotinfo->find('all', [
+            'fields' => [
+                'poskytovatelIco' => 'DISTINCT(poskytovatelIco)',
+                'poskytovatelNazev'
+            ],
+            'conditions' => [
+                'poskytovatelIco IN' => $ids
+            ]
+        ])->enableHydration(false)->toArray();
+
+        $sums = [];
+        foreach ($poskytovatele as $p) {
+            $sums[$p['poskytovatelIco']]['sumSchvaleno'] = $this->Dotinfo->find('all', [
+                'fields' => [
+                    'sum' => 'SUM(castkaSchvalena)'
+                ],
+                'conditions' => [
+                    'poskytovatelIco' => $p['poskytovatelIco']
+                ]
+            ])->first()->sum;
+        }
+
+        $this->set(compact(['poskytovatele', 'sums']));
+    }
+
+    public function dotinfoDetail()
+    {
+        $data = $this->Dotinfo->find('all', [
+            'conditions' => [
+                'id' => $this->request->getParam('id')
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact('data'));
     }
 
 }

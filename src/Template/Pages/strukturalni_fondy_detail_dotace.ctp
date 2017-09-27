@@ -52,7 +52,7 @@ $this->set('title', $data->nazevProjektu . ' - Detail Strukturální Fondy');
 
     <tr>
         <td>Žadatel IČO</td>
-        <td><?= $data->zadatelIco ?></td>
+        <td><?= \App\View\DPUTILS::ico($data->zadatelIco) ?></td>
     </tr>
 
     <tr>

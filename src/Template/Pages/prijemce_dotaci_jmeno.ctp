@@ -106,9 +106,9 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th data-type="currency">Investice CZK</th>
-                <th>Datum Rozhodnutí</th>
-                <th>Otevřít</th>
+                <th>Dotace</th>
+                <th data-type="currency">Částka Schválená</th>
+                <th data-type="html">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -118,9 +118,9 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
             <tr>
                 <td>Jméno</td>
                 <td>IČO</td>
-                <td>Investice CZK</td>
-                <td>Datum Rozhodnutí</td>
-                <td>Otevřít</td>
+                <td>Dotace</td>
+                <td data-type="currency">Částka Schválená</td>
+                <td data-type="html">Otevřít</td>
             </tr>
             </tfoot>
         </table>

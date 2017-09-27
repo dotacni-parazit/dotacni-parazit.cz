@@ -79,8 +79,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
-    <div id="kraje_list" style="width: 100%;">
-        <table id="datatable2" class="datatable_simple">
+    <div id="kraje_list">
+        <table id="datatable2" class="datatable_simple" style="width: 100%;">
             <thead>
             <tr>
                 <th>Název Kraje</th>

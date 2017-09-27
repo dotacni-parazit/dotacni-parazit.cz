@@ -12,7 +12,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="search">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('ico', ['label' => 'IČO (pouze čísla)', 'value' => $ico]);
+        echo $this->Form->input('ico', ['label' => 'IČO (pouze čísla)', 'value' => \App\View\DPUTILS::ico($ico)]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
         ?>
@@ -20,7 +20,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="multiple">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('multiple', ['label' => 'Jedno a více IČO (oddělené mezerou nebo čárkou)', 'value' => $ico]);
+        echo $this->Form->input('multiple', ['label' => 'Jedno a více IČO (oddělené mezerou nebo čárkou)', 'value' => \App\View\DPUTILS::ico($ico)]);
         echo $this->Form->submit('Zobrazit!');
         echo $this->Form->end();
         ?>
@@ -121,9 +121,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Jméno</th>
                 <th>IČO</th>
-                <th class="nosearch" data-type="currency">Investice CZK</th>
-                <th class="nosearch">Datum Rozhodnutí</th>
-                <th class="nosearch">Otevřít</th>
+                <th>Dotace</th>
+                <th data-type="currency">Částka Schválená</th>
+                <th data-type="html">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -133,9 +133,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <td>Jméno</td>
                 <td>IČO</td>
-                <td>Investice CZK</td>
-                <td>Datum Rozhodnutí</td>
-                <td>Otevřít</td>
+                <td>Dotace</td>
+                <td data-type="currency">Částka Schválená</td>
+                <td data-type="html">Otevřít</td>
             </tr>
             </tfoot>
         </table>

@@ -36,7 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>IČ</td>
-                <td><?= $owner->ico ?></td>
+                <td><?= \App\View\DPUTILS::ico($owner->ico) ?></td>
             </tr>
 
             <tr>
@@ -117,7 +117,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <tr>
                     <td><?= $s->company->name ?></td>
                     <td><?= $this->Html->link($s->subsidiary->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $s->subsidiary->name]) ?></td>
-                    <td><?= $this->Html->link($s->subsidiary->ico, ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $s->subsidiary->ico]) ?></td>
+                    <td><?= $this->Html->link(\App\View\DPUTILS::ico($s->subsidiary->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $s->subsidiary->ico]) ?></td>
                     <td><?= $s->year ?></td>
                     <td><?= Number::toPercentage($s->shares_percent) ?></td>
                     <td><?= $s->subsidiary->state->name ?></td>

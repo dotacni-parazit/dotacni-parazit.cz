@@ -16,7 +16,7 @@ if (!$cache_data) {
         $data_arr[] = [
             '<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>',
             '<span title="' . $d->popisProjektu . '">' . $d->cisloProjektu . '</span>',
-            $d->zadatel . ' (IČ: ' . $d->zadatelIco . ')',
+            $d->zadatel . ' (IČ: ' . \App\View\DPUTILS::ico($d->zadatelIco) . ')',
             \App\View\DPUTILS::currency($d->celkoveZdroje),
             \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
             \App\View\DPUTILS::currency($d->euZdroje),

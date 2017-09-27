@@ -17,7 +17,7 @@ foreach ($pobidky as $p) {
 
     $data_arr[] = [
         $this->Html->link($p->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $p->name]),
-        $this->Html->link($p->ico, ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $p->ico]),
+        $this->Html->link(\App\View\DPUTILS::ico($p->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $p->ico]),
         $p->sektor,
         $p->druhInvesticniAkce,
         $p->zemePuvodu,

@@ -34,9 +34,9 @@ table tbody tr:nth-child(even) {
 }
 
 hr {
-    color: #351a2f;
-    background-color: #351a2f;
-    border-color: #351a2f;
+    color: #46223E;
+    background-color: #46223E;
+    border-color: #46223E;
 }
 
 h1 {
@@ -49,7 +49,7 @@ h1 {
 }
 
 table thead, table tbody tr:nth-child(even), table tfoot {
-    background: #f7f0f6;
+    background: #C6BBC3;
 }
 
 table thead a, table tfoot a, table a, table tbody a, a, a:visited, a:link, a:active {
@@ -126,7 +126,7 @@ button.dt-button, div.dt-button, a.dt-button {
 }
 
 nav {
-    background-color: #35002f;
+    background-color: #46223E;
     padding: 2% 0 0 0;
 }
 
@@ -153,5 +153,5 @@ nav {
 }
 
 .homepage a:hover {
-    color: #35002f;
+    color: #46223E;
 }

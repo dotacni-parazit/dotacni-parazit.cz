@@ -29,6 +29,7 @@ use Cake\ORM\Entity;
  * @property bool $iriProgram
  * @property \Cake\I18n\Time $dPlatnost
  * @property \Cake\I18n\Time $dtAktualizace
+ * @property PrijemcePomoci PrijemcePomoci
  */
 class Dotace extends Entity
 {
