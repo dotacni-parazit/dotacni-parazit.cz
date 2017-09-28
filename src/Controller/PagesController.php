@@ -855,7 +855,7 @@ class PagesController extends AppController
         $tables = Cache::read($cache_tag, 'long_term');
         if ($tables === false) {
             $tables = [];
-            $dbtables = ConnectionManager::get('default')->schemaCollection()->listTables();
+            $dbtables = ConnectionManager::get('default')->schemaCollection(null)->listTables();
             foreach ($dbtables as $key => $t) {
                 $tablereg = TableRegistry::get($t);
 
@@ -1240,7 +1240,7 @@ class PagesController extends AppController
                     ]
                 ])->bind(':against', h($name));
                 $ajax_type = 'konsolidace';
-            }else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
+            } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
                 $data = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
                         "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
@@ -3177,6 +3177,45 @@ class PagesController extends AppController
             $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [$sum_rozhodnuti, $sum_spotrebovano, $sum_pobidky, $sum_strukturalni_fondy];
         }
         return $subsidiaries_sums;
+    }
+
+    public function konsolidaceSpolecnost()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Konsolidovaní příjemci' => '/konsolidace-holdingy', 'Detail společnosti v konsolidaci' => 'self']);
+
+        $company = $this->Companies->find('all', [
+            'conditions' => [
+                'Companies.id' => $this->request->getParam('id')
+            ],
+            'contain' => [
+                'Types',
+                'States'
+            ]
+        ])->first();
+        if (empty($company)) throw new NotFoundException();
+        if ($company->type_id != 2) throw new NotFoundException();
+
+        $consolidations = $this->Consolidations->find('all', [
+            'conditions' => [
+                'subsidiary_id' => $company->id
+            ],
+            'contain' => [
+                'Companies',
+                'Attachments'
+            ]
+        ]);
+
+        if ($company->ico != 0) {
+            $aliases = $this->PrijemcePomoci->find('all', [
+                'conditions' => [
+                    'ico' => $company->ico
+                ]
+            ]);
+        } else {
+            $aliases = [];
+        }
+
+        $this->set(compact(['company', 'consolidations', 'aliases']));
     }
 
     public function konsolidaceHolding()
