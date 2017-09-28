@@ -3,9 +3,15 @@
 
 $this->set('title', 'Statistika využití databáze');
 ?>
+<strong>Navigace</strong><br/>
+<ul>
+    <?php foreach ($tables as $t) { ?>
+        <li><a href="#<?= $t->name ?>"><?= $t->name ?></a></li>
+    <?php } ?>
+</ul>
 <?php foreach ($tables as $t) { ?>
     <div class="table_stats">
-        <h2><?= $t->name ?></h2>
+        <h2 id="<?= $t->name ?>"><?= $t->name ?></h2>
         <table>
             <thead>
             <tr>

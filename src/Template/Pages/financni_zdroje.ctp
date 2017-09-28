@@ -1,7 +1,7 @@
 <?php
 $this->set('title', 'Finanční zdroje');
 ?>
-<table>
+<table class="datatable">
     <thead>
     <tr>
         <th>Kód</th>

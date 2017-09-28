@@ -1,7 +1,7 @@
 <?php
 $this->set('title', 'Kapitoly Státního Rozpočtu');
 ?>
-<table>
+<table class="datatable" style="width: 100%;">
     <thead>
     <tr>
         <th>Název</th>

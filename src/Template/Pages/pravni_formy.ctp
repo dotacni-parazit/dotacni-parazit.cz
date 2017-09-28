@@ -1,7 +1,7 @@
 <?php
 $this->set('title', 'Právní formy');
 ?>
-<table>
+<table class="datatable">
     <thead>
     <tr>
         <th>Název</th>
