@@ -7,6 +7,40 @@ foreach ($data as $d) {
 
     /** @var string $ajax_type */
     switch ($ajax_type) {
+        case 'konsolidace':
+
+            /** @var \App\Model\Entity\Company $d */
+
+            $link = "";
+            switch ($d->type_id) {
+                case 1:
+                    $link = "/konsolidace-holdingy/detail/" . $d->id;
+                    break;
+                case 2:
+                    $link = "/konsolidace-holdingy/detail-spolecnost/" . $d->id;
+                    break;
+                case 3:
+                    $link = "/dary-politickym-stranam/detail/" . $d->id;
+                    break;
+                case 4:
+                    $link = "/konsolidace-holdingy/detail-vlastnik/" . $d->id;
+                    break;
+                case 5:
+                    $link = "/dary-politickym-stranam/detail-darce/" . $d->id;
+                    break;
+                case 6:
+                    $link = "/dary-politickym-stranam/detail-auditor/" . $d->id;
+                    break;
+            }
+
+            $data_arr[] = [
+                $d->name,
+                \App\View\DPUTILS::ico($d->ico),
+                $d->type->label,
+                $this->Html->link('Otevřít', $link)
+            ];
+
+            break;
         case 'dotinfo':
 
             /** @var \App\Model\Entity\Dotinfo $d */

@@ -4,14 +4,24 @@ $this->set('title', 'Vyhledávání Jménem - Příjemci Pomoci');
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
-echo $this->Form->create(null, ['type' => 'get']);
-echo $this->Form->input('name', ['label' => 'Obchodní jméno / Jméno / Příjmení (alespoň 3 písmena)', 'value' => $name]);
-echo $this->Form->submit('Hledat!');
-echo $this->Form->end();
-echo 'použijte * pro hledání částí slova, např. "techn*" najde "technologie"';
 ?>
 <hr/>
 
+<div id="tabs2">
+    <ul>
+        <li><a href="#jmeno">Vyhledávání podle Jména</a></li>
+    </ul>
+    <div id="jmeno">
+        <?php
+        echo $this->Form->create(null, ['type' => 'get']);
+        echo $this->Form->input('name', ['label' => 'Obchodní jméno / Jméno / Příjmení (alespoň 3 písmena)', 'value' => $name]);
+        echo $this->Form->submit('Hledat!');
+        echo $this->Form->end();
+        echo 'použijte * pro hledání částí slova, např. "techn*" najde "technologie"';
+        ?>
+    </div>
+</div>
+<hr/>
 <div id="tabs">
     <ul>
         <li id="tab-cedr"><a href="#cedr">CEDR</a></li>
@@ -19,6 +29,7 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
         <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy</a></li>
         <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
         <li id="tab-politickeStrany"><a href="#politickeStrany">Dárci Politických Stran</a></li>
+        <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%"
@@ -152,12 +163,41 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
             </tfoot>
         </table>
     </div>
+
+    <div id="konsolidace">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&konsolidace=konsolidace">
+            <thead>
+            <tr>
+                <th>Jméno Společnosti</th>
+                <th>IČO</th>
+                <th>Typ společnosti</th>
+                <th class="nosearch">Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno Společnosti</td>
+                <td>IČO</td>
+                <td>Typ společnosti</td>
+                <td class="nosearch">Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">
     var tabs;
     $(function () {
         tabs = $("#tabs").tabs({
+            collapsible: true,
+            active: <?= empty($multiple) ? '0' : '1' ?>
+        });
+        $("#tabs2").tabs({
             collapsible: true,
             active: <?= empty($multiple) ? '0' : '1' ?>
         });
@@ -191,6 +231,10 @@ echo 'použijte * pro hledání částí slova, např. "techn*" najde "technolog
                 case 'strukturalni-fondy':
                     $("#strukturalniFondy").remove();
                     $("#tab-strukturalni-fondy").remove();
+                    break;
+                case 'konsolidace':
+                    $("#konsolidace").remove();
+                    $("#tab-konsolidace").remove();
                     break;
             }
             $("#tabs").tabs("refresh");

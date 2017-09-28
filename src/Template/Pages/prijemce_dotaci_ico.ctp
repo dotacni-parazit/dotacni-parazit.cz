@@ -34,6 +34,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy</a></li>
         <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
         <li id="tab-politickeStrany"><a href="#politickeStrany">Dárci Politických Stran</a></li>
+        <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
@@ -165,6 +166,31 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
+
+    <div id="konsolidace">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&konsolidace=konsolidace">
+            <thead>
+            <tr>
+                <th>Jméno Společnosti</th>
+                <th>IČO</th>
+                <th>Typ společnosti</th>
+                <th class="nosearch">Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno Společnosti</td>
+                <td>IČO</td>
+                <td>Typ společnosti</td>
+                <td class="nosearch">Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -211,6 +237,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 case 'strukturalni-fondy':
                     $("#strukturalniFondy").remove();
                     $("#tab-strukturalni-fondy").remove();
+                    break;
+                case 'konsolidace':
+                    $("#konsolidace").remove();
+                    $("#tab-konsolidace").remove();
                     break;
             }
             $("#tabs").tabs("refresh");

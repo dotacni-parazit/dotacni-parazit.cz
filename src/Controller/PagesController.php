@@ -1121,6 +1121,16 @@ class PagesController extends AppController
                     ]
                 ]);
                 $ajax_type = 'czechinvest';
+            } else if ($this->request->getQuery('konsolidace') == 'konsolidace') {
+                $data = $this->Companies->find('all', [
+                    'conditions' => [
+                        'ico' => $ico
+                    ],
+                    'contain' => [
+                        'Types'
+                    ]
+                ]);
+                $ajax_type = 'konsolidace';
             } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
                 $data = $this->StrukturalniFondy->find('all', [
                     'conditions' => [
@@ -1220,7 +1230,17 @@ class PagesController extends AppController
                     ]
                 ])->bind(':against', h($name))->limit(50000);
                 $ajax_type = 'cedr';
-            } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
+            } else if ($this->request->getQuery('konsolidace') == 'konsolidace') {
+                $data = $this->Companies->find('all', [
+                    'conditions' => [
+                        "MATCH (name) AGAINST (:against in BOOLEAN MODE)"
+                    ],
+                    'contain' => [
+                        'Types'
+                    ]
+                ])->bind(':against', h($name));
+                $ajax_type = 'konsolidace';
+            }else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
                 $data = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
                         "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
@@ -3348,11 +3368,6 @@ class PagesController extends AppController
         foreach ($icoToCheck as $ico) {
             /** @var Dotace $prvni_dotace */
             $prvni_dotace = $this->Dotace->find('all', [
-                'fields' => [
-                    'PrijemcePomoci.idPrijemce',
-                    'Dotace.idDotace',
-                    'Dotace.podpisDatum'
-                ],
                 'conditions' => [
                     'PrijemcePomoci.ico' => $ico
                 ],
@@ -3360,7 +3375,8 @@ class PagesController extends AppController
                     'Dotace.podpisDatum' => 'ASC'
                 ],
                 'contain' => [
-                    'PrijemcePomoci'
+                    'PrijemcePomoci',
+                    'Rozhodnuti'
                 ]
             ])->first();
             /** @var MFCRPAP $mfcr_pap */
@@ -3370,15 +3386,19 @@ class PagesController extends AppController
                 ]
             ])->first();
 
-            $distance[] = [
-                $prvni_dotace->PrijemcePomoci->idPrijemce,
-                $prvni_dotace->idDotace,
-                $mfcr_pap->start,
-                $prvni_dotace->podpisDatum
+            $distance[] = (object)[
+                'dotace' => $prvni_dotace,
+                'pap' => $mfcr_pap
             ];
         }
 
         $this->set(compact(['distance']));
+    }
+
+    public function vlastniSestavy()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Zajímavé datové sestavy' => 'self']);
+        $this->set('title', 'Zajímavé datové sestavy');
     }
 
     public function openData()

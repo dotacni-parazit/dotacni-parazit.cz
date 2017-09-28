@@ -132,6 +132,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/dotinfo/poskytovatel/:ico', ['controller' => 'Pages', 'action' => 'dotinfoPoskytovatel'], ['ico' => '[0-9]+']);
     $routes->connect('/detail-dotinfo/:id', ['controller' => 'Pages', 'action' => 'dotinfoDetail'], ['id' => '[0-9]+']);
 
+    $routes->connect('/vlastni-sestavy', ['controller' => 'Pages', 'action' => 'vlastniSestavy']);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

@@ -30,6 +30,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $dPlatnost
  * @property \Cake\I18n\Time $dtAktualizace
  * @property PrijemcePomoci PrijemcePomoci
+ * @property Rozhodnuti[] Rozhodnuti
  */
 class Dotace extends Entity
 {
