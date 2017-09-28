@@ -124,6 +124,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/dary-politickym-stranam', ['controller' => 'Pages', 'action' => 'daryPolitickymStranam']);
     $routes->connect('/dary-politickym-stranam/detail/:id', ['controller' => 'Pages', 'action' => 'daryPolitickymStranamDetail'], ['id' => '[0-9]+']);
+    $routes->connect('/dary-politickym-stranam/detail-auditor/:id', ['controller' => 'Pages', 'action' => 'daryPolitickymStranamAuditor'], ['id' => '[0-9]+']);
+    $routes->connect('/dary-politickym-stranam/detail-darce/:id', ['controller' => 'Pages', 'action' => 'daryPolitickymStranamDetailDarce'], ['id' => '[0-9]+']);
 
     $routes->connect('/hlidac-smluv/ajax', ['controller' => 'Pages', 'action' => 'hlidacSmluv']);
     $routes->connect('/distance', ['controller' => 'Pages', 'action' => 'icoDotaceDistance']);

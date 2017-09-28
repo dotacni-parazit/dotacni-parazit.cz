@@ -92,7 +92,7 @@ foreach ($data as $d) {
             /** @var \App\Model\Entity\Transaction $d */
 
             $data_arr[] = [
-                $d->donor->name,
+                $this->Html->link($d->donor->name, "/dary-politickym-stranam/detail-darce/" . $d->donor->id),
                 $this->Html->link($d->recipient->name, '/dary-politickym-stranam/detail/' . $d->recipient->id),
                 $d->year,
                 \App\View\DPUTILS::currency($d->amount)

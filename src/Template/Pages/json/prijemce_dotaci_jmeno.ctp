@@ -4,7 +4,7 @@ use Cake\Cache\Cache;
 
 /** @var string $ajax_type */
 $cache_key = 'prijemce_jmeno_ajax_' . sha1($name) . '_' . $ajax_type;
-//Cache::delete($cache_key, 'long_term');
+Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -100,7 +100,7 @@ if (!$cache_data) {
                 /** @var \App\Model\Entity\Transaction $d */
 
                 $data_arr[] = [
-                    $d->donor->name,
+                    $this->Html->link($d->donor->name, "/dary-politickym-stranam/detail-darce/" . $d->donor->id),
                     $this->Html->link($d->recipient->name, '/dary-politickym-stranam/detail/' . $d->recipient->id),
                     $d->year,
                     \App\View\DPUTILS::currency($d->amount)

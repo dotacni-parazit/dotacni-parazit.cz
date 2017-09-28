@@ -1124,7 +1124,8 @@ class PagesController extends AppController
             } else if ($this->request->getQuery('konsolidace') == 'konsolidace') {
                 $data = $this->Companies->find('all', [
                     'conditions' => [
-                        'ico' => $ico
+                        'ico' => $ico,
+                        'type_id !=' => 5
                     ],
                     'contain' => [
                         'Types'
@@ -1233,7 +1234,8 @@ class PagesController extends AppController
             } else if ($this->request->getQuery('konsolidace') == 'konsolidace') {
                 $data = $this->Companies->find('all', [
                     'conditions' => [
-                        "MATCH (name) AGAINST (:against in BOOLEAN MODE)"
+                        "MATCH (name) AGAINST (:against in BOOLEAN MODE)",
+                        'type_id !=' => 5
                     ],
                     'contain' => [
                         'Types'
@@ -3185,7 +3187,8 @@ class PagesController extends AppController
 
         $company = $this->Companies->find('all', [
             'conditions' => [
-                'Companies.id' => $this->request->getParam('id')
+                'Companies.id' => $this->request->getParam('id'),
+                'type_id' => 2
             ],
             'contain' => [
                 'Types',
@@ -3193,7 +3196,6 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($company)) throw new NotFoundException();
-        if ($company->type_id != 2) throw new NotFoundException();
 
         $consolidations = $this->Consolidations->find('all', [
             'conditions' => [
@@ -3259,6 +3261,46 @@ class PagesController extends AppController
         $this->set(compact(['holding', 'owners', 'subsidiaries', 'subsidiaries_sums']));
     }
 
+    public function daryPolitickymStranamAuditor()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Konsolidovaní příjemci' => '/konsolidace-holdingy', 'Detail Auditora politické strany' => 'self']);
+
+        /** @var Company $company */
+        $company = $this->Companies->find('all', [
+            'conditions' => [
+                'Companies.type_id' => 6,
+                'Companies.id' => $this->request->getParam('id')
+            ],
+            'contain' => [
+                'Types',
+                'States'
+            ]
+        ])->first();
+        if (empty($company)) throw new NotFoundException();
+
+        $audits = $this->Audits->find('all', [
+            'conditions' => [
+                'auditor_id' => $company->id
+            ],
+            'contain' => [
+                'Auditors',
+                'Companies'
+            ]
+        ]);
+
+        if ($company->ico != 0) {
+            $aliases = $this->PrijemcePomoci->find('all', [
+                'conditions' => [
+                    'ico' => $company->ico
+                ]
+            ]);
+        } else {
+            $aliases = [];
+        }
+
+        $this->set(compact(['company', 'audits', 'aliases']));
+    }
+
     public function daryPolitickymStranam()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Dárci politických stran' => 'self']);
@@ -3292,6 +3334,42 @@ class PagesController extends AppController
         }
 
         $this->set(compact(['data', 'sums']));
+    }
+
+    public function daryPolitickymStranamDetailDarce(){
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Dárci politických stran' => '/dary-politickym-stranam', 'Detail dárce politické strany' => 'self']);
+        $company = $this->Companies->find('all', [
+            'conditions' => [
+                'Companies.type_id' => 5,
+                'Companies.id' => $this->request->getParam('id')
+            ],
+            'contain' => [
+                'Types',
+                'States'
+            ]
+        ])->first();
+        if(empty($company)) throw new NotFoundException();
+
+        $donations = $this->Transactions->find('all', [
+            'conditions' => [
+                'donor_id' => $company->id
+            ],
+            'contain' => [
+                'Recipient'
+            ]
+        ]);
+
+        if ($company->ico != 0) {
+            $aliases = $this->PrijemcePomoci->find('all', [
+                'conditions' => [
+                    'ico' => $company->ico
+                ]
+            ]);
+        } else {
+            $aliases = [];
+        }
+
+        $this->set(compact(['company', 'donations', 'aliases']));
     }
 
     public function daryPolitickymStranamDetail()
