@@ -56,8 +56,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <div id="prijemce_aliasy">
                 Příjemce pomoci je také evidován v CEDR pod těmito aliasy (dle IČO): <br/>
                 <?php
+                /** @var \App\Model\Entity\PrijemcePomoci[] $aliases */
                 foreach ($aliases as $p) { ?>
-                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . (empty($p->obchodniJmeno) ? $p->jmeno . ' ' . $p->prijmeni : $p->obchodniJmeno), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
+                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . \App\View\DPUTILS::jmenoPrijemcePomoci($p), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
                     <br/>
                 <?php } ?>
             </div>

@@ -23,6 +23,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\RozpoctoveObdobi $RozpoctoveObdobi
  * @property \Cake\I18n\Time $dPlatnost
  * @property \Cake\I18n\Time $dtAktualizace
+ * @property CiselnikDotacePoskytovatelv01 PoskytovatelDotace
  */
 class Rozhodnuti extends Entity
 {

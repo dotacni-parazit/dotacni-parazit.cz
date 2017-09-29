@@ -114,14 +114,14 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($top_rozpoctove_obdobi as $r) {
+            <?php /** @var \App\Model\Entity\RozpoctoveObdobi[] $top_rozpoctove_obdobi */
+            foreach ($top_rozpoctove_obdobi as $r) {
                 $dotaceNazev = (empty($r->Rozhodnuti->Dotace->projektNazev) ? $r->Rozhodnuti->Dotace->projektIdnetifikator : $r->Rozhodnuti->Dotace->projektNazev);
-                $jmeno_prijemce = empty($r->Rozhodnuti->Dotace->PrijemcePomoci->obchodniJmeno) ? $r->Rozhodnuti->Dotace->PrijemcePomoci->jmeno . ' ' . $r->Rozhodnuti->Dotace->PrijemcePomoci->prijmeni : $r->Rozhodnuti->Dotace->PrijemcePomoci->obchodniJmeno;
                 ?>
                 <tr>
                     <td class="medium-1 large-1"><?= $this->Html->link('[R]', '/detail-rozhodnuti/' . $r->idRozhodnuti) ?></td>
                     <td><?= $this->Html->link($dotaceNazev, '/detail-dotace/' . $r->Rozhodnuti->idDotace); ?></td>
-                    <td><?= $this->Html->link($jmeno_prijemce, '/detail-prijemce-pomoci/' . $r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
+                    <td><?= $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($r->Rozhodnuti->Dotace->PrijemcePomoci), '/detail-prijemce-pomoci/' . $r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
                     <td class="medium-1 large-1"><?= $r->rozpoctoveObdobi ?></td>
                     <td style="text-align: right;"><?= Number::currency($r->Rozhodnuti->castkaRozhodnuta) ?></td>
                     <td style="text-align: right;"><?= Number::currency($r->castkaSpotrebovana) ?></td>

@@ -11,13 +11,13 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
+    /** @var \App\Model\Entity\Dotace[] $dotace */
     foreach ($dotace as $d) {
-        $jmenoPrijemce = empty($d->PrijemcePomoci->obchodniJmeno) ? $d->PrijemcePomoci->jmeno . " " . $d->PrijemcePomoci->prijmeni : $d->PrijemcePomoci->obchodniJmeno;
         $data_arr[] = [
             $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace),
             $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace),
             $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace),
-            $this->Html->link($jmenoPrijemce, '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce)
+            $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce)
         ];
         $total++;
     }

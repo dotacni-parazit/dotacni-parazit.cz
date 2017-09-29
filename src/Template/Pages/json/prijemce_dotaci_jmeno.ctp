@@ -66,7 +66,7 @@ if (!$cache_data) {
 
                 /** @var \App\Model\Entity\PrijemcePomoci $d */
                 $data_arr[] = [
-                    empty($d->obchodniJmeno) ? $d->prijmeni . ' ' . $d->jmeno : $d->obchodniJmeno,
+                    \App\View\DPUTILS::jmenoPrijemcePomoci($d),
                     \App\View\DPUTILS::ico($d->ico),
                     empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/' . $d->Stat->statKod3Znaky),
                     $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $d->idPrijemce)

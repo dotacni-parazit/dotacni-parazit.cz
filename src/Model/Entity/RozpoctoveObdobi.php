@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property string $iriUcelovyZnak
  * @property \Cake\I18n\Time $dPlatnost
  * @property \Cake\I18n\Time $dtAktualizace
+ * @property Rozhodnuti Rozhodnuti
  */
 class RozpoctoveObdobi extends Entity
 {

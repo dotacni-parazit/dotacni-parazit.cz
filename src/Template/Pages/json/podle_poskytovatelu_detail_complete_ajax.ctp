@@ -16,10 +16,8 @@ foreach ($dotace as $d) {
         $displayDotace = substr($displayDotace, 5);
     }
 
-    $prijemcePomoci = empty($d->Dotace->PrijemcePomoci->obchodniJmeno) ? $d->Dotace->PrijemcePomoci->jmeno . ' ' . $d->Dotace->PrijemcePomoci->prijmeni : $d->Dotace->PrijemcePomoci->obchodniJmeno;
-
     $data_arr[] = [
-        $this->Html->link($prijemcePomoci, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce),
+        $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->Dotace->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce),
         $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]),
         \App\View\DPUTILS::currency($d->castkaRozhodnuta),
         $d->rokRozhodnuti,

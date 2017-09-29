@@ -33,8 +33,9 @@ class DPUTILS
      * @param PrijemcePomoci $prijemcePomoci
      * @return string jmeno prijemce pomoci (obchodniJmeno nebo "jmeno prijmeni")
      */
-    public static function jmenoPrijemcePomoci($prijemcePomoci) {
-        return empty($prijemcePomoci->obchodniJmeno) ? $prijemcePomoci->jmeno . ' ' . $prijemcePomoci->prijmeni : $prijemcePomoci->obchodniJmeno;
+    public static function jmenoPrijemcePomoci($prijemcePomoci)
+    {
+        return empty($prijemcePomoci) ? '' : (empty($prijemcePomoci->obchodniJmeno) ? $prijemcePomoci->jmeno . ' ' . $prijemcePomoci->prijmeni : $prijemcePomoci->obchodniJmeno);
     }
 
 }

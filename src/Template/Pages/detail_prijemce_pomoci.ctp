@@ -6,9 +6,7 @@ use Cake\Routing\Router;
 
 /** @var \App\Model\Entity\PrijemcePomoci $prijemci */
 
-$jmeno_prijemce = empty($prijemce->obchodniJmeno) ? $prijemce->jmeno . ' ' . $prijemce->prijmeni : $prijemce->obchodniJmeno;
-
-$this->set('title', $jmeno_prijemce . ' - Příjemce Pomoci');
+$this->set('title', \App\View\DPUTILS::jmenoPrijemcePomoci($prijemce) . ' - Příjemce Pomoci');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
@@ -111,7 +109,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <span id="soucet"></span><br/>
         <span id="soucetSpotrebovana"></span>
         <hr/>
-        <table id="datatable"  data-ajax="<?= $this->request->here(false) ?>?dotace=dotace">
+        <table id="datatable" data-ajax="<?= $this->request->here(false) ?>?dotace=dotace">
             <thead>
             <tr>
                 <th data-type="html" class="large-2 medium-2">Dotace (kod nebo identifikator projektu)</th>
@@ -147,8 +145,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <div id="prijemce_aliasy">
                 Příjemce pomoci je také evidován pod těmito odkazy: <br/>
                 <?php
+                /** @var \App\Model\Entity\PrijemcePomoci[] $prijemci */
                 foreach ($prijemci as $p) { ?>
-                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . (empty($p->obchodniJmeno) ? $p->jmeno . ' ' . $p->prijmeni : $p->obchodniJmeno), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
+                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . \App\View\DPUTILS::jmenoPrijemcePomoci($p), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
                     <br/>
                 <?php } ?>
             </div>
@@ -156,7 +155,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
     <?php if (!empty($strukturalniFondy)) { ?>
         <div id="strukturalniFondy">
-            <table class="datatable"  data-ajax="<?= $this->request->here(false) ?>?strukturalni-fondy=strukturalni-fondy">
+            <table class="datatable"
+                   data-ajax="<?= $this->request->here(false) ?>?strukturalni-fondy=strukturalni-fondy">
                 <thead>
                 <tr>
                     <th>Číslo a název programu</th>
@@ -219,32 +219,32 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
-    <?php if(!empty($dotinfo)) { ?>
-    <div id="dotinfo">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>?dotinfo=dotinfo">
-            <thead>
-            <tr>
-                <th>Jméno</th>
-                <th>IČO</th>
-                <th>Dotace</th>
-                <th data-type="currency">Částka Schválená</th>
-                <th data-type="html">Otevřít</th>
-            </tr>
-            </thead>
-            <tbody>
+    <?php if (!empty($dotinfo)) { ?>
+        <div id="dotinfo">
+            <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>?dotinfo=dotinfo">
+                <thead>
+                <tr>
+                    <th>Jméno</th>
+                    <th>IČO</th>
+                    <th>Dotace</th>
+                    <th data-type="currency">Částka Schválená</th>
+                    <th data-type="html">Otevřít</th>
+                </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>Jméno</td>
-                <td>IČO</td>
-                <td>Dotace</td>
-                <td data-type="currency">Částka Schválená</td>
-                <td data-type="html">Otevřít</td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Jméno</td>
+                    <td>IČO</td>
+                    <td>Dotace</td>
+                    <td data-type="currency">Částka Schválená</td>
+                    <td data-type="html">Otevřít</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     <?php } ?>
     <?php if (!empty($investicniPobidky)) { ?>
         <div id="investicniPobidky">
@@ -279,7 +279,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
     <?php if (!empty($politickeDary)) { ?>
         <div id="politickeDary">
-            <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>?politickeDary=politickeDary">
+            <table class="datatable" style="width: 100%"
+                   data-ajax="<?= $this->request->here(false) ?>?politickeDary=politickeDary">
                 <thead>
                 <tr>
                     <th>Strana</th>
