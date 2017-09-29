@@ -42,7 +42,7 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
             <td><?= empty($d->PrvniDotace) ? 'N/A' : $this->Html->link($d->PrvniDotace->podpisDatum->nice(), '/detail-dotace/' . $d->distance_start_dotace) ?></td>
             <td><?= empty($d->PosledniDotace) ? 'N/A' : $this->Html->link($d->PosledniDotace->podpisDatum->nice(), '/detail-dotace/' . $d->distance_end_dotace) ?></td>
             <td><?= $d->distance_start_days ?></td>
-            <td><?= $d->distance_end_days ?></td>
+            <td><?= $d->distance_end_days * -1 ?></td>
         </tr>
         <?php
     }
