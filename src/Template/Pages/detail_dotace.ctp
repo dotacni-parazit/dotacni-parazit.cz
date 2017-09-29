@@ -68,7 +68,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>Datum Podpisu</td>
-                <td><?= $dotace->podpisDatum ?></td>
+                <td><?= $dotace->podpisDatum->nice() ?></td>
             </tr>
 
             <tr>

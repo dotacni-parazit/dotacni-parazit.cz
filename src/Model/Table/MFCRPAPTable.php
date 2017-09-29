@@ -1,8 +1,7 @@
 <?php
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -23,6 +22,16 @@ class MFCRPAPTable extends Table
 {
 
     /**
+     * Returns the database connection name to use by default.
+     *
+     * @return string
+     */
+    public static function defaultConnectionName()
+    {
+        return 'cedr_custom';
+    }
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -37,6 +46,28 @@ class MFCRPAPTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsTo('PrijemcePomoci')
+            ->setBindingKey('idPrijemce')
+            ->setForeignKey('idPrijemce')
+            ->setProperty('PrijemcePomoci')
+            ->setStrategy('select');
+
+        $this->belongsTo('PrvniDotace', [
+            'className' => 'Dotace',
+            'foreignKey' => 'distance_start_dotace',
+            'bindingKey' => 'idDotace',
+            'strategy' => 'select',
+            'propertyName' => 'PrvniDotace'
+        ]);
+
+        $this->belongsTo('PosledniDotace', [
+            'className' => 'Dotace',
+            'foreignKey' => 'distance_end_dotace',
+            'bindingKey' => 'idDotace',
+            'strategy' => 'select',
+            'propertyName' => 'PosledniDotace'
+        ]);
     }
 
     /**
@@ -77,15 +108,5 @@ class MFCRPAPTable extends Table
             ->allowEmpty('distance_end_days');
 
         return $validator;
-    }
-
-    /**
-     * Returns the database connection name to use by default.
-     *
-     * @return string
-     */
-    public static function defaultConnectionName()
-    {
-        return 'cedr_custom';
     }
 }

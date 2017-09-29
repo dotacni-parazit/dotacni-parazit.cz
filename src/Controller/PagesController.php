@@ -3336,7 +3336,8 @@ class PagesController extends AppController
         $this->set(compact(['data', 'sums']));
     }
 
-    public function daryPolitickymStranamDetailDarce(){
+    public function daryPolitickymStranamDetailDarce()
+    {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Dárci politických stran' => '/dary-politickym-stranam', 'Detail dárce politické strany' => 'self']);
         $company = $this->Companies->find('all', [
             'conditions' => [
@@ -3348,7 +3349,7 @@ class PagesController extends AppController
                 'States'
             ]
         ])->first();
-        if(empty($company)) throw new NotFoundException();
+        if (empty($company)) throw new NotFoundException();
 
         $donations = $this->Transactions->find('all', [
             'conditions' => [
@@ -3477,38 +3478,82 @@ class PagesController extends AppController
         }
     }
 
-    public function icoDotaceDistance()
+    public function distanceCache()
     {
-        $icoToCheck = [71230025, 10556745, 12128457, 66689317, 72147202, 73032263, 76268276, 76288676, 41555686, 75725525, 70887551, 74430220, 74430459, 68017634, 70674434, 5007984, 13441841, 2843137, 74133888, 583219, 75476002, 75725592, 71167501, 74915185, 11259426, 3554155, 10531181, 70447471, 12411965, 13020030, 71785094, 76630862, 2484714, 3754391, 72279869, 12783498, 849235, 4981898, 75704480, 3754626, 13702629, 12080471, 4195272, 1655434, 13445316, 75691043, 1852272, 1498827, 69544361, 27637824, 4876695, 3589943, 3636810, 3897915, 11557028, 12640760, 12073652, 854875, 962899, 2672758, 73583022, 16323041, 72636688, 380822, 2485796, 3551865, 3002497, 76153363, 2882418, 3509851, 69282315, 71211519, 4803400, 1307908, 3075397, 3503704, 10596950, 3487458, 10603883, 13478788, 68061731, 68352689, 73521647, 2099233, 4787552, 5015278, 3000303, 3488209, 3554368, 3585824, 10053107, 3305171, 5607329, 13090208, 69735107, 854921, 26706041, 2792397, 2946360, 3535347, 2667878, 2682915, 3310507, 4817753, 3610098, 72011076, 74778056, 2659654, 5586844, 5479355, 1772937, 2314312, 2663961, 2897466, 3201040, 3923517, 4707621, 2314355, 11348283, 4086864, 5047994, 11030097, 72324066, 12083275, 43534163, 75389223, 72508931, 72755407, 28624165, 4970357, 2027887, 72474017, 3499910, 3282813, 3404188, 3479471, 3799557, 3801896, 3394891, 713376, 3568211, 4988710, 4807197, 4886623, 2359308, 2998891, 3116760, 3203271, 3439160, 5496144, 12693456, 4651804, 13566202, 74461401, 2688182, 4722400, 4934113, 4939506, 4997344, 4997379, 5092809, 5307601, 2763745, 3525694, 5575231, 1818619, 2026023, 3393879, 3469018, 2948656, 4862970];
-        $distance = [];
-
-        foreach ($icoToCheck as $ico) {
-            /** @var Dotace $prvni_dotace */
-            $prvni_dotace = $this->Dotace->find('all', [
+        $paps = $this->MFCRPAP->find('all', [
+            'conditions' => [
+                'idPrijemce IS NULL'
+            ]
+        ]);
+        $cntr = 0;
+        /** @var MFCRPAP $pap */
+        foreach ($paps as $pap) {
+            $prijemci = $this->PrijemcePomoci->find('all', [
                 'conditions' => [
-                    'PrijemcePomoci.ico' => $ico
+                    'ico' => $pap->ico
                 ],
-                'order' => [
-                    'Dotace.podpisDatum' => 'ASC'
-                ],
-                'contain' => [
-                    'PrijemcePomoci',
-                    'Rozhodnuti'
+                'fields' => [
+                    'PrijemcePomoci.idPrijemce'
                 ]
-            ])->first();
-            /** @var MFCRPAP $mfcr_pap */
-            $mfcr_pap = $this->MFCRPAP->find('all', [
-                'conditions' => [
-                    'ico' => $ico
-                ]
-            ])->first();
+            ])->enableHydration(false)->toArray();
 
-            $distance[] = (object)[
-                'dotace' => $prvni_dotace,
-                'pap' => $mfcr_pap
-            ];
+            $cntr++;
+            if ($cntr % 5000 == 0) {
+                debug($cntr);
+            }
+
+            if (empty($prijemci)) {
+                $pap->idPrijemce = "0";
+                $this->MFCRPAP->save($pap);
+                continue;
+            } else {
+                $ids = [];
+                foreach ($prijemci as $tmp) {
+                    $ids[] = $tmp['idPrijemce'];
+                }
+                $dotace = $this->Dotace->find('all', [
+                    'fields' => [
+                        'idDotace',
+                        'podpisDatum'
+                    ],
+                    'conditions' => [
+                        'idPrijemce IN' => $ids
+                    ],
+                    'order' => [
+                        'Dotace.podpisDatum' => 'ASC'
+                    ]
+                ]);
+                /** @var Dotace $first */
+                $first = $dotace->first();
+                /** @var Dotace $last */
+                $last = $dotace->last();
+                $pap->idPrijemce = $ids[0];
+                $pap->distance_start_days = $pap->start == null ? null : $first->podpisDatum->diffInDays($pap->start) * ($first->podpisDatum->timestamp < $pap->start->timestamp ? -1 : 1);
+                $pap->distance_end_days = $pap->end == null ? null : $last->podpisDatum->diffInDays($pap->end) * ($last->podpisDatum->timestamp < $pap->end->timestamp ? -1 : 1);
+                $pap->distance_start_dotace = ($first == null || $pap->start == null) ? null : $first->idDotace;
+                $pap->distance_end_dotace = ($last == null || $pap->end == null) ? null : $last->idDotace;
+                $this->MFCRPAP->save($pap);
+            }
         }
 
+    }
+
+    public function icoDotaceDistance()
+    {
+        $distance = $this->MFCRPAP->find('all', [
+            'conditions' => [
+                'idPrijemce IS NOT NULL',
+                'distance_start_days IS NOT NULL'
+            ],
+            'order' => [
+                'distance_start_days' => 'ASC'
+            ],
+            'contain' => [
+                'PrijemcePomoci',
+                'PrvniDotace',
+                'PosledniDotace'
+            ]
+        ])->limit(50000);
         $this->set(compact(['distance']));
     }
 

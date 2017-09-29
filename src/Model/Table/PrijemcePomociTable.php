@@ -124,4 +124,9 @@ class PrijemcePomociTable extends Table
 
         return $validator;
     }
+
+    public static function defaultConnectionName()
+    {
+        return "default";
+    }
 }

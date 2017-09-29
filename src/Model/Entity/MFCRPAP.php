@@ -14,6 +14,13 @@ use Cake\ORM\Entity;
  * @property int $distance_start_days
  * @property int $distance_end_days
  * @property \Cake\I18n\Time $modified
+ * @property string $idPrijemce
+ * @property null|string $distance_start_dotace
+ * @property null|string $idPrijemce
+ * @property null|string $distance_end_dotace
+ * @property Dotace PrvniDotace
+ * @property Dotace PosledniDotace
+ * @property PrijemcePomoci PrijemcePomoci
  */
 class MFCRPAP extends Entity
 {
