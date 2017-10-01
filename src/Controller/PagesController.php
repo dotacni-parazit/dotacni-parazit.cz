@@ -3540,21 +3540,25 @@ class PagesController extends AppController
 
     public function icoDotaceDistance()
     {
-        $distance = $this->MFCRPAP->find('all', [
-            'conditions' => [
-                'idPrijemce IS NOT NULL',
-                'distance_start_days IS NOT NULL'
-            ],
-            'order' => [
-                'distance_start_days' => 'ASC'
-            ],
-            'contain' => [
-                'PrijemcePomoci',
-                'PrvniDotace',
-                'PosledniDotace'
-            ]
-        ])->limit(50000);
-        $this->set(compact(['distance']));
+        if ($this->request->is('ajax')) {
+            $data = $this->MFCRPAP->find('all', [
+                'conditions' => [
+                    'idPrijemce IS NOT NULL',
+                    'distance_start_days IS NOT NULL'
+                ],
+                'order' => [
+                    'distance_start_days' => 'ASC'
+                ],
+                'contain' => [
+                    'PrijemcePomoci',
+                    'PrvniDotace',
+                    'PosledniDotace'
+                ]
+            ])->limit(50000);
+            $_serialize = false;
+            $this->set(compact(['data', '_serialize']));
+        }
+
     }
 
     public function vlastniSestavy()

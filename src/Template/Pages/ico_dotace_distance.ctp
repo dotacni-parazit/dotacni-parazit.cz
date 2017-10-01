@@ -19,7 +19,7 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
     ukončení IČO
 </div>
 
-<table class="datatable">
+<table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>
         <th>Příjemce</th>
@@ -31,22 +31,9 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
         <th>Rozdíl k Poslední Dotaci</th>
     </tr>
     </thead>
-    <?php
-    /** @var \App\Model\Entity\MFCRPAP[] $distance */
-    foreach ($distance as $d) {
-        ?>
-        <tr>
-            <td><?= $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->idPrijemce) ?></td>
-            <td><?= $d->start->nice() ?></td>
-            <td><?= !empty($d->end) ? $d->end->nice() : 'N/A' ?></td>
-            <td><?= empty($d->PrvniDotace) ? 'N/A' : $this->Html->link($d->PrvniDotace->podpisDatum->nice(), '/detail-dotace/' . $d->distance_start_dotace) ?></td>
-            <td><?= empty($d->PosledniDotace) ? 'N/A' : $this->Html->link($d->PosledniDotace->podpisDatum->nice(), '/detail-dotace/' . $d->distance_end_dotace) ?></td>
-            <td><?= $d->distance_start_days ?></td>
-            <td><?= $d->distance_end_days * -1 ?></td>
-        </tr>
-        <?php
-    }
-    ?>
+    <tbody>
+
+    </tbody>
     <tfoot>
     <tr>
         <td>Příjemce</td>
