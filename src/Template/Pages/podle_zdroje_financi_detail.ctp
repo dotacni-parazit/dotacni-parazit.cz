@@ -70,32 +70,17 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php
-            foreach ($zdroj_biggest as $d) {
-                $displayDotace = $d->Dotace->projektNazev;
-                if ($d->Dotace->projekKod === $d->Dotace->projektIdnetifikator && !empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ")";
-                } else if (!empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ", " . $d->Dotace->projektIdnetifikator . ")";
-                } else if (!empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektIdnetifikator . ")";
-                }
-                if (strpos($displayDotace, '<br/>') === 0) {
-                    $displayDotace = substr($displayDotace, 5);
-                }
-                ?>
+            <?php foreach ($zdroj_biggest as $d) { ?>
                 <tr>
                     <td><?= $this->Html->link($d->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce) ?></td>
-                    <td><?= $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
+                    <td><?= $this->Html->link(\App\View\DPUTILS::dotaceNazev($d->Dotace), '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
                     <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
                     <td style="text-align: right"><?= !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
                     <td><?= $d->rokRozhodnuti ?></td>
                     <td><?= $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev ?></td>
                     <td><?= $d->FinancniZdroj->financniZdrojNazev ?></td>
                 </tr>
-                <?php
-            }
-            ?>
+            <?php } ?>
             </tbody>
             <tfoot>
             <tr>

@@ -3,7 +3,7 @@
 use Cake\I18n\Number;
 
 $dotace = (object)$rozhodnuti['Dotace'];
-$this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Rozhodnutí');
+$this->set('title', \App\View\DPUTILS::dotaceNazev($dotace));
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

@@ -2608,7 +2608,6 @@ class PagesController extends AppController
 
     public function mmrPodOpatreni()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'MMR PodOpatření' => 'self']);
         $data = $this->CiselnikMmrPodOpatreniv01->find('all', [
             'conditions' => [
                 'idPodOpatreni' => $this->request->getQuery('id')
@@ -2618,6 +2617,7 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'Detail PodOpatření' => 'self']);
 
         $dotace = $this->Dotace->find('all', [
             'fields' => [
@@ -2653,6 +2653,7 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => '/operacni-programy-cedr', 'Detail PodOpatření' => 'self']);
 
         $dotace = $this->Dotace->find('all', [
             'fields' => [
@@ -2679,7 +2680,6 @@ class PagesController extends AppController
 
     public function mmrOpatreni()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'MMR Opatření' => 'self']);
         $data = $this->CiselnikMmrOpatreniv01->find('all', [
             'conditions' => [
                 'idOpatreni' => $this->request->getQuery('id')
@@ -2702,6 +2702,8 @@ class PagesController extends AppController
                 return;
             }
         }
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'Detail Opatření' => 'self']);
+
 
         $dotace = $this->Dotace->find('all', [
             'fields' => [
@@ -2750,6 +2752,7 @@ class PagesController extends AppController
                 return;
             }
         }
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => '/operacni-programy-cedr', 'Detail Opatření' => 'self']);
 
         $dotace = $this->Dotace->find('all', [
             'fields' => [
@@ -2776,7 +2779,6 @@ class PagesController extends AppController
 
     public function mmrPriorita()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'MMR Priorita' => 'self']);
         $data = $this->CiselnikMmrPrioritav01->find('all', [
             'conditions' => [
                 'idPriorita' => $this->request->getQuery('id')
@@ -2788,6 +2790,7 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'Detail Priorita' => 'self']);
 
         if ($this->request->is('ajax')) {
             $dotace = $this->Dotace->find('all', [
@@ -2829,6 +2832,7 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => '/operacni-programy-cedr', 'Detail Priorita' => 'self']);
 
         if ($this->request->is('ajax')) {
             $dotace = $this->Dotace->find('all', [
@@ -2859,7 +2863,6 @@ class PagesController extends AppController
 
     public function mmrOperacniProgram()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'Detail OP' => 'self']);
         $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
             'conditions' => [
                 'idOperacniProgram' => $this->request->getQuery('id')
@@ -2869,6 +2872,7 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'Detail OP' => 'self']);
 
         $cache_tag_mmr_priorita_dotace_count = 'mmr_priorita_count_dotace_' . sha1($data->idOperacniProgram);
         $counts = Cache::read($cache_tag_mmr_priorita_dotace_count, 'long_term');
@@ -2925,6 +2929,7 @@ class PagesController extends AppController
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => '/operacni-programy-cedr', 'Detail OP' => 'self']);
 
         $cache_tag_cedr_priorita_dotace_count = 'cedr_priorita_count_dotace_' . sha1($data->idOperacniProgram);
         $counts = Cache::read($cache_tag_cedr_priorita_dotace_count, 'long_term');

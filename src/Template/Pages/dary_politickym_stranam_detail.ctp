@@ -6,7 +6,7 @@
 use Cake\I18n\Number;
 
 /** @var \App\Model\Entity\Company $strana */
-$this->set('title', $strana->name . ' - Dary Politické Straně');
+$this->set('title', $strana->name);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

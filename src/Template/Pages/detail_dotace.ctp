@@ -4,7 +4,7 @@ use Cake\I18n\Number;
 use Cake\Routing\Router;
 
 /** @var \App\Model\Entity\Dotace $dotace */
-$this->set('title', (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev) . ' - Detail Dotace');
+$this->set('title', \App\View\DPUTILS::dotaceNazev($dotace));
 
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);

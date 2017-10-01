@@ -18,11 +18,9 @@ if (!$cache_data) {
         $b->Dotace->PrijemcePomoci = (object)$b->Dotace->PrijemcePomoci;
         $b->RozpoctoveObdobi = (object)$b->RozpoctoveObdobi;
 
-        $dotace_nazev = (empty($b->Dotace->projektNazev) ? $b->Dotace->projektIdnetifikator : $b->Dotace->projektNazev);
-
         $data_arr[] = [
             $this->Html->link('[R]', '/detail-rozhodnuti/' . $b->idRozhodnuti),
-            $this->Html->link($dotace_nazev, '/detail-dotace/' . $b->Dotace->idDotace),
+            $this->Html->link(\App\View\DPUTILS::dotaceNazev($b->Dotace), '/detail-dotace/' . $b->Dotace->idDotace),
             $this->Html->link($b->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $b->Dotace->idPrijemce),
             \App\View\DPUTILS::currency($b->castkaRozhodnuta),
             isset($b->RozpoctoveObdobi->castkaSpotrebovana) ? \App\View\DPUTILS::currency($b->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',

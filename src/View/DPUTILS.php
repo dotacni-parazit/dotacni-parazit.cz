@@ -2,6 +2,7 @@
 
 namespace App\View;
 
+use App\Model\Entity\Dotace;
 use App\Model\Entity\PrijemcePomoci;
 use Cake\I18n\Number;
 
@@ -26,7 +27,7 @@ class DPUTILS
      */
     public static function ico($ico)
     {
-        return $ico == 0 ? '' : str_pad($ico, 8, '0', STR_PAD_LEFT);
+        return (empty($ico) || $ico == 0) ? '' : str_pad($ico, 8, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -36,6 +37,15 @@ class DPUTILS
     public static function jmenoPrijemcePomoci($prijemcePomoci)
     {
         return empty($prijemcePomoci) ? '' : (empty($prijemcePomoci->obchodniJmeno) ? $prijemcePomoci->jmeno . ' ' . $prijemcePomoci->prijmeni : $prijemcePomoci->obchodniJmeno);
+    }
+
+    /**
+     * @param Dotace $dotace
+     * @return null|string Formatted name of Dotace
+     */
+    public static function dotaceNazev($dotace)
+    {
+        return empty($dotace) ? '' : (empty($dotace->projektNazev) ? $dotace->projektIdnetifikator : $dotace->projektNazev);
     }
 
 }

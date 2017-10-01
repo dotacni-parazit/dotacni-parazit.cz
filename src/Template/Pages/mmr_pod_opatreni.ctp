@@ -3,7 +3,7 @@
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
-$this->set('title', $data->podOpatreniNazev . ' (kód: ' . $data->podOpatreniKod . ') - MMR PodOpatření');
+$this->set('title', $data->podOpatreniNazev);
 ?>
 <div id="tabs">
     <ul>

@@ -91,17 +91,7 @@ if (!$cache_data) {
 
             /** @var \App\Model\Entity\Rozhodnuti[] $dotace */
             foreach ($dotace as $d) {
-                $displayDotace = $d->Dotace->projektNazev;
-                if ($d->Dotace->projekKod === $d->Dotace->projektIdnetifikator && !empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ")";
-                } else if (!empty($d->Dotace->projektKod) && !empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektKod . ", " . $d->Dotace->projektIdnetifikator . ")";
-                } else if (!empty($d->Dotace->projektIdnetifikator)) {
-                    $displayDotace .= "<br/>(" . $d->Dotace->projektIdnetifikator . ")";
-                }
-                if (strpos($displayDotace, '<br/>') === 0) {
-                    $displayDotace = substr($displayDotace, 5);
-                }
+                $displayDotace = \App\View\DPUTILS::dotaceNazev($d->Dotace);
                 $data_arr[] = [
                     $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]),
                     \App\View\DPUTILS::currency($d->castkaPozadovana),
