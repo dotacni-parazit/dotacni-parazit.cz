@@ -1344,6 +1344,8 @@ class PagesController extends AppController
 
     public function strukturalniFondyDetail()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2007 - 2013' => '/strukturalni-fondy-2007-2013', 'Detail OP' => 'self']);
+
         $req_op = filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING);
 
         $op = $this->StrukturalniFondy->find('all', [
@@ -2011,7 +2013,7 @@ class PagesController extends AppController
 
     function podleZdrojeFinanciDetail()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Dotační Úřady' => '/podle-poskytovatelu', 'Detail finančního zdroje' => 'self']);
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Zdroje Financování' => '/podle-zdroje-financi', 'Detail Finančního Zdroje' => 'self']);
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -2119,7 +2121,7 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciDetailComplete()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Dotační úřady' => '/podle-poskytovatelu', 'Detail finančního zdroje - Kompletní' => 'self']);
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Zdroje Financování' => '/podle-zdroje-financi', 'Detail finančního zdroje - Kompletní' => 'self']);
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [

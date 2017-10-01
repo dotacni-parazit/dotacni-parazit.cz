@@ -29,11 +29,11 @@ $this->set('title', 'Právní Formy');
 
     <tfoot>
     <tr>
-        <th>Název</th>
-        <th>Zkratka</th>
-        <th>Kód P.F.</th>
-        <th>Kód typu P.F.</th>
-        <th>Konec Platnosti</th>
+        <td>Název</td>
+        <td>Zkratka</td>
+        <td>Kód P.F.</td>
+        <td>Kód typu P.F.</td>
+        <td>Konec Platnosti</td>
     </tr>
     </tfoot>
 </table>

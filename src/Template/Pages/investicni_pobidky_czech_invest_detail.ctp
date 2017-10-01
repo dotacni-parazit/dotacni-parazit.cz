@@ -10,7 +10,7 @@ $this->set('title', $data->name);
 <table class="datatable datatable_simple">
     <thead>
     <tr>
-        <th>Vlastnost</th>
+        <th class="nosearch">Vlastnost</th>
         <th class="nosearch">Hodnota</th>
     </tr>
     </thead>

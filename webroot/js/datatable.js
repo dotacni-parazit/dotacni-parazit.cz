@@ -59,7 +59,7 @@ function setupDataTable(selector) {
 
     $($e).find('thead th').each(function (i) {
         var title = $($e).find('thead th').eq($(this).index()).text();
-        if (!$(this).hasClass('nosearch')) {
+        if (!$(this).hasClass('nosearch') && $(this).data('type') !== "currency") {
             $(this).html('<input onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" type="text" placeholder="' + title + '" data-index="' + i + '" />');
         }
     });

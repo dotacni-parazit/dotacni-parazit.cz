@@ -61,8 +61,8 @@ $this->set('title', empty($data->dotaceNazev) ? (empty($data->idDotace) ? '' : $
 
     <tfoot>
     <tr>
-        <th>Vlastnost</th>
-        <th>Hodnota</th>
+        <td>Vlastnost</td>
+        <td>Hodnota</td>
     </tr>
     </tfoot>
 </table>

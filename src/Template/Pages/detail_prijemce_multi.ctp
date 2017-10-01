@@ -17,8 +17,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <table class="datatable datatable_simple">
                 <thead>
                 <tr>
-                    <th>Vlastnost</th>
-                    <th>Hodnota</th>
+                    <th class="nosearch">Vlastnost</th>
+                    <th class="nosearch">Hodnota</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,8 +69,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th>Vlastnost</th>
-                    <th>Hodnota</th>
+                    <td>Vlastnost</td>
+                    <td>Hodnota</td>
                 </tr>
                 </tfoot>
             </table>

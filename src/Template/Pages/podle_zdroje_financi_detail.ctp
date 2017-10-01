@@ -10,17 +10,17 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs">
     <ul>
         <li><a href="#years">Historie v letech</a></li>
-        <li><a href="#rozhodnuti">100 Nejvyšších rozhodnutí</a></li>
+        <li><a href="#rozhodnuti">1000 Nejvyšších Rozhodnutí</a></li>
     </ul>
     <div id="years">
 
         <table class="datatable datatable_simple">
             <thead>
             <tr>
-                <th><a href="?sort=year">Rok</a></th>
-                <th><a href="?sort=sum">Součet Rozhodnutí</a></th>
-                <th><a href="?sort=sum">Součet Spotřebovaných</a></th>
-                <th>Detail</th>
+                <th class="nosearch">Rok</th>
+                <th class="nosearch" data-type="currency">Součet Rozhodnutí</th>
+                <th class="nosearch" data-type="currency">Součet Spotřebovaných</th>
+                <th class="nosearch">Detail</th>
             </tr>
             </thead>
             <tbody>
@@ -47,10 +47,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th><a href="?sort=year">Rok</a></th>
-                <th><a href="?sort=sum">Součet Rozhodnutí</a></th>
-                <th><a href="?sort=sum">Součet Spotřebovaných</a></th>
-                <th>Detail</th>
+                <td>Rok</td>
+                <td>Součet Rozhodnutí</td>
+                <td>Součet Spotřebovaných</td>
+                <td>Detail</td>
             </tr>
             </tfoot>
         </table>
@@ -84,13 +84,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Příjemce Pomoci</th>
-                <th>Dotace (kod nebo identifikator projektu)</th>
-                <th>Částka Rozhodnutá</th>
-                <th>Částka Spotřebovaná</th>
-                <th>Rok</th>
-                <th>Členění finančních prostředků</th>
-                <th>Finanční Zdroj</th>
+                <td>Příjemce Pomoci</td>
+                <td>Dotace (kod nebo identifikator projektu)</td>
+                <td>Částka Rozhodnutá</td>
+                <td>Částka Spotřebovaná</td>
+                <td>Rok</td>
+                <td>Členění finančních prostředků</td>
+                <td>Finanční Zdroj</td>
             </tr>
             </tfoot>
         </table>

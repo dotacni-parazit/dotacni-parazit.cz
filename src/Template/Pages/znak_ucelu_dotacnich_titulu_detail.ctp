@@ -5,8 +5,8 @@ $this->set('title', $data->ucelZnakNazev);
 <table class="datatable datatable_simple" style="width: 100%;">
     <thead>
     <tr>
-        <th>Vlastnost</th>
-        <th>Hodnota</th>
+        <th class="nosearch">Vlastnost</th>
+        <th class="nosearch">Hodnota</th>
     </tr>
     </thead>
     <tbody>

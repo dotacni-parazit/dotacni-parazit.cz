@@ -19,13 +19,13 @@ $this->set('title', $zdroj->financniZdrojNazev);
     </tbody>
     <tfoot>
     <tr>
-        <th>Příjemce Pomoci</th>
-        <th>Dotace (kod nebo identifikator projektu)</th>
-        <th>Částka Rozhodnutá</th>
-        <th>Částka Spotřebovaná</th>
-        <th>Rok</th>
-        <th>Členění finančních prostředků</th>
-        <th>Finanční Zdroj</th>
+        <td>Příjemce Pomoci</td>
+        <td>Dotace (kod nebo identifikator projektu)</td>
+        <td>Částka Rozhodnutá</td>
+        <td>Částka Spotřebovaná</td>
+        <td>Rok</td>
+        <td>Členění finančních prostředků</td>
+        <td>Finanční Zdroj</td>
     </tr>
     </tfoot>
 </table>

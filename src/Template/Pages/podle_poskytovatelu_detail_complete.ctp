@@ -18,12 +18,12 @@ $this->set('title', $poskytovatel->dotacePoskytovatelNazev)
     </tbody>
     <tfoot>
     <tr>
-        <th>Příjemce Pomoci</th>
-        <th>Dotace (kod nebo identifikator projektu)</th>
-        <th>Částka</th>
-        <th>Rok</th>
-        <th>Členění finančních prostředků</th>
-        <th>Finanční Zdroj</th>
-    </tr>
+        <td>Příjemce Pomoci</td>
+        <td>Dotace (kod nebo identifikator projektu)</td>
+        <td>Částka</td>
+        <td>Rok</td>
+        <td>Členění finančních prostředků</td>
+        <td>Finanční Zdroj</td>
+    </tr
     </tfoot>
 </table>

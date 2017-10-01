@@ -3,7 +3,7 @@
     <tr>
         <th>Vlastník Holdingu</th>
         <th>Název Holdingu</th>
-        <th>Otevřít</th>
+        <th class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>

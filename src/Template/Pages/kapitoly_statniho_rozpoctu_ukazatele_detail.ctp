@@ -15,8 +15,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table class="datatable datatable_simple">
             <thead>
             <tr>
-                <th>Vlastnost</th>
-                <th>Hodnota</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -108,7 +108,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Kód Titulu</th>
                 <th>Platnost Od</th>
                 <th>Platnost Do</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>

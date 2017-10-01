@@ -11,12 +11,12 @@ $this->set('title', 'Investiční Pobídky - CzechInvest');
         <th>Druh Investiční Akce</th>
         <th>Země Původu</th>
         <th data-type="currency"> Investice CZK</th>
-        <th>Vytvořená Pracovní Místa</th>
-        <th>Míra Veřejné Podpory</th>
+        <th class="nosearch">Vytvořená Pracovní Místa</th>
+        <th class="nosearch">Míra Veřejné Podpory</th>
         <th>Okres, Kraj</th>
         <th>Datum Rozhodnutí</th>
         <th>Stav Realizace</th>
-        <th>Otevřít</th>
+        <th class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>

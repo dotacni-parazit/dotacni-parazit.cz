@@ -9,7 +9,7 @@ $this->set('title', 'CEDR III - Ostatní Programy');
         <th>Číslo Programu</th>
         <th>Počet evidovaných dotací</th>
         <th>Platnost Do</th>
-        <th>Otevřít</th>
+        <th class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>

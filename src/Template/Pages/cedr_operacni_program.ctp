@@ -18,8 +18,8 @@ $this->set('title', $data->operacaniProgramNazev);
         <table class="datatable datatable_simple">
             <thead>
             <tr>
-                <th>Vlastnost</th>
-                <th>Hodnota</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -75,7 +75,7 @@ $this->set('title', $data->operacaniProgramNazev);
                 <th>Počet Dotací</th>
                 <th>Platnost Od</th>
                 <th>Platnost Do</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>

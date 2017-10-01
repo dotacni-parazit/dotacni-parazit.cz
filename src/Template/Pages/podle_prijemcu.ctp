@@ -86,10 +86,10 @@ if (!empty($prijemci)) {
         </tbody>
         <tfoot>
         <tr>
-            <th>IČO</th>
-            <th>Obchodní Jméno</th>
-            <th>Jméno</th>
-            <th>Příjmení</th>
+            <td>IČO</td>
+            <td>Obchodní Jméno</td>
+            <td>Jméno</td>
+            <td>Příjmení</td>
         </tr>
         </tfoot>
     </table>

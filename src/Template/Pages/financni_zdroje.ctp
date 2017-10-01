@@ -24,9 +24,9 @@ $this->set('title', 'Finanční zdroje');
     </tbody>
     <tfoot>
     <tr>
-        <th>Kód</th>
-        <th>Nadřízený kód</th>
-        <th>Název</th>
+        <td>Kód</td>
+        <td>Nadřízený kód</td>
+        <td>Název</td>
     </tr>
     </tfoot>
 </table>

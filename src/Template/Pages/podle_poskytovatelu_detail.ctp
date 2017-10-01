@@ -16,10 +16,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table class="datatable">
             <thead>
             <tr>
-                <th><a href="?sort=year">Rok</a></th>
-                <th><a href="?sort=sum">Součet Rozhodnutí</a></th>
-                <th><a href="?sort=sum">Součet Spotřebovaných</a></th>
-                <th>Detail</th>
+                <th>Rok</th>
+                <th class="currency">Součet Rozhodnutí</th>
+                <th class="currency">Součet Spotřebovaných</th>
+                <th class="nosearch">Detail</th>
             </tr>
             </thead>
             <tbody>
@@ -46,10 +46,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Rok</th>
-                <th>Součet Rozhodnutí</th>
-                <th>Součet Spotřebovaných</th>
-                <th>Detail</th>
+                <td>Rok</td>
+                <td>Součet Rozhodnutí</td>
+                <td>Součet Spotřebovaných</td>
+                <td>Detail</td>
             </tr>
             </tfoot>
         </table>
@@ -82,13 +82,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Příjemce Pomoci</th>
-                <th>Dotace (kod nebo identifikator projektu)</th>
-                <th>Částka rozhodndutá</th>
-                <th>Částka spotřebovaná</th>
-                <th>Rok</th>
-                <th>Členění finančních prostředků</th>
-                <th>Finanční Zdroj</th>
+                <td>Příjemce Pomoci</td>
+                <td>Dotace (kod nebo identifikator projektu)</td>
+                <td>Částka rozhodndutá</td>
+                <td>Částka spotřebovaná</td>
+                <td>Rok</td>
+                <td>Členění finančních prostředků</td>
+                <td>Finanční Zdroj</td>
             </tr>
             </tfoot>
         </table>

@@ -3,6 +3,7 @@
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
+/** @var mixed $data */
 $this->set('title', $data->operacaniProgramNazev);
 ?>
 <div id="tabs">
@@ -15,8 +16,8 @@ $this->set('title', $data->operacaniProgramNazev);
         <table class="datatable datatable_simple">
             <thead>
             <tr>
-                <th>Vlastnost</th>
-                <th>Hodnota</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -67,18 +68,17 @@ $this->set('title', $data->operacaniProgramNazev);
             <thead>
             <tr>
                 <th>Priorita Název</th>
-                <th>Priorita Kód</th>
-                <th>Počet evidovaných dotací</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Priorita Kód</th>
+                <th class="nosearch">Počet evidovaných dotací</th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($priority as $p) { ?>
+            <?php /** @var \App\Model\Entity\StrukturalniFondy[] $priority */
+            foreach ($priority as $p) { ?>
                 <tr>
-                    <td><?= !empty($p->MmrPriorita) ? $this->Html->link($p->MmrPriorita->prioritaNazev, '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) : "N/A" ?></td>
-                    <td><?= $this->Html->link($p->cisloPrioritniOsy, '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) ?></td>
+                    <td><?= !empty($p->MmrPriorita) ? $p->MmrPriorita->prioritaNazev : "N/A" ?></td>
+                    <td><?= $p->cisloPrioritniOsy ?></td>
                     <td><?= $p->CNT ?></td>
-                    <td><?= $this->Html->link('Otevřít', '/strukturalni-fondy-detail-priorita/?priorita=' . $p->cisloPrioritniOsy) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -87,7 +87,6 @@ $this->set('title', $data->operacaniProgramNazev);
                 <td>Priorita Název</td>
                 <td>Priorita Kód</td>
                 <th>Počet evidovaných dotací</th>
-                <td>Otevřít</td>
             </tr>
             </tfoot>
         </table>
@@ -97,7 +96,7 @@ $this->set('title', $data->operacaniProgramNazev);
         <table style="width: 100%" class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
-                <th data-type="html">Název Projektu</th>
+                <th data-type="html" class="col">Název Projektu</th>
                 <th data-type="html">Číslo Projektu</th>
                 <th data-type="html">Žadatel (IČO)</th>
                 <th data-type="currency">Zdroje celkem</th>

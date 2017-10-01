@@ -22,7 +22,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => $dotace->PrijemcePomoci->ico, 'podpisDatum' => $dotace->podpisDatum->format("Y-m-d\TH:i:s")]) ?>">
             <thead>
             <tr>
-                <th>Míra Shody</th>
+                <th class="nosearch">Míra Shody</th>
                 <th data-type="html">Název Smlouvy</th>
                 <th data-type="html">Vkladatel</th>
                 <th data-type="currency">Hodnota Smlouvy</th>
@@ -36,7 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Míra Shody</th>
+                <td>Míra Shody</td>
                 <td>Název Smlouvy</td>
                 <td>Vkladatel</td>
                 <td>Hodnota Smlouvy</td>
@@ -51,8 +51,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table>
             <thead>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -228,8 +228,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <td>Vlastnost</td>
+                <td>Hodnota</td>
             </tr>
             </tfoot>
         </table>
@@ -240,8 +240,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table>
             <thead>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -289,8 +289,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <td>Vlastnost</td>
+                <td>Hodnota</td>
             </tr>
             </tfoot>
         </table>
@@ -306,9 +306,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th>Dílčí Rozhodnutí</th>
                 <th>Rok Rozhodnutí</th>
-                <th>Částka Požadovaná</th>
-                <th>Částka Rozhodnutá</th>
-                <th>Částka Spotřebovaná</th>
+                <th data-type="currency">Částka Požadovaná</th>
+                <th data-type="currency">Částka Rozhodnutá</th>
+                <th data-type="currency">Částka Spotřebovaná</th>
                 <th>Poskytovatel Dotace</th>
                 <th>Členění Finančních Prostředků</th>
                 <th>Finanční Zdroj</th>
@@ -342,17 +342,17 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Dílčí Rozhodnutí</th>
-                <th>Rok Rozhodnutí</th>
-                <th>Částka Požadovaná</th>
-                <th>Částka Rozhodnutá</th>
-                <th>Částka Spotřebovaná</th>
-                <th>Poskytovatel Dotace</th>
-                <th>Členění Finančních Prostředků</th>
-                <th>Finanční Zdroj</th>
-                <th>Investice?</th>
-                <th>Návratnost?</th>
-                <th>Refundace?</th>
+                <td>Dílčí Rozhodnutí</td>
+                <td>Rok Rozhodnutí</td>
+                <td>Částka Požadovaná</td>
+                <td>Částka Rozhodnutá</td>
+                <td>Částka Spotřebovaná</td>
+                <td>Poskytovatel Dotace</td>
+                <td>Členění Finančních Prostředků</td>
+                <td>Finanční Zdroj</td>
+                <td>Investice?</td>
+                <td>Návratnost?</td>
+                <td>Refundace?</td>
             </tr>
             </tfoot>
         </table>

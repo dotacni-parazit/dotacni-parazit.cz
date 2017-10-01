@@ -25,9 +25,9 @@ $this->set('title', 'Kapitoly Státního Rozpočtu');
 
     <tfoot>
     <tr>
-        <th>Název</th>
-        <th>Kód Programu</th>
-        <th>Platnost Do</th>
+        <td>Název</td>
+        <td>Kód Programu</td>
+        <td>Platnost Do</td>
     </tr>
     </tfoot>
 </table>

@@ -11,10 +11,11 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
+    /** @var \App\Model\Entity\StrukturalniFondy[] $fondy */
     foreach ($fondy as $d) {
 
         $data_arr[] = [
-            '<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>',
+            $this->Html->link('<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>', '/strukturalni-fondy-detail-dotace/' . $d->id, ['escape' => false]),
             '<span title="' . $d->popisProjektu . '">' . $d->cisloProjektu . '</span>',
             $d->zadatel . ' (' . \App\View\DPUTILS::ico($d->zadatelIcoNum) . ')',
             \App\View\DPUTILS::currency($d->celkoveZdroje),
@@ -23,7 +24,7 @@ if (!$cache_data) {
             \App\View\DPUTILS::currency($d->vyuctovaneVerejneCelkem),
             \App\View\DPUTILS::currency($d->proplaceneEuZdroje),
             \App\View\DPUTILS::currency($d->certifikovaneVerejneCelkem),
-            \App\View\DPUTILS::currency($d->certifikovaneEUZdroje)
+            \App\View\DPUTILS::currency($d->certifikovaneEUZdoje)
         ];
         $total++;
     }

@@ -40,7 +40,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Obchodní Jméno</th>
                 <th>IČO</th>
                 <th>Státní příslušnost</th>
-                <th>Detail</th>
+                <th class="nosearch">Detail</th>
             </tr>
             </thead>
             <tbody>
@@ -66,7 +66,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>IČO</th>
                 <th data-type="currency">Investice CZK</th>
                 <th>Datum Rozhodnutí</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -94,7 +94,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th data-type="currency">Veřejné Zdroje Celkem</th>
                 <th>Číslo Projektu</th>
                 <th>Název Projektu</th>
-                <td>Otevřít</td>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -122,7 +122,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>IČO</th>
                 <th>Dotace</th>
                 <th data-type="currency">Částka Schválená</th>
-                <th data-type="html">Otevřít</th>
+                <th data-type="html" class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>

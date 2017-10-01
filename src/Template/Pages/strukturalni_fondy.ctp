@@ -7,8 +7,8 @@ $this->set('title', 'Strukturální Fondy 2007 - 2013');
     <thead>
     <tr>
         <th>Operační Program - Název</th>
-        <th>Počet evidovaných dotací</th>
-        <th>Otevřít</th>
+        <th class="nosearch">Počet evidovaných dotací</th>
+        <th class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>

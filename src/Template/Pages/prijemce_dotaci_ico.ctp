@@ -127,7 +127,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>IČO</th>
                 <th>Dotace</th>
                 <th data-type="currency">Částka Schválená</th>
-                <th data-type="html">Otevřít</th>
+                <th data-type="html" class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>

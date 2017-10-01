@@ -38,7 +38,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <th>Obchodní Jméno</th>
         <th>IČO</th>
         <th>Státní příslušnost</th>
-        <th>Detail</th>
+        <th class="nosearch">Detail</th>
     </tr>
     </thead>
     <tbody>

@@ -37,8 +37,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table>
             <thead>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -93,8 +93,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <td>Vlastnost</td>
+                <td>Hodnota</td>
             </tr>
             </tfoot>
         </table>
@@ -127,14 +127,14 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th data-type="html">Dotace (kod nebo identifikator projektu)</th>
-                <th data-type="currency" class="large-2 medium-2">Částka Požadovaná</th>
-                <th data-type="currency" class="large-2 medium-2">Částka Rozhodnutá</th>
-                <th data-type="currency" class="large-2 medium-2">Částka Spotřebovaná</th>
-                <th data-type="number" class="large-1 medium-1">Rok</th>
-                <th data-type="string" class="large-2 medium-2">Členění finančních prostředků</th>
-                <th data-type="string" class="large-2 medium-2">Finanční Zdroj</th>
-                <th data-type="string" class="large-1 medium-1">Shodný Příjemce</th>
+                <td data-type="html">Dotace (kod nebo identifikator projektu)</td>
+                <td data-type="currency" class="large-2 medium-2">Částka Požadovaná</td>
+                <td data-type="currency" class="large-2 medium-2">Částka Rozhodnutá</td>
+                <td data-type="currency" class="large-2 medium-2">Částka Spotřebovaná</td>
+                <td data-type="number" class="large-1 medium-1">Rok</td>
+                <td data-type="string" class="large-2 medium-2">Členění finančních prostředků</td>
+                <td data-type="string" class="large-2 medium-2">Finanční Zdroj</td>
+                <td data-type="string" class="large-1 medium-1">Shodný Příjemce</td>
             </tr>
             </tfoot>
         </table>
@@ -162,13 +162,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <th>Číslo a název programu</th>
                     <th>Číslo Projektu</th>
                     <th>Název Projektu</th>
-                    <th>Zdroje celkem</th>
-                    <th>Veřejné zdroje celkem</th>
-                    <th>EU zdroje</th>
-                    <th>Vyúčtované veřejné zdroje celkem</th>
-                    <th>Proplacené EU zdroje</th>
+                    <th class="nosearch">Zdroje celkem</th>
+                    <th class="nosearch">Veřejné zdroje celkem</th>
+                    <th class="nosearch">EU zdroje</th>
+                    <th class="nosearch">Vyúčtované veřejné zdroje celkem</th>
+                    <th class="nosearch">Proplacené EU zdroje</th>
                     <th>Místo realizace</th>
-                    <th>Detail</th>
+                    <th class="nosearch">Detail</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -196,7 +196,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'ico' => $prijemce->ico]) ?>">
             <thead>
             <tr>
-                <th>Míra Shody</th>
+                <th class="nosearch">Míra Shody</th>
                 <th data-type="html">Název Smlouvy</th>
                 <th data-type="html">Vkladatel</th>
                 <th data-type="currency">Hodnota Smlouvy</th>
@@ -210,7 +210,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Míra Shody</th>
+                <td>Míra Shody</td>
                 <td>Název Smlouvy</td>
                 <td>Vkladatel</td>
                 <td>Hodnota Smlouvy</td>
@@ -230,7 +230,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <th>IČO</th>
                     <th>Dotace</th>
                     <th data-type="currency">Částka Schválená</th>
-                    <th data-type="html">Otevřít</th>
+                    <th data-type="html" class="nosearch">Otevřít</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -255,10 +255,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <tr>
                     <th>Sektor</th>
                     <th>Druh pobídky</th>
-                    <th>Vytvořená pracovní místa</th>
-                    <th>Investice Celkem</th>
-                    <th>Míra veřejné podpory</th>
-                    <th>Strop veřejné podpory</th>
+                    <th class="nosearch">Vytvořená pracovní místa</th>
+                    <th class="nosearch">Investice Celkem</th>
+                    <th class="nosearch">Míra veřejné podpory</th>
+                    <th class="nosearch">Strop veřejné podpory</th>
                     <th>Datum rozhodnutí</th>
                 </tr>
                 </thead>

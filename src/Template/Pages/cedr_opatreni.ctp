@@ -16,8 +16,8 @@ $this->set('title', $data->opatreniNazev);
         <table>
             <thead>
             <tr>
-                <th>Vlastnost</th>
-                <th>Hodnota</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -78,7 +78,7 @@ $this->set('title', $data->opatreniNazev);
                 <th>PodOpatření Kód</th>
                 <th>Platnost Od</th>
                 <th>Platnost Do</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>

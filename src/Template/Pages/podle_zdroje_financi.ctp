@@ -6,12 +6,12 @@ $this->set('title', 'CEDR III - Zdroje Financování');
 ?>
 <div class="row">
     <div style="border: 0 solid black;border-right-width: 1px;"
-         class="col-6">
+         class="col-sm-12 col-md-12 col-lg-6">
         <h2>Tuzemské</h2>
         <table id="datatable" class="datatable_simple">
             <thead>
             <tr>
-                <th data-type="html"><a href="?sort=zdroj">Zdroj</a></th>
+                <th data-type="html">Zdroj</th>
                 <th data-type="currency" class="nosearch">Součet "částka rozhodnutá"</th>
                 <th data-type="currency" class="nosearch">Součet "částka spotřebovaná"</th>
                 <th data-type="html" class="nosearch small-2 medium-1 large-2">Otevřít</th>
@@ -42,7 +42,7 @@ $this->set('title', 'CEDR III - Zdroje Financování');
             </tfoot>
         </table>
     </div>
-    <div style="padding: 10px;" class="col-6">
+    <div style="padding: 10px;" class="col-sm-12 col-md-12 col-lg-6">
         <h2>Zahraniční</h2>
         <table id="datatable2" class="datatable_simple">
             <thead>

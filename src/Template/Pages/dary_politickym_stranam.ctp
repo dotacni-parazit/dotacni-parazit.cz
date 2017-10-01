@@ -18,10 +18,10 @@ $this->set('title', 'Dotace Dárců Politických Stran');
     <tr>
         <th class="nosearch">Politická Strana</th>
         <th class="nosearch" data-type="currency">Součet r. 2012</th>
-        <th class="nosearch" data-type="currency">Součet r. 2013</th>
-        <th class="nosearch" data-type="currency">Součet r. 2014</th>
-        <th class="nosearch" data-type="currency">Součet r. 2015</th>
-        <th class="nosearch" data-type="currency">Součet r. 2016</th>
+        <th class="nosearch" data-type="currency">r. 2013</th>
+        <th class="nosearch" data-type="currency">r. 2014</th>
+        <th class="nosearch" data-type="currency">r. 2015</th>
+        <th class="nosearch" data-type="currency">r. 2016</th>
         <th class="nosearch">Detail</th>
     </tr>
     </thead>

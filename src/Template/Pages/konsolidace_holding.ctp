@@ -82,9 +82,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Vlastník</th>
-                <th>Rok</th>
-                <th>Vlastnický Podíl</th>
+                <td>Vlastník</td>
+                <td>Rok</td>
+                <td>Vlastnický Podíl</td>
             </tr>
             </tfoot>
         </table>
@@ -130,15 +130,15 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Konsolidovaná Společnost</th>
-                <th>IČO</th>
-                <th>Rok</th>
-                <th>Vlastnický Podíl</th>
-                <th>Státní příslušnost</th>
-                <th class="nosearch">Součet Rozhodnutí</th>
-                <th class="nosearch">Součet Spotřebováno</th>
-                <th class="nosearch">Součet Pobídek CzechInvest</th>
-                <th class="nosearch">Součet Strukturálních Fondů</th>
+                <td>Konsolidovaná Společnost</td>
+                <td>IČO</td>
+                <td>Rok</td>
+                <td>Vlastnický Podíl</td>
+                <td>Státní příslušnost</td>
+                <td class="nosearch">Součet Rozhodnutí</td>
+                <td class="nosearch">Součet Spotřebováno</td>
+                <td class="nosearch">Součet Pobídek CzechInvest</td>
+                <td class="nosearch">Součet Strukturálních Fondů</td>
             </tr>
             </tfoot>
         </table>

@@ -15,12 +15,12 @@ $this->set('title', 'Statistika Využití Databáze');
 <?php foreach ($tables as $t) { ?>
     <div class="table_stats">
         <h2 id="<?= $t->name ?>"><?= $t->name ?></h2>
-        <table>
+        <table class="datatable datatable_simple">
             <thead>
             <tr>
-                <th>Sloupec</th>
-                <th>Prázných buňek</th>
-                <th>Nejčastější hodnota</th>
+                <th class="nosearch">Sloupec</th>
+                <th class="nosearch">Prázných buňek</th>
+                <th class="nosearch">Nejčastější hodnota</th>
             </tr>
             </thead>
             <tbody>

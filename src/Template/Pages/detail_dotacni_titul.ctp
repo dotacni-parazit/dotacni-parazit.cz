@@ -26,8 +26,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table class="datatable datatable_simple">
             <thead>
             <tr>
-                <th>Vlastnost</th>
-                <th>Hodnota</th>
+                <th class="nosearch">Vlastnost</th>
+                <th class="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -73,7 +73,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Název Dotačního Titulu</th>
                 <th data-type="currency" style="text-align: right;">Součet Rozhodnutí</th>
                 <th data-type="currency" style="text-align: right;">Součet Spotřebovaných částek</th>
-                <th>Otevřít</th>
+                <th class="nosearch">Otevřít</th>
             </tr>
             </thead>
             <tbody>
@@ -91,9 +91,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <td>Rok</td>
                 <td>Název Dotačního Titulu</td>
-                <th style="text-align: right;">Součet Rozhodnutí</th>
-                <th style="text-align: right;">Součet Spotřebovaných částek</th>
-                <th>Otevřít</th>
+                <td style="text-align: right;">Součet Rozhodnutí</td>
+                <td style="text-align: right;">Součet Spotřebovaných částek</td>
+                <td>Otevřít</td>
             </tr>
             </tfoot>
         </table>

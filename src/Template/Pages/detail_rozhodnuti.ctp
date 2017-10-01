@@ -18,8 +18,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <table>
             <thead>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <th class="nosearch">Vlastnost</th>
+                <th classs="nosearch">Hodnota</th>
             </tr>
             </thead>
             <tbody>
@@ -111,8 +111,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>Údaj</th>
-                <th>Obsah</th>
+                <td>Vlastnost</td>
+                <td>Hodnota</td>
             </tr>
             </tfoot>
         </table>
@@ -126,10 +126,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tr>
                 <th class="large-3 medium-3">ID</th>
                 <th>Rozpočtové období</th>
-                <th>Částka Čerpaná</th>
-                <th>Částka Uvolněná</th>
-                <th>Částka Vrácená</th>
-                <th>Částka Spotřebovaná</th>
+                <th class="currency">Částka Čerpaná</th>
+                <th class="currency">Částka Uvolněná</th>
+                <th class="currency">Částka Vrácená</th>
+                <th class="currency">Částka Spotřebovaná</th>
             </tr>
             </thead>
             <tbody>
@@ -151,12 +151,12 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tbody>
             <tfoot>
             <tr>
-                <th>ID</th>
-                <th>Rozpočtové období</th>
-                <th>Částka Čerpaná</th>
-                <th>Částka Uvolněná</th>
-                <th>Částka Vrácená</th>
-                <th>Částka Spotřebovaná</th>
+                <td>ID</td>
+                <td>Rozpočtové období</td>
+                <td>Částka Čerpaná</td>
+                <td>Částka Uvolněná</td>
+                <td>Částka Vrácená</td>
+                <td>Částka Spotřebovaná</td>
             </tr>
             </tfoot>
         </table>
