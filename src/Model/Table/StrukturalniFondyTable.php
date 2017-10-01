@@ -77,6 +77,9 @@ class StrukturalniFondyTable extends Table
             ->allowEmpty('zadatelIco');
 
         $validator
+            ->allowEmpty('zadatelIcoNum');
+
+        $validator
             ->requirePresence('pravniForma', 'create')
             ->notEmpty('pravniForma');
 

@@ -4,6 +4,7 @@ use Cake\Cache\Cache;
 
 
 $cache_key = 'strukturalni_fondy_detail_' . sha1($data->operacaniProgramKod);
+Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -16,7 +17,7 @@ if (!$cache_data) {
         $data_arr[] = [
             '<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>',
             '<span title="' . $d->popisProjektu . '">' . $d->cisloProjektu . '</span>',
-            $d->zadatel . ' (IČ: ' . \App\View\DPUTILS::ico($d->zadatelIco) . ')',
+            $d->zadatel . ' (' . \App\View\DPUTILS::ico($d->zadatelIcoNum) . ')',
             \App\View\DPUTILS::currency($d->celkoveZdroje),
             \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
             \App\View\DPUTILS::currency($d->euZdroje),

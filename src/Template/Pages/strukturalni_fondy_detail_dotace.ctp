@@ -52,7 +52,7 @@ $this->set('title', $data->nazevProjektu);
 
     <tr>
         <td>Žadatel IČO</td>
-        <td><?= \App\View\DPUTILS::ico($data->zadatelIco) ?></td>
+        <td><?= \App\View\DPUTILS::ico($data->zadatelIcoNum) ?></td>
     </tr>
 
     <tr>

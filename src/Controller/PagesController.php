@@ -930,6 +930,8 @@ class PagesController extends AppController
 
     public function strukturalniFondyDetailDotace()
     {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2007 - 2013' => '/strukturalni-fondy-2007-2013', 'Detail Dotace' => 'self']);
+
         $data = $this->StrukturalniFondy->find('all', [
             'conditions' => [
                 'id' => $this->request->getParam('id')
@@ -1135,7 +1137,7 @@ class PagesController extends AppController
             } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
                 $data = $this->StrukturalniFondy->find('all', [
                     'conditions' => [
-                        'zadatelIco' => $ico
+                        'zadatelIcoNum' => $ico
                     ]
                 ]);
                 $ajax_type = 'strukturalniFondy';
@@ -1836,7 +1838,7 @@ class PagesController extends AppController
             } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
                 $strukturalniFondy = $this->StrukturalniFondy->find('all', [
                     'conditions' => [
-                        'zadatelIco' => $prijemce->ico
+                        'zadatelIcoNum' => $prijemce->ico
                     ]
                 ]);
                 $this->set(compact(['strukturalniFondy', 'prijemce']));
@@ -1887,7 +1889,7 @@ class PagesController extends AppController
             if ($prijemce->ico != 0) {
                 $strukturalniFondy = $this->StrukturalniFondy->find('all', [
                     'conditions' => [
-                        'zadatelIco' => $prijemce->ico
+                        'zadatelIcoNum' => $prijemce->ico
                     ]
                 ])->count();
                 $investicniPobidky = $this->InvesticniPobidky->find('all', [
@@ -3176,7 +3178,7 @@ class PagesController extends AppController
                         'sum' => 'SUM(verejneZdrojeCelkem)'
                     ],
                     'conditions' => [
-                        'zadatelIco' => $s->subsidiary->ico,
+                        'zadatelIcoNum' => $s->subsidiary->ico,
                         'YEAR(datumPodpisuSmlouvy)' => $s->year
                     ]
                 ])->first()->sum;

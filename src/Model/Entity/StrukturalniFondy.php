@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property string $popisProjektu
  * @property string $zadatel
  * @property string $zadatelIco
+ * @property int $zadatelIcoNum
  * @property string $pravniForma
  * @property string $pravniFormaSkupina
  * @property string $stavProjektu

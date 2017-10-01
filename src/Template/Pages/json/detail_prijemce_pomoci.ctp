@@ -21,7 +21,7 @@ if (!$cache_data) {
         case "dotinfo":
 
             /** @var \App\Model\Entity\Dotinfo[] $dotinfo */
-            foreach($dotinfo as $d){
+            foreach ($dotinfo as $d) {
                 $data_arr[] = [
                     $d->ucastnikObchodniJmeno,
                     \App\View\DPUTILS::ico($d->ucastnikIco),
@@ -67,7 +67,8 @@ if (!$cache_data) {
                     \App\View\DPUTILS::currency($f->euZdroje),
                     \App\View\DPUTILS::currency($f->vyuctovaneVerejneCelkem),
                     \App\View\DPUTILS::currency($f->proplaceneEuZdroje),
-                    $f->kodNUTS . ' (' . $f->nazevNUTS . ')'
+                    $f->kodNUTS . ' (' . $f->nazevNUTS . ')',
+                    $this->Html->link('Detail', '/strukturalni-fondy-detail-dotace/' . $f->id)
                 ];
 
                 $total++;

@@ -88,7 +88,7 @@ if (!$cache_data) {
                 /** @var \App\Model\Entity\StrukturalniFondy $d */
                 $data_arr[] = [
                     $d->zadatel,
-                    \App\View\DPUTILS::ico($d->zadatelIco),
+                    \App\View\DPUTILS::ico($d->zadatelIcoNum),
                     \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
                     $d->cisloProjektu,
                     $d->nazevProjektu,

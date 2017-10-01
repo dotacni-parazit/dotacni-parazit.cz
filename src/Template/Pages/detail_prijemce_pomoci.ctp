@@ -168,6 +168,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <th>Vyúčtované veřejné zdroje celkem</th>
                     <th>Proplacené EU zdroje</th>
                     <th>Místo realizace</th>
+                    <th>Detail</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -183,7 +184,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td>EU zdroje</td>
                     <td>Vyúčtované veřejné zdroje celkem</td>
                     <td>Proplacené EU zdroje</td>
-                    <th>Místo realizace</th>
+                    <td>Místo realizace</td>
+                    <td>Detail</td>
                 </tr>
                 </tfoot>
             </table>

@@ -12,7 +12,6 @@ $this->set('title', $data->operacaniProgramNazev);
         <li><a href="#dotace">Dotace</a></li>
     </ul>
     <div id="obecne">
-        <h2>OP - Obecné informace</h2>
         <table class="datatable datatable_simple">
             <thead>
             <tr>
@@ -64,7 +63,6 @@ $this->set('title', $data->operacaniProgramNazev);
         </table>
     </div>
     <div id="priority">
-        <h2>Podřízené Priority</h2>
         <table class="datatable datatable_simple">
             <thead>
             <tr>
@@ -95,7 +93,6 @@ $this->set('title', $data->operacaniProgramNazev);
         </table>
     </div>
     <div id="dotace">
-        <h2>Dotace v OP</h2>
         <div>Max. 50.000 záznamů</div>
         <table style="width: 100%" class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
