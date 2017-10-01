@@ -2,14 +2,12 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', 'Poskytovatel dotací - ' . $poskytovatel->dotacePoskytovatelNazev . ', rok ' . $year);
+$this->set('title', $poskytovatel->dotacePoskytovatelNazev);
 ?>
-<div>
+<strong>
     Součet za rok <?= $year ?>: <?= Number::currency($year_sum) ?>
-</div>
+</strong>
 <br/>
-<br/>
-<h2>Rozhodnutí/Dotace za rok <?= $year ?></h2>
 <table id="datatable" data-ajax="/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax/<?= $year ?>">
     <thead>
     <tr>

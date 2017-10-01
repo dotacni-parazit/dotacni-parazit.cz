@@ -156,3 +156,7 @@ nav {
 .homepage a:hover {
     color: #46223E;
 }
+
+label {
+    margin-right: 1em;
+}

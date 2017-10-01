@@ -4,7 +4,7 @@ $this->set('title', 'Kapitoly Státního Rozpočtu');
 <table class="datatable" style="width: 100%;">
     <thead>
     <tr>
-        <th>Název</th>
+        <th class="col">Název</th>
         <th>Kód Kapitoly</th>
         <th>Platnost Do</th>
     </tr>

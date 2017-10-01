@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Znaky Účelu Dotačních Titulů');
+$this->set('title', 'Účel Dotačních Titulů');
 ?>
 <div>
     Filtrovat: <span id="yearsfilter">
@@ -13,12 +13,12 @@ $this->set('title', 'Znaky Účelu Dotačních Titulů');
 <table id="datatable" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>
-        <th data-type="html">Název</th>
-        <th data-type="html">Kód</th>
-        <th data-type="num">Kapitola Státního Rozpočtu</th>
-        <th data-type="num">Počet Dotačních Titulů</th>
+        <th data-type="html" class="col">Název</th>
+        <th data-type="html" class="nosearch">Kód</th>
+        <th data-type="num" class="nosearch">Kapitola Státního Rozpočtu</th>
+        <th data-type="num" class="nosearch">Počet Dotačních Titulů</th>
         <th data-type="num">Platnost Rok</th>
-        <th data-type="html">Otevřít</th>
+        <th data-type="html" class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>
@@ -47,7 +47,7 @@ $this->set('title', 'Znaky Účelu Dotačních Titulů');
     function filterYear(year) {
         table.column(4).search("" + year).draw();
         $("#yearsfilter a").removeClass("hilight_underline");
-        $("#yearsfilter #f"+year).addClass("hilight_underline");
+        $("#yearsfilter #f" + year).addClass("hilight_underline");
         return false;
     }
 </script>

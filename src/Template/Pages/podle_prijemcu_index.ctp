@@ -1,11 +1,11 @@
 <?php
-$this->set('title', 'Podle Příjemců Pomoci');
+$this->set('title', 'Příjemci Pomoci');
 ?>
 
 
 <div class="row homepage_row homepage">
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/fyzicke-osoby">Fyzické Osoby</a>
+        <a href="/fyzicke-osoby">Fyzické Osoby Nepodnikatelé</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="/prijemce-dotaci/ico">Podle IČO</a>
@@ -20,10 +20,10 @@ $this->set('title', 'Podle Příjemců Pomoci');
         <a href="/prijemce-dotaci/pravni-forma">Podle Právní Formy</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/podle-sidla-prijemce">Podle sídla příjemce</a>
+        <a href="/podle-sidla-prijemce">Podle Sídla Příjemce</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/dary-politickym-stranam">Dotace dárců politických stran</a>
+        <a href="/dary-politickym-stranam">Dotace Dárců Politických Stran</a>
     </div>
 </div>
 

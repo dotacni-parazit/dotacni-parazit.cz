@@ -1,12 +1,13 @@
 <?php
-$this->set('title', 'Vyhledávání Jménem - Příjemci Pomoci');
+$this->set('title', 'Podle Jména');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
 ?>
-<hr/>
-
+<div class="alert alert-info">
+    Všechny právnické osoby a fyzické osoby podnikající evidované v CEDR III, Dotinfo, přehledu investičních pobídek, na strukturální-fondy.cz a přehledu dárců politických stran jako příjemci dotací.
+</div>
 <div id="tabs2">
     <ul>
         <li><a href="#jmeno">Vyhledávání podle Jména</a></li>
@@ -28,7 +29,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li id="tab-czechinvest"><a href="#czechinvest">Investiční pobídky</a></li>
         <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy</a></li>
         <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
-        <li id="tab-politickeStrany"><a href="#politickeStrany">Dárci Politických Stran</a></li>
+        <li id="tab-politickeStrany"><a href="#politickeStrany">Dotace Dárců Politických Stran</a></li>
         <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
     </ul>
     <div id="cedr">

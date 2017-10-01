@@ -1,8 +1,11 @@
 <?php
-
-
-$this->set('title', 'Statistika využití databáze');
+$this->set('title', 'Statistika Využití Databáze');
 ?>
+<div class="alert alert-info">
+    Statistika využití databáze / tabulek, s daty importovanými přímo ze systému CEDR
+    <br/>
+    Procenta ukazují počet nevyužitých / nevypněných hodnot v daném sloupci
+</div>
 <strong>Navigace</strong><br/>
 <ul>
     <?php foreach ($tables as $t) { ?>

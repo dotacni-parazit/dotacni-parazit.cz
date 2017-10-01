@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Operační programy MMR');
+$this->set('title', 'CEDR III - Programy MMR');
 ?>
 <table class="datatable">
     <thead>

@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Operační programy CEDR');
+$this->set('title', 'CEDR III - Ostatní Programy');
 ?>
 <table class="datatable">
     <thead>

@@ -2,7 +2,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', 'Zdroje Financí / Financování');
+$this->set('title', 'CEDR III - Zdroje Financování');
 ?>
 <div class="row">
     <div style="border: 0 solid black;border-right-width: 1px;"

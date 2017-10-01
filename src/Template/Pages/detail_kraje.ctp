@@ -3,7 +3,7 @@
 use Cake\Cache\Cache;
 use Cake\I18n\Number;
 
-$this->set('title', $kraj->krajNazev . ' - Detail Kraje');
+$this->set('title', $kraj->krajNazev);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

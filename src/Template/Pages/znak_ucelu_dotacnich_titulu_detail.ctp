@@ -38,7 +38,7 @@ $this->set('title', $data->ucelZnakNazev);
 
     <tr>
         <td>Dotační Titul</td>
-        <td><?= $this->Html->link($data->DotacniTituly[0]->DotaceTitul->dotaceTitulNazev, '/detail-dotacni-titul/' . $data->DotacniTituly[0]->DotaceTitul->dotaceTitulKod) ?></td>
+        <td><?= !empty($data->DotacniTituly) ? $this->Html->link($data->DotacniTituly[0]->DotaceTitul->dotaceTitulNazev, '/detail-dotacni-titul/' . $data->DotacniTituly[0]->DotaceTitul->dotaceTitulKod) : "N/A" ?></td>
     </tr>
 
     </tbody>

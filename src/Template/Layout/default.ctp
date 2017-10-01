@@ -9,14 +9,13 @@ $title = $this->fetch('title');
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <title>
-        <?= strtolower($title) === "dotační parazit" ? "Hlavní stránka" : $title ?> - Dotační Parazit
+        <?= strtolower($title) === "dotační parazit" ? "Hlavní Stránka" : $title ?> - Dotační Parazit
     </title>
     <?= $this->Html->meta('icon') ?>
 
     <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" crossorigin="anonymous"
+            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"></script>
     <?php
     echo $this->Html->script([
         'jquery.min.js',

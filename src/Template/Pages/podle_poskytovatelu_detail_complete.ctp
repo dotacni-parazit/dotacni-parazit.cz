@@ -1,7 +1,7 @@
 <?php
 
 
-$this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací')
+$this->set('title', $poskytovatel->dotacePoskytovatelNazev)
 ?>
 <table id="datatable" data-ajax="/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax">
     <thead>

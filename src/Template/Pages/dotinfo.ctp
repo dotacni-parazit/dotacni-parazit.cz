@@ -2,7 +2,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', 'DotInfo');
+$this->set('title', 'DotInfo.cz');
 ?>
 <table class="datatable datatable_simple">
     <thead>
@@ -17,6 +17,9 @@ $this->set('title', 'DotInfo');
             Součet schválených částek
         </th>
         <th class="nosearch">
+            Počet rozhodnutí
+        </th>
+        <th class="nosearch">
             Otevřít
         </th>
     </tr>
@@ -27,6 +30,7 @@ $this->set('title', 'DotInfo');
             <td><?= $p['poskytovatelNazev'] ?></td>
             <td><?= \App\View\DPUTILS::ico($p['poskytovatelIco']) ?></td>
             <td><?= Number::currency($sums[$p['poskytovatelIco']]['sumSchvaleno']) ?></td>
+            <td><?= $sums[$p['poskytovatelIco']]['count'] ?></td>
             <td><?= $this->Html->link('Detail Poskytovatele', '/dotinfo/poskytovatel/' . $p['poskytovatelIco']) ?></td>
         </tr>
     <?php } ?>
@@ -41,6 +45,9 @@ $this->set('title', 'DotInfo');
         </td>
         <td>
             Součet schválených částek
+        </td>
+        <td>
+            Počet rozhodnutí
         </td>
         <td>
             Otevřít

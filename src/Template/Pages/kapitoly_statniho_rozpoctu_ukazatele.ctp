@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
+$this->set('title', 'Ukazatele Kapitol Státního Rozpočtu');
 ?>
 <div>
     Filtrovat: <span id="yearsfilter">
@@ -13,12 +13,12 @@ $this->set('title', 'Kapitoly Státního Rozpočtu - Ukazatele');
 <table id="datatable" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>
-        <th data-type="html">Název Ukazatele</th>
-        <th data-type="html">Kód Ukazatele</th>
-        <th data-type="html">Kapitola Státního Rozpočtu</th>
-        <th data-type="num">Počet Dotačních Titulů</th>
+        <th data-type="html" class="col">Název Ukazatele</th>
+        <th data-type="html" class="nosearch">Kód Ukazatele</th>
+        <th data-type="html" class="nosearch">Kapitola Státního Rozpočtu</th>
+        <th data-type="num" class="nosearch">Počet Dotačních Titulů</th>
         <th data-type="datetime">Platnost</th>
-        <th data-type="html">Otevřít</th>
+        <th data-type="html" class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>

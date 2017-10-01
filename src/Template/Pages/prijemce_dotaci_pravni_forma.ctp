@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Příjemce Pomoci - Právní Forma');
+$this->set('title', 'Podle Právní Formy');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
@@ -11,7 +11,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="pf">
         <div class="alert alert-info">
-            Právní forma dle evidence CEDR, <a href="/opendata#pravni-forma">Více informací ...</a>
+            Právní Forma dle evidence CEDR, <a href="/opendata#pravni-forma">Více informací ...</a>
         </div>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
@@ -22,7 +22,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
     <div id="spf">
         <div class="alert alert-info">
-            Společná právní forma - Sdružení jednotlivých právních forem dle evidence CEDR, <a href="/opendata#spolecna-pravni-forma">Více informací ...</a>
+            Společná Právní Forma - Sdružení jednotlivých právních forem dle evidence CEDR, <a href="/opendata#spolecna-pravni-forma">Více informací ...</a>
         </div>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);

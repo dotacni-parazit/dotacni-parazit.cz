@@ -1,8 +1,6 @@
 <?php
 
-use Cake\I18n\Number;
-
-$this->set('title', $obec->obecNazev . ' - Detail Obce');
+$this->set('title', $obec->obecNazev);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

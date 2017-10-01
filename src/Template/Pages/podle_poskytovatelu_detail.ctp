@@ -2,7 +2,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', $poskytovatel->dotacePoskytovatelNazev . ' - Poskytovatel Dotací');
+$this->set('title', $poskytovatel->dotacePoskytovatelNazev);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

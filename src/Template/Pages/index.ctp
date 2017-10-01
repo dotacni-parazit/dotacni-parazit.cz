@@ -3,16 +3,16 @@
 <form>
     <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-9">
-            <input name="query" placeholder="Zadejte Název nebo IČO" style="width: 100%; font-size: 1em;">
+            <input name="query" placeholder="Zadejte Název nebo IČO" style="width: 100%; font-size: 1em; padding: 0.5em;">
         </div>
         <div class="col-sm-4 col-md-4 col-lg-2">
-            <select style="width: 100%; background: white; font-size: 1.4em;" name="type">
+            <select style="width: 100%; background: white; font-size: 1.2em; padding: 0.5em;" name="type">
                 <option value="1">Příjemce Dotací</option>
                 <option value="2">Poskytovatel Dotací</option>
             </select>
         </div>
         <div class="col-1">
-            <input type="submit" value="Hledat!" style="background: white;">
+            <input type="submit" value="Hledat!" style="background: white; padding: 0.5em;">
         </div>
     </div>
 </form>

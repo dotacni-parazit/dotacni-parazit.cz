@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Dotační tituly podle kapitoly státního rozpočtu');
+$this->set('title', 'CEDR III - Dotační Tituly');
 ?>
 
 <table id="datatable" data-ajax="<?= $this->request->here(false) ?>">

@@ -1,8 +1,3 @@
-<?php
-use Cake\I18n\Number;
-
-$this->set('title', 'Poskytovatelé dotací');
-?>
 <table id="datatable" class="datatable_simple" data-ajax="<?= $this->request->here(false) ?>">
     <thead>
     <tr>

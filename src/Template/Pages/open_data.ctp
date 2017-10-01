@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Otevřená Data - Dotační Parazit');
+$this->set('title', 'OpenData');
 ?>
 
 <ul>

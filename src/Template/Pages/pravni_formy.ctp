@@ -1,5 +1,5 @@
 <?php
-$this->set('title', 'Právní formy');
+$this->set('title', 'Právní Formy');
 ?>
 <table class="datatable">
     <thead>

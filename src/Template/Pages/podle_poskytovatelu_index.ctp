@@ -1,25 +1,25 @@
 <?php
-$this->set('title', 'Podle Poskytovatelů');
+$this->set('title', 'Poskytovatelé');
 ?>
 
 <div class="row homepage_row homepage">
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/podle-poskytovatelu">Dotační úřady</a>
+        <a href="/podle-poskytovatelu">CEDR III - Dotační Úřady</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/podle-zdroje-financi">Zdroje Financování</a>
+        <a href="/podle-zdroje-financi">CEDR III - Zdroje Financování</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/dotacni-tituly">Dotační Tituly</a>
+        <a href="/dotacni-tituly">CEDR III - Dotační Tituly</a>
     </div>
 </div>
 
 <div class="row homepage_row homepage">
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/operacni-programy-mmr">Programy MMR dle CEDR</a>
+        <a href="/operacni-programy-mmr">CEDR III - Programy MMR</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="/operacni-programy-cedr">Ostatní Programy CEDR</a>
+        <a href="/operacni-programy-cedr">CEDR III - Ostatní Programy</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="/investicni-pobidky">Investiční Pobídky (CzechInvest)</a>

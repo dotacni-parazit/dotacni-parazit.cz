@@ -1,9 +1,9 @@
 <?php
 
 
-$this->set('title', 'Fyzické osoby - Přijemci Dotací')
+$this->set('title', 'Fyzické osoby Nepodnikatelé')
 ?>
-<div class="alert alert-info">Všechny Fyzické osoby evidované v CEDR-III jako Příjemci dotací</div>
+<div class="alert alert-info">Všechny Fyzické osoby nepodnikatelé evidované v CEDR-III jako příjemci dotací</div>
 <hr/>
 Filtr Příjmení: <br/>
 <?php
