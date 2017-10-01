@@ -3114,11 +3114,6 @@ class PagesController extends AppController
             $cache_tag_ico_sum_pobidky = 'sum_pobidky_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
             $cache_tag_ico_sum_strukturalni_fondy = 'sum_strukturalni_fondy_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
 
-            //Cache::delete($cache_tag_ico_sum_spotrebovano, 'long_term');
-            //Cache::delete($cache_tag_ico_sum_rozhodnuti, 'long_term');
-            //Cache::delete($cache_tag_ico_sum_pobidky, 'long_term');
-            //Cache::delete($cache_tag_ico_sum_strukturalni_fondy, 'long_term');
-
             $sum_rozhodnuti = Cache::read($cache_tag_ico_sum_rozhodnuti, 'long_term');
             $sum_spotrebovano = Cache::read($cache_tag_ico_sum_spotrebovano, 'long_term');
             $sum_pobidky = Cache::read($cache_tag_ico_sum_pobidky, 'long_term');

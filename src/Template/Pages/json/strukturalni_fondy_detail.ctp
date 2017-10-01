@@ -4,7 +4,6 @@ use Cake\Cache\Cache;
 
 
 $cache_key = 'strukturalni_fondy_detail_' . sha1($data->operacaniProgramKod);
-Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
