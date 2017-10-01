@@ -110,7 +110,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Auditorská Společnost</th>
                 <th>Auditor</th>
                 <th>Rok Auditu</th>
-                <th>Auditovaný dokument</th>
             </tr>
             </thead>
             <tbody>
@@ -119,7 +118,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= $a->auditor->name . ' (IČ: ' . \App\View\DPUTILS::ico($a->auditor->ico) . ')' ?></td>
                     <td><?= $a->name . ' (' . $a->permission . ')' ?></td>
                     <td><?= $a->year ?></td>
-                    <td></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -128,7 +126,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Auditorská Společnost</td>
                 <td>Auditor</td>
                 <td>Rok Auditu</td>
-                <td>Auditovaný dokument</td>
             </tr>
             </tfoot>
         </table>
