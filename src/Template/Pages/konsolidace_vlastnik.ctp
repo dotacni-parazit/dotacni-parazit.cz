@@ -7,7 +7,7 @@ use Cake\I18n\Number;
 
 /** @var \App\Model\Entity\Consolidation[] $subsidiaries */
 /** @var \App\Model\Entity\Owner[] $holdingy */
-$this->set('title', $owner->name . ' - Vlastník Holdingů');
+$this->set('title', $owner->name);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

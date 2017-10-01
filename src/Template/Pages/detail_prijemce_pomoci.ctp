@@ -6,7 +6,7 @@ use Cake\Routing\Router;
 
 /** @var \App\Model\Entity\PrijemcePomoci $prijemci */
 
-$this->set('title', \App\View\DPUTILS::jmenoPrijemcePomoci($prijemce) . ' - Příjemce Pomoci');
+$this->set('title', \App\View\DPUTILS::jmenoPrijemcePomoci($prijemce));
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
@@ -20,7 +20,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php } ?>
         <li><a href="#rozhodnuti">Rozhodnutí dle CEDR</a></li>
         <?php if (!empty($strukturalniFondy)) { ?>
-            <li><a href="#strukturalniFondy">Strukturální Fondy</a></li>
+            <li><a href="#strukturalniFondy">Strukturální Fondy 2007 - 2013</a></li>
         <?php } ?>
         <?php if (!empty($dotinfo)) { ?>
             <li><a href="#dotinfo">DotInfo</a></li>

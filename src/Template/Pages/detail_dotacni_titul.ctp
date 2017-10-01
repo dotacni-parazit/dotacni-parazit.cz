@@ -2,7 +2,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', $titul->dotaceTitulNazev . ' - Dotační Titul');
+$this->set('title', $titul->dotaceTitulNazev);
 $props = [
     "dotaceTitulKod" => "Kód Dotačního Titulu",
     "dotaceTitulVlastniKod" => "Vlastní kód Dotačního Titulu",

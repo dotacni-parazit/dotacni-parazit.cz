@@ -34,7 +34,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <ul>
         <li id="tab-cedr"><a href="#cedr">CEDR</a></li>
         <li id="tab-czechinvest"><a href="#czechinvest">Investiční pobídky</a></li>
-        <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy</a></li>
+        <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy 2007 - 2013</a></li>
         <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
         <li id="tab-politickeStrany"><a href="#politickeStrany">Dotace Dárců Politických Stran</a></li>
         <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>

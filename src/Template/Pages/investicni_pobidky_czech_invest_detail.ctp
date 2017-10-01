@@ -4,7 +4,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', $data->name . '- Detail Pobídky CzechInvest');
+$this->set('title', $data->name);
 ?>
 
 <table class="datatable datatable_simple">

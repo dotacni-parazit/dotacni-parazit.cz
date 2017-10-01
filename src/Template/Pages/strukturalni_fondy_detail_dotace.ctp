@@ -3,7 +3,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', $data->nazevProjektu . ' - Detail Strukturální Fondy');
+$this->set('title', $data->nazevProjektu);
 ?>
 
 <table class="datatable datatable_simple">

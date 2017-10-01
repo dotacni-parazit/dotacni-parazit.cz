@@ -2,7 +2,7 @@
 
 
 $years = $titul->zaznamPlatnostOdDatum->year == $titul->zaznamPlatnostDoDatum->year ? $titul->zaznamPlatnostDoDatum->year : $titul->zaznamPlatnostOdDatum->year . '-' . $titul->zaznamPlatnostDoDatum->year;
-$this->set('title', $titul->dotaceTitulNazev . ' (' . $years . ') - Dotační Titul');
+$this->set('title', $titul->dotaceTitulNazev);
 $props = [
     "dotaceTitulKod" => "Kód Dotačního Titulu",
     "dotaceTitulVlastniKod" => "Vlastní kód Dotačního Titulu",

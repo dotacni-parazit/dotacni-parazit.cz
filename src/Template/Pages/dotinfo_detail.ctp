@@ -3,7 +3,7 @@
 
 use Cake\I18n\Number;
 
-$this->set('title', empty($data->dotaceNazev) ? (empty($data->idDotace) ? '' : $data->idDotace) : $data->dotaceNazev . ' - Detail DotInfo');
+$this->set('title', empty($data->dotaceNazev) ? (empty($data->idDotace) ? '' : $data->idDotace) : $data->dotaceNazev);
 ?>
 
 <table id="datatable" class="datatable_simple">

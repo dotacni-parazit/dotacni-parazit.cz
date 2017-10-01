@@ -1,7 +1,7 @@
 <?php
 use Cake\I18n\Number;
 
-$this->set('title', $year . ' - ' . $zdroj->financniZdrojNazev . ' - Zdroj Financí');
+$this->set('title', $zdroj->financniZdrojNazev);
 ?>
 <h2>Rozhodnutí/Dotace za rok <?= $year ?></h2>
 <hr/>

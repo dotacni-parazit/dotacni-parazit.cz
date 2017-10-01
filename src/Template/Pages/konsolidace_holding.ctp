@@ -7,7 +7,7 @@
 use Cake\I18n\Number;
 
 /** @var \App\Model\Entity\Company $holding */
-$this->set('title', $holding->name . ' - Detail Holdingu');
+$this->set('title', $holding->name);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

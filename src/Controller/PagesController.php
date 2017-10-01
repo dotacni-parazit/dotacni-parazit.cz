@@ -471,7 +471,7 @@ class PagesController extends AppController
 
     public function strukturalniFondy()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy' => 'self']);
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2007 - 2013' => 'self']);
         $ops = $this->StrukturalniFondy->find('all', [
             'fields' => [
                 'OP' => 'cisloANazevProgramu',

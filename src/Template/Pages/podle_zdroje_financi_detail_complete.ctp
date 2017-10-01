@@ -1,7 +1,7 @@
 <?php
 
 
-$this->set('title', $zdroj->financniZdrojNazev . ' - Zdroj Financí');
+$this->set('title', $zdroj->financniZdrojNazev);
 ?>
 <table id="datatable" data-ajax="/podle-zdroje-financi/<?= $zdroj->financniZdrojKod ?>/complete/ajax">
     <thead>
