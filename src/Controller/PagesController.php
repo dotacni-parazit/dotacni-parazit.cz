@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: smarek
- * Date: 6/4/17
- * Time: 9:10 PM
- */
 
 namespace App\Controller;
 
@@ -13,6 +7,8 @@ use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
 use App\Model\Entity\Dotace;
 use App\Model\Entity\MFCRPAP;
+use App\Model\Entity\StrukturalniFondy;
+use App\Model\Entity\StrukturalniFondy2020;
 use App\Model\Table\AuditsTable;
 use App\Model\Table\CiselnikCedrOpatreniv01Table;
 use App\Model\Table\CiselnikCedrOperacniProgramv01Table;
@@ -45,6 +41,7 @@ use App\Model\Table\OwnersTable;
 use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
+use App\Model\Table\StrukturalniFondy2020Table;
 use App\Model\Table\StrukturalniFondyTable;
 use App\Model\Table\TransactionsTable;
 use App\View\DPUTILS;
@@ -94,6 +91,7 @@ use Cake\View\View;
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
  * @property AuditsTable Audits
  * @property MFCRPAPTable MFCRPAP
+ * @property StrukturalniFondy2020Table StrukturalniFondy2020
  */
 class PagesController extends AppController
 {
@@ -138,6 +136,7 @@ class PagesController extends AppController
         $this->loadModel('CiselnikCedrPodOpatreniv01');
         $this->loadModel('CiselnikCedrGrantoveSchemav01');
         $this->loadModel('StrukturalniFondy');
+        $this->loadModel('StrukturalniFondy2020');
         $this->loadModel('CiselnikDotaceTitulStatniRozpocetUkazatelv01');
         $this->loadModel('CiselnikUcelZnakv01');
         $this->loadModel('CiselnikUcelZnakDotacniTitulv01');
@@ -928,11 +927,46 @@ class PagesController extends AppController
 
     }
 
+    public function strukturalniFondy2020()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2014 - 2020' => 'self']);
+        $this->set('title', 'Strukturální Fondy 2014 - 2020');
+
+        $ops = $this->StrukturalniFondy2020->find('all', [
+            'fields' => [
+                'OP' => 'operacniProgram',
+                'CNT' => 'COUNT(*)'
+            ],
+            'group' => [
+                'operacniProgram'
+            ]
+        ])->enableHydration(false)->toArray();
+        $this->set(compact(['ops']));
+
+        $this->render('strukturalniFondy');
+    }
+
     public function strukturalniFondyDetailDotace()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2007 - 2013' => '/strukturalni-fondy-2007-2013', 'Detail Dotace' => 'self']);
+        $this->set('title', 'Strukturální Fondy 2007 - 2013');
 
         $data = $this->StrukturalniFondy->find('all', [
+            'conditions' => [
+                'id' => $this->request->getParam('id')
+            ]
+        ])->first();
+        if (empty($data)) throw new NotFoundException();
+
+        $this->set(compact(['data']));
+    }
+
+    public function strukturalniFondy2020DetailDotace()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2014 - 2020' => '/strukturalni-fondy-2014-2020', 'Detail Dotace' => 'self']);
+        $this->set('title', 'Strukturální Fondy 2014 - 2020');
+
+        $data = $this->StrukturalniFondy2020->find('all', [
             'conditions' => [
                 'id' => $this->request->getParam('id')
             ]
@@ -1347,26 +1381,42 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2007 - 2013' => '/strukturalni-fondy-2007-2013', 'Detail OP' => 'self']);
 
         $req_op = filter_var($this->request->getQuery('op'), FILTER_SANITIZE_STRING);
+        $is_2020_op = false;
 
         $op = $this->StrukturalniFondy->find('all', [
             'conditions' => [
                 'cisloANazevProgramu' => $req_op
             ]
         ])->first();
+        if (empty($op)) {
+            $op = $this->StrukturalniFondy2020->find('all', [
+                'conditions' => [
+                    'operacniProgram' => $req_op
+                ]
+            ])->first();
+            $is_2020_op = !empty($op);
+            $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2014 - 2020' => '/strukturalni-fondy-2014-2020', 'Detail OP' => 'self']);
+
+        }
         if (empty($op)) throw new NotFoundException();
+
 
         $op_kod = explode(' ', $req_op);
         $op_kod = $op_kod[0];
+        $is_special_op = false;
 
-        $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
-            'conditions' => [
-                'operacaniProgramKod' => $op_kod
-            ]
-        ])->first();
-        if (empty($data) && strpos($req_op, 'ROP') === false && strpos($req_op, 'OP Praha') === false) throw new NotFoundException();
+        if (!$is_2020_op) {
+            $data = $this->CiselnikMmrOperacniProgramv01->find('all', [
+                'conditions' => [
+                    'operacaniProgramKod' => $op_kod
+                ]
+            ])->first();
+            if (empty($data) && strpos($req_op, 'ROP') === false && strpos($req_op, 'OP Praha') === false) throw new NotFoundException();
 
-        $is_special_op = strpos($req_op, 'ROP') !== false || strpos($req_op, 'OP Praha') !== false;
-
+            $is_special_op = strpos($req_op, 'ROP') !== false || strpos($req_op, 'OP Praha') !== false;
+        } else {
+            $data = null;
+        }
         if ($is_special_op) {
             $priority = $this->StrukturalniFondy->find('all', [
                 'conditions' => [
@@ -1380,6 +1430,7 @@ class PagesController extends AppController
                     'cisloPrioritniOsy'
                 ]
             ]);
+            /** @var StrukturalniFondy $op */
             $data = (object)[
                 'operacaniProgramKod' => $op->cisloANazevProgramu,
                 'operacaniProgramNazev' => $op->cisloANazevProgramu,
@@ -1387,6 +1438,25 @@ class PagesController extends AppController
                 'zaznamPlatnostDoDatum' => false,
                 'zaznamPlatnostOdDatum' => false
             ];
+        } else if ($is_2020_op) {
+            /** @var StrukturalniFondy2020 $op */
+            $data = (object)[
+                'operacaniProgramKod' => $op->operacniProgram,
+                'operacaniProgramNazev' => $op->operacniProgram,
+                'idOperacniProgram' => false,
+                'zaznamPlatnostDoDatum' => false,
+                'zaznamPlatnostOdDatum' => false
+            ];
+
+            $priority = $this->StrukturalniFondy2020->find('all', [
+                'fields' => [
+                    'cisloPrioritniOsy',
+                    'CNT' => 'COUNT(*)'
+                ],
+                'group' => [
+                    'cisloPrioritniOsy'
+                ]
+            ]);
         } else {
             $priority = $this->StrukturalniFondy->find('all', [
                 'conditions' => [
@@ -1408,16 +1478,27 @@ class PagesController extends AppController
         }
 
         if ($this->request->is('ajax')) {
-            $fondy = $this->StrukturalniFondy->find('all', [
-                'conditions' => [
-                    'cisloANazevProgramu' => $req_op
-                ]
-            ])->limit(50000);
+            if ($is_2020_op) {
+                $fondy = $this->StrukturalniFondy2020->find('all', [
+                    'conditions' => [
+                        'operacniProgram' => $req_op
+                    ]
+                ]);
+                $ajax_type = 'strukturalniFondy2020';
+            } else {
+                $fondy = $this->StrukturalniFondy->find('all', [
+                    'conditions' => [
+                        'cisloANazevProgramu' => $req_op
+                    ]
+                ])->limit(50000);
+                $ajax_type = 'strukturalniFondy';
+            }
+
 
             $_serialize = false;
-            $this->set(compact(['op', 'data', 'fondy', '_serialize']));
+            $this->set(compact(['op', 'data', 'fondy', 'ajax_type', '_serialize']));
         } else {
-            $this->set(compact(['op', 'data', 'priority']));
+            $this->set(compact(['op', 'data', 'priority', 'is_2020_op']));
         }
     }
 

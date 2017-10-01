@@ -1,8 +1,3 @@
-<?php
-
-$this->set('title', 'Strukturální Fondy 2007 - 2013');
-?>
-
 <table class="datatable datatable_simple">
     <thead>
     <tr>

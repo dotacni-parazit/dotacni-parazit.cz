@@ -73,11 +73,11 @@ $this->set('title', $data->operacaniProgramNazev);
             </tr>
             </thead>
             <tbody>
-            <?php /** @var \App\Model\Entity\StrukturalniFondy[] $priority */
+            <?php
             foreach ($priority as $p) { ?>
                 <tr>
-                    <td><?= !empty($p->MmrPriorita) ? $p->MmrPriorita->prioritaNazev : "N/A" ?></td>
-                    <td><?= $p->cisloPrioritniOsy ?></td>
+                    <td><?= $is_2020_op ? $p->cisloPrioritniOsy : (!empty($p->MmrPriorita) ? $p->MmrPriorita->prioritaNazev : "N/A") ?></td>
+                    <td><?= $is_2020_op ? explode(" ", $p->cisloPrioritniOsy)[0] : $p->cisloPrioritniOsy ?></td>
                     <td><?= $p->CNT ?></td>
                 </tr>
             <?php } ?>
@@ -93,19 +93,26 @@ $this->set('title', $data->operacaniProgramNazev);
     </div>
     <div id="dotace">
         <div>Max. 50.000 záznamů</div>
+
+        <?php
+        if ($is_2020_op) {
+            $columns = ["Zdroje celkem", "Schválené zdroje Veřejné", "Schválené zdroje EU", "Schválené zdroje Soukromé", "Vyúčtované celkem", "Vyúčtované zdroje Veřejné", "Vyúčtované zdroje EU", "Vyúčtované zdroje Soukromé"];
+        } else {
+            $columns = ["Zdroje celkem", "Veřejné zdroje celkem", "EU zdroje", "Vyúčtované veřejné celkem", "Proplacené EU zdroje", "Certifikované veřejné celkem", "Certifikované EU zdroje"];
+        }
+        ?>
+
         <table style="width: 100%" class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
                 <th data-type="html">Název Projektu</th>
                 <th data-type="html">Číslo Projektu</th>
                 <th data-type="html">Žadatel (IČO)</th>
-                <th data-type="currency">Zdroje celkem</th>
-                <th data-type="currency">Veřejné zdroje celkem</th>
-                <th data-type="currency">EU zdroje</th>
-                <th data-type="currency">Vyúčtované veřejné celkem</th>
-                <th data-type="currency">Proplacené EU zdroje</th>
-                <th data-type="currency">Certifikované veřejné celkem</th>
-                <th data-type="currency">Certifikované EU zdroje</th>
+                <th>Priorita Kód</th>
+
+                <?php foreach ($columns as $c) { ?>
+                    <th data-type="currency"><?= $c ?></th>
+                <?php } ?>
             </tr>
             </thead>
             <tbody>
@@ -116,13 +123,11 @@ $this->set('title', $data->operacaniProgramNazev);
                 <td data-type="html">Název Projektu</td>
                 <td data-type="html">Číslo Projektu</td>
                 <td data-type="html">Žadatel (IČO)</td>
-                <td data-type="currency">Zdroje celkem</td>
-                <td data-type="currency">Veřejné zdroje celkem</td>
-                <td data-type="currency">EU zdroje</td>
-                <td data-type="currency">Vyúčtované veřejné celkem</td>
-                <td data-type="currency">Proplacené EU zdroje</td>
-                <td data-type="currency">Certifikované veřejné celkem</td>
-                <td data-type="currency">Certifikované EU zdroje</td>
+                <td>Priorita Kód</td>
+
+                <?php foreach ($columns as $c) { ?>
+                    <td data-type="currency"><?= $c ?></td>
+                <?php } ?>
             </tr>
             </tfoot>
         </table>
