@@ -62,7 +62,7 @@ $this->set('title', 'CEDR III - Zdroje Financování');
                     <td><?= $this->Html->link($d['nazev'], '/podle-zdroje-financi/' . $d['id']) ?></td>
                     <td style="text-align: right"><?= Number::currency($d['castkaRozhodnuta'], 'CZK', ['zero' => '0.00 Kč']) ?></td>
                     <td style="text-align: right"><?= Number::currency($d['castkaSpotrebovana'], 'CZK', ['zero' => '0.00 Kč']) ?></td>
-                    <td><?= $this->Html->link('Otevřít', '/podle-zdroje-financi/' . $d['id']) ?></td>
+                    <td style="text-align: right"><?= $this->Html->link('Otevřít', '/podle-zdroje-financi/' . $d['id']) ?></td>
                 </tr>
                 <?php
             }

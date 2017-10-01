@@ -111,6 +111,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th class="nosearch" data-type="currency">Součet Spotřebováno</th>
                 <th class="nosearch" data-type="currency">Součet Pobídek CzechInvest</th>
                 <th class="nosearch" data-type="currency">Součet Strukturálních Fondů</th>
+                <th data-type="currency">Součet DotInfo.cz</th>
             </tr>
             </thead>
             <tbody>
@@ -125,6 +126,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][1]) ?></td>
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][2] * 1000000) ?></td>
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][3]) ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][4]) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -135,10 +137,11 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Rok</td>
                 <td>Vlastnický Podíl</td>
                 <td>Státní příslušnost</td>
-                <td class="nosearch">Součet Rozhodnutí</td>
-                <td class="nosearch">Součet Spotřebováno</td>
-                <td class="nosearch">Součet Pobídek CzechInvest</td>
-                <td class="nosearch">Součet Strukturálních Fondů</td>
+                <td>Součet Rozhodnutí</td>
+                <td>Součet Spotřebováno</td>
+                <td>Součet Pobídek CzechInvest</td>
+                <td>Součet Strukturálních Fondů</td>
+                <td>Součet DotInfo.cz</td>
             </tr>
             </tfoot>
         </table>

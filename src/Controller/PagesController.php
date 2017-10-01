@@ -1526,7 +1526,7 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetail()
     {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Dotační Úřady'  => '/podle-poskytovatelu', 'Detail Poskytovatele Dotací' => 'self']);
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Dotační Úřady' => '/podle-poskytovatelu', 'Detail Poskytovatele Dotací' => 'self']);
 
         $kod = filter_var($this->request->getParam('id'), FILTER_SANITIZE_NUMBER_INT);
 
@@ -3105,7 +3105,7 @@ class PagesController extends AppController
 
         foreach ($subsidiaries as $s) {
             if ($s->subsidiary->ico < 1) {
-                $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [0, 0, 0, 0];
+                $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [0, 0, 0, 0, 0];
                 continue;
             }
             if ($s->year < 1900 || $s->year > 2030) continue;
@@ -3115,11 +3115,13 @@ class PagesController extends AppController
             $cache_tag_ico_sum_spotrebovano = 'sum_spotrebovano_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
             $cache_tag_ico_sum_pobidky = 'sum_pobidky_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
             $cache_tag_ico_sum_strukturalni_fondy = 'sum_strukturalni_fondy_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+            $cache_tag_ico_sum_dotinfo = 'sum_dotinfo_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
 
             $sum_rozhodnuti = Cache::read($cache_tag_ico_sum_rozhodnuti, 'long_term');
             $sum_spotrebovano = Cache::read($cache_tag_ico_sum_spotrebovano, 'long_term');
             $sum_pobidky = Cache::read($cache_tag_ico_sum_pobidky, 'long_term');
             $sum_strukturalni_fondy = Cache::read($cache_tag_ico_sum_strukturalni_fondy, 'long_term');
+            $sum_dotinfo = Cache::read($cache_tag_ico_sum_dotinfo, 'long_term');
 
             if ($sum_rozhodnuti === false) {
                 $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
@@ -3182,7 +3184,20 @@ class PagesController extends AppController
                 Cache::write($cache_tag_ico_sum_strukturalni_fondy, $sum_strukturalni_fondy, 'long_term');
             }
 
-            $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [$sum_rozhodnuti, $sum_spotrebovano, $sum_pobidky, $sum_strukturalni_fondy];
+            if ($sum_dotinfo === false) {
+                $sum_dotinfo = $this->Dotinfo->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaSchvalena)'
+                    ],
+                    'conditions' => [
+                        'ucastnikIco' => $s->subsidiary->ico,
+                        'YEAR(datumPoskytnuti)' => $s->year
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_ico_sum_dotinfo, $sum_dotinfo, 'long_term');
+            }
+
+            $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [$sum_rozhodnuti, $sum_spotrebovano, $sum_pobidky, $sum_strukturalni_fondy, $sum_dotinfo];
         }
         return $subsidiaries_sums;
     }

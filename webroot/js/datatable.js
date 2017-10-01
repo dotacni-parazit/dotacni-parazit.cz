@@ -14,7 +14,7 @@ jQuery.fn.dataTable.Api.register('sum()', function () {
 function setupDataTable(selector) {
     $e = (typeof(selector) === 'string') ? $(selector) : selector;
     var ttable = $($e).DataTable({
-        fixedColumns: true,
+        fixedColumns: false,
         paging: !$($e).hasClass('datatable_simple'),
         "pageLength": 100,
         initComplete: function () {
@@ -44,10 +44,11 @@ function setupDataTable(selector) {
                 "sortDescending": ": aktivujte pro řazení sloupce sestupně"
             }
         },
-        "autoWidth": true,
+        "autoWidth": false,
         scrollX: false,
         scrollCollapse: true,
-        colReorder: true,
+        colReorder: false,
+        responsive: false,
         ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
         "stateDuration": 60 * 60 * 24 * 7,
         dom: $($e).hasClass('datatable_simple') ? '<"table-responsive"t>B' : 'r<"clear">ip<"clear">lf<"clear"><"table-responsive"t>B',

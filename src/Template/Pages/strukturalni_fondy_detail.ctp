@@ -96,7 +96,7 @@ $this->set('title', $data->operacaniProgramNazev);
         <table style="width: 100%" class="datatable" data-ajax="<?= $this->request->here(false) ?>">
             <thead>
             <tr>
-                <th data-type="html" class="col">Název Projektu</th>
+                <th data-type="html">Název Projektu</th>
                 <th data-type="html">Číslo Projektu</th>
                 <th data-type="html">Žadatel (IČO)</th>
                 <th data-type="currency">Zdroje celkem</th>

@@ -4,7 +4,7 @@ $this->set('title', 'Statistika Využití Databáze');
 <div class="alert alert-info">
     Statistika využití databáze / tabulek, s daty importovanými přímo ze systému CEDR
     <br/>
-    Procenta ukazují počet nevyužitých / nevypněných hodnot v daném sloupci
+    Procenta ukazují počet nevyužitých / nevyplněných hodnot v daném sloupci
 </div>
 <strong>Navigace</strong><br/>
 <ul>
