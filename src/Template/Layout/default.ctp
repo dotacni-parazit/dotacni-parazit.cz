@@ -21,7 +21,7 @@ $title = $this->fetch('title');
         'jquery.min.js',
         '//cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.16/b-1.4.2/b-flash-1.4.2/b-html5-1.4.2/b-print-1.4.2/cr-1.4.1/r-2.2.0/sl-1.2.3/datatables.min.js',
         '//cdn.datatables.net/plug-ins/1.10.16/sorting/currency.js',
-        'datatable.js',
+        'datatable.js?rnd=' . rand(0, 100),
         'bootstrap.min.js'
     ]);
     ?>
@@ -30,7 +30,7 @@ $title = $this->fetch('title');
     <?= $this->fetch('css') ?>
     <?= $this->Html->css('bootstrap.min.css') ?>
     <?= $this->Html->css('//cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.16/b-1.4.2/b-flash-1.4.2/b-html5-1.4.2/b-print-1.4.2/cr-1.4.1/r-2.2.0/sl-1.2.3/datatables.min.css') ?>
-    <?= $this->Html->css('parazit.css?em=' . rand()) ?>
+    <?= $this->Html->css('parazit.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('script') ?>
@@ -85,6 +85,7 @@ $title = $this->fetch('title');
     function gtag() {
         dataLayer.push(arguments)
     }
+
     gtag('js', new Date());
 
     gtag('config', 'UA-107377525-1');

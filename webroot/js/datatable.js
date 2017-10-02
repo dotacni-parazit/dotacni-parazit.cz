@@ -11,6 +11,18 @@ jQuery.fn.dataTable.Api.register('sum()', function () {
     }, 0);
 });
 
+var buttonCommon = {
+    exportOptions: {
+        format: {
+            body: function (data, row, column, node) {
+                var tmp = $("<a>" + data + "</a>").text();
+                if (tmp.match(/[.,]00\sKč$/)) return tmp.replace(/\s/g, "").replace(/[.,]00Kč$/, "");
+                return tmp;
+            }
+        }
+    }
+};
+
 function setupDataTable(selector) {
     $e = (typeof(selector) === 'string') ? $(selector) : selector;
     var ttable = $($e).DataTable({
@@ -53,7 +65,13 @@ function setupDataTable(selector) {
         "stateDuration": 60 * 60 * 24 * 7,
         dom: $($e).hasClass('datatable_simple') ? '<"table-responsive"t>B' : 'r<"clear">ip<"clear">lf<"clear"><"table-responsive"t>B',
         buttons: [
-            'csv', 'excel', 'print'
+            $.extend(true, {}, buttonCommon, {
+                extend: 'csv'
+            }),
+            $.extend(true, {}, buttonCommon, {
+                extend: 'excel'
+            }),
+            'print'
         ],
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
     });

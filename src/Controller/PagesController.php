@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
+use App\Model\Entity\CiselnikMmrOperacniProgramv01;
 use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
 use App\Model\Entity\Dotace;
@@ -198,6 +199,28 @@ class PagesController extends AppController
         $mmr = $this->CiselnikMmrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheMMROP($mmr);
         $sums = []; //TODO
+
+        /** @var CiselnikMmrOperacniProgramv01[] $mmr */
+        foreach ($mmr as $m) {
+            $cache_tag = 'mmr_op_sum_spotrebovano_' . sha1($m->idOperacniProgram);
+            $sum = Cache::read($cache_tag, 'long_term');
+            if ($sum === false) {
+                $sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'Dotace.iriOperacniProgram' => $m->idOperacniProgram
+                    ],
+                    'contain' => [
+                        'Dotace',
+                        'RozpoctoveObdobi'
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag, $sum, 'long_term');
+            }
+            $sums[$m->idOperacniProgram] = $sum;
+        }
 
         $this->set(compact(['mmr', 'counts', 'sums']));
     }
@@ -779,7 +802,40 @@ class PagesController extends AppController
         return $colorindex;
     }
 
-    private function sumsPodleZdrojeFinanci($zdroje){
+    public function podleZdrojeFinanci()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Zdroje Financování' => 'self']);
+
+        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
+        $sums = $this->sumsPodleZdrojeFinanci($zdroje);
+
+        $data = [];
+        foreach ($zdroje as $z) {
+            $data[$z->financniZdrojKod] = [
+                'nazev' => $z->financniZdrojNazev,
+                'castkaSpotrebovana' => $sums[$z->financniZdrojKod]['SUM'],
+                'castkaRozhodnuta' => $sums[$z->financniZdrojKod]['SUM2'],
+                'id' => $z->financniZdrojKod
+            ];
+        }
+        $sort = $this->request->getQuery('sort');
+        if ($sort) {
+            if ($sort === "sum") {
+                usort($data, function ($a, $b) {
+                    return $b['castkaSpotrebovana'] - $a['castkaSpotrebovana'];
+                });
+            } else if ($sort === "zdroj") {
+                usort($data, function ($a, $b) {
+                    return strcmp($a['nazev'], $b['nazev']);
+                });
+            }
+        }
+        $this->set(compact(['data']));
+        $this->set('title', 'CEDR III - Zdroje Financování');
+    }
+
+    private function sumsPodleZdrojeFinanci($zdroje)
+    {
         $sums = [];
         foreach ($zdroje as $z) {
             // soucet spotrebovana
@@ -822,38 +878,6 @@ class PagesController extends AppController
             }
         }
         return $sums;
-    }
-
-    public function podleZdrojeFinanci()
-    {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Zdroje Financování' => 'self']);
-
-        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
-        $sums = $this->sumsPodleZdrojeFinanci($zdroje);
-
-        $data = [];
-        foreach ($zdroje as $z) {
-            $data[$z->financniZdrojKod] = [
-                'nazev' => $z->financniZdrojNazev,
-                'castkaSpotrebovana' => $sums[$z->financniZdrojKod]['SUM'],
-                'castkaRozhodnuta' => $sums[$z->financniZdrojKod]['SUM2'],
-                'id' => $z->financniZdrojKod
-            ];
-        }
-        $sort = $this->request->getQuery('sort');
-        if ($sort) {
-            if ($sort === "sum") {
-                usort($data, function ($a, $b) {
-                    return $b['castkaSpotrebovana'] - $a['castkaSpotrebovana'];
-                });
-            } else if ($sort === "zdroj") {
-                usort($data, function ($a, $b) {
-                    return strcmp($a['nazev'], $b['nazev']);
-                });
-            }
-        }
-        $this->set(compact(['data']));
-        $this->set('title', 'CEDR III - Zdroje Financování');
     }
 
     public function statistics()
@@ -1273,7 +1297,7 @@ class PagesController extends AppController
                 $counts = $this->Caching->initCachePodlePoskytovatelu($data);
 
                 $this->set(compact(['counts']));
-            } else if ($this->request->getQuery('zdroje-financovani') == 'zdroje-financovani'){
+            } else if ($this->request->getQuery('zdroje-financovani') == 'zdroje-financovani') {
                 $data = $this->CiselnikFinancniZdrojv01->find('all', [
                     'conditions' => [
                         "MATCH (financniZdrojNazev) AGAINST (:against IN BOOLEAN MODE)"
@@ -1283,7 +1307,7 @@ class PagesController extends AppController
                 $counts = $this->sumsPodleZdrojeFinanci($data);
 
                 $this->set(compact(['counts']));
-            } else if ($this->request->getQuery('dotacni-tituly') == 'dotacni-tituly'){
+            } else if ($this->request->getQuery('dotacni-tituly') == 'dotacni-tituly') {
                 $data = $this->CiselnikDotaceTitulv01->find('all', [
                     'conditions' => [
                         "MATCH (dotaceTitulNazev) AGAINST (:against IN BOOLEAN MODE)"
