@@ -17,6 +17,8 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
     <br/>
     Pokud je rozdíl záporný, znamená to, že první dotace byla podepsána před založením ičo, nebo poslední dotace po
     ukončení IČO
+    <br/><br/>
+    Jsou zobrazeny záznamy kde je rozdíl k první dotaci záporný nebo max. 90 dnů od založení IČO. Pokud máte zájem o kompletní data, kontaktujte nás.
 </div>
 
 <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">

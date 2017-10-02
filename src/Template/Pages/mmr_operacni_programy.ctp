@@ -1,4 +1,7 @@
 <?php
+
+use Cake\I18n\Number;
+
 $this->set('title', 'CEDR III - Programy MMR');
 ?>
 <table class="datatable">
@@ -9,6 +12,7 @@ $this->set('title', 'CEDR III - Programy MMR');
         <th>Počet evidovaných dotací</th>
         <th>Platnost Od</th>
         <th>Platnost Do</th>
+        <th>Součet rozhodnutí Spotřebováno</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +25,7 @@ $this->set('title', 'CEDR III - Programy MMR');
             <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostOdDatum->year ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
+            <td><?= Number::currency(isset($sums[$c->idOperacniProgram]) ? $sums[$c->idOperacniProgram] : 0) ?></td>
         </tr>
         <?php
     }
@@ -34,6 +39,7 @@ $this->set('title', 'CEDR III - Programy MMR');
         <td>Počet evidovaných dotací</td>
         <td>Platnost Od</td>
         <td>Platnost Do</td>
+        <td>Součet rozhodnutí Spotřebováno</td>
     </tr>
     </tfoot>
 </table>

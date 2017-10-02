@@ -47,7 +47,7 @@ function setupDataTable(selector) {
         "autoWidth": false,
         scrollX: false,
         scrollCollapse: true,
-        colReorder: false,
+        colReorder: true,
         responsive: false,
         ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
         "stateDuration": 60 * 60 * 24 * 7,

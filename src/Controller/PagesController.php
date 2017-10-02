@@ -186,8 +186,9 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => 'self']);
         $cedr = $this->CiselnikCedrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheCEDROP($cedr);
+        $sums = []; //TODO
 
-        $this->set(compact('cedr', 'counts'));
+        $this->set(compact(['cedr', 'counts', 'sums']));
     }
 
     public function mmrOperacniProgramy()
@@ -195,8 +196,9 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => 'self']);
         $mmr = $this->CiselnikMmrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheMMROP($mmr);
+        $sums = []; //TODO
 
-        $this->set(compact(['mmr', 'counts']));
+        $this->set(compact(['mmr', 'counts', 'sums']));
     }
 
     public function detailKrajeCache()
@@ -1452,6 +1454,9 @@ class PagesController extends AppController
                 'fields' => [
                     'cisloPrioritniOsy',
                     'CNT' => 'COUNT(*)'
+                ],
+                'conditions' => [
+                    'operacniProgram' => $req_op
                 ],
                 'group' => [
                     'cisloPrioritniOsy'
@@ -3186,7 +3191,7 @@ class PagesController extends AppController
 
         foreach ($subsidiaries as $s) {
             if ($s->subsidiary->ico < 1) {
-                $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [0, 0, 0, 0, 0];
+                $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [0, 0, 0, 0, 0, 0, 0];
                 continue;
             }
             if ($s->year < 1900 || $s->year > 2030) continue;
@@ -3196,13 +3201,18 @@ class PagesController extends AppController
             $cache_tag_ico_sum_spotrebovano = 'sum_spotrebovano_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
             $cache_tag_ico_sum_pobidky = 'sum_pobidky_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
             $cache_tag_ico_sum_strukturalni_fondy = 'sum_strukturalni_fondy_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+            $cache_tag_ico_sum_strukturalni_fondy_2020 = 'sum_strukturalni_fondy_2020_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
             $cache_tag_ico_sum_dotinfo = 'sum_dotinfo_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+            $cache_tag_ico_politicke_dary = 'sum_politicke_dary_ico_' . sha1($s->subsidiary->ico) . '_rok_' . $s->year;
+
 
             $sum_rozhodnuti = Cache::read($cache_tag_ico_sum_rozhodnuti, 'long_term');
             $sum_spotrebovano = Cache::read($cache_tag_ico_sum_spotrebovano, 'long_term');
             $sum_pobidky = Cache::read($cache_tag_ico_sum_pobidky, 'long_term');
             $sum_strukturalni_fondy = Cache::read($cache_tag_ico_sum_strukturalni_fondy, 'long_term');
+            $sum_strukturalni_fondy_2020 = Cache::read($cache_tag_ico_sum_strukturalni_fondy_2020, 'long_term');
             $sum_dotinfo = Cache::read($cache_tag_ico_sum_dotinfo, 'long_term');
+            $sum_politicke_dary = Cache::read($cache_tag_ico_politicke_dary, 'long_term');
 
             if ($sum_rozhodnuti === false) {
                 $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
@@ -3265,6 +3275,18 @@ class PagesController extends AppController
                 Cache::write($cache_tag_ico_sum_strukturalni_fondy, $sum_strukturalni_fondy, 'long_term');
             }
 
+            if ($sum_strukturalni_fondy_2020 === false) {
+                $sum_strukturalni_fondy_2020 = $this->StrukturalniFondy2020->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(celkoveZdroje)'
+                    ],
+                    'conditions' => [
+                        'zadatelIco' => $s->subsidiary->ico
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_ico_sum_strukturalni_fondy_2020, $sum_strukturalni_fondy_2020, 'long_term');
+            }
+
             if ($sum_dotinfo === false) {
                 $sum_dotinfo = $this->Dotinfo->find('all', [
                     'fields' => [
@@ -3278,7 +3300,30 @@ class PagesController extends AppController
                 Cache::write($cache_tag_ico_sum_dotinfo, $sum_dotinfo, 'long_term');
             }
 
-            $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [$sum_rozhodnuti, $sum_spotrebovano, $sum_pobidky, $sum_strukturalni_fondy, $sum_dotinfo];
+            if ($sum_politicke_dary === false) {
+                $donor_id = $this->Companies->find('all', [
+                    'conditions' => [
+                        'ico' => $s->subsidiary->ico,
+                        'type_id' => 5
+                    ]
+                ])->first();
+                if (!empty($donor_id)) {
+                    $sum_politicke_dary = $this->Transactions->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(amount)'
+                        ],
+                        'conditions' => [
+                            'year' => $s->year,
+                            'donor_id' => $donor_id->id
+                        ]
+                    ])->first()->sum;
+                } else {
+                    $sum_politicke_dary = 0;
+                }
+                Cache::write($cache_tag_ico_politicke_dary, $sum_politicke_dary, 'long_term');
+            }
+
+            $subsidiaries_sums[$s->subsidiary->ico][$s->year] = [$sum_rozhodnuti, $sum_spotrebovano, $sum_pobidky, $sum_strukturalni_fondy, $sum_dotinfo, $sum_strukturalni_fondy_2020, $sum_politicke_dary];
         }
         return $subsidiaries_sums;
     }
@@ -3539,13 +3584,19 @@ class PagesController extends AppController
                 'podpisDatum' => $this->request->getQuery('podpisDatum')
             ];
 
-            $data_string = $http->post('http://localhost:8080/smlouvy/search', json_encode($params), [
-                'headers' => [
-                    'Content-Type' => 'application/json; charset=UTF-8',
-                    ''
-                ]
-            ])->body();
-            $data_obj = json_decode($data_string);
+            try {
+                $data_string = $http->post('http://localhost:8080/smlouvy/search', json_encode($params), [
+                    'headers' => [
+                        'Content-Type' => 'application/json; charset=UTF-8',
+                        ''
+                    ]
+                ])->body();
+                $data_obj = json_decode($data_string);
+            } catch (\Error $e) {
+                $data_obj = [];
+            } catch (\Exception $e) {
+                $data_obj = [];
+            }
 
             $data_arr = [];
             $total = 0;
@@ -3646,7 +3697,8 @@ class PagesController extends AppController
             $data = $this->MFCRPAP->find('all', [
                 'conditions' => [
                     'idPrijemce IS NOT NULL',
-                    'distance_start_days IS NOT NULL'
+                    'distance_start_days IS NOT NULL',
+                    'distance_start_days <=' => 90
                 ],
                 'order' => [
                     'distance_start_days' => 'ASC'

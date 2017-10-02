@@ -98,7 +98,7 @@ $this->set('title', $data->operacaniProgramNazev);
         if ($is_2020_op) {
             $columns = ["Zdroje celkem", "Schválené zdroje Veřejné", "Schválené zdroje EU", "Schválené zdroje Soukromé", "Vyúčtované celkem", "Vyúčtované zdroje Veřejné", "Vyúčtované zdroje EU", "Vyúčtované zdroje Soukromé"];
         } else {
-            $columns = ["Zdroje celkem", "Veřejné zdroje celkem", "EU zdroje", "Vyúčtované veřejné celkem", "Proplacené EU zdroje", "Certifikované veřejné celkem", "Certifikované EU zdroje"];
+            $columns = ["Rozhodnutí / Smlouva celkem", "Rozhodnutí / Smlouva Veřejné celkem", "Rozhodnutí / Smlouva EU zdroje", "Proplacené Veřejné celkem", "Proplacené EU zdroje", "Certifikované veřejné celkem", "Certifikované EU zdroje"];
         }
         ?>
 

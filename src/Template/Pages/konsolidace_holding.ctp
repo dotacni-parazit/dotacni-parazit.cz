@@ -93,8 +93,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="subsidiaries">
         <div class="alert alert-info">
             V každém řádku je zobrazen součet částek "Rozhodnutí [Částka Rozhodnuta]", "Rozpočtové Období [Částka
-            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]" a "Strukturální Fondy [Veřejné Zdroje
-            Celkem]",
+            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]", "Strukturální Fondy 2007-2013 [Veřejné Zdroje
+            Celkem]" a "Strukturální Fondy 2014-2020 [Zdroje Celkem]",
             za daný rok, ve kterém byla společnost součástí holdingu.
             <br/><br/>
             Součty jsou dělány podle IČO, takže údaj nemusí být přesný.
@@ -107,11 +107,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th>Rok</th>
                 <th class="nosearch">Vlastnický Podíl</th>
                 <th>Státní příslušnost</th>
-                <th class="nosearch" data-type="currency">Součet Rozhodnutí</th>
-                <th class="nosearch" data-type="currency">Součet Spotřebováno</th>
+                <th class="nosearch" data-type="currency">CEDR-III Součet Rozhodnutí</th>
+                <th class="nosearch" data-type="currency">CEDR-III Součet Spotřebováno</th>
                 <th class="nosearch" data-type="currency">Součet Pobídek CzechInvest</th>
-                <th class="nosearch" data-type="currency">Součet Strukturálních Fondů</th>
+                <th class="nosearch" data-type="currency">Součet Strukturální Fondy 2007-2013</th>
+                <th class="nosearch" data-type="currency">Součet Strukturální Fondy 2014-2020</th>
                 <th data-type="currency">Součet DotInfo.cz</th>
+                <th data-type="currency">Součet Darů Politickým Stranám</th>
             </tr>
             </thead>
             <tbody>
@@ -126,7 +128,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][1]) ?></td>
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][2] * 1000000) ?></td>
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][3]) ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][5]) ?></td>
                     <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][4]) ?></td>
+                    <td><?= Number::currency($subsidiaries_sums[$s->subsidiary->ico][$s->year][6]) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -137,11 +141,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Rok</td>
                 <td>Vlastnický Podíl</td>
                 <td>Státní příslušnost</td>
-                <td>Součet Rozhodnutí</td>
-                <td>Součet Spotřebováno</td>
+                <td>CEDR-III Součet Rozhodnutí</td>
+                <td>CEDR-III Součet Spotřebováno</td>
                 <td>Součet Pobídek CzechInvest</td>
-                <td>Součet Strukturálních Fondů</td>
+                <td>Součet Strukturální Fondy 2007-2013</td>
+                <td>Součet Strukturální Fondy 2014-2020</td>
                 <td>Součet DotInfo.cz</td>
+                <th>Součet Darů Politickým Stranám</th>
             </tr>
             </tfoot>
         </table>
