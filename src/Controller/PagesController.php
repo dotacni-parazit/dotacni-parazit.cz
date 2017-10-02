@@ -985,6 +985,77 @@ class PagesController extends AppController
 
     }
 
+    /**
+     *
+     */
+    public function fyzickeOsobyAjax()
+    {
+        $osoby = $this->PrijemcePomoci->find('all', [
+            'fields' => [
+                'idPrijemce',
+                'jmeno',
+                'prijmeni',
+                'rokNarozeni',
+                'iriStat',
+                'iriOsoba',
+                'CiselnikStatv01.statNazev',
+                'AdresaBydliste.obecNazev'
+            ],
+            'conditions' => [
+                'iriPravniForma' => 'http://cedropendata.mfcr.cz/c3lod/szcr/resource/ciselnik/PravniForma/v01/100/19980101'
+            ]
+        ])->contain([
+            'CiselnikStatv01',
+            'AdresaBydliste'
+        ])->enableHydration(true)->limit(110000);
+
+        /** @var PrijemcePomoci[] $osoby */
+        foreach ($osoby as $o) {
+            $cache_tag_sum_rozhodnuti = "fyzicke_osoby_sum_rozhodnuti_" . sha1($o->idPrijemce);
+            $cache_tag_sum_spotrebovano = "fyzicke_osoby_sum_spotrebovano_" . sha1($o->idPrijemce);
+
+            $sum_rozhodnuti = Cache::read($cache_tag_sum_rozhodnuti, 'long_term');
+            $sum_spotrebovano = Cache::read($cache_tag_sum_spotrebovano, 'long_term');
+
+            if ($sum_rozhodnuti === false) {
+                $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'contain' => [
+                        'Dotace'
+                    ],
+                    'conditions' => [
+                        'idPrijemce' => $o->idPrijemce,
+                        'Rozhodnuti.refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
+            }
+
+            if ($sum_spotrebovano === false) {
+                $sum_spotrebovano = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'contain' => [
+                        'Dotace',
+                        'RozpoctoveObdobi'
+                    ],
+                    'conditions' => [
+                        'idPrijemce' => $o->idPrijemce,
+                        'Rozhodnuti.refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_sum_spotrebovano, $sum_spotrebovano, 'long_term');
+            }
+        }
+
+        $_serialize = false;
+
+        $this->set(compact(['osoby', '_serialize']));
+    }
+
     public function fyzickeOsoby()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Fyzické Osoby Nepodnikatelé' => 'self']);
@@ -1065,14 +1136,14 @@ class PagesController extends AppController
         $this->set(compact(['ico', 'name', 'multiple', 'pravni_formy']));
     }
 
+    /*
+     * Podle prijemcu
+     * **/
+
     public function podlePrijemcuIndex()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => 'self']);
     }
-
-    /*
-     * Podle prijemcu
-     * **/
 
     public function prijemceDotaciPravniForma()
     {
@@ -1208,12 +1279,15 @@ class PagesController extends AppController
 
         if (!empty($multiple)) {
             $this->redirect('/podle-prijemcu/multiple/' . $multiple);
+            return;
         }
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
             $ajax_type = 'cedr';
-            if ($this->request->getQuery('czechinvest') == 'czechinvest') {
+            if (empty($ico) || strlen($ico) < 3) {
+
+            } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
                 $data = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
                         'ico' => $ico
@@ -1317,7 +1391,9 @@ class PagesController extends AppController
             $_serialize = false;
             $ajax_type = 'empty';
 
-            if ($this->request->getQuery('dotacni-urady') == 'dotacni-urady') {
+            if (empty($name) || strlen($name) < 3) {
+
+            } else if ($this->request->getQuery('dotacni-urady') == 'dotacni-urady') {
                 $data = $this->CiselnikDotacePoskytovatelv01->find('all', [
                     'conditions' => [
                         "MATCH (dotacePoskytovatelNazev) AGAINST (:against IN BOOLEAN MODE)"
@@ -1392,7 +1468,10 @@ class PagesController extends AppController
         if ($this->request->is('ajax')) {
             $_serialize = false;
             $ajax_type = 'empty';
-            if ($this->request->getQuery('cedr') == 'cedr') {
+
+            if (empty($name) || strlen($name) < 3) {
+
+            } else if ($this->request->getQuery('cedr') == 'cedr') {
                 $data = $this->PrijemcePomoci->find('all', [
                     'fields' => [
                         'idPrijemce',
@@ -2443,77 +2522,6 @@ class PagesController extends AppController
         ])->toArray();
 
         $this->set(compact(['rozhodnuti', 'rozpocet']));
-    }
-
-    /**
-     *
-     */
-    public function fyzickeOsobyAjax()
-    {
-        $osoby = $this->PrijemcePomoci->find('all', [
-            'fields' => [
-                'idPrijemce',
-                'jmeno',
-                'prijmeni',
-                'rokNarozeni',
-                'iriStat',
-                'iriOsoba',
-                'CiselnikStatv01.statNazev',
-                'AdresaBydliste.obecNazev'
-            ],
-            'conditions' => [
-                'iriPravniForma' => 'http://cedropendata.mfcr.cz/c3lod/szcr/resource/ciselnik/PravniForma/v01/100/19980101'
-            ]
-        ])->contain([
-            'CiselnikStatv01',
-            'AdresaBydliste'
-        ])->enableHydration(true)->limit(110000);
-
-        /** @var PrijemcePomoci[] $osoby */
-        foreach($osoby as $o){
-            $cache_tag_sum_rozhodnuti = "fyzicke_osoby_sum_rozhodnuti_" . sha1($o->idPrijemce);
-            $cache_tag_sum_spotrebovano = "fyzicke_osoby_sum_spotrebovano_" . sha1($o->idPrijemce);
-
-            $sum_rozhodnuti = Cache::read($cache_tag_sum_rozhodnuti, 'long_term');
-            $sum_spotrebovano = Cache::read($cache_tag_sum_spotrebovano, 'long_term');
-
-            if($sum_rozhodnuti === false){
-                $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaRozhodnuta)'
-                    ],
-                    'contain' => [
-                        'Dotace'
-                    ],
-                    'conditions' => [
-                        'idPrijemce' => $o->idPrijemce,
-                        'Rozhodnuti.refundaceIndikator' => 0
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
-            }
-
-            if($sum_spotrebovano === false){
-                $sum_spotrebovano = $this->Rozhodnuti->find('all', [
-                    'fields' => [
-                        'sum' => 'SUM(castkaSpotrebovana)'
-                    ],
-                    'contain' => [
-                        'Dotace',
-                        'RozpoctoveObdobi'
-                    ],
-                    'conditions' => [
-                        'idPrijemce' => $o->idPrijemce,
-                        'Rozhodnuti.refundaceIndikator' => 0
-                    ]
-                ])->first()->sum;
-                Cache::write($cache_tag_sum_spotrebovano, $sum_spotrebovano, 'long_term');
-            }
-        }
-
-        $_serialize = false;
-
-        $this->set(compact(['osoby', '_serialize']));
     }
 
     public function znakUceluDotacnichTitulu()
