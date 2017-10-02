@@ -13,7 +13,7 @@ if (!$cache_data) {
 
     foreach ($fondy as $d) {
 
-        switch($ajax_type){
+        switch ($ajax_type) {
             case "strukturalniFondy":
 
                 /** @var \App\Model\Entity\StrukturalniFondy $d */

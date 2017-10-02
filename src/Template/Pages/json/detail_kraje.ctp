@@ -1,7 +1,6 @@
 <?php
 
 use Cake\Cache\Cache;
-use Cake\I18n\Number;
 
 
 $cache_key = 'ajax_kraj_dotace_' . sha1($kraj->krajKod);

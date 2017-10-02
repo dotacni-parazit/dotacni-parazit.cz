@@ -16,7 +16,7 @@ if (!$cache_data) {
         $data_arr[] = [
             $d->obchodniJmeno,
             \App\View\DPUTILS::ico($d->ico),
-            empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/'.$d->Stat->statKod3Znaky),
+            empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/' . $d->Stat->statKod3Znaky),
             $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $d->idPrijemce)
         ];
         $total++;

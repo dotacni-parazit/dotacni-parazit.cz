@@ -46,7 +46,7 @@ $this->set('title', 'Ukazatele Kapitol Státního Rozpočtu');
     function filterYear(year) {
         table.column(4).search("" + year).draw();
         $("#yearsfilter a").removeClass("hilight_underline");
-        $("#yearsfilter #f"+year).addClass("hilight_underline");
+        $("#yearsfilter #f" + year).addClass("hilight_underline");
         return false;
     }
 </script>

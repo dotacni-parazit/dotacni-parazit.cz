@@ -58,7 +58,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </div>
     <?php } ?>
     <div id="dotinfo">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&dotinfo=dotinfo">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&dotinfo=dotinfo">
             <thead>
             <tr>
                 <th>Jméno</th>

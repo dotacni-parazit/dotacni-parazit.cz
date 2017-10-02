@@ -33,6 +33,7 @@ $this->set('title', 'Finanční zdroje');
 
 <script type="text/javascript">
     var sources = <?php echo json_encode($sources->toArray()) ?>;
+
     function unflatten(arr) {
         var tree = [],
             mappedArr = {},
@@ -63,6 +64,7 @@ $this->set('title', 'Finanční zdroje');
         }
         return tree;
     }
+
     var sources_tree = unflatten(sources);
     $("#sourcestree").jstree({
         'core': {

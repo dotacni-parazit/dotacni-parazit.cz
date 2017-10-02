@@ -142,8 +142,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php
             $already_done = [];
-            foreach($transactions as $t){
-                if(in_array($t->attachment_id, $already_done)) continue;
+            foreach ($transactions as $t) {
+                if (in_array($t->attachment_id, $already_done)) continue;
                 ?>
                 <tr>
                     <td><?= $t->attachment->name ?></td>

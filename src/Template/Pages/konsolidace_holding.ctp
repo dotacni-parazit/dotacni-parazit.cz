@@ -93,7 +93,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="subsidiaries">
         <div class="alert alert-info">
             V každém řádku je zobrazen součet částek "Rozhodnutí [Částka Rozhodnuta]", "Rozpočtové Období [Částka
-            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]", "Strukturální Fondy 2007-2013 [Veřejné Zdroje
+            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]", "Strukturální Fondy 2007-2013 [Veřejné
+            Zdroje
             Celkem]" a "Strukturální Fondy 2014-2020 [Zdroje Celkem]",
             za daný rok, ve kterém byla společnost součástí holdingu.
             <br/><br/>

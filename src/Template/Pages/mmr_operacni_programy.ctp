@@ -20,7 +20,7 @@ $this->set('title', 'CEDR III - Programy MMR');
     foreach ($mmr as $c) {
         ?>
         <tr>
-            <td><?= $this->Html->link($c->operacaniProgramNazev, '/detail-mmr-operacni-program/?id='.$c->idOperacniProgram) ?></td>
+            <td><?= $this->Html->link($c->operacaniProgramNazev, '/detail-mmr-operacni-program/?id=' . $c->idOperacniProgram) ?></td>
             <td><?= $c->operacaniProgramKod ?></td>
             <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostOdDatum->year ?></td>

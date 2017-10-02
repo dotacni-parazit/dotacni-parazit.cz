@@ -1,4 +1,4 @@
-html, body {
+html, body, input, select, button {
     font-family: 'PT Serif', serif;
 }
 
@@ -137,6 +137,7 @@ nav {
 .top15 { margin-top:15px; }
 .top17 { margin-top:17px; }
 .top30 { margin-top:30px; }
+.top-15 { margin-top:-15px; }
 
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
     border: 1px solid black;
@@ -159,4 +160,8 @@ nav {
 
 label {
     margin-right: 1em;
+}
+
+.breadcrumb {
+    padding: 0.75rem 2rem;
 }

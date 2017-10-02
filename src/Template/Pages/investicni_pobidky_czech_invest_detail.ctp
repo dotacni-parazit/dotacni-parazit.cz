@@ -43,7 +43,7 @@ $this->set('title', $data->name);
 
     <tr>
         <td>Výše investice</td>
-        <td><?= Number::currency($data->investiceCZK*1000000) ?></td>
+        <td><?= Number::currency($data->investiceCZK * 1000000) ?></td>
     </tr>
 
     <tr>

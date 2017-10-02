@@ -5,7 +5,8 @@ $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
 <div class="alert alert-info">
-    Všechny právnické osoby a fyzické osoby podnikající evidované v CEDR III, Dotinfo, přehledu investičních pobídek, na strukturální-fondy.cz a přehledu dárců politických stran jako příjemci dotací.
+    Všechny právnické osoby a fyzické osoby podnikající evidované v CEDR III, Dotinfo, přehledu investičních pobídek, na
+    strukturální-fondy.cz a přehledu dárců politických stran jako příjemci dotací.
 </div>
 <div id="tabs2">
     <ul>
@@ -40,7 +41,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
     </ul>
     <div id="cedr">
-        <table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
+        <table id="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -120,7 +122,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="dotInfo">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&dotinfo=dotinfo">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&dotinfo=dotinfo">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -211,6 +214,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             active: <?= empty($multiple) ? '0' : '1' ?>
         });
     });
+
     function initCallback(table) {
         console.log(table);
         var ajax;

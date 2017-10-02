@@ -1,7 +1,5 @@
 <?php
 
-use Cake\Cache\Cache;
-
 $data_arr = [];
 $total = 0;
 

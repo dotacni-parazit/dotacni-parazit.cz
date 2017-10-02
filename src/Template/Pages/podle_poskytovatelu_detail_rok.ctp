@@ -8,7 +8,8 @@ $this->set('title', $poskytovatel->dotacePoskytovatelNazev);
     Součet za rok <?= $year ?>: <?= Number::currency($year_sum) ?>
 </strong>
 <br/>
-<table id="datatable" data-ajax="/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax/<?= $year ?>">
+<table id="datatable"
+       data-ajax="/podle-poskytovatelu/<?php echo $poskytovatel->dotacePoskytovatelKod ?>/complete/ajax/<?= $year ?>">
     <thead>
     <tr>
         <th data-type="html">Příjemce Pomoci</th>

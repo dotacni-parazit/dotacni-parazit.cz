@@ -1,4 +1,5 @@
 <?php
+
 use Cake\I18n\Number;
 
 $this->set('title', $zdroj->financniZdrojNazev);

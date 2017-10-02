@@ -1,7 +1,6 @@
 <?php
 
 use Cake\Cache\Cache;
-use Cake\I18n\Number;
 
 
 $cache_key = 'ajax_obec_dotace_' . sha1($obec->obecKod);

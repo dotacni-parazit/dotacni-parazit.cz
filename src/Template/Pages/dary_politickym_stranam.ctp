@@ -1,5 +1,6 @@
 <?php
 /** @var \App\Model\Entity\Company[] $data */
+
 /** @var array $sums */
 
 use Cake\I18n\Number;
@@ -7,11 +8,13 @@ use Cake\I18n\Number;
 $this->set('title', 'Dotace Dárců Politických Stran');
 ?>
 <div class="alert alert-info">
-    Přehled darů od právnických osob podle informací vykázaných ve Výročních finančních zprávách jednotlivých politických stran.
+    Přehled darů od právnických osob podle informací vykázaných ve Výročních finančních zprávách jednotlivých
+    politických stran.
     <br/>
     V přehledu jsou zahrnuty finanční i nefinanční dary.
     <br/>
-    V případě nefinančních darů je částka uvedena dle informace politické strany, případně je uvedena nulová hodnota, pokud žádnou hodnotu strana neuvádí.
+    V případě nefinančních darů je částka uvedena dle informace politické strany, případně je uvedena nulová hodnota,
+    pokud žádnou hodnotu strana neuvádí.
 </div>
 <table class="datatable datatable_simple">
     <thead>

@@ -6,7 +6,8 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
     &#8226; Byly použity datové sady: CEDR-III (<?= $this->Html->link("http://cedropendata.mfcr.cz") ?>) a MFČR PAP
     (<?= $this->Html->link("http://www.statnipokladna.cz/cs/csuis/sprava-ciselniku") ?>)
     <br/>
-    &#8226; Za závazné se považuje datum založení/ukončení IČO dle Pomocného Analytického Přehledu a Datum podpisu Smlouvy o
+    &#8226; Za závazné se považuje datum založení/ukončení IČO dle Pomocného Analytického Přehledu a Datum podpisu
+    Smlouvy o
     Dotaci dle CEDR-III (Dotace.podpisDatum)
     <br/><br/>
     "Rozdíl k První Dotaci" je rozdíl (ve dnech) mezi založením IČO a podpisem smlouvy první udělené dotace
@@ -18,7 +19,8 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
     Pokud je rozdíl záporný, znamená to, že první dotace byla podepsána před založením ičo, nebo poslední dotace po
     ukončení IČO
     <br/><br/>
-    Jsou zobrazeny záznamy kde je rozdíl k první dotaci záporný nebo max. 90 dnů od založení IČO. Pokud máte zájem o kompletní data, kontaktujte nás.
+    Jsou zobrazeny záznamy kde je rozdíl k první dotaci záporný nebo max. 90 dnů od založení IČO. Pokud máte zájem o
+    kompletní data, kontaktujte nás.
 </div>
 
 <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">

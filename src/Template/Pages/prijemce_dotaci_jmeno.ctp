@@ -6,7 +6,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
 ?>
 <div class="alert alert-info">
-    Všechny právnické osoby a fyzické osoby podnikající evidované v CEDR III, Dotinfo, přehledu investičních pobídek, na strukturální-fondy.cz a přehledu dárců politických stran jako příjemci dotací.
+    Všechny právnické osoby a fyzické osoby podnikající evidované v CEDR III, Dotinfo, přehledu investičních pobídek, na
+    strukturální-fondy.cz a přehledu dárců politických stran jako příjemci dotací.
 </div>
 <div id="tabs2">
     <ul>
