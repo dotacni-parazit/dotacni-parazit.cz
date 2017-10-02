@@ -13,14 +13,17 @@ if (!$cache_data) {
 
     foreach ($osoby as $o) {
 
+        $cache_tag_sum_rozhodnuti = "fyzicke_osoby_sum_rozhodnuti_" . sha1($o->idPrijemce);
+        $cache_tag_sum_spotrebovano = "fyzicke_osoby_sum_spotrebovano_" . sha1($o->idPrijemce);
+
         $data_arr[] = [
             $o->jmeno,
             $o->prijmeni,
             $o->rokNarozeni,
             !empty($o->AdresaBydliste) ? $o->AdresaBydliste->obecNazev : '',
             $o->Stat->statNazev,
-            0,
-            0,
+            \App\View\DPUTILS::currency(Cache::read($cache_tag_sum_rozhodnuti, 'long_term') + 0),
+            \App\View\DPUTILS::currency(Cache::read($cache_tag_sum_spotrebovano, 'long_term') + 0),
             $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $o->idPrijemce)
         ];
         $total++;

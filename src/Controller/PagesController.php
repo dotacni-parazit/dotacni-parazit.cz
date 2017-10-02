@@ -10,6 +10,7 @@ use App\Model\Entity\Consolidation;
 use App\Model\Entity\Dotace;
 use App\Model\Entity\Dotinfo;
 use App\Model\Entity\MFCRPAP;
+use App\Model\Entity\PrijemcePomoci;
 use App\Model\Entity\StrukturalniFondy;
 use App\Model\Entity\StrukturalniFondy2020;
 use App\Model\Table\AuditsTable;
@@ -155,6 +156,8 @@ class PagesController extends AppController
                 case 1:
                     if (is_numeric(trim($query))) {
                         $this->redirect('/prijemce-dotaci/ico?ico=' . trim($this->request->getQuery('query')));
+                    } else if (preg_match('/^[0-9,]/', str_replace("\s", "", $query))) {
+                        $this->redirect('/podle-prijemcu/multiple/' . str_replace("\s", "", $query));
                     } else {
                         $this->redirect('/prijemce-dotaci/jmeno?name=' . $this->request->getQuery('query'));
                     }
@@ -181,7 +184,7 @@ class PagesController extends AppController
         $this->podleZdrojeFinanci();
         $this->statistics();
         $this->dotacniTituly();
-        $this->fyzickeOsoby();
+        $this->fyzickeOsobyAjax();
     }
 
     public function cedrOperacniProgramy()
@@ -201,7 +204,8 @@ class PagesController extends AppController
                         'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
                     ],
                     'conditions' => [
-                        'Dotace.iriOperacniProgram' => $m->idOperacniProgram
+                        'Dotace.iriOperacniProgram' => $m->idOperacniProgram,
+                        'refundaceIndikator' => 0
                     ],
                     'contain' => [
                         'Dotace',
@@ -233,7 +237,8 @@ class PagesController extends AppController
                         'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
                     ],
                     'conditions' => [
-                        'Dotace.iriOperacniProgram' => $m->idOperacniProgram
+                        'Dotace.iriOperacniProgram' => $m->idOperacniProgram,
+                        'refundaceIndikator' => 0
                     ],
                     'contain' => [
                         'Dotace',
@@ -686,7 +691,8 @@ class PagesController extends AppController
                         'sum' => 'SUM(Rozhodnuti.castkaRozhodnuta)'
                     ],
                     'conditions' => [
-                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod
+                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod,
+                        'refundaceIndikator' => 0
                     ],
                     'contain' => [
                         'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
@@ -704,9 +710,11 @@ class PagesController extends AppController
                         'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
                     ],
                     'conditions' => [
-                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod
+                        'CiselnikOkresv01.krajNadKod' => $kraj->krajKod,
+                        'refundaceIndikator' => 0
                     ],
                     'contain' => [
+                        'Rozhodnuti',
                         'Rozhodnuti.Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
                     ]
                 ])->first();
@@ -980,7 +988,6 @@ class PagesController extends AppController
     public function fyzickeOsoby()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Fyzické Osoby Nepodnikatelé' => 'self']);
-
     }
 
     public function strukturalniFondy2020()
@@ -2438,6 +2445,9 @@ class PagesController extends AppController
         $this->set(compact(['rozhodnuti', 'rozpocet']));
     }
 
+    /**
+     *
+     */
     public function fyzickeOsobyAjax()
     {
         $osoby = $this->PrijemcePomoci->find('all', [
@@ -2458,6 +2468,48 @@ class PagesController extends AppController
             'CiselnikStatv01',
             'AdresaBydliste'
         ])->enableHydration(true)->limit(110000);
+
+        /** @var PrijemcePomoci[] $osoby */
+        foreach($osoby as $o){
+            $cache_tag_sum_rozhodnuti = "fyzicke_osoby_sum_rozhodnuti_" . sha1($o->idPrijemce);
+            $cache_tag_sum_spotrebovano = "fyzicke_osoby_sum_spotrebovano_" . sha1($o->idPrijemce);
+
+            $sum_rozhodnuti = Cache::read($cache_tag_sum_rozhodnuti, 'long_term');
+            $sum_spotrebovano = Cache::read($cache_tag_sum_spotrebovano, 'long_term');
+
+            if($sum_rozhodnuti === false){
+                $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaRozhodnuta)'
+                    ],
+                    'contain' => [
+                        'Dotace'
+                    ],
+                    'conditions' => [
+                        'idPrijemce' => $o->idPrijemce,
+                        'Rozhodnuti.refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
+            }
+
+            if($sum_spotrebovano === false){
+                $sum_spotrebovano = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(castkaSpotrebovana)'
+                    ],
+                    'contain' => [
+                        'Dotace',
+                        'RozpoctoveObdobi'
+                    ],
+                    'conditions' => [
+                        'idPrijemce' => $o->idPrijemce,
+                        'Rozhodnuti.refundaceIndikator' => 0
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag_sum_spotrebovano, $sum_spotrebovano, 'long_term');
+            }
+        }
 
         $_serialize = false;
 
@@ -2646,7 +2698,8 @@ class PagesController extends AppController
                     'Rozhodnuti'
                 ],
                 'conditions' => [
-                    'iriDotacniTitul' => $titul->idDotaceTitul
+                    'iriDotacniTitul' => $titul->idDotaceTitul,
+                    'Rozhodnuti.refundaceIndikator' => 0
                 ]
             ])->first()->sum;
             Cache::write($cache_tag_rozhodnuto, $soucet_rozhodnuto, 'long_term');
@@ -2659,6 +2712,9 @@ class PagesController extends AppController
                 'conditions' => [
                     'iriDotacniTitul' => $titul->idDotaceTitul,
                     'refundaceIndikator' => 0
+                ],
+                'contain' => [
+                    'Rozhodnuti'
                 ]
             ])->first()->sum;
             Cache::write($cache_tag_spotrebovano, $soucet_spotrebovano, 'long_term');
