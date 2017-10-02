@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
+use App\Model\Entity\CiselnikCedrOperacniProgramv01;
 use App\Model\Entity\CiselnikMmrOperacniProgramv01;
 use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
@@ -188,7 +189,29 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => 'self']);
         $cedr = $this->CiselnikCedrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheCEDROP($cedr);
-        $sums = []; //TODO
+        $sums = [];
+
+        /** @var CiselnikCedrOperacniProgramv01[] $mmr */
+        foreach ($cedr as $m) {
+            $cache_tag = 'mmr_op_sum_spotrebovano_' . sha1($m->idOperacniProgram);
+            $sum = Cache::read($cache_tag, 'long_term');
+            if ($sum === false) {
+                $sum = $this->Rozhodnuti->find('all', [
+                    'fields' => [
+                        'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
+                    ],
+                    'conditions' => [
+                        'Dotace.iriOperacniProgram' => $m->idOperacniProgram
+                    ],
+                    'contain' => [
+                        'Dotace',
+                        'RozpoctoveObdobi'
+                    ]
+                ])->first()->sum;
+                Cache::write($cache_tag, $sum, 'long_term');
+            }
+            $sums[$m->idOperacniProgram] = $sum;
+        }
 
         $this->set(compact(['cedr', 'counts', 'sums']));
     }
@@ -198,7 +221,7 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => 'self']);
         $mmr = $this->CiselnikMmrOperacniProgramv01->find('all');
         $counts = $this->Caching->initCacheMMROP($mmr);
-        $sums = []; //TODO
+        $sums = [];
 
         /** @var CiselnikMmrOperacniProgramv01[] $mmr */
         foreach ($mmr as $m) {

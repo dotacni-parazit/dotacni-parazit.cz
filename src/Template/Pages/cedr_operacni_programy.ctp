@@ -12,7 +12,7 @@ $this->set('title', 'CEDR III - Ostatní Programy');
         <th>Číslo Programu</th>
         <th>Počet evidovaných dotací</th>
         <th>Platnost Do</th>
-        <th>Součet rozhodnutí Spotřebováno</th>
+        <th data-type="currency">Součet rozhodnutí Spotřebováno</th>
         <th class="nosearch">Otevřít</th>
     </tr>
     </thead>
@@ -26,7 +26,7 @@ $this->set('title', 'CEDR III - Ostatní Programy');
             <td><?= $c->operacaniProgramCislo ?></td>
             <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
-            <td><?= Number::currency(isset($sums[$c->idOperacniProgram]) ? $sums[$c->idOperacniProgram] : 0) ?></td>
+            <td><?= \App\View\DPUTILS::currency(isset($sums[$c->idOperacniProgram]) ? $sums[$c->idOperacniProgram] : 0) ?></td>
             <td><?= $this->Html->link('Otevřít', '/detail-cedr-operacni-program/?id=' . $c->idOperacniProgram) ?></td>
         </tr>
         <?php
