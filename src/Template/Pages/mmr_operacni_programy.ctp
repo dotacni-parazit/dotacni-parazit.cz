@@ -17,6 +17,7 @@ $this->set('title', 'CEDR III - Programy MMR');
     </thead>
     <tbody>
     <?php
+    /** @var \App\Model\Entity\CiselnikMmrOperacniProgramv01[] $mmr */
     foreach ($mmr as $c) {
         ?>
         <tr>

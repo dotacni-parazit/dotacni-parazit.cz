@@ -13,11 +13,11 @@ $this->set('title', 'CEDR III - Ostatní Programy');
         <th>Počet evidovaných dotací</th>
         <th>Platnost Do</th>
         <th data-type="currency">Součet rozhodnutí Spotřebováno</th>
-        <th class="nosearch">Otevřít</th>
     </tr>
     </thead>
     <tbody>
     <?php
+    /** @var \App\Model\Entity\CiselnikCedrOperacniProgramv01[] $cedr */
     foreach ($cedr as $c) {
         ?>
         <tr>
@@ -27,7 +27,6 @@ $this->set('title', 'CEDR III - Ostatní Programy');
             <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
             <td><?= \App\View\DPUTILS::currency(isset($sums[$c->idOperacniProgram]) ? $sums[$c->idOperacniProgram] : 0) ?></td>
-            <td><?= $this->Html->link('Otevřít', '/detail-cedr-operacni-program/?id=' . $c->idOperacniProgram) ?></td>
         </tr>
         <?php
     }
@@ -42,7 +41,6 @@ $this->set('title', 'CEDR III - Ostatní Programy');
         <td>Počet evidovaných dotací</td>
         <td>Platnost Do</td>
         <td>Součet rozhodnutí Spotřebováno</td>
-        <td>Otevřít</td>
     </tr>
     </tfoot>
 </table>
