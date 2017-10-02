@@ -6,6 +6,7 @@ use App\Controller\Component\CachingComponent;
 use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
 use App\Model\Entity\Dotace;
+use App\Model\Entity\Dotinfo;
 use App\Model\Entity\MFCRPAP;
 use App\Model\Entity\StrukturalniFondy;
 use App\Model\Entity\StrukturalniFondy2020;
@@ -778,11 +779,7 @@ class PagesController extends AppController
         return $colorindex;
     }
 
-    public function podleZdrojeFinanci()
-    {
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Zdroje Financování' => 'self']);
-
-        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
+    private function sumsPodleZdrojeFinanci($zdroje){
         $sums = [];
         foreach ($zdroje as $z) {
             // soucet spotrebovana
@@ -824,6 +821,16 @@ class PagesController extends AppController
                 $sums[$z->financniZdrojKod]['SUM2'] = $z_sum;
             }
         }
+        return $sums;
+    }
+
+    public function podleZdrojeFinanci()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Zdroje Financování' => 'self']);
+
+        $zdroje = $this->CiselnikFinancniZdrojv01->find('all')->toArray();
+        $sums = $this->sumsPodleZdrojeFinanci($zdroje);
+
         $data = [];
         foreach ($zdroje as $z) {
             $data[$z->financniZdrojKod] = [
@@ -1240,6 +1247,85 @@ class PagesController extends AppController
         } else {
             $this->set(compact(['ico']));
         }
+    }
+
+    /**
+     *
+     */
+    public function podlePoskytovateleJmeno()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Podle Jména' => 'self']);
+
+        $name = $this->request->getQuery('name');
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
+
+        if ($this->request->is('ajax')) {
+            $_serialize = false;
+            $ajax_type = 'empty';
+
+            if ($this->request->getQuery('dotacni-urady') == 'dotacni-urady') {
+                $data = $this->CiselnikDotacePoskytovatelv01->find('all', [
+                    'conditions' => [
+                        "MATCH (dotacePoskytovatelNazev) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $ajax_type = 'dotacni-urady';
+                $counts = $this->Caching->initCachePodlePoskytovatelu($data);
+
+                $this->set(compact(['counts']));
+            } else if ($this->request->getQuery('zdroje-financovani') == 'zdroje-financovani'){
+                $data = $this->CiselnikFinancniZdrojv01->find('all', [
+                    'conditions' => [
+                        "MATCH (financniZdrojNazev) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $ajax_type = 'zdroje-financovani';
+                $counts = $this->sumsPodleZdrojeFinanci($data);
+
+                $this->set(compact(['counts']));
+            } else if ($this->request->getQuery('dotacni-tituly') == 'dotacni-tituly'){
+                $data = $this->CiselnikDotaceTitulv01->find('all', [
+                    'conditions' => [
+                        "MATCH (dotaceTitulNazev) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $ajax_type = 'dotacni-tituly';
+            } else if ($this->request->getQuery('dotinfo') == 'dotinfo') {
+                $ajax_type = 'dotinfo';
+                $data = $this->Dotinfo->find('all', [
+                    'fields' => [
+                        'poskytovatelNazev' => 'DISTINCT(poskytovatelNazev)',
+                        'poskytovatelIco'
+                    ],
+                    'conditions' => [
+                        "MATCH (poskytovatelNazev) AGAINST (:against IN BOOLEAN MODE)"
+                    ]
+                ])->bind(':against', h($name));
+                $sums = [];
+                /** @var Dotinfo[] $data */
+                foreach ($data as $p) {
+                    $sums[$p['poskytovatelIco']]['sumSchvaleno'] = $this->Dotinfo->find('all', [
+                        'fields' => [
+                            'sum' => 'SUM(castkaSchvalena)'
+                        ],
+                        'conditions' => [
+                            'poskytovatelIco' => $p['poskytovatelIco']
+                        ]
+                    ])->first()->sum;
+                    $sums[$p['poskytovatelIco']]['count'] = $this->Dotinfo->find('all', [
+                        'conditions' => [
+                            'poskytovatelIco' => $p['poskytovatelIco']
+                        ]
+                    ])->count();
+                }
+
+                $this->set(compact(['sums']));
+            }
+
+            $this->set(compact(['data', 'ajax_type', '_serialize']));
+        }
+
+        $this->set(compact(['name']));
     }
 
     public function prijemceDotaciJmeno()

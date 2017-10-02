@@ -2,6 +2,7 @@
 
 namespace App\Controller\Component;
 
+use App\Model\Entity\CiselnikDotacePoskytovatelv01;
 use Cake\Cache\Cache;
 use Cake\Controller\Component;
 use InvalidArgumentException;
@@ -59,6 +60,10 @@ class CachingComponent extends Component
         Cache::write($cache_tag, $content, self::$defaultCacheConfig);
     }
 
+    /**
+     * @param CiselnikDotacePoskytovatelv01[] $poskytovateleDotaci
+     * @return array
+     */
     public function initCachePodlePoskytovatelu($poskytovateleDotaci)
     {
         $counts = [];
