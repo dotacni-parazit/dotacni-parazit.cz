@@ -50,7 +50,7 @@
         <a href="/opendata">OpenData</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="https://blog.dotacni-parazit.cz">Blog</a>
+        <a href="https://blog.dotacni-parazit.cz" target="_blank">Blog</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="/vlastni-sestavy">Sestavy</a>
