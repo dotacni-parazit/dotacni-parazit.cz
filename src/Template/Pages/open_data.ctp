@@ -180,6 +180,7 @@ $this->set('title', 'OpenData');
 
 <div>
    <ul>
+       <li><a href="/presskit/Dotacni-Parazit-Tiskova-Zprava-1.pdf">Tisková zpráva o spuštění projektu (3.10.2017)</a></li>
        <li><a href="/presskit/logo.zip">Logo v různých formátech a velikostech (logo.zip)</a> - Vytvořil <a href="https://tom-kurka.cz/">Tomáš Kůrka</a></li>
    </ul>
 </div>

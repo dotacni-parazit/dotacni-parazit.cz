@@ -100,7 +100,18 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <br/><br/>
             Součty jsou dělány podle IČO, takže údaj nemusí být přesný.
         </div>
-        <table class="datatable datatable_simple">
+        <!--<hr/>
+
+        <span id="soucetRozhodnuti"></span><br/>
+        <span id="soucetSpotreba"></span><br/>
+        <span id="soucetDotinfo"></span><br/>
+        <span id="soucetCzechInvest"></span><br/>
+        <span id="soucetStrukturalni2013"></span><br/>
+        <span id="soucetStrukturalni2020"></span><br/>
+        <span id="soucetDary"></span>
+
+        <hr/>-->
+        <table id="sumtable" class="datatable datatable_simple">
             <thead>
             <tr>
                 <th>Konsolidovaná Společnost</th>
@@ -193,4 +204,28 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             active: <?= empty($name) ? '0' : '1' ?>
         });
     });
+
+    function printSum(api) {
+        return;
+        var soucet = 0, soucetSpotrebovano = 0, soucetCzechInvest = 0, soucetStrukturalni2013 = 0,
+            soucetStrukturalni2020 = 0, soucetDotinfo = 0, soucetDary = 0;
+
+        $("#sumtable").DataTable().api().rows().every(function (index, tableLoop, rowLoop) {
+            soucet += this.data()[5].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            soucetSpotrebovano += this.data()[6].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            soucetCzechInvest += this.data()[7].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            soucetStrukturalni2013 += this.data()[8].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            soucetStrukturalni2020 += this.data()[9].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            soucetDotinfo += this.data()[10].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            soucetDary += this.data()[11].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+        });
+
+        $("#soucetRozhodnuti").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(soucet) + " Kč");
+        $("#soucetSpotreba").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetSpotrebovano) + " Kč");
+        $("#soucetCzechInvest").text("Součet zobrazených řádků (investiční pobídky): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetCzechInvest) + " Kč");
+        $("#soucetDotinfo").text("Součet zobrazených řádků (DotInfo.cz): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetDotinfo) + " Kč");
+        $("#soucetDary").text("Součet zobrazených řádků (dary politickým stranám): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetDary) + " Kč");
+        $("#soucetStrukturalni2013").text("Součet zobrazených řádků (Strukturální fondy 2007-2013): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2013) + " Kč");
+        $("#soucetStrukturalni2020").text("Součet zobrazených řádků (Strukturální fondy 2014-2020): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2020) + " Kč");
+    }
 </script>

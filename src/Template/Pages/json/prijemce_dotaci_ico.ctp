@@ -3,6 +3,8 @@
 $data_arr = [];
 $total = 0;
 
+if(empty($data)) $data = [];
+
 foreach ($data as $d) {
 
     /** @var string $ajax_type */

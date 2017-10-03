@@ -34,6 +34,13 @@ function setupDataTable(selector) {
                 initCallback(ttable);
             }
         },
+        "drawCallback": function( settings ) {
+            var api = new $.fn.dataTable.Api( settings );
+
+            if (typeof printSum === "function") {
+                printSum(api);
+            }
+        },
         "language": {
             "emptyTable": "Tabulka neobsahuje žádná data",
             "info": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
