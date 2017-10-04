@@ -72,11 +72,11 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/podle-prijemcu/multiple/:ico', ['controller' => 'Pages', 'action' => 'detailPrijemceMulti'], ['ico' => '[0-9\, ]+']);
 
     $routes->connect('/podle-zdroje-financi', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanci']);
-    $routes->connect('/podle-zdroje-financi/:kod', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetail'], ['kod' => '[tz0-9]{2,5}']);
-    $routes->connect('/podle-zdroje-financi/:kod/rok/:year', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetailRok'], ['kod' => '[tz0-9]{2,5}', 'year' => '\d+']);
-    $routes->connect('/podle-zdroje-financi/:kod/complete', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetailComplete'], ['kod' => '[tz0-9]{2,5}']);
-    $routes->connect('/podle-zdroje-financi/:kod/complete/ajax/:year', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciCompleteAjax'], ['kod' => '[tz0-9]{2,5}', 'year' => '\d+']);
-    $routes->connect('/podle-zdroje-financi/:kod/complete/ajax', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciCompleteAjax'], ['kod' => '[tz0-9]{2,5}']);
+    $routes->connect('/podle-zdroje-financi/:kod', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetail'], ['kod' => '[tz0-9]{2,6}']);
+    $routes->connect('/podle-zdroje-financi/:kod/rok/:year', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetailRok'], ['kod' => '[tz0-9]{2,6}', 'year' => '\d+']);
+    $routes->connect('/podle-zdroje-financi/:kod/complete', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciDetailComplete'], ['kod' => '[tz0-9]{2,6}']);
+    $routes->connect('/podle-zdroje-financi/:kod/complete/ajax/:year', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciCompleteAjax'], ['kod' => '[tz0-9]{2,6}', 'year' => '\d+']);
+    $routes->connect('/podle-zdroje-financi/:kod/complete/ajax', ['controller' => 'Pages', 'action' => 'podleZdrojeFinanciCompleteAjax'], ['kod' => '[tz0-9]{2,6}']);
 
     $routes->connect('/podle-sidla-prijemce', ['controller' => 'Pages', 'action' => 'podleSidlaPrijemce']);
 

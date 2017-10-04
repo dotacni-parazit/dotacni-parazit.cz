@@ -12,6 +12,12 @@ $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
 
+<div class="alert alert-info">
+    Součtové hodnoty darů politickým stranám v letech jsou pouze informativní. Finální hodnoty finančního vyjádření darů
+    politickým stranám závisí na tom, jestli v případě nefinančních darů konkrétní politická uvádí jejich hodnotu ve své
+    výroční zprávě
+</div>
+
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné Informace</a></li>
@@ -147,7 +153,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 ?>
                 <tr>
                     <td><?= $t->attachment->name ?></td>
-                    <td><?= $this->Html->link($t->attachment->url) ?></td>
+                    <td><?= $this->Html->link(str_replace("data.dotacni-parazit.cz", "dotacni-parazit.cz", $t->attachment->url)) ?></td>
                 </tr>
                 <?php
                 $already_done[] = $t->attachment_id;

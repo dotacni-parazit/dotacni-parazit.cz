@@ -12,7 +12,7 @@ foreach ($dotace as $d) {
         $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->Dotace->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce),
         $d->rokRozhodnuti,
         \App\View\DPUTILS::currency($d->castkaRozhodnuta),
-        \App\View\DPUTILS::currency($d->RozpoctoveObdobi->castkaSpotrebovana),
+        empty($d->RozpoctoveObdobi) ? 'N/A' : \App\View\DPUTILS::currency($d->RozpoctoveObdobi->castkaSpotrebovana),
         $d->PoskytovatelDotace->dotacePoskytovatelNazev,
         $d->FinancniZdroj->financniZdrojNazev
     ];

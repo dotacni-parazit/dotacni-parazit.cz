@@ -67,7 +67,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>Ekonomický Subjekt</td>
-                <td><?= empty($prijemce->EkonomikaSubjekt) ? 'Nevyplněno' : $prijemce->EkonomikaSubjekt->id ?></td>
+                <td><?= empty($prijemce->EkonomikaSubjekt) ? 'Nevyplněno' : $this->Html->link($prijemce->EkonomikaSubjekt->id) ?></td>
             </tr>
 
             <tr>

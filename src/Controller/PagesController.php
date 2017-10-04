@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\Component\CachingComponent;
 use App\Model\Entity\CiselnikCedrOperacniProgramv01;
+use App\Model\Entity\CiselnikDotacePoskytovatelv01;
 use App\Model\Entity\CiselnikMmrOperacniProgramv01;
 use App\Model\Entity\Company;
 use App\Model\Entity\Consolidation;
@@ -156,9 +157,11 @@ class PagesController extends AppController
                 case 1:
                     if (is_numeric(trim($query))) {
                         $this->redirect('/prijemce-dotaci/ico?ico=' . trim($this->request->getQuery('query')));
-                    } else if (preg_match('/^[0-9,]/', str_replace("\s", "", $query))) {
-                        $this->redirect('/podle-prijemcu/multiple/' . str_replace("\s", "", $query));
-                    } else {
+                    }
+//                    else if (preg_match('/^[0-9,]/', str_replace("\s", "", $query))) {
+//                        $this->redirect('/podle-prijemcu/multiple/' . str_replace("\s", "", $query));
+//                    }
+                    else {
                         $this->redirect('/prijemce-dotaci/jmeno?name=' . $this->request->getQuery('query'));
                     }
                     break;
@@ -514,6 +517,7 @@ class PagesController extends AppController
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
+            /** @var CiselnikDotacePoskytovatelv01[] $data */
             $data = $this->CiselnikDotacePoskytovatelv01->find('all');
             $counts = $this->Caching->initCachePodlePoskytovatelu($data);
 
@@ -1154,9 +1158,9 @@ class PagesController extends AppController
             2 => [100],
             3 => [101, 102, 103, 104, 105, 106, 107, 108, 150],
             4 => [[116, 117, 118, 141, 145, 233, 234, 251, 353, 401, 442, 701, 705, 706, 731, 741, 745, 751, 761, 921, 922], [361 => 2001]],
-            5 => [111, 112, 113, 114, 115, 121, 151, 201, 205, 231, 232, 241, 242, 300, 301, 320, 330, 352, 501, 521, 531, 532, 533, 705, 931, 932, 933],
+            5 => [[111, 112, 113, 114, 115, 121, 151, 201, 205, 231, 232, 241, 242, 300, 301, 320, 330, 352, 501, 521, 531, 532, 533, 931, 932, 933], [705 => 2010]],
             6 => [314, 321, 325, 331, 341, 343, 352, 381, 400, 500, 601, 771, 801, 802, 804, 805, 901, 941, 950],
-            7 => [601, 602, 603, 611, 621, 625, 631, 641, 661],
+            7 => [[602, 603, 611, 621, 625, 631, 641, 661], [601 => 2000]],
             8 => [310, 312, 313, 431, 435, 436, 437, 541, 702],
             9 => [[911], [361 => 2002]],
             10 => [711, 715, 732],
@@ -1278,7 +1282,7 @@ class PagesController extends AppController
         $multi_prijemci = null;
 
         if (!empty($multiple)) {
-            $this->redirect('/podle-prijemcu/multiple/' . $multiple);
+            $this->redirect('/podle-prijemcu/multiple/' . str_replace(" ", ",", $multiple));
             return;
         }
 
@@ -1286,7 +1290,7 @@ class PagesController extends AppController
             $_serialize = false;
             $ajax_type = 'cedr';
             if (empty($ico) || strlen($ico) < 3) {
-
+                $data = [];
             } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
                 $data = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
@@ -1386,14 +1390,16 @@ class PagesController extends AppController
 
         $name = $this->request->getQuery('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $name = preg_replace("/[\*]{2,}/", "*", $name);
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
             $ajax_type = 'empty';
 
-            if (empty($name) || strlen($name) < 3) {
-
+            if (empty($name) || strlen(str_replace('*', '', $name)) < 3) {
+                $data = [];
             } else if ($this->request->getQuery('dotacni-urady') == 'dotacni-urady') {
+                /** @var CiselnikDotacePoskytovatelv01[] $data */
                 $data = $this->CiselnikDotacePoskytovatelv01->find('all', [
                     'conditions' => [
                         "MATCH (dotacePoskytovatelNazev) AGAINST (:against IN BOOLEAN MODE)"
@@ -1464,13 +1470,14 @@ class PagesController extends AppController
 
         $name = $this->request->getQuery('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $name = preg_replace("/[\*]{2,}/", "*", $name);
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
             $ajax_type = 'empty';
 
-            if (empty($name) || strlen($name) < 3) {
-
+            if (empty($name) || strlen(str_replace('*', '', $name)) < 3) {
+                $data = [];
             } else if ($this->request->getQuery('cedr') == 'cedr') {
                 $data = $this->PrijemcePomoci->find('all', [
                     'fields' => [
@@ -2325,7 +2332,9 @@ class PagesController extends AppController
                 'financniZdrojKod' => $this->request->getParam('kod')
             ]
         ])->first();
-        if (empty($zdroj)) throw new NotFoundException();
+        if (empty($zdroj)) {
+            throw new NotFoundException();
+        }
 
         $this->set('title', $zdroj->financniZdrojNazev);
 
@@ -3351,8 +3360,8 @@ class PagesController extends AppController
             ]
         ])->first();
         $id_holdingu = [];
-        foreach ($owner->holdings as $h) $id_holdingu[] = $h->id;
         if (empty($owner)) throw new NotFoundException();
+        foreach ($owner->holdings as $h) $id_holdingu[] = $h->id;
         $holdingy = $this->Owners->find('all', [
             'conditions' => [
                 'holding_id IN' => $id_holdingu
@@ -3799,14 +3808,14 @@ class PagesController extends AppController
             $total = 0;
 
             $html = new HtmlHelper(new View());
-
+            if (empty($data_obj)) $data_obj = [];
             foreach ($data_obj as $i) {
                 $data_arr[] = [
                     $i->rank,
                     $html->link($i->predmet, $i->odkaz),
-                    $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
+                    empty($i->VkladatelDoRejstriku) ? '' : $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
                     isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
-                    $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
+                    empty($i->Platce) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
                     isset($i->Prijemce[0]) ? $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => isset($i->Prijemce[0]->ico) ? $i->Prijemce[0]->ico : 0]) : "",
                     $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
                     $html->link('Registr Smluv', $i->odkaz)

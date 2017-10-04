@@ -33,8 +33,10 @@ $this->set('title', 'OpenData');
 <ul>
     <li><a href="#info">Obecně O Projektu</a></li>
     <li><a href="#pruvodce">Stručný průvodce</a></li>
+    <li><a href="#parazit">O názvu "Dotační Parazit"</a></li>
     <li><a href="#downloads">Otevřená Data Ke Stažení</a></li>
     <li><a href="#concepts">Postupy při zacházení s daty</a></li>
+    <li><a href="#pravni-forma">Právní Forma a Společná Právní Forma</a></li>
     <li><a href="#presskit">Ke stažení pro novináře</a></li>
 </ul>
 <hr/>
@@ -63,6 +65,37 @@ $this->set('title', 'OpenData');
 <div>
     Stručného průvodce prací s Dotačním Parazitem naleznete na Blogu, na adrese <a
             href="https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/">https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/</a>
+</div>
+
+<h2 id="parazit">O názvu "Dotační Parazit"</h2>
+
+<div>
+    Název projektu je "Dotační Parazit", tento název má dvě vysvětlení
+    <ol>
+        <li>Projekt parazituje na otevřených datech státu o dotacích</li>
+        <li>Projekt pomáhá najít příjemce pomoci, kteří parazitují na financích, které stát v dotacích alokuje</li>
+    </ol>
+
+    Je nutno říct, že rozhodně ne všichni, kteří jsou příjemci dotací, jsou zároveň parazity. Parazitem je příjemce,
+    který peníze nevyužívá k obecnému prospěchu nebo naplnění státních cílů.
+    <br/>
+    <br/>
+    Z definice pojmu <a href="https://cs.wikipedia.org/wiki/Dotace">"Dotace" na Wikipedia</a> je zřejmé, že účelem
+    dotace má být naplnění "veřejného zájmu". Pokud příjemce dotace peníze využívá k osobnímu prospěchu nebo naplnění
+    osobních zájmů, které nejsou v souladu s veřejným zájmem, takový příjemce je "Parazitem" naší společnosti.
+    <br/>
+    <br/>
+    Finance poskytnuté v dotačních programech jsou veřejnými penězmi, jsou to peníze z daní občanů a společností
+    sídlících v České republice, takže je namístě očekávat transparentnost a možnost auditu vynakládání těchto
+    prostředků.
+    <br/>
+    <br/>
+    Náš projekt si neklade za cíl zobrazit nebo identifikovat pouze tyto "parazity", ale poskytnout jednoduchý způsob,
+    jak v poskytnutých dotačních financích vyhledávat, jelikož tuto možnost občané České republiky doposud neměli. Nebo
+    alespoň ne takto jednoduchou.
+    <br/>
+    <br/>
+    Posouzení viny příjemce je otázkou následného správního nebo soudního řízení, příp. policejního šetření.
 </div>
 
 <h2 id="downloads">Ke stažení</h2>
@@ -176,11 +209,197 @@ $this->set('title', 'OpenData');
     </ul>
 </div>
 
+<h2 id="pravni-forma">(Společná) Právní Forma</h2>
+
+<div>
+    Při klasifikaci příjemců v sekci <a href="/prijemce-dotaci/pravni-forma">Podle Právní Formy</a> jsme užili číselníku
+    Právní Forma, který je k prohlédnutí vypsán na stránce <a href="/pravni-formy">Číselníky > Právní Formy</a>.
+    <br/><br/>
+    Zároveň jsme definovali Společnou Právní Formu, která sdružuje 113 právních forem dle evidence CEDR-III do 13 skupin
+    <br/>
+    Skupiny jsou vytvořeny takto:
+    <ol id="spolecna-pravni-forma">
+        <li>Církevní Instituce
+            <ul>
+                <li>703, C, Církev a církevní organizace</li>
+                <li>721, CO, Církevní organizace</li>
+            </ul>
+        </li>
+        <li>Fyzická Osoba Nepodnikatel
+            <ul>
+                <li>100, FO, Fyzická Osoba</li>
+            </ul>
+        </li>
+        <li>Fyzická Osoba Podnikatel
+            <ul>
+                <li>101, FŽN, Fyzická osoba podnikající dle živnostenského zákona nezapsaná v obchodním rejstříku</li>
+                <li>102, FŽZ, Fyzická osoba podnikající dle živnostenského zákona zapsaná v obchodním rejstříku</li>
+                <li>103, FRN, Samostatně hospodařící rolník nezapsaný v obchodním rejstříku</li>
+                <li>104, FRZ, Samostatně hospodařící rolník zapsaný v obchodním rejstříku</li>
+                <li>105, FJN, Fyzická osoba podnikající dle jiných zákonů než živnostenského a zákona o zemědělství
+                    nezapsaná v obchodním rejstříku
+                </li>
+                <li>106, FJZ, Fyzická osoba podnikající dle jiných zákonů než živnostenského a zákona o zemědělství
+                    zapsaná v obchodním rejstříku
+                </li>
+                <li>107, ZPN, Zemědělský podnikatel - fyzická osoba nezapsaná v obchodním rejstříku</li>
+                <li>108, ZPZ, Zemědělský podnikatel - fyzická osoba zapsaná v obchodním rejstříku</li>
+                <li>150, FOP, Fyz. os. - podnikatelský subj.</li>
+            </ul>
+        </li>
+        <li>Nezisková Organizace
+            <ul>
+                <li>116, ZáS, Zájmové Sdružení</li>
+                <li>117, Nad, Nadace</li>
+                <li>118, NaF, Nadační fond</li>
+                <li>141, OPS, Obecně prospěšná společnost</li>
+                <li>145, SVJ, Společenství vlastníků jednotek</li>
+                <li>233, BDr, Bytové družstvo</li>
+                <li>234, JDr, Jiné družstvo</li>
+                <li>251, ZOD, Zájmová organizace družstev</li>
+                <li>353, RDA, Rada pro veřejný dohled nad auditem</li>
+                <li>361, VPI, Veřejně prospěšná instituce (2001)</li>
+                <li>401, SMO, Sdružení mezinárodního obchodu</li>
+                <li>442, ÚZO, Účelová zahraničně obchodní organizace</li>
+                <li>701, Sdr, Sdružení (svaz, spolek, společnost, klub aj.)</li>
+                <li>701, OPO, Obecně prospěšná organizace (humanitární)</li>
+                <li>705, NO, Neziskové a podobné organizace (nadace)</li>
+                <li>706, HZS, Podnik nebo hospodářské zařízení sdružení</li>
+                <li>731, OJS, Organizační jednotka sdružení</li>
+                <li>741, StO, Samosprávná stavovská organizace (profesní komora)</li>
+                <li>745, Kom, Komora (hospodářská, agrární)</li>
+                <li>751, ZSO, Zájmové sdružení právnických osob</li>
+                <li>761, HoS, Honební společenstvo</li>
+                <li>921, MOS, Mezinárodní organizace a sdružení</li>
+                <li>922, OMP, Organizační jednotka organizace s mezinárodním prvkem</li>
+            </ul>
+        </li>
+        <li>Právnická Osoba Podnikající
+            <ul>
+                <li>111, VOS, Veřejná obchodní společnost</li>
+                <li>112, SRO, Společnost s ručením omezeným</li>
+                <li>113, SKo, Společnost komanditní</li>
+                <li>115, SpP, Společný podnik</li>
+                <li>121, AS, Akciová společnost</li>
+                <li>151, KB, Komoditní burza</li>
+                <li>201, ZD, Zemědělské družstvo</li>
+                <li>205, Dru, Družstvo</li>
+                <li>231, VDr, Výrobní družstvo</li>
+                <li>232, SDr, Spotřební družstvo</li>
+                <li>241, DrP, Družstevní podnik (s jedním zakladatelem)</li>
+                <li>242, SpP, Společný podnik (s více zakladateli)</li>
+                <li>300, PRO, Práv. os. - podnikatelský subj</li>
+                <li>301, SP, Státní podnik</li>
+                <li>320, SP, Státní podnik</li>
+                <li>330, DR, Družstvo</li>
+                <li>352, SŽC, Správa železniční dopravní cesty, státní organizace</li>
+                <li>352, ČD, České Dráhy</li>
+                <li>501, OdZ, Odštěpný závod</li>
+                <li>521, SDP, Samostatná drobná provozovna (obecního úřadu)</li>
+                <li>531, OOJ, Oblastní organizační jednotka ČD</li>
+                <li>532, ÚOJ, Účelová organizační jednotka ČD</li>
+                <li>533, SOJ, Specializovaná organizační jednotka ČD</li>
+                <li>705, HZS, Podnik nebo hospodářské zařízení sdružení</li>
+                <li>931, ESd, Evropské hospodářské zájmové sdružení</li>
+                <li>932, ESp, Evropská společnost</li>
+                <li>933, Eds, Evropská družstevní společnost</li>
+            </ul>
+        </li>
+        <li>Veřejná Instituce
+            <ul>
+                <li>314, ČKA, Česká konsolidační agentura</li>
+                <li>321, RO, Rozpočtová organizace</li>
+                <li>325, OSS, Organizační složka státu</li>
+                <li>331, PO, Příspěvková organizace</li>
+                <li>341, SHO, Státní hospodářská organizace řízená okresním úřadem</li>
+                <li>343, ObP, Obecní podnik</li>
+                <li>352, SŽC, Správa železniční dopravní cesty, státní organizace</li>
+                <li>381, Fnd, Fond (ze zákona)</li>
+                <li>400, RO, Rozpočtová organizace</li>
+                <li>500, PO, Příspěvková organizace</li>
+                <li>601, VŠ, Vysoká škola (veřejná, státní)</li>
+                <li>771, DSO, Dobrovolný svazek obcí</li>
+                <li>801, Obc, Obec (obecní úřad)</li>
+                <li>801, Obc, Obec nebo městská část hlavního města Prahy</li>
+                <li>802, Okr, Okresní úřad</li>
+                <li>804, Krj, Kraj</li>
+                <li>805, RRS, Regionální rada regionu soudržnosti</li>
+                <li>901, ZOJ, Zastupitelský orgán jiných států</li>
+                <li>941, ESU, Evropské seskupení pro územní spolupráci</li>
+                <li>950, PMS, Právnická osoba podle mezinárodní smlouvy</li>
+                <li>950, SPN, Subjekt právním řádem výslovně neupravený</li>
+            </ul>
+        </li>
+        <li>Vzdělávací Instituce
+            <ul>
+                <li>601, VŠ, Vysoká škola (veřejná, státní)</li>
+                <li>602, FVŠ, Fakulta vysoké školy</li>
+                <li>603, JVŠ, Jiné pracoviště vysoké školy/fakulty</li>
+                <li>611, SŠ, Střední škola</li>
+                <li>621, ZŠ, Základní škola</li>
+                <li>625, ŠZ, Školské zařízení</li>
+                <li>631, PZa, Předškolní zařízení</li>
+                <li>641, ŠPO, Školská právnická osoba</li>
+                <li>661, VVI, Veřejná výzkumná instituce</li>
+            </ul>
+        </li>
+        <li>Finanční Instituce
+            <ul>
+                <li>310, FIN, Fin. inst. (ČMZRB, PGRLF,EGAP)</li>
+                <li>312, Ban, Banka-státní peněžní ústav</li>
+                <li>313, ČNB, Česká národní banka</li>
+                <li>431, BAS, Banka - akciová společnost</li>
+                <li>435, PSP, Pojišťovna - státní podnik</li>
+                <li>436, PAS, Pojišťovna - akciová společnost</li>
+                <li>437, PDr, Pojišťovna - družstvo</li>
+                <li>541, PF, Podílový, penzijní fond</li>
+                <li>702, PSp, Pojišťovací spolek</li>
+            </ul>
+        </li>
+        <li>Veřejnoprávní Média
+            <ul>
+                <li>911, ISt, Zahraniční kulturní, informační středisko, rozhlasová, tisková a televizní agentura</li>
+                <li>361, VPI, Veřejnoprávní instituce (ČT,ČRo,ČTK)</li>
+            </ul>
+        </li>
+        <li>Politická Strana
+            <ul>
+                <li>711, PoS, Politická strana, politické hnutí</li>
+                <li>715, PPS, Podnik nebo hospodářské zařízení politické strany</li>
+                <li>732, OJP, Organizační jednotka politické strany, politického hnutí</li>
+            </ul>
+        </li>
+        <li>Zahraniční Osoba
+            <ul>
+                <li>421, ZOs, Zahraniční osoba</li>
+                <li>421, ZOs, Zahraniční osoba (2001-2)</li>
+            </ul>
+        </li>
+        <li>Zdravotnická Instituce
+            <ul>
+                <li>391, ZdP, Zdravotní pojišťovna</li>
+                <li>651, ZdZ, Zdravotnické zařízení</li>
+                <li>671, VNZ, Veřejné neziskové ústavní zdravotnické zařízení</li>
+            </ul>
+        </li>
+        <li>Ostatní
+            <ul>
+                <li>0, neu, Zatím neurčeno</li>
+                <li>950, PMS, Právnická osoba podle mezinárodní smlouvy</li>
+                <li>950, SPN, Subjekt právním řádem výslovně neupravený</li>
+                <li>999, OST, Ostatní</li>
+            </ul>
+        </li>
+    </ol>
+</div>
+
 <h2 id="presskit">PressKit</h2>
 
 <div>
-   <ul>
-       <li><a href="/presskit/Dotacni-Parazit-Tiskova-Zprava-1.pdf">Tisková zpráva o spuštění projektu (3.10.2017)</a></li>
-       <li><a href="/presskit/logo.zip">Logo v různých formátech a velikostech (logo.zip)</a> - Vytvořil <a href="https://tom-kurka.cz/">Tomáš Kůrka</a></li>
-   </ul>
+    <ul>
+        <li><a href="/presskit/Dotacni-Parazit-Tiskova-Zprava-1.pdf">Tisková zpráva o spuštění projektu (3.10.2017)</a>
+        </li>
+        <li><a href="/presskit/logo.zip">Logo v různých formátech a velikostech (logo.zip)</a> - Vytvořil <a
+                    href="https://tom-kurka.cz/">Tomáš Kůrka</a></li>
+    </ul>
 </div>

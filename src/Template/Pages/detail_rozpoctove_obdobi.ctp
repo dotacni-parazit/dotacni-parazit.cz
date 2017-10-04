@@ -67,7 +67,7 @@ $this->set('title', 'Detail - Rozpočtové Období')
 
     <tr>
         <td>Dotační Titul</td>
-        <td><?= $this->Html->link($data->CiselnikDotaceTitulv01->dotaceTitulNazev . ' (' . $data->CiselnikDotaceTitulv01->dotaceTitulNazevZkraceny . ')', '/detail-dotacni-titul/' . $data->CiselnikDotaceTitulv01->dotaceTitulKod) ?></td>
+        <td><?= empty($data->CiselnikDotaceTitulv01) ? '' : $this->Html->link($data->CiselnikDotaceTitulv01->dotaceTitulNazev . ' (' . $data->CiselnikDotaceTitulv01->dotaceTitulNazevZkraceny . ')', '/detail-dotacni-titul/' . $data->CiselnikDotaceTitulv01->dotaceTitulKod) ?></td>
     </tr>
 
     <tr>

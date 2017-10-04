@@ -74,6 +74,7 @@ $this->set('title', $data->operacaniProgramNazev);
             </thead>
             <tbody>
             <?php
+            if(!isset($priority) || empty($priority)) $priority = [];
             foreach ($priority as $p) { ?>
                 <tr>
                     <td><?= $is_2020_op ? $p->cisloPrioritniOsy : (!empty($p->MmrPriorita) ? $p->MmrPriorita->prioritaNazev : "N/A") ?></td>

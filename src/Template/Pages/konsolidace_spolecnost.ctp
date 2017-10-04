@@ -81,7 +81,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= $c->year ?></td>
                     <td><?= $this->Html->link($c->company->name, '/konsolidace-holdingy/detail/' . $c->holding_id) ?></td>
                     <td><?= Number::toPercentage($c->shares_percent) ?></td>
-                    <td><?= $this->Html->link($c->attachment->name, str_replace("data.dotacni-parazit.cz", "dotacni-parazit.cz", $c->attachment->url)) ?></td>
+                    <td><?= empty($c->attachment) ? '' : $this->Html->link($c->attachment->name, str_replace("data.dotacni-parazit.cz", "dotacni-parazit.cz", $c->attachment->url)) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
