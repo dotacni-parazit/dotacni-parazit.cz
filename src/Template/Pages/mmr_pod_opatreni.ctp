@@ -105,7 +105,7 @@ $this->set('title', $data->podOpatreniNazev);
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($name) ? '0' : '1' ?>
         });
     });

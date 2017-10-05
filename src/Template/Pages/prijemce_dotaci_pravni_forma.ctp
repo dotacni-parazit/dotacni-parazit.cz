@@ -57,7 +57,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($spolecna_pravni_forma) ? '0' : '1' ?>
         });
     });

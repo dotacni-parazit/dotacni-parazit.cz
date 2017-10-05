@@ -138,7 +138,7 @@ $this->set('title', $data->operacaniProgramNazev);
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($name) ? '0' : '1' ?>
         });
     });

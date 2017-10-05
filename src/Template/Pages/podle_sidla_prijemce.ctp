@@ -338,7 +338,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         enable_opacity_okresy = !$("#okresy_opacity").is(":checked");
 
         $("#tabs").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($name) ? '0' : '1' ?>
         });
 

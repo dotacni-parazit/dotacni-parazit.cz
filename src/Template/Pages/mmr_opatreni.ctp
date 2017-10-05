@@ -144,7 +144,7 @@ $this->set('title', $data->opatreniNazev);
 <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($name) ? '0' : '1' ?>
         });
     });

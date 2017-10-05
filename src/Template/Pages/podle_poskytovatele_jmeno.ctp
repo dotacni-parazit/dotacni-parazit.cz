@@ -125,11 +125,11 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     var tabs;
     $(function () {
         tabs = $("#tabs").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($multiple) ? '0' : '1' ?>
         });
         $("#tabs2").tabs({
-            collapsible: true,
+            collapsible: false,
             active: <?= empty($multiple) ? '0' : '1' ?>
         });
     });
