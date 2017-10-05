@@ -1570,6 +1570,9 @@ class PagesController extends AppController
 
     public function podleZdrojeFinanciCompleteAjax()
     {
+        if (!$this->request->is('ajax')) {
+            throw new NotFoundException();
+        }
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -3815,7 +3818,7 @@ class PagesController extends AppController
                     $html->link($i->predmet, $i->odkaz),
                     empty($i->VkladatelDoRejstriku) ? '' : $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
                     isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
-                    empty($i->Platce) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
+                    (empty($i->Platce) && isset($i->Platce->ico)) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
                     isset($i->Prijemce[0]) ? $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => isset($i->Prijemce[0]->ico) ? $i->Prijemce[0]->ico : 0]) : "",
                     $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
                     $html->link('Registr Smluv', $i->odkaz)

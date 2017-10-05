@@ -18,6 +18,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#rozhodnuti">Rozhodnutí</a></li>
     </ul>
     <div id="hlidacsmluv">
+        <div class="alert alert-info">Smlouvy jsou indexovány a vyhledávány v systému
+            <a href="https://www.hlidacsmluv.cz/" target="_blank">Hlídač Smluv</a>, originál informací o smlouvách
+            mezi poskytovateli a příjemci dotací eviduje <a href="https://smlouvy.gov.cz/" target="_blank">Registr Smluv
+                - Ministerstvo Vnitra</a></div>
         <table class="datatable"
                data-ajax="<?= Router::url(['controller' => 'Pages', 'action' => 'hlidacSmluv', 'projektIdentifikator' => $dotace->projektIdnetifikator, 'ico' => $dotace->PrijemcePomoci->ico, 'podpisDatum' => $dotace->podpisDatum->format("Y-m-d\TH:i:s")]) ?>">
             <thead>

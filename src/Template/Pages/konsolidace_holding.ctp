@@ -93,10 +93,15 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="subsidiaries">
         <div class="alert alert-info">
             V každém řádku je zobrazen součet částek "Rozhodnutí [Částka Rozhodnuta]", "Rozpočtové Období [Částka
-            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]", "Strukturální Fondy 2007-2013 [Veřejné
+            Spotřebovaná]", "Investiční Pobídky CzechInvest [Investice CZK]" a "Strukturální Fondy 2007-2013 [Veřejné
             Zdroje
-            Celkem]" a "Strukturální Fondy 2014-2020 [Zdroje Celkem]",
+            Celkem]",
             za daný rok, ve kterém byla společnost součástí holdingu.
+            <br/><br/>
+            Součet "Strukturální Fondy 2014-2020 [Zdroje Celkem]" je bohužel u všech řádků stejného IČO stejný, jelikož
+            v informacích o realizaci projektů, není datum poskytnutí dotace nebo podpisu smlouvy. Takže součet ukazuje
+            celkovou výši všech dotací v nových Strukturálních Fondech, nikoliv součet za konkrétní rok, kdy společnost
+            patřila do holdingu.
             <br/><br/>
             Součty jsou dělány podle IČO, takže údaj nemusí být přesný.
         </div>

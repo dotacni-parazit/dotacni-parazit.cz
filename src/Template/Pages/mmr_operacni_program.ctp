@@ -81,7 +81,7 @@ $this->set('title', $data->operacaniProgramNazev);
                 <tr>
                     <td><?= $this->Html->link($p->prioritaNazev, '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>
                     <td><?= $p->prioritaKod ?></td>
-                    <td><?= $counts[$p->idPriorita] ?></td>
+                    <td><?= isset($counts[$p->idPriorita]) ? $counts[$p->idPriorita] : '0' ?></td>
                     <td><?= $p->zaznamPlatnostOdDatum->year ?></td>
                     <td><?= $p->zaznamPlatnostDoDatum->year ?></td>
                     <td><?= $this->Html->link('Otevřít', '/detail-mmr-priorita/?id=' . $p->idPriorita) ?></td>

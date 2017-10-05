@@ -65,6 +65,9 @@ $this->set('title', 'OpenData');
 <div>
     Stručného průvodce prací s Dotačním Parazitem naleznete na Blogu, na adrese <a
             href="https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/">https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/</a>
+    <br/>
+    <br/>
+    Pro správnou funkci stránek Dotační Parazit doporučujeme využívat prohlížeče <a href="https://www.mozilla.cz/stahnout/">Mozilla Firefox</a> nebo <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a>
 </div>
 
 <h2 id="parazit">O názvu "Dotační Parazit"</h2>
