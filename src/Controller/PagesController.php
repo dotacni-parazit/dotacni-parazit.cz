@@ -2118,6 +2118,7 @@ class PagesController extends AppController
                 'PrijemcePomoci.idPrijemce' => 'ASC'
             ]
         ]);
+        $this->set(compact(['prijemci']));
 
         $id_vsech_prijemcu = [$prijemce->idPrijemce];
         foreach ($prijemci as $p) {

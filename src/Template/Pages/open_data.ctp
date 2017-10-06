@@ -125,8 +125,8 @@ $this->set('title', 'OpenData');
         </li>
         <li><a href="/downloads/strukturalniFondy2007-2013.xlsx">Strukturální Fondy 2007-2013
                 (strukturalniFondy2007-2013.xlsx)</a></li>
-        <li><a href="/downloads/strukturalniFondy2007-2013.sql">Strukturální Fondy 2007-2013
-                (strukturalniFondy2007-2013.sql)</a></li>
+        <li><a href="/downloads/strukturalniFondy2007-2013.sql.gz">Strukturální Fondy 2007-2013
+                (strukturalniFondy2007-2013.sql.gz)</a></li>
 
         <li><a href="/downloads/investicniPobidky-CzechInvest.xls">Investiční Pobídky - Czech Invest
                 (investicniPobidky-CzechInvest.xls)</a></li>

@@ -51,7 +51,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>Nadřazený Kraj</td>
-                <td><?= $this->Html->link($okres->Kraj->krajNazev, '/detail-kraj/' . $okres->Kraj->krajKod) ?></td>
+                <td><?= $this->Html->link($okres->Kraj->krajNazev, '/detail-kraje/' . $okres->Kraj->krajKod) ?></td>
             </tr>
 
             <tr>
