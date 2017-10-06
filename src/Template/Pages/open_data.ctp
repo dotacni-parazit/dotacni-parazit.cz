@@ -6,6 +6,11 @@ $this->set('title', 'OpenData');
         margin-top: 1em;
         margin-bottom: 1em;
     }
+    .text {
+        margin-left: 10px;
+        padding-left: 10px;
+        border-left: 2px solid #46223E;
+    }
 </style>
 
 <form action="/">
@@ -34,6 +39,7 @@ $this->set('title', 'OpenData');
     <li><a href="#info">Obecně O Projektu</a></li>
     <li><a href="#pruvodce">Stručný průvodce</a></li>
     <li><a href="#parazit">O názvu "Dotační Parazit"</a></li>
+    <li><a href="#dotace">O Dotacích</a></li>
     <li><a href="#downloads">Otevřená Data Ke Stažení</a></li>
     <li><a href="#concepts">Postupy při zacházení s daty</a></li>
     <li><a href="#pravni-forma">Právní Forma a Společná Právní Forma</a></li>
@@ -42,7 +48,7 @@ $this->set('title', 'OpenData');
 <hr/>
 
 <h2 id="info">O Projektu</h2>
-<div>
+<div class="text">
     Dotační parazit je otevřená aplikace nad otevřenými daty ohledně poskytovaných dotací a investičních pobídek,
     spravovanými státními úřady.
     <br/>
@@ -62,17 +68,19 @@ $this->set('title', 'OpenData');
 
 <h2 id="pruvodce">Průvodce</h2>
 
-<div>
+<div class="text">
     Stručného průvodce prací s Dotačním Parazitem naleznete na Blogu, na adrese <a
             href="https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/">https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/</a>
     <br/>
     <br/>
-    Pro správnou funkci stránek Dotační Parazit doporučujeme využívat prohlížeče <a href="https://www.mozilla.cz/stahnout/">Mozilla Firefox</a> nebo <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a>
+    Pro správnou funkci stránek Dotační Parazit doporučujeme využívat prohlížeče <a
+            href="https://www.mozilla.cz/stahnout/">Mozilla Firefox</a> nebo <a
+            href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a>
 </div>
 
 <h2 id="parazit">O názvu "Dotační Parazit"</h2>
 
-<div>
+<div class="text">
     Název projektu je "Dotační Parazit", tento název má dvě vysvětlení
     <ol>
         <li>Projekt parazituje na otevřených datech státu o dotacích</li>
@@ -80,7 +88,7 @@ $this->set('title', 'OpenData');
     </ol>
 
     Je nutno říct, že rozhodně ne všichni, kteří jsou příjemci dotací, jsou zároveň parazity. Parazitem je příjemce,
-    který peníze nevyužívá k obecnému prospěchu nebo naplnění státních cílů.
+    který peníze nevyužívá k obecnému prospěchu nebo naplnění veřejného zájmu.
     <br/>
     <br/>
     Z definice pojmu <a href="https://cs.wikipedia.org/wiki/Dotace">"Dotace" na Wikipedia</a> je zřejmé, že účelem
@@ -101,9 +109,70 @@ $this->set('title', 'OpenData');
     Posouzení viny příjemce je otázkou následného správního nebo soudního řízení, příp. policejního šetření.
 </div>
 
+<h2 id="dotace">O dotacích</h2>
+
+<div class="text">
+    Je třeba rozlišovat, zda dotace zakládá veřejnou podporu, či nikoliv.<br/><br/>
+    O veřejnou podporu se nejedná, pokud je příjemcem podpory státní instituce a jde o investici ve veřejném zájmu
+    (výstavba dálnice, oprava kulturní památky apod.).<br/><br/>
+    O veřejnou podporu se obvykle jedná pouze za podmínky, že příjemcem podpory je podnik (subjekt, který vykonává
+    hospodářskou činnost, bez ohledu na svůj právní status a způsob svého financování) Podnikem se rozumí i organizace
+    fungující na neziskové bázi. Poskytování veřejné podpory je nežádoucí pro fungování tržního prostředí, a proto je
+    její použití upraveno v evropském právu. Pravidla pro poskytování veřejné podpory jsou definována ve Smlouvě o
+    fungování Evropské unie (čl. 106 a čl. 107) a podrobně upravena v dalších předpisech.<br/><br/>
+    Veřejná podpora je obecně zakázána. Její poskytnutí je možné tehdy, pokud se nalezne právní titul (výjimku) k jejímu
+    legálnímu poskytnutí. Kromě výjimek vyplývajících přímo ze Smlouvy o fungování Evropské unie existují tyto tři druhy
+    výjimek.<br/><br/>
+    <h3>1. Blokové výjimky</h3>
+    <ol type="a">
+        <li>Regionální podpora</li>
+        <li>Podpora malých a středních podniků (MSP)</li>
+        <li>Podpora výzkumu, vývoje a inovací</li>
+        <li>Podpora na vzdělávání</li>
+        <li>Podpora pro znevýhodněné pracovníky a pracovníky se zdravotním postižením</li>
+        <li>Podpora na ochranu životního prostředí</li>
+        <li>Podpory na náhradu škod způsobených některými přírodními pohromami</li>
+        <li>Podpora na širokopásmovou infrastrukturu</li>
+        <li>Podpora kultury a zachování kulturního dědictví</li>
+        <li>Podpora na sportovní a multifunkční rekreační infrastrukturu</li>
+        <li>Podpora na místní infrastrukturu</li>
+    </ol>
+    Společnosti, které se snaží čerpat maximální množství dotací a naformulovat svůj projekt tak, aby splnili podmínky
+    blokové výjimky, jsou pro nás dotační paraziti. Platí to zejména pro společnosti, které tvoří konsolidovaný holding
+    a díky své velikosti nemusí v žádném rozsahu bojovat se znevýhodněním, kterým obvykle trpí malé a střední podniky.
+    Jejich zisky nezůstávají na regionální úrovni, ale jsou transferovány do mateřské společnosti.<br/><br/>
+    Samozřejmě primárním problémem je způsob, jakým jsou dotační tituly vypisovány, jejich výběr a následná
+    administrace. Kontrolují se převážně formální náležitosti, ale nejde o splnění primárního účelu, za jakým byla
+    bloková výjimka udělena.<br/><br/>
+    <h3>2. Podpora de minimis</h3> - neboli podpora malého rozsahu může poskytovatel poskytnout jednomu podniku podporu
+    na jakýkoli účel. Celková výše podpory de minimis, kterou členský stát poskytne jednomu podniku, nesmí za libovolná
+    tři po sobě jdoucí jednoletá účetní období překročit 200 000 EUR.<br/><br/>
+    Společnosti čerpající dotace v rámci režimu de minimis nejsou z našeho pohledu dotační paraziti.<br/><br/>
+    Od členských států je požadováno, aby sledovaly poskytnuté podpory, a tím zajistily, že příslušné stropy nejsou
+    překročeny a že pravidla kumulace jsou dodržena. Členské státy by měly zřídit centrální registr, který by obsahoval
+    úplné informace o poskytnutých podporách de minimis a zajišťovat kontrolu, že žádné nové poskytnutí podpory
+    nepřekračuje příslušný strop.<br/><br/>
+    V České republice je tento požadavek splněn tím, že v gesci Ministerstva zemědělství je zřízen registr de minimis.
+    Není jasné, proč dotace v režimu de minimis nejsou součástí CEDR (navržen jako centrální evidenční dotační registr).
+    Ministerstvo zemědělství nepublikuje data registru de minimis (jedná se o neveřejný registr). Registr de minimis tak
+    není součástí Dotačního parazita (s Ministerstvem zemědělství se snažíme domluvit na jeho zpřístupnění).<br/><br/>
+    <h3>3. Služby v obecném hospodářském zájmu (SOHZ)</h3>
+    SOHZ musí vykazovat odlišné vlastnosti v porovnání s běžnými ekonomickými činnostmi. To znamená, že jejich
+    poskytování je odrazem existence tržního selhání, jinak by neexistoval důvod pro jejich poskytování, neboť by tyto
+    činnosti mohl zabezpečovat sám trh. Podstatou tržního selhání je situace, kdy trh není schopen sám působit k tomu,
+    aby určité služby byly nabízeny v požadované podobě a za ceny, které jsou kupující ochotni zaplatit. To znamená, že
+    služby nejsou nabízeny vůbec, nebo jsou nabízeny za podmínek, které jsou sice výhodné pro jejich příjemce, ale
+    nikoliv pro jejich poskytovatele.<br/><br/>
+    Příklad: Poskytování sociálních služeb (maximální ceny za poskytnuté služby jsou regulovány vyhláškou, poskytování
+    služeb se ekonomicky nevyplatí, je třeba je dotovat). Autobusová linka do míst s nízkým počtem cestujících
+    (ekonomicky se provoz linky nevyplatí, pro jeho zachování je třeba dotace).<br/><br/>
+    Společnosti poskytující služby obecného hospodářského zájmu, na jejichž provoz čerpají dotace, nejsou z našeho
+    pohledu dotační paraziti.
+</div>
+
 <h2 id="downloads">Ke stažení</h2>
 
-<div>
+<div class="text">
     Pro transparentnost projektu jsou zde ke stažení originály souborů, ze kterých jsme vycházeli při stavbě Dotačního
     Parazita.
     <br/>
@@ -149,7 +218,7 @@ $this->set('title', 'OpenData');
 
 <h2 id="concepts">Postupy</h2>
 
-<div>
+<div class="text">
     Obecně
     <ul>
         <li>Data CEDR je nejcitlivější a největší databází, data nebyla upravena, pouze doplněna (viz. níže)</li>
@@ -214,7 +283,7 @@ $this->set('title', 'OpenData');
 
 <h2 id="pravni-forma">(Společná) Právní Forma</h2>
 
-<div>
+<div class="text">
     Při klasifikaci příjemců v sekci <a href="/prijemce-dotaci/pravni-forma">Podle Právní Formy</a> jsme užili číselníku
     Právní Forma, který je k prohlédnutí vypsán na stránce <a href="/pravni-formy">Číselníky > Právní Formy</a>.
     <br/><br/>
@@ -398,7 +467,7 @@ $this->set('title', 'OpenData');
 
 <h2 id="presskit">PressKit</h2>
 
-<div>
+<div class="text">
     <ul>
         <li><a href="/presskit/Dotacni-Parazit-Tiskova-Zprava-1.pdf">Tisková zpráva o spuštění projektu (3.10.2017)</a>
         </li>
