@@ -994,6 +994,10 @@ class PagesController extends AppController
      */
     public function fyzickeOsobyAjax()
     {
+        if (!$this->request->is('ajax')) {
+            throw new NotFoundException();
+        }
+
         $osoby = $this->PrijemcePomoci->find('all', [
             'fields' => [
                 'idPrijemce',
@@ -1391,6 +1395,7 @@ class PagesController extends AppController
         $name = $this->request->getQuery('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
         $name = preg_replace("/[\*]{2,}/", "*", $name);
+        $name = str_replace([')', '(', "\"", "'"], '', $name);
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1471,6 +1476,7 @@ class PagesController extends AppController
         $name = $this->request->getQuery('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
         $name = preg_replace("/[\*]{2,}/", "*", $name);
+        $name = str_replace([')', '(', "\"", "'"], '', $name);
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1967,6 +1973,9 @@ class PagesController extends AppController
 
     public function podlePoskytovateluDetailCompleteAjax()
     {
+        if (!$this->request->is('ajax')) {
+            throw new NotFoundException();
+        }
 
         $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
             'conditions' => [
@@ -2750,6 +2759,10 @@ class PagesController extends AppController
 
     public function detailDotacniTitulRokAjax()
     {
+        if (!$this->request->is('ajax')) {
+            throw new NotFoundException();
+        }
+
         $idTitul = $this->request->getQuery('id');
         $idTitul = filter_var($idTitul, FILTER_SANITIZE_URL);
 
