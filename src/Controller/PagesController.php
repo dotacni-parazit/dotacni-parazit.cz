@@ -2099,14 +2099,16 @@ class PagesController extends AppController
 
         $prijemce = $this->PrijemcePomoci->find('all', [
             'conditions' => [
-                'idPrijemce' => $this->request->getParam('id')
+                'PrijemcePomoci.idPrijemce' => $this->request->getParam('id')
             ],
             'contain' => [
                 'CiselnikPravniFormav01',
                 'CiselnikStatv01',
                 'Osoba',
                 'Osoba.CiselnikObecv01',
-                'EkonomikaSubjekt'
+                'EkonomikaSubjekt',
+                'AdresaSidlo',
+                'AdresaSidlo.CiselnikObecv01'
             ]
         ])->limit(1)->first();
 
@@ -2122,7 +2124,7 @@ class PagesController extends AppController
         } else {
             $conditions = [
                 'ico' => $prijemce->ico,
-                'idPrijemce !=' => $prijemce->idPrijemce
+                'PrijemcePomoci.idPrijemce !=' => $prijemce->idPrijemce
             ];
         }
 

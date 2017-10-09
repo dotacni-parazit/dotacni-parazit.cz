@@ -87,8 +87,14 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>Bydliště</td>
-                <td><?= (empty($prijemce->Osoba) || empty($prijemce->Osoba->Obec)) ? 'Nevyplněno' : ($prijemce->Osoba->Obec->obecNazev . ' (NUTS: ' . $prijemce->Osoba->Obec->obecNutsKod . ')') ?></td>
+                <td>
+                    <?= (empty($prijemce->Osoba) || empty($prijemce->Osoba->Obec)) ? '' : ($prijemce->Osoba->Obec->obecNazev . ' (NUTS: ' . $prijemce->Osoba->Obec->obecNutsKod . ')') ?>
+                    <?= (empty($prijemce->AdresaSidlo) || empty($prijemce->AdresaSidlo->Obec)) ? '' : ($prijemce->AdresaSidlo->Obec->obecNazev . ' (NUTS: ' . $prijemce->AdresaSidlo->Obec->obecNutsKod . ')') ?>
+                </td>
             </tr>
+            <!--
+            <?php var_dump($prijemce); ?>
+            -->
 
             </tbody>
             <tfoot>

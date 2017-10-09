@@ -42,8 +42,8 @@ $this->set('title', 'OpenData');
     <li><a href="#dotace">O Dotacích</a></li>
     <li><a href="#downloads">Otevřená Data Ke Stažení</a></li>
     <li><a href="#concepts">Postupy při zacházení s daty</a></li>
-    <li><a href="#pravni-forma">Právní Forma a Společná Právní Forma</a></li>
     <li><a href="#vyhledavani">Nápověda k vyhledávání</a></li>
+    <li><a href="#pravni-forma">Právní Forma a Společná Právní Forma</a></li>
     <li><a href="#presskit">Ke stažení pro novináře</a></li>
 </ul>
 <hr/>
@@ -282,6 +282,23 @@ $this->set('title', 'OpenData');
     </ul>
 </div>
 
+<h2 id="vyhledavani">Nápověda k vyhledávání</h2>
+
+<div class="text">
+    Vyhledávání v aplikaci Dotační parazit je dvojího druhu
+    <ol type="1">
+        <li>Podle IČO - Pouze příjemci pomoci</li>
+        <li>Podle Jména - Příjemci a Poskytovatelé</li>
+    </ol>
+    Pokud zadáte do hlavního vyhledávacího pole číslo, bude vyhledáváno podle IČO (pouze pro příjemce pomoci).
+    <br/><br/>
+    Vyhledávání podle jména:
+    <ul>
+        <li>Text v uvozovkách, bude hledán jako "přesná fráze", např. <a href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=%22ministerstvo+%C5%A1kolstv%C3%AD%22">"ministerstvo školství"</a></li>
+        <li>Slova prefixována znakem "-" budou vyloučena z výsledků, např. <a href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=ministerstvo+-dopravy+-%C5%A1kolstv%C3%AD+-financ%C3%AD">ministerstvo -dopravy -školství -financí</a></li>
+    </ul>
+</div>
+
 <h2 id="pravni-forma">(Společná) Právní Forma</h2>
 
 <div class="text">
@@ -464,23 +481,6 @@ $this->set('title', 'OpenData');
             </ul>
         </li>
     </ol>
-</div>
-
-<h2 id="vyhledavani">Nápověda k vyhledávání</h2>
-
-<div class="text">
-    Vyhledávání v aplikaci Dotační parazit je dvojího druhu
-    <ol type="1">
-        <li>Podle IČO - Pouze příjemci pomoci</li>
-        <li>Podle Jména - Příjemci a Poskytovatelé</li>
-    </ol>
-    Pokud zadáte do hlavního vyhledávacího pole číslo, bude vyhledáváno podle IČO (pouze pro příjemce pomoci).
-    <br/><br/>
-    Vyhledávání podle jména:
-    <ul>
-        <li>Text v uvozovkách, bude hledán jako "přesná fráze", např. <a href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=%22ministerstvo+%C5%A1kolstv%C3%AD%22">"ministerstvo školství"</a></li>
-        <li>Slova prefixována znakem "-" budou vyloučena z výsledků, např. <a href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=ministerstvo+-dopravy+-%C5%A1kolstv%C3%AD+-financ%C3%AD">ministerstvo -dopravy -školství -financí</a></li>
-    </ul>
 </div>
 
 <h2 id="presskit">PressKit</h2>

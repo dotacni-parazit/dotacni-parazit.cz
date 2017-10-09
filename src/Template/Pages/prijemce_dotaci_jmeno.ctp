@@ -19,8 +19,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         echo $this->Form->input('name', ['label' => 'Obchodní jméno / Jméno / Příjmení (alespoň 3 písmena)', 'value' => $name]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
-        echo 'použijte * pro hledání částí slova, např. "techn*" najde "technologie"';
         ?>
+        <a href="/opendata#vyhledavani">Nápověda k vyhledávání</a>
     </div>
 </div>
 <hr/>
