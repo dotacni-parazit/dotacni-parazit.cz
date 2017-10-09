@@ -253,7 +253,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             $("#tabs").tabs("refresh");
         }
         if ($("#tabs div").children().length === 0) {
-            if ($("input#ico").text() !== "") {
+            if ($("input#ico").val() !== "") {
                 $("#tabs").append("<h2>Nic nebylo nalezeno</h2>");
             }
         }
