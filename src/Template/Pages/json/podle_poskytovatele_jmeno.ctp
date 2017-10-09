@@ -4,7 +4,6 @@ use Cake\Cache\Cache;
 
 /** @var string $ajax_type */
 $cache_key = 'poskytovatel_jmeno_ajax_' . sha1($name) . '_' . $ajax_type;
-//Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -59,7 +58,7 @@ if (!$cache_data) {
                 $data_arr[] = [
                     $this->Html->link($d->poskytovatelNazev, '/dotinfo/poskytovatel/' . $d->poskytovatelIco),
                     $d->poskytovatelIco,
-                    $sums[$d->poskytovatelIco]['sumSchvaleno'],
+                    \App\View\DPUTILS::currency($sums[$d->poskytovatelIco]['sumSchvaleno']),
                     $sums[$d->poskytovatelIco]['count']
                 ];
 

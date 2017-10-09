@@ -1393,9 +1393,12 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Podle Jména' => 'self']);
 
         $name = $this->request->getQuery('name');
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $is_exact = startsWith($name, "\"") && endsWith($name, "\"");
+        $name = filter_var($name, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
         $name = preg_replace("/[\*]{2,}/", "*", $name);
-        $name = str_replace([')', '(', "\"", "'"], '', $name);
+        $name = str_replace([')', '(', "\"", "'", "@"], '', $name);
+        $name = $is_exact ? "\"" . $name . "\"" : $name;
+
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1407,9 +1410,9 @@ class PagesController extends AppController
                 /** @var CiselnikDotacePoskytovatelv01[] $data */
                 $data = $this->CiselnikDotacePoskytovatelv01->find('all', [
                     'conditions' => [
-                        "MATCH (dotacePoskytovatelNazev) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (dotacePoskytovatelNazev) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $ajax_type = 'dotacni-urady';
                 $counts = $this->Caching->initCachePodlePoskytovatelu($data);
 
@@ -1417,9 +1420,9 @@ class PagesController extends AppController
             } else if ($this->request->getQuery('zdroje-financovani') == 'zdroje-financovani') {
                 $data = $this->CiselnikFinancniZdrojv01->find('all', [
                     'conditions' => [
-                        "MATCH (financniZdrojNazev) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (financniZdrojNazev) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $ajax_type = 'zdroje-financovani';
                 $counts = $this->sumsPodleZdrojeFinanci($data);
 
@@ -1427,9 +1430,9 @@ class PagesController extends AppController
             } else if ($this->request->getQuery('dotacni-tituly') == 'dotacni-tituly') {
                 $data = $this->CiselnikDotaceTitulv01->find('all', [
                     'conditions' => [
-                        "MATCH (dotaceTitulNazev) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (dotaceTitulNazev) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $ajax_type = 'dotacni-tituly';
             } else if ($this->request->getQuery('dotinfo') == 'dotinfo') {
                 $ajax_type = 'dotinfo';
@@ -1439,9 +1442,9 @@ class PagesController extends AppController
                         'poskytovatelIco'
                     ],
                     'conditions' => [
-                        "MATCH (poskytovatelNazev) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (poskytovatelNazev) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $sums = [];
                 /** @var Dotinfo[] $data */
                 foreach ($data as $p) {
@@ -1474,9 +1477,11 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Příjemci' => '/podle-prijemcu', 'Podle Jména' => 'self']);
 
         $name = $this->request->getQuery('name');
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $is_exact = startsWith($name, "\"") && endsWith($name, "\"");
+        $name = filter_var($name, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
         $name = preg_replace("/[\*]{2,}/", "*", $name);
-        $name = str_replace([')', '(', "\"", "'"], '', $name);
+        $name = str_replace([')', '(', "\"", "'", "@"], '', $name);
+        $name = $is_exact ? "\"" . $name . "\"" : $name;
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1497,42 +1502,42 @@ class PagesController extends AppController
                     ],
                     'contain' => ['CiselnikStatv01'],
                     'conditions' => [
-                        "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (obchodniJmeno, jmeno, prijmeni) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name))->limit(50000);
+                ])->limit(50000);
                 $ajax_type = 'cedr';
             } else if ($this->request->getQuery('konsolidace') == 'konsolidace') {
                 $data = $this->Companies->find('all', [
                     'conditions' => [
-                        "MATCH (name) AGAINST (:against in BOOLEAN MODE)",
+                        "MATCH (name) AGAINST ('" . $name . "' IN BOOLEAN MODE)",
                         'type_id !=' => 5
                     ],
                     'contain' => [
                         'Types'
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $ajax_type = 'konsolidace';
             } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
                 $data = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
-                        "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (name) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $ajax_type = 'czechinvest';
             } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
                 $data = $this->StrukturalniFondy->find('all', [
                     'conditions' => [
-                        "MATCH (zadatel) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (zadatel) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $ajax_type = 'strukturalniFondy';
             } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
                 $ajax_type = 'politickeStrany';
                 $data = $this->Companies->find('all', [
                     'conditions' => [
-                        "MATCH (name) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (name) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
                 $darce_id = [];
                 foreach ($data as $d) {
                     if ($d->ico == 0) {
@@ -1561,9 +1566,9 @@ class PagesController extends AppController
                 $ajax_type = 'dotinfo';
                 $data = $this->Dotinfo->find('all', [
                     'conditions' => [
-                        "MATCH (ucastnikObchodniJmeno) AGAINST (:against IN BOOLEAN MODE)"
+                        "MATCH (ucastnikObchodniJmeno) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
                     ]
-                ])->bind(':against', h($name));
+                ]);
             } else {
                 $data = [];
             }
