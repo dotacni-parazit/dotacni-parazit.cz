@@ -105,7 +105,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <br/><br/>
             Součty jsou dělány podle IČO, takže údaj nemusí být přesný.
         </div>
-        <!--<hr/>
+        <hr/>
 
         <span id="soucetRozhodnuti"></span><br/>
         <span id="soucetSpotreba"></span><br/>
@@ -115,8 +115,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <span id="soucetStrukturalni2020"></span><br/>
         <span id="soucetDary"></span>
 
-        <hr/>-->
-        <table id="sumtable" class="datatable datatable_simple">
+        <hr/>
+        <table id="sumtable" class="datatable_simple">
             <thead>
             <tr>
                 <th>Konsolidovaná Společnost</th>
@@ -203,11 +203,14 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 </div>
 
 <script type="text/javascript">
+    var sumtable;
     $(function () {
         $("#tabs").tabs({
             collapsible: false,
             active: <?= empty($name) ? '0' : '1' ?>
         });
+
+        sumtable = setupDataTable($("#sumtable"));
     });
 
     function printSum(api) {

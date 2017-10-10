@@ -25,9 +25,9 @@
         <a href="/distance">Založení IČO vs. První Dotace</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="#">Bude odhaleno 9.10.2017</a>
+        <a href="#">Připravuje se</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="#">Bude odhaleno 9.10.2017</a>
+        <a href="#">Připravuje se</a>
     </div>
 </div>
