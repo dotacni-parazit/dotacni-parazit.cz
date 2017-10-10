@@ -112,7 +112,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <span id="soucetDotinfo"></span><br/>
         <span id="soucetCzechInvest"></span><br/>
         <span id="soucetStrukturalni2013"></span><br/>
-        <span id="soucetStrukturalni2020"></span><br/>
+        <!--<span id="soucetStrukturalni2020"></span><br/>-->
         <span id="soucetDary"></span>
 
         <hr/>
@@ -204,21 +204,12 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
 <script type="text/javascript">
     var sumtable;
-    $(function () {
-        $("#tabs").tabs({
-            collapsible: false,
-            active: <?= empty($name) ? '0' : '1' ?>
-        });
-
-        sumtable = setupDataTable($("#sumtable"));
-    });
 
     function printSum(api) {
-        return;
         var soucet = 0, soucetSpotrebovano = 0, soucetCzechInvest = 0, soucetStrukturalni2013 = 0,
             soucetStrukturalni2020 = 0, soucetDotinfo = 0, soucetDary = 0;
 
-        $("#sumtable").DataTable().api().rows().every(function (index, tableLoop, rowLoop) {
+        api.rows().every(function (index, tableLoop, rowLoop) {
             soucet += this.data()[5].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
             soucetSpotrebovano += this.data()[6].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
             soucetCzechInvest += this.data()[7].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
@@ -236,4 +227,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         $("#soucetStrukturalni2013").text("Součet zobrazených řádků (Strukturální fondy 2007-2013): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2013) + " Kč");
         $("#soucetStrukturalni2020").text("Součet zobrazených řádků (Strukturální fondy 2014-2020): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2020) + " Kč");
     }
+
+    $(function () {
+        $("#tabs").tabs({
+            collapsible: false,
+            active: <?= empty($name) ? '0' : '1' ?>
+        });
+
+        sumtable = setupDataTable($("#sumtable"));
+    });
 </script>

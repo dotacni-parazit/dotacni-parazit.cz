@@ -31,7 +31,7 @@
     <li><a href="ciselnikRozpoctovaSkladbaPolozkav01.csv.7z">ciselnikRozpoctovaSkladbaPolozkav01.csv.7z</a></li>
     <li><a href="ciselnikStatniRozpocetKapitolav01.csv.7z">ciselnikStatniRozpocetKapitolav01.csv.7z</a></li>
     <li><a href="ciselnikStatniRozpocetUkazatelv01.csv.7z">ciselnikStatniRozpocetUkazatelv01.csv.7z</a></li>
-    <li><a href="ciselnikStatv01.csv.7">ciselnikStatv01.csv.7z</a></li>
+    <li><a href="ciselnikStatv01.csv.7z">ciselnikStatv01.csv.7z</a></li>
     <li><a href="ciselnikUcelZnakv01.csv.7z">ciselnikUcelZnakv01.csv.7z</a></li>
     <li><a href="ciselnikVuscv01.csv.7z">ciselnikVuscv01.csv.7z</a></li>
     <li><a href="Dotace.csv.7z">Dotace.csv.7z</a></li>
