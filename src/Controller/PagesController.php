@@ -1399,6 +1399,7 @@ class PagesController extends AppController
         $name = str_replace([')', '(', "\"", "'", "@"], '', $name);
         $name = $is_exact ? "\"" . $name . "\"" : $name;
 
+        while(in_array(substr($name, -1), ['-','+'])) $name = substr($name, 0, -1);
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1482,6 +1483,8 @@ class PagesController extends AppController
         $name = preg_replace("/[\*]{2,}/", "*", $name);
         $name = str_replace([')', '(', "\"", "'", "@"], '', $name);
         $name = $is_exact ? "\"" . $name . "\"" : $name;
+
+        while(in_array(substr($name, -1), ['-','+'])) $name = substr($name, 0, -1);
 
         if ($this->request->is('ajax')) {
             $_serialize = false;
@@ -1584,6 +1587,7 @@ class PagesController extends AppController
         if (!$this->request->is('ajax')) {
             throw new NotFoundException();
         }
+        $this->RequestHandler->renderAs($this, 'json');
 
         $zdroj = $this->CiselnikFinancniZdrojv01->find('all', [
             'conditions' => [
@@ -1723,6 +1727,7 @@ class PagesController extends AppController
         }
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             if ($is_2020_op) {
                 $fondy = $this->StrukturalniFondy2020->find('all', [
                     'conditions' => [
@@ -1772,6 +1777,7 @@ class PagesController extends AppController
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Ukazatele Kapitol Státního Rozpočtu' => 'self']);
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $data = $this->CiselnikStatniRozpocetUkazatelv01->find('all', [
                 'conditions' => [
                     'statniRozpocetUkazatelNadrizenyKod' => ''
@@ -1981,6 +1987,7 @@ class PagesController extends AppController
         if (!$this->request->is('ajax')) {
             throw new NotFoundException();
         }
+        $this->RequestHandler->renderAs($this, 'json');
 
         $poskytovatel = $this->CiselnikDotacePoskytovatelv01->find('all', [
             'conditions' => [
@@ -2142,6 +2149,7 @@ class PagesController extends AppController
         }
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $this->set('_serialize', false);
             if ($this->request->getQuery('dotace') == 'dotace') {
                 $dotace = $this->Rozhodnuti->find('all', [
@@ -2307,6 +2315,7 @@ class PagesController extends AppController
         if (empty($prijemci)) throw new NotFoundException();
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $dotace = $this->Rozhodnuti->find('all', [
                 'conditions' => [
                     'Dotace.idPrijemce IN' => array_keys($ids)
@@ -2557,6 +2566,7 @@ class PagesController extends AppController
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Číselníky' => '/ciselniky', 'Účel Dotačních Titulů' => 'self']);
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $znaky = $this->CiselnikUcelZnakv01->find('all');
             $counts = $this->CiselnikUcelZnakDotacniTitulv01->find('list', [
                 'fields' => [
@@ -2769,6 +2779,7 @@ class PagesController extends AppController
         if (!$this->request->is('ajax')) {
             throw new NotFoundException();
         }
+        $this->RequestHandler->renderAs($this, 'json');
 
         $idTitul = $this->request->getQuery('id');
         $idTitul = filter_var($idTitul, FILTER_SANITIZE_URL);
@@ -2834,6 +2845,7 @@ class PagesController extends AppController
         ]);
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj->krajKod);
             $biggest = Cache::read($cache_tag_kraj_top_100, 'long_term');
             if ($biggest === false) $biggest = [];
@@ -2876,6 +2888,7 @@ class PagesController extends AppController
         ]);
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $cache_tag_okres_top_100 = 'detail_okresu_top_100_' . sha1($okres->okresKod);
             $biggest = Cache::read($cache_tag_okres_top_100, 'long_term');
             if ($biggest === false) $biggest = [];
@@ -2910,6 +2923,7 @@ class PagesController extends AppController
         ]);
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec->obecKod);
             $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
             if ($biggest === false) $biggest = [];
@@ -3113,6 +3127,8 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Programy MMR' => '/operacni-programy-mmr', 'Detail Priorita' => 'self']);
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
+
             $dotace = $this->Dotace->find('all', [
                 'fields' => [
                     'idDotace',
@@ -3155,6 +3171,7 @@ class PagesController extends AppController
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Ostatní Programy' => '/operacni-programy-cedr', 'Detail Priorita' => 'self']);
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $dotace = $this->Dotace->find('all', [
                 'fields' => [
                     'idDotace',
@@ -3211,6 +3228,7 @@ class PagesController extends AppController
         }
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $dotace = $this->Dotace->find('all', [
                 'fields' => [
                     'idDotace',
@@ -3268,6 +3286,7 @@ class PagesController extends AppController
         }
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $dotace = $this->Dotace->find('all', [
                 'fields' => [
                     'idDotace',
@@ -3316,6 +3335,7 @@ class PagesController extends AppController
 
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
 
             $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat->statKod3Znaky);
             $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
@@ -3336,6 +3356,7 @@ class PagesController extends AppController
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Investiční Pobídky - CzechInvest' => 'self']);
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $_serialize = false;
             $pobidky = $this->InvesticniPobidky->find('all');
             $this->set(compact(['_serialize', 'pobidky']));
@@ -3806,6 +3827,7 @@ class PagesController extends AppController
     public function hlidacSmluv()
     {
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $apiAuth = "Token bd4f624f72c54f7fadb3c01125300dd9";
             $http = new Client();
             $params = (object)[
@@ -3839,7 +3861,7 @@ class PagesController extends AppController
                     $html->link($i->predmet, $i->odkaz),
                     empty($i->VkladatelDoRejstriku) ? '' : $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
                     isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
-                    (empty($i->Platce) && isset($i->Platce->ico)) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
+                    (empty($i->Platce) && !isset($i->Platce->ico)) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
                     isset($i->Prijemce[0]) ? $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => isset($i->Prijemce[0]->ico) ? $i->Prijemce[0]->ico : 0]) : "",
                     $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
                     $html->link('Registr Smluv', $i->odkaz)
@@ -3924,6 +3946,7 @@ class PagesController extends AppController
     public function icoDotaceDistance()
     {
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $data = $this->MFCRPAP->find('all', [
                 'conditions' => [
                     'idPrijemce IS NOT NULL',
@@ -4012,6 +4035,7 @@ class PagesController extends AppController
         if (empty($poskytovatel)) throw new NotFoundException();
 
         if ($this->request->is('ajax')) {
+            $this->RequestHandler->renderAs($this, 'json');
             $data = $this->Dotinfo->find('all', [
                 'conditions' => [
                     'poskytovatelIco' => $poskytovatel->poskytovatelIco

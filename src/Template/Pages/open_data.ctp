@@ -45,6 +45,7 @@ $this->set('title', 'OpenData');
     <li><a href="#vyhledavani">Nápověda k vyhledávání</a></li>
     <li><a href="#pravni-forma">Právní Forma a Společná Právní Forma</a></li>
     <li><a href="#presskit">Ke stažení pro novináře</a></li>
+    <li><a href="#opensource">OpenSource licence</a></li>
 </ul>
 <hr/>
 
@@ -491,5 +492,22 @@ $this->set('title', 'OpenData');
         </li>
         <li><a href="/presskit/logo.zip">Logo v různých formátech a velikostech (logo.zip)</a> - Vytvořil <a
                     href="https://tom-kurka.cz/">Tomáš Kůrka</a></li>
+    </ul>
+</div>
+
+<h2 id="opensource">OpenSource</h2>
+
+<div class="text">
+    V projektu jsou využity následující Open-Source technologie:
+    <ul>
+        <li><a href="https://github.com/cakephp/cakephp">CakePHP (MIT License)</a></li>
+        <li><a href="https://github.com/czgov/hlidacsmluv-dotace">Proxy k API Hlídače Smluv - Díky Josef Ludvíček (MIT License)</a></li>
+        <li><a href="https://jquery.org/">jQuery a jQuery UI (MIT License)</a></li>
+        <li><a href="https://github.com/DataTables/DataTables">jQuery DataTables (MIT License)</a></li>
+        <li><a href="https://v4-alpha.getbootstrap.com/about/license/">Twitter Bootstrap v4</a></li>
+        <li><a href="https://mariadb.com/kb/en/library/licensing-faq/">MariaDB (GPL v2)</a></li>
+        <li><a href="https://secure.php.net/license/index.php">PHP 7 (PHP License v3.01)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Nginx">Nginx web-server (Simplified BSD License)</a></li>
+        <li><a href="https://www.debian.org/legal/licenses/">Debian Linux OS (various licenses)</a></li>
     </ul>
 </div>

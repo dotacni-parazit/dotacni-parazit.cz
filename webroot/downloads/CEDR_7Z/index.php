@@ -24,7 +24,7 @@
     <li><a href="ciselnikMmrPrioritav01.csv.7z">ciselnikMmrPrioritav01.csv.7z</a></li>
     <li><a href="ciselnikMmrProgramPodporav01.csv.7z">ciselnikMmrProgramPodporav01.csv.7z</a></li>
     <li><a href="ciselnikObecv01.csv.7z">ciselnikObecv01.csv.7z</a></li>
-    <li><a href="ciselnikOkresv01.csv.7">ciselnikOkresv01.csv.7z</a></li>
+    <li><a href="ciselnikOkresv01.csv.7z">ciselnikOkresv01.csv.7z</a></li>
     <li><a href="ciselnikPravniFormav01.csv.7z">ciselnikPravniFormav01.csv.7z</a></li>
     <li><a href="ciselnikProgramv01.csv.7z">ciselnikProgramv01.csv.7z</a></li>
     <li><a href="ciselnikRozpoctovaSkladbaParagrafv01.csv.7z">ciselnikRozpoctovaSkladbaParagrafv01.csv.7z</a></li>
