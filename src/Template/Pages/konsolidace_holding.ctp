@@ -210,13 +210,18 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             soucetStrukturalni2020 = 0, soucetDotinfo = 0, soucetDary = 0;
 
         api.rows().every(function (index, tableLoop, rowLoop) {
-            soucet += this.data()[5].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
-            soucetSpotrebovano += this.data()[6].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
-            soucetCzechInvest += this.data()[7].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
-            soucetStrukturalni2013 += this.data()[8].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
-            soucetStrukturalni2020 += this.data()[9].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
-            soucetDotinfo += this.data()[10].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
-            soucetDary += this.data()[11].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+            try {
+                soucet += this.data()[5].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                soucetSpotrebovano += this.data()[6].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                soucetCzechInvest += this.data()[7].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                soucetStrukturalni2013 += this.data()[8].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                //soucetStrukturalni2020 += this.data()[9].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                soucetDotinfo += this.data()[10].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+                soucetDary += this.data()[11].replace(/\,00/g, '').replace(/[^\d.-]/g, '') * 1;
+
+            } catch (ignore) {
+                console.log(this.data());
+            }
         });
 
         $("#soucetRozhodnuti").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(soucet) + " Kč");
@@ -225,7 +230,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         $("#soucetDotinfo").text("Součet zobrazených řádků (DotInfo.cz): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetDotinfo) + " Kč");
         $("#soucetDary").text("Součet zobrazených řádků (dary politickým stranám): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetDary) + " Kč");
         $("#soucetStrukturalni2013").text("Součet zobrazených řádků (Strukturální fondy 2007-2013): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2013) + " Kč");
-        $("#soucetStrukturalni2020").text("Součet zobrazených řádků (Strukturální fondy 2014-2020): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2020) + " Kč");
+        //$("#soucetStrukturalni2020").text("Součet zobrazených řádků (Strukturální fondy 2014-2020): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetStrukturalni2020) + " Kč");
     }
 
     $(function () {
