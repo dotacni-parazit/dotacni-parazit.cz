@@ -6,6 +6,7 @@ $this->set('title', 'OpenData');
         margin-top: 1em;
         margin-bottom: 1em;
     }
+
     .text {
         margin-left: 10px;
         padding-left: 10px;
@@ -212,6 +213,10 @@ $this->set('title', 'OpenData');
         </li>
         <li><a href="/downloads/konsolidace.sql.gz">Aktuální stav databáze konsolidací holdingů/dceřinných společností a
                 darů právnických osob politickým stranám (konsolidace.sql.gz)</a></li>
+        <li><a href="/downloads/PRV_2015.xls">Program Rozvoje Venkova - SZIF - zatím neintegrováno - (Seznam příjemců
+                dotací - SPD fiskální rok 2015 veřejný.xls)</a></li>
+        <li><a href="/downloads/PRV_2016.xls">Program Rozvoje Venkova - SZIF - zatím neintegrováno - (Seznam příjemců
+                dotací - SPD fiskální rok 2016 veřejný.xls)</a></li>
     </ul>
     <br/>
     Zároveň zdrojové kódy aplikace Dotační Parazit, včetně databázového schéma, budou zveřejněny na GitHub v repozitáři
@@ -295,8 +300,12 @@ $this->set('title', 'OpenData');
     <br/><br/>
     Vyhledávání podle jména:
     <ul>
-        <li>Text v uvozovkách, bude hledán jako "přesná fráze", např. <a href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=%22ministerstvo+%C5%A1kolstv%C3%AD%22">"ministerstvo školství"</a></li>
-        <li>Slova prefixována znakem "-" budou vyloučena z výsledků, např. <a href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=ministerstvo+-dopravy+-%C5%A1kolstv%C3%AD+-financ%C3%AD">ministerstvo -dopravy -školství -financí</a></li>
+        <li>Text v uvozovkách, bude hledán jako "přesná fráze", např. <a
+                    href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=%22ministerstvo+%C5%A1kolstv%C3%AD%22">"ministerstvo
+                školství"</a></li>
+        <li>Slova prefixována znakem "-" budou vyloučena z výsledků, např. <a
+                    href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=ministerstvo+-dopravy+-%C5%A1kolstv%C3%AD+-financ%C3%AD">ministerstvo
+                -dopravy -školství -financí</a></li>
     </ul>
 </div>
 
@@ -501,7 +510,8 @@ $this->set('title', 'OpenData');
     V projektu jsou využity následující Open-Source technologie:
     <ul>
         <li><a href="https://github.com/cakephp/cakephp">CakePHP (MIT License)</a></li>
-        <li><a href="https://github.com/czgov/hlidacsmluv-dotace">Proxy k API Hlídače Smluv - Díky Josef Ludvíček (MIT License)</a></li>
+        <li><a href="https://github.com/czgov/hlidacsmluv-dotace">Proxy k API Hlídače Smluv - Díky Josef Ludvíček (MIT
+                License)</a></li>
         <li><a href="https://jquery.org/">jQuery a jQuery UI (MIT License)</a></li>
         <li><a href="https://github.com/DataTables/DataTables">jQuery DataTables (MIT License)</a></li>
         <li><a href="https://v4-alpha.getbootstrap.com/about/license/">Twitter Bootstrap v4</a></li>
