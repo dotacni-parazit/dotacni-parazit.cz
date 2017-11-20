@@ -213,10 +213,14 @@ $this->set('title', 'OpenData');
         </li>
         <li><a href="/downloads/konsolidace.sql.gz">Aktuální stav databáze konsolidací holdingů/dceřinných společností a
                 darů právnických osob politickým stranám (konsolidace.sql.gz)</a></li>
-        <li><a href="/downloads/PRV_2015.xls">Program Rozvoje Venkova - SZIF - zatím neintegrováno - (Seznam příjemců
-                dotací - SPD fiskální rok 2015 veřejný.xls)</a></li>
-        <li><a href="/downloads/PRV_2016.xls">Program Rozvoje Venkova - SZIF - zatím neintegrováno - (Seznam příjemců
-                dotací - SPD fiskální rok 2016 veřejný.xls)</a></li>
+        <li><a href="/downloads/SZIF_SPD_2014.xlsx">SZIF SPD 2014 (xlsx) - nejnovější (verze 2)</a> <a href="/downloads/SZIF_SPD_2014.csv">(csv)</a></li>
+        <li><a href="/downloads/SZIF_SPD_2015.xlsx">SZIF SPD 2015 (xlsx) - nejnovější (verze 3)</a> <a href="/downloads/SZIF_SPD_2015.csv">(csv)</a></li>
+        <li><a href="/downloads/SZIF_SPD_2016.xlsx">SZIF SPD 2016 (xlsx) - nejnovější (verze 3)</a> <a href="/downloads/SZIF_SPD_2016.csv">(csv)</a></li>
+        <li><a href="/downloads/PRV_2014.xls">SZIF SPD 2014 (verze 1)</a></li>
+        <li><a href="/downloads/PRV_2015_2.xls">SZIF SPD 2015 (verze 2)</a></li>
+        <li><a href="/downloads/PRV_2015.xls">SZIF SPD 2015 (verze 1)</a></li>
+        <li><a href="/downloads/PRV_2016_2.xls">SZIF SPD 2016 (verze 2)</a></li>
+        <li><a href="/downloads/PRV_2016.xls">SZIF SPD 2016 (verze 1)</a></li>
     </ul>
     <br/>
     Zároveň zdrojové kódy aplikace Dotační Parazit, včetně databázového schéma, budou zveřejněny na GitHub v repozitáři
