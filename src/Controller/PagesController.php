@@ -1558,7 +1558,14 @@ class PagesController extends AppController
                     ]
                 ]);
                 $ajax_type = 'strukturalniFondy';
-            } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
+            } else if ($this->request->getQuery('strukturalni-fondy-2020') == 'strukturalni-fondy-2020') {
+                $data = $this->StrukturalniFondy2020->find('all', [
+                    'conditions' => [
+                        "MATCH (zadatel) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
+                    ]
+                ]);
+                $ajax_type = 'strukturalniFondy2020';
+            }else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
                 $ajax_type = 'politickeStrany';
                 $data = $this->Companies->find('all', [
                     'conditions' => [

@@ -113,6 +113,18 @@ if (!$cache_data) {
                     $this->Html->link('Otevřít', '/strukturalni-fondy-detail-dotace/' . $d->id)
                 ];
                 break;
+            case 'strukturalniFondy2020':
+
+                /** @var \App\Model\Entity\StrukturalniFondy2020 $d */
+                $data_arr[] = [
+                    $d->zadatel,
+                    \App\View\DPUTILS::ico($d->zadatelIco),
+                    \App\View\DPUTILS::currency($d->schvaleneZdrojeVerejne),
+                    $d->registracniCisloProjektu,
+                    $d->nazevProjektu,
+                    $this->Html->link('Otevřít', '/strukturalni-fondy-2014-2020-detail-dotace/' . $d->id)
+                ];
+                break;
             case 'politickeStrany':
 
                 /** @var \App\Model\Entity\Transaction $d */
