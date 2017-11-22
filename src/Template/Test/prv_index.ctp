@@ -4,6 +4,20 @@ $this->set('title', 'Státní Zemědělský Intervenční Fond');
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
+<div class="alert alert-info">
+    <ul>
+        <li>U právnických osob (PO) je vždy uveden název společnosti, obec a okres</li>
+        <li>U fyzických osob (FO) je uvedeno jméno a
+            okres. FO, u nichž je příjem za fiskální rok roven nebo nižší částce 1250 EUR, jsou uvedeny pod Jednotným
+            identifikátorem (JI).
+        </li>
+        <li>Záporné (-) znamínko u plateb znamená:
+            <ul>
+                <li>Intervenční opatření – Prodej – platba za zboží</li>
+                <li>Vratky</li>
+            </ul>
+        </li>
+</div>
 <div id="tabs">
     <ul>
         <li><a href="#sources">Zdroj Financí</a></li>
@@ -14,7 +28,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
 
     <div id="sources">
-        <table class="datatable">
+        <table class="datatable datatable_simple">
             <thead>
             <tr>
                 <th>Zdroj</th>
@@ -45,7 +59,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
 
     <div id="okresy">
-        <table class="datatable">
+        <table class="datatable datatable_simple">
             <thead>
             <tr>
                 <th>Název Okresu</th>

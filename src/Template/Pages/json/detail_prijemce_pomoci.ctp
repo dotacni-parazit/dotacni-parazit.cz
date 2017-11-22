@@ -7,7 +7,7 @@ use Cake\I18n\Number;
 /** @var \App\Model\Entity\PrijemcePomoci $prijemce */
 /** @var string $ajax_type */
 
-$cache_key = 'detail_prijemce_pomoci' . sha1($prijemce->idPrijemce) . '_' . $ajax_type;
+$cache_key = 'detail_prijemce_pomoci_' . sha1($prijemce->idPrijemce) . '_' . $ajax_type;
 if (!isset($ajax_type)) throw new \Cake\Network\Exception\NotFoundException();
 $cache_data = Cache::read($cache_key, 'long_term');
 
