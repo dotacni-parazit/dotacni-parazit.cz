@@ -1323,6 +1323,13 @@ class PagesController extends AppController
                     ]
                 ]);
                 $ajax_type = 'strukturalniFondy';
+            } else if ($this->request->getQuery('strukturalni-fondy-2020') == 'strukturalni-fondy-2020') {
+                $data = $this->StrukturalniFondy2020->find('all', [
+                    'conditions' => [
+                        'zadatelIco' => $ico
+                    ]
+                ]);
+                $ajax_type = 'strukturalniFondy2020';
             } else if ($this->request->getQuery('szif') == 'szif') {
                 $data = $this->PRV->find('all', [
                     'conditions' => [
@@ -2204,6 +2211,14 @@ class PagesController extends AppController
                 ]);
                 $this->set(compact(['dotace', 'prijemce']));
                 $this->set('ajax_type', 'dotace');
+            } else if ($this->request->getQuery('szif') == 'szif') {
+                $szif = $this->PRV->find('all', [
+                    'conditions' => [
+                        'ico' => $prijemce->ico
+                    ]
+                ]);
+                $this->set(compact(['szif', 'prijemce']));
+                $this->set('ajax_type', 'szif');
             } else if ($this->request->getQuery('strukturalni-fondy') == 'strukturalni-fondy') {
                 $strukturalniFondy = $this->StrukturalniFondy->find('all', [
                     'conditions' => [
@@ -2274,6 +2289,11 @@ class PagesController extends AppController
                         'zadatelIco' => $prijemce->ico
                     ]
                 ])->count();
+                $szif = $this->PRV->find('all', [
+                    'conditions' => [
+                        'ico' => $prijemce->ico
+                    ]
+                ])->count();
                 $investicniPobidky = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
                         'ico' => $prijemce->ico
@@ -2290,7 +2310,7 @@ class PagesController extends AppController
                         'ucastnikIco' => $prijemce->ico
                     ]
                 ])->count();
-                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary', 'dotinfo', 'strukturalniFondy2020']));
+                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary', 'dotinfo', 'strukturalniFondy2020', 'szif']));
             }
 
             $this->set(compact(['prijemce', 'prijemci']));

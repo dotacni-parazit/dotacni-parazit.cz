@@ -36,6 +36,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li id="tab-cedr"><a href="#cedr">CEDR</a></li>
         <li id="tab-czechinvest"><a href="#czechinvest">Investiční pobídky</a></li>
         <li id="tab-strukturalni-fondy"><a href="#strukturalniFondy">Strukturální Fondy 2007 - 2013</a></li>
+        <li id="tab-strukturalni-fondy-2020"><a href="#strukturalniFondy2020">Strukturální Fondy 2014 - 2020</a></li>
         <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
         <li id="tab-politickeStrany"><a href="#politickeStrany">Dotace Dárců Politických Stran</a></li>
         <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
@@ -96,6 +97,35 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="strukturalniFondy">
         <table class="datatable" style="width: 100%"
                data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy=strukturalni-fondy">
+            <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>IČO</th>
+                <th class="nosearch" data-type="currency">Veřejné Zdroje Celkem</th>
+                <th>Číslo Projektu</th>
+                <th>Název Projektu</th>
+                <th class="nosearch">Otevřít</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Jméno</td>
+                <td>IČO</td>
+                <td>Veřejné Zdroje Celkem</td>
+                <td>Číslo Projektu</td>
+                <td>Název Projektu</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="strukturalniFondy2020">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy-2020=strukturalni-fondy-2020">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -282,6 +312,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 case 'strukturalni-fondy':
                     $("#strukturalniFondy").remove();
                     $("#tab-strukturalni-fondy").remove();
+                    break;
+                case 'strukturalni-fondy-2020':
+                    $("#strukturalniFondy-2020").remove();
+                    $("#tab-strukturalni-fondy-2020").remove();
                     break;
                 case 'konsolidace':
                     $("#konsolidace").remove();

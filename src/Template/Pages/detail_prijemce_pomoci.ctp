@@ -31,6 +31,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php if (!empty($investicniPobidky)) { ?>
             <li><a href="#investicniPobidky">Investiční Pobídky - CzechInvest</a></li>
         <?php } ?>
+        <?php if (!empty($szif)) { ?>
+            <li><a href="#szif">Státní Zemědělský Intervenční Fond</a></li>
+        <?php } ?>
         <?php if (!empty($politickeDary)) { ?>
             <li><a href="#politickeDary">Dary politickým stranám</a></li>
         <?php } ?>
@@ -337,6 +340,46 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </table>
         </div>
     <?php } ?>
+
+    <?php if (!empty($szif)) { ?>
+    <div id="szif">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) ?>?szif=szif">
+            <thead>
+            <tr>
+                <th>Příjemce pomoci</th>
+                <th>IČO příjemce</th>
+                <th>Rok</th>
+                <th data-type="currency">Fondy Tuzemské</th>
+                <th data-type="currency">Fondy EU</th>
+                <th data-type="currency">Fondy celkem</th>
+                <th>Opatření</th>
+                <th>Finanční zdroj</th>
+                <th>Místo realizace</th>
+                <td>Otevřít</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Příjemce pomoci</td>
+                <td>IČO příjemce</td>
+                <td>Rok</td>
+                <td data-type="currency">Fondy Tuzemské</td>
+                <td data-type="currency">Fondy EU</td>
+                <td data-type="currency">Fondy celkem</td>
+                <td>Opatření</td>
+                <td>Finanční zdroj</td>
+                <td>Místo realizace</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <?php } ?>
+
     <?php if (!empty($politickeDary)) { ?>
         <div id="politickeDary">
             <table class="datatable" style="width: 100%"

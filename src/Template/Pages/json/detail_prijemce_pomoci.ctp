@@ -73,6 +73,28 @@ if (!$cache_data) {
                 $total++;
             }
             break;
+
+        case "szif":
+
+            /** @var \App\Model\Entity\PRV[] $szif */
+            foreach ($szif as $d) {
+                $data_arr[] = [
+                    $d->jmeno,
+                    \App\View\DPUTILS::ico($d->ico),
+                    $d->rok,
+                    \App\View\DPUTILS::currency($d->czk_tuzemske),
+                    \App\View\DPUTILS::currency($d->czk_evropske),
+                    \App\View\DPUTILS::currency($d->czk_celkem),
+                    $d->opatreni,
+                    $d->zdroj,
+                    $d->okres . ', ' . $d->obec,
+                    $this->Html->link('Otevřít', '/program-rozvoje-venkova/detail/' . $d->id)
+                ];
+
+                $total++;
+            }
+            break;
+
         case "strukturalniFondy2020":
             /** @var \App\Model\Entity\StrukturalniFondy2020[] $strukturalniFondy2020 */
             foreach ($strukturalniFondy2020 as $f) {
