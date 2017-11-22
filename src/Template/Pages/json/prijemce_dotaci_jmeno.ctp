@@ -76,7 +76,7 @@ if (!$cache_data) {
                     $d->opatreni,
                     $d->zdroj,
                     $d->okres . ', ' . $d->obec,
-                    $this->Html->link('Otevřít', '/program-rozvoje-venkova/ico/' . $d->ico)
+                    $this->Html->link('Otevřít', '/program-rozvoje-venkova/detail/' . $d->id)
                 ];
 
                 break;

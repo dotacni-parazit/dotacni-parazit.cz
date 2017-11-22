@@ -62,6 +62,9 @@ $this->set('title', 'Poskytovatelé');
 
 <div class="row homepage_row homepage">
     <div class="col-lg-4 col-sm-9 col-md-4">
+        <a href="/program-rozvoje-venkova">Státní Zemědělský Intervenční Fond</a>
+    </div>
+    <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="/poskytovatel-dotaci/jmeno">Podle Jména</a>
     </div>
 </div>

@@ -17,6 +17,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <li>Vratky</li>
             </ul>
         </li>
+    </ul>
+    Více info na <?= $this->Html->link("https://www.szif.cz/cs/seznam-prijemcu-dotaci") ?>
 </div>
 <div id="tabs">
     <ul>
