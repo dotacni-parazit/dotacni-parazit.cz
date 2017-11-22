@@ -44,6 +44,7 @@ use App\Model\Table\InvesticniPobidkyTable;
 use App\Model\Table\MFCRPAPTable;
 use App\Model\Table\OwnersTable;
 use App\Model\Table\PrijemcePomociTable;
+use App\Model\Table\PRVTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
 use App\Model\Table\StrukturalniFondy2020Table;
@@ -97,6 +98,7 @@ use Cake\View\View;
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
  * @property AuditsTable Audits
  * @property MFCRPAPTable MFCRPAP
+ * @property PRVTable PRV
  */
 class PagesController extends AppController
 {
@@ -145,6 +147,7 @@ class PagesController extends AppController
         $this->loadModel('CiselnikDotaceTitulStatniRozpocetUkazatelv01');
         $this->loadModel('CiselnikUcelZnakv01');
         $this->loadModel('CiselnikUcelZnakDotacniTitulv01');
+        $this->loadModel('PRV');
         $this->loadComponent('Caching');
     }
 
@@ -1320,6 +1323,13 @@ class PagesController extends AppController
                     ]
                 ]);
                 $ajax_type = 'strukturalniFondy';
+            } else if ($this->request->getQuery('szif') == 'szif') {
+                $data = $this->PRV->find('all', [
+                    'conditions' => [
+                        'ico' => $ico
+                    ]
+                ]);
+                $ajax_type = 'szif';
             } else if ($this->request->getQuery('cedr') == 'cedr') {
                 $data = $this->PrijemcePomoci->find('all', [
                     'fields' => [
@@ -1509,6 +1519,13 @@ class PagesController extends AppController
                     ]
                 ])->limit(50000);
                 $ajax_type = 'cedr';
+            } else if ($this->request->getQuery('szif') == 'szif') {
+                $data = $this->PRV->find('all', [
+                    'conditions' => [
+                        "MATCH (jmeno) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
+                    ]
+                ]);
+                $ajax_type = 'szif';
             } else if ($this->request->getQuery('konsolidace') == 'konsolidace') {
                 $data = $this->Companies->find('all', [
                     'conditions' => [

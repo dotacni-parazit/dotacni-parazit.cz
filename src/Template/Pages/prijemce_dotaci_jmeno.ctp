@@ -32,6 +32,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li id="tab-dotinfo"><a href="#dotInfo">DotInfo</a></li>
         <li id="tab-politickeStrany"><a href="#politickeStrany">Dotace Dárců Politických Stran</a></li>
         <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
+        <li id="tab-szif"><a href="#szif">Státní Zemědělský Intervenční Fond</a></li>
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%"
@@ -166,6 +167,43 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </table>
     </div>
 
+    <div id="szif">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&szif=szif">
+            <thead>
+            <tr>
+                <th>Příjemce pomoci</th>
+                <th>IČO příjemce</th>
+                <th>Rok</th>
+                <th data-type="currency">Fondy Tuzemské</th>
+                <th data-type="currency">Fondy EU</th>
+                <th data-type="currency">Fondy celkem</th>
+                <th>Opatření</th>
+                <th>Finanční zdroj</th>
+                <th>Místo realizace</th>
+                <td>Otevřít</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Příjemce pomoci</td>
+                <td>IČO příjemce</td>
+                <td>Rok</td>
+                <td data-type="currency">Fondy Tuzemské</td>
+                <td data-type="currency">Fondy EU</td>
+                <td data-type="currency">Fondy celkem</td>
+                <td>Opatření</td>
+                <td>Finanční zdroj</td>
+                <td>Místo realizace</td>
+                <td>Otevřít</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
     <div id="konsolidace">
         <table class="datatable" style="width: 100%"
                data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&konsolidace=konsolidace">
@@ -237,6 +275,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 case 'konsolidace':
                     $("#konsolidace").remove();
                     $("#tab-konsolidace").remove();
+                    break;
+                case 'szif':
+                    $("#szif").remove();
+                    $("#tab-szif").remove();
                     break;
             }
             $("#tabs").tabs("refresh");

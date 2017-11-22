@@ -7,7 +7,8 @@ use Cake\ORM\Entity;
  * PRV Entity
  *
  * @property int $id
- * @property string $ico
+ * @property int $ico
+ * @property int $rok
  * @property string $jmeno
  * @property string $obec
  * @property string $okres
