@@ -140,15 +140,15 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/vlastni-sestavy', ['controller' => 'Pages', 'action' => 'vlastniSestavy']);
     $routes->connect('/poskytovatel-dotaci/jmeno', ['controller' => 'Pages', 'action' => 'podlePoskytovateleJmeno']);
 
-    $routes->connect('/program-rozvoje-venkova', ['controller' => 'Test', 'action' => 'prvIndex']);
-    $routes->connect('/program-rozvoje-venkova/ajax/po', ['controller' => 'Test', 'action' => 'prvPO']);
-    $routes->connect('/program-rozvoje-venkova/ajax/fo', ['controller' => 'Test', 'action' => 'prvFO']);
-    $routes->connect('/program-rozvoje-venkova/detail/:id', ['controller' => 'Test', 'action' => 'prvDetail'], ['id' => '[0-9]+']);
-    $routes->connect('/program-rozvoje-venkova/ico/:ico', ['controller' => 'Test', 'action' => 'prvIco'], ['ico' => '[0-9]+']);
-    $routes->connect('/program-rozvoje-venkova/zdroj', ['controller' => 'Test', 'action' => 'prvZdroj']);
-    $routes->connect('/program-rozvoje-venkova/okres', ['controller' => 'Test', 'action' => 'prvOkres']);
-    $routes->connect('/program-rozvoje-venkova/obec', ['controller' => 'Test', 'action' => 'prvObec']);
-    $routes->connect('/program-rozvoje-venkova/opatreni', ['controller' => 'Test', 'action' => 'prvOpatreni']);
+    $routes->connect('/program-rozvoje-venkova', ['controller' => 'Szif', 'action' => 'prvIndex']);
+    $routes->connect('/program-rozvoje-venkova/ajax/po', ['controller' => 'Szif', 'action' => 'prvPO']);
+    $routes->connect('/program-rozvoje-venkova/ajax/fo', ['controller' => 'Szif', 'action' => 'prvFO']);
+    $routes->connect('/program-rozvoje-venkova/detail/:id', ['controller' => 'Szif', 'action' => 'prvDetail'], ['id' => '[0-9]+']);
+    $routes->connect('/program-rozvoje-venkova/ico/:ico', ['controller' => 'Szif', 'action' => 'prvIco'], ['ico' => '[0-9]+']);
+    $routes->connect('/program-rozvoje-venkova/zdroj', ['controller' => 'Szif', 'action' => 'prvZdroj']);
+    $routes->connect('/program-rozvoje-venkova/okres', ['controller' => 'Szif', 'action' => 'prvOkres']);
+    $routes->connect('/program-rozvoje-venkova/obec', ['controller' => 'Szif', 'action' => 'prvObec']);
+    $routes->connect('/program-rozvoje-venkova/opatreni', ['controller' => 'Szif', 'action' => 'prvOpatreni']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);

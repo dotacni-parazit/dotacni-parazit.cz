@@ -81,7 +81,7 @@ use Cake\Network\Exception\NotFoundException;
  * @property StrukturalniFondy2020Table StrukturalniFondy2020
  * @property PRVTable PRV
  */
-class TestController extends AppController
+class SzifController extends AppController
 {
 
     public function initialize()
