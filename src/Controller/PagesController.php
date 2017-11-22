@@ -84,6 +84,7 @@ use Cake\View\View;
  * @property DotaceTable Dotace
  * @property CachingComponent Caching;
  * @property StrukturalniFondyTable StrukturalniFondy
+ * @property StrukturalniFondy2020Table StrukturalniFondy2020
  * @property CiselnikDotaceTitulStatniRozpocetUkazatelv01Table CiselnikDotaceTitulStatniRozpocetUkazatelv01
  * @property CiselnikUcelZnakv01Table CiselnikUcelZnakv01
  * @property CiselnikUcelZnakDotacniTitulv01Table CiselnikUcelZnakDotacniTitulv01
@@ -96,7 +97,6 @@ use Cake\View\View;
  * @property CiselnikCedrPrioritav01Table CiselnikCedrPrioritav01
  * @property AuditsTable Audits
  * @property MFCRPAPTable MFCRPAP
- * @property StrukturalniFondy2020Table StrukturalniFondy2020
  */
 class PagesController extends AppController
 {
@@ -2195,6 +2195,14 @@ class PagesController extends AppController
                 ]);
                 $this->set(compact(['strukturalniFondy', 'prijemce']));
                 $this->set('ajax_type', 'strukturalniFondy');
+            } else if ($this->request->getQuery('strukturalni-fondy-2020') == 'strukturalni-fondy-2020') {
+                $strukturalniFondy2020 = $this->StrukturalniFondy2020->find('all', [
+                    'conditions' => [
+                        'zadatelIco' => $prijemce->ico
+                    ]
+                ]);
+                $this->set(compact(['strukturalniFondy2020', 'prijemce']));
+                $this->set('ajax_type', 'strukturalniFondy2020');
             } else if ($this->request->getQuery('czechinvest') == 'czechinvest') {
                 $investicniPobidky = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
@@ -2244,6 +2252,11 @@ class PagesController extends AppController
                         'zadatelIcoNum' => $prijemce->ico
                     ]
                 ])->count();
+                $strukturalniFondy2020 = $this->StrukturalniFondy2020->find('all', [
+                    'conditions' => [
+                        'zadatelIco' => $prijemce->ico
+                    ]
+                ])->count();
                 $investicniPobidky = $this->InvesticniPobidky->find('all', [
                     'conditions' => [
                         'ico' => $prijemce->ico
@@ -2260,7 +2273,7 @@ class PagesController extends AppController
                         'ucastnikIco' => $prijemce->ico
                     ]
                 ])->count();
-                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary', 'dotinfo']));
+                $this->set(compact(['strukturalniFondy', 'investicniPobidky', 'politickeDary', 'dotinfo', 'strukturalniFondy2020']));
             }
 
             $this->set(compact(['prijemce', 'prijemci']));

@@ -73,6 +73,27 @@ if (!$cache_data) {
                 $total++;
             }
             break;
+        case "strukturalniFondy2020":
+            /** @var \App\Model\Entity\StrukturalniFondy2020[] $strukturalniFondy2020 */
+            foreach ($strukturalniFondy2020 as $f) {
+                $data_arr[] = [
+                    $f->operacniProgram . ' ' . $f->cisloPrioritniOsy,
+                    $f->registracniCisloProjektu,
+                    $f->nazevProjektu,
+                    \App\View\DPUTILS::currency($f->celkoveZdroje),
+                    \App\View\DPUTILS::currency($f->schvaleneZdrojeVerejne),
+                    \App\View\DPUTILS::currency($f->schvaleneZdrojeEU),
+                    \App\View\DPUTILS::currency($f->vyuctovaneZdrojeVerejne),
+                    \App\View\DPUTILS::currency($f->vyuctovaneZdrojeSoukrome),
+                    \App\View\DPUTILS::currency($f->vyuctovaneZdrojeEU),
+                    \App\View\DPUTILS::currency($f->vyuctovaneZdroje),
+                    $f->kodNUTS . ' (' . $f->nazevNUTS . ')',
+                    $this->Html->link('Detail', '/strukturalni-fondy-2014-2020-detail-dotace/' . $f->id)
+                ];
+
+                $total++;
+            }
+            break;
         case "politickeDary":
 
             /** @var \App\Model\Entity\Transaction[] $politickeDary */

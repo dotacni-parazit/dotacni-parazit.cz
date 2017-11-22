@@ -22,6 +22,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <?php if (!empty($strukturalniFondy)) { ?>
             <li><a href="#strukturalniFondy">Strukturální Fondy 2007 - 2013</a></li>
         <?php } ?>
+        <?php if (!empty($strukturalniFondy2020)) { ?>
+            <li><a href="#strukturalniFondy2020">Strukturální Fondy 2014 - 2020</a></li>
+        <?php } ?>
         <?php if (!empty($dotinfo)) { ?>
             <li><a href="#dotinfo">DotInfo</a></li>
         <?php } ?>
@@ -159,6 +162,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </div>
         </div>
     <?php } ?>
+
     <?php if (!empty($strukturalniFondy)) { ?>
         <div id="strukturalniFondy">
             <table class="datatable"
@@ -197,6 +201,50 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </table>
         </div>
     <?php } ?>
+
+    <?php if (!empty($strukturalniFondy2020)) { ?>
+        <div id="strukturalniFondy2020">
+            <table class="datatable"
+                   data-ajax="<?= $this->request->here(false) ?>?strukturalni-fondy-2020=strukturalni-fondy-2020">
+                <thead>
+                <tr>
+                    <th>Číslo a název programu</th>
+                    <th>Číslo Projektu</th>
+                    <th>Název Projektu</th>
+                    <th class="nosearch" data-type="currency">Zdroje celkem</th>
+                    <th class="nosearch" data-type="currency">Veřejné zdroje celkem</th>
+                    <th class="nosearch" data-type="currency">EU zdroje</th>
+                    <th class="nosearch" data-type="currency">Vyúčtované veřejné zdroje celkem</th>
+                    <th class="nosearch" data-type="currency">Vyúčtované soukromé zdroje celkem</th>
+                    <th class="nosearch" data-type="currency">Vyúčtované EU zdroje</th>
+                    <th class="nosearch" data-type="currency">Vyúčtované zdroje celkem</th>
+                    <th>Místo realizace</th>
+                    <th class="nosearch">Detail</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Číslo a název programu</td>
+                    <td>Číslo Projektu</td>
+                    <td>Název Projektu</td>
+                    <th>Zdroje celkem</th>
+                    <th>Veřejné zdroje celkem</th>
+                    <th>EU zdroje</th>
+                    <th>Vyúčtované veřejné zdroje celkem</th>
+                    <th>Vyúčtované soukromé zdroje celkem</th>
+                    <th>Vyúčtované EU zdroje</th>
+                    <th>Vyúčtované zdroje celkem</th>
+                    <td>Místo realizace</td>
+                    <td>Detail</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    <?php } ?>
+
     <div id="hlidacsmluv">
         <div class="alert alert-info">Smlouvy jsou indexovány a vyhledávány v systému
             <a href="https://www.hlidacsmluv.cz/" target="_blank">Hlídač Smluv</a>, originál informací o smlouvách
