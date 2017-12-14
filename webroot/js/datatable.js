@@ -16,7 +16,7 @@ var buttonCommon = {
         format: {
             body: function (data, row, column, node) {
                 var tmp = $("<a>" + data + "</a>").text();
-                if (tmp.match(/[.,]00\sKč$/)) return tmp.replace(/\s/g, "").replace(/[.,]00Kč$/, "");
+                if (tmp.match(/\sKč$/)) return tmp.replace(/\sKč/g, '').replace(/\s/g, '').replace(/\,/, '.');
                 return tmp;
             }
         }

@@ -584,6 +584,11 @@ class PagesController extends AppController
             ]
         ]);
 
+        $soucet_staty = [];
+        $soucet_staty_spotrebovano = [];
+        $kraje_data = [];
+        $okresy_soucet = [];
+
         if ($this->request->is('ajax')) {
 
             $obce_soucet = [];
@@ -634,14 +639,9 @@ class PagesController extends AppController
             }
 
             $_serialize = false;
-            $this->set(compact(['obce', 'obce_soucet', '_serialize']));
+            $this->set(compact(['obce', 'obce_soucet', '_serialize', 'okresy_soucet']));
             return;
         }
-
-        $soucet_staty = [];
-        $soucet_staty_spotrebovano = [];
-        $kraje_data = [];
-        $okresy_soucet = [];
 
         foreach ($staty as $stat) {
             // soucet rozhodnutych
