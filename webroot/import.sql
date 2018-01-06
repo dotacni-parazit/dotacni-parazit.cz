@@ -1,0 +1,1 @@
+LOAD DATA LOCAL INFILE './PAP-IC-2017-08-31-v01.utf8.unl' INTO TABLE cedr_custom.pap_ico CHARACTER SET UTF8 FIELDS TERMINATED BY '\|' (@ico,@name,@start,@end) set id=NULL, ico=@ico, name=@name, start=STR_TO_DATE(@start, "%d.%m.%Y"), end=STR_TO_DATE(@end, "%d.%m.%Y"), modified=NOW();
