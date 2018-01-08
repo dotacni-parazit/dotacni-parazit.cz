@@ -20,6 +20,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#owners">Vlastnická Historie</a></li>
         <li><a href="#subsidiaries">Konsolidované společnosti</a></li>
         <li><a href="#attachments">Výkazy Holdingu</a></li>
+        <?php if (!empty($holding->notes)) { ?>
+            <li><a href="#notes">Poznámka ke konsolidaci</a></li>
+        <?php } ?>
     </ul>
 
     <div id="obecne">
@@ -200,6 +203,12 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
+
+    <?php if (!empty($holding->notes)) { ?>
+        <div id="notes">
+            <?= $holding->notes ?>
+        </div>
+    <?php } ?>
 </div>
 
 <script type="text/javascript">
