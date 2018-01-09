@@ -51,6 +51,11 @@ class CompaniesTable extends Table
             'foreignKey' => 'type_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('TransparencyLabel', [
+            'foreignKey' => 'transparency_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('Audits', [
             'foreignKey' => 'company_id'
         ]);
@@ -74,6 +79,10 @@ class CompaniesTable extends Table
             'className' => 'Companies',
             'targetForeignKey' => 'subsidiary_id',
             'foreignKey' => 'holding_id'
+        ]);
+        $this->hasMany('IncomingTransactions', [
+            'className' => 'Transactions',
+            'foreignKey' => 'recipient_id'
         ]);
     }
 

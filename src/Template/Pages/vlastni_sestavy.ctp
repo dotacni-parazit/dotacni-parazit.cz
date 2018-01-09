@@ -25,7 +25,7 @@
         <a href="/distance">Založení IČO vs. První Dotace</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
-        <a href="#">Připravuje se</a>
+        <a href="/kandidati-na-prezidenta">Dary Prezidentským Kandidátům</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="#">Připravuje se</a>

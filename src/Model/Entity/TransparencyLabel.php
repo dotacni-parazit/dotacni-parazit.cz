@@ -4,24 +4,14 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Company Entity
+ * TransparencyLabel Entity
  *
  * @property int $id
- * @property int $ico
- * @property string $name
- * @property int $state_id
- * @property int $type_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
- *
- * @property \App\Model\Entity\State $state
- * @property \App\Model\Entity\Type $type
- * @property \App\Model\Entity\TransparencyLabel $transparency_label
- * @property \App\Model\Entity\Audit[] $audits
- * @property \App\Model\Entity\Report[] $reports
- * @property Company[] $subsidiaries
+ * @property string $label
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  */
-class Company extends Entity
+class TransparencyLabel extends Entity
 {
 
     /**

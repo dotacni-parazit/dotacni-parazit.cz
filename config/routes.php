@@ -150,6 +150,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/program-rozvoje-venkova/obec', ['controller' => 'Szif', 'action' => 'prvObec']);
     $routes->connect('/program-rozvoje-venkova/opatreni', ['controller' => 'Szif', 'action' => 'prvOpatreni']);
 
+    $routes->connect('/kandidati-na-prezidenta', ['controller' => 'Prezident', 'action' => 'index']);
+    $routes->connect('/kandidati-na-prezidenta/detail/:id', ['controller' => 'Prezident', 'action' => 'detail'], ['id' => '[0-9]+']);
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

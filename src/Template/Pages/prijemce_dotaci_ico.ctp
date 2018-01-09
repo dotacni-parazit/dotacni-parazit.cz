@@ -314,7 +314,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     $("#tab-strukturalni-fondy").remove();
                     break;
                 case 'strukturalni-fondy-2020':
-                    $("#strukturalniFondy-2020").remove();
+                    $("#strukturalniFondy2020").remove();
                     $("#tab-strukturalni-fondy-2020").remove();
                     break;
                 case 'konsolidace':
