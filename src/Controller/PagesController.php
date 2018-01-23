@@ -1565,7 +1565,7 @@ class PagesController extends AppController
                     ]
                 ]);
                 $ajax_type = 'strukturalniFondy2020';
-            }else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
+            } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
                 $ajax_type = 'politickeStrany';
                 $data = $this->Companies->find('all', [
                     'conditions' => [
@@ -3917,59 +3917,71 @@ class PagesController extends AppController
 
     public function hlidacSmluv()
     {
+        $projektIdentifikator = $this->request->getQuery('identifikatorProjektu');
+        $ico = $this->request->getQuery('ico');
+        $podpisDatum = $this->request->getQuery('podpisDatum');
+
+        $cache_key = 'hs_' . sha1($projektIdentifikator) . '_' . sha1($ico) . '_' . sha1($podpisDatum);
+        $cache_out = Cache::read($cache_key, 'hlidac_smluv');
+
         if ($this->request->is('ajax')) {
             if (!$this->request->is('json')) {
                 $this->RequestHandler->renderAs($this, 'json');
             }
-            $apiAuth = "Token bd4f624f72c54f7fadb3c01125300dd9";
-            $http = new Client();
-            $params = (object)[
-                'projektIdnetifikator' => $this->request->getQuery('identifikatorProjektu'),
-                'ico' => $this->request->getQuery('ico'),
-                'podpisDatum' => $this->request->getQuery('podpisDatum')
-            ];
-
-            try {
-                $data_string = $http->post('http://localhost:8080/smlouvy/search', json_encode($params), [
-                    'headers' => [
-                        'Content-Type' => 'application/json; charset=UTF-8',
-                        ''
-                    ]
-                ])->body();
-                $data_obj = json_decode($data_string);
-            } catch (\Error $e) {
-                $data_obj = [];
-            } catch (\Exception $e) {
-                $data_obj = [];
-            }
-
-            $data_arr = [];
-            $total = 0;
-
-            $html = new HtmlHelper(new View());
-            if (empty($data_obj)) $data_obj = [];
-            foreach ($data_obj as $i) {
-                $data_arr[] = [
-                    $i->rank,
-                    $html->link($i->predmet, $i->odkaz),
-                    empty($i->VkladatelDoRejstriku) ? '' : $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
-                    isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
-                    (empty($i->Platce) && !isset($i->Platce->ico)) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
-                    isset($i->Prijemce[0]) ? $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => isset($i->Prijemce[0]->ico) ? $i->Prijemce[0]->ico : 0]) : "",
-                    $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
-                    $html->link('Registr Smluv', $i->odkaz)
+            if (empty($cache_out)) {
+                $apiAuth = "Token bd4f624f72c54f7fadb3c01125300dd9";
+                $http = new Client();
+                $params = (object)[
+                    'projektIdnetifikator' => $projektIdentifikator,
+                    'ico' => $ico,
+                    'podpisDatum' => $podpisDatum
                 ];
-                $total++;
+
+                try {
+                    $data_string = $http->post('http://localhost:8080/smlouvy/search', json_encode($params), [
+                        'headers' => [
+                            'Content-Type' => 'application/json; charset=UTF-8',
+                            ''
+                        ]
+                    ])->body();
+                    $data_obj = json_decode($data_string);
+                } catch (\Error $e) {
+                    $data_obj = [];
+                } catch (\Exception $e) {
+                    $data_obj = [];
+                }
+
+                $data_arr = [];
+                $total = 0;
+
+                $html = new HtmlHelper(new View());
+                if (empty($data_obj)) $data_obj = [];
+                foreach ($data_obj as $i) {
+                    $data_arr[] = [
+                        $i->rank,
+                        $html->link($i->predmet, $i->odkaz),
+                        empty($i->VkladatelDoRejstriku) ? '' : $html->link($i->VkladatelDoRejstriku->nazev, '/prijemce-dotaci/ico', ['ico' => $i->VkladatelDoRejstriku->ico]),
+                        isset($i->hodnotaVcetneDph) ? DPUTILS::currency($i->hodnotaVcetneDph) : DPUTILS::currency(0),
+                        (empty($i->Platce) && !isset($i->Platce->ico)) ? '' : $html->link($i->Platce->nazev, '/prijemce-dotaci/ico', ['ico' => $i->Platce->ico]),
+                        isset($i->Prijemce[0]) ? $html->link($i->Prijemce[0]->nazev, '/prijemce-dotaci/ico', ['ico' => isset($i->Prijemce[0]->ico) ? $i->Prijemce[0]->ico : 0]) : "",
+                        $html->link('Hlídač Smluv', 'https://www.hlidacsmluv.cz/Detail/' . $i->identifikator->idVerze) . '<br/>' .
+                        $html->link('Registr Smluv', $i->odkaz)
+                    ];
+                    $total++;
+                }
+
+                $out = [
+                    'draw' => 1,
+                    'recordsTotal' => $total,
+                    'recordsFiltered' => $total,
+                    'data' => $data_arr
+                ];
+
+                $cache_out = json_encode($out);
+                Cache::write($cache_key, $cache_out, 'hlidac_smluv');
             }
 
-            $out = [
-                'draw' => 1,
-                'recordsTotal' => $total,
-                'recordsFiltered' => $total,
-                'data' => $data_arr
-            ];
-
-            echo json_encode($out);
+            echo $cache_out;
             die();
         } else {
             throw new NotFoundException();
