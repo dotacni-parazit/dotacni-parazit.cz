@@ -25,6 +25,7 @@ $this->set('title', 'Dotace Dárců Politických Stran');
         <th class="nosearch" data-type="currency">r. 2014</th>
         <th class="nosearch" data-type="currency">r. 2015</th>
         <th class="nosearch" data-type="currency">r. 2016</th>
+        <th class="nosearch" data-type="currency">r. 2017</th>
         <th class="nosearch">Detail</th>
     </tr>
     </thead>
@@ -36,6 +37,7 @@ $this->set('title', 'Dotace Dárců Politických Stran');
             <td><?= Number::currency($sums[$strana->id][2014]) ?></td>
             <td><?= Number::currency($sums[$strana->id][2015]) ?></td>
             <td><?= Number::currency($sums[$strana->id][2016]) ?></td>
+            <td><?= Number::currency($sums[$strana->id][2017]) ?></td>
             <td><?= $this->Html->link('Otevřít', '/dary-politickym-stranam/detail/' . $strana->id) ?></td>
         </tr>
     <?php } ?>
@@ -47,6 +49,7 @@ $this->set('title', 'Dotace Dárců Politických Stran');
         <td>2014</td>
         <td>2015</td>
         <td>2016</td>
+        <td>2017</td>
         <td>Detail</td>
     </tr>
     </tfoot>

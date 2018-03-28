@@ -3799,7 +3799,7 @@ class PagesController extends AppController
             ]
         ]);
         $sums = [];
-        $years = [2012, 2013, 2014, 2015, 2016];
+        $years = [2012, 2013, 2014, 2015, 2016, 2017];
 
         /** @var Company $strana */
         foreach ($data as $strana) {
@@ -3874,7 +3874,7 @@ class PagesController extends AppController
         if (empty($strana)) throw new NotFoundException();
 
         $sums = [];
-        $years = [2012, 2013, 2014, 2015, 2016];
+        $years = [2012, 2013, 2014, 2015, 2016, 2017];
         foreach ($years as $y) {
             $cache_tag = 'sum_politicka_strana_' . $strana->id . '_rok_' . $y;
             $sum = Cache::read($cache_tag, 'long_term');

@@ -70,6 +70,11 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td><?= Number::currency($sums[$strana->id][2016]) ?></td>
             </tr>
 
+            <tr>
+                <td>Součet darů 2017</td>
+                <td><?= Number::currency($sums[$strana->id][2017]) ?></td>
+            </tr>
+
             </tbody>
             <tfoot>
             <tr>
