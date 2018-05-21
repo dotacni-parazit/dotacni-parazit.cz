@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -6,7 +7,6 @@ use Cake\ORM\Entity;
 /**
  * CiselnikMmrPodprogramv01 Entity
  *
- * @property int $id
  */
 class CiselnikMmrPodprogramv01 extends Entity
 {
@@ -21,7 +21,6 @@ class CiselnikMmrPodprogramv01 extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        '*' => true
     ];
 }

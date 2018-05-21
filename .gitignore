@@ -6,3 +6,4 @@
 .well-known
 .github
 webroot/downloads/
+.htpasswd

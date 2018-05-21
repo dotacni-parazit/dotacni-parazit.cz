@@ -31,7 +31,7 @@ $this->set('title', 'Příjemci dotací');
             <h2>Více příjemců zároveň (IČO)</h2>
             <?php
             echo $this->Form->create(null, ['type' => 'get']);
-            echo $this->Form->input('multiple', ['label' => 'IČO několika příjemců', 'value' => $multiple]);
+            echo $this->Form->control('multiple', ['label' => 'IČO několika příjemců', 'value' => $multiple]);
             echo $this->Form->submit('Zobrazit!');
             echo $this->Form->end();
             echo 'Zadejte IČ příjemců oddělená čárkou nebo mezerou';

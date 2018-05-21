@@ -10,7 +10,7 @@ $this->set('title', 'Ukazatele Kapitol Státního Rozpočtu');
     </span>
 </div>
 <hr/>
-<table id="datatable" data-ajax="<?= $this->request->here(false) ?>">
+<table id="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th data-type="html" class="col">Název Ukazatele</th>

@@ -15,7 +15,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </div>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('pravniforma', ['options' => $pravni_formy, 'value' => $pravni_forma, 'type' => 'select', 'label' => 'Právní Forma']);
+        echo $this->Form->control('pravniforma', ['options' => $pravni_formy, 'value' => $pravni_forma, 'type' => 'select', 'label' => 'Právní Forma']);
         echo $this->Form->submit('Zobrazit!');
         echo $this->Form->end();
         ?>
@@ -27,13 +27,13 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </div>
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('spf', ['options' => $spolecne_pravni_formy, 'value' => $spolecna_pravni_forma, 'type' => 'select', 'label' => 'Právní Forma']);
+        echo $this->Form->control('spf', ['options' => $spolecne_pravni_formy, 'value' => $spolecna_pravni_forma, 'type' => 'select', 'label' => 'Právní Forma']);
         echo $this->Form->submit('Zobrazit!');
         echo $this->Form->end();
         ?>
     </div>
 </div>
-<table id="datatable" style="width: 100%" data-ajax="<?= $this->request->here(false) ?>">
+<table id="datatable" style="width: 100%" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th>Obchodní Jméno</th>

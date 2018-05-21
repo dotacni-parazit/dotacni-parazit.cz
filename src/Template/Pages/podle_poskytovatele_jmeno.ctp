@@ -13,7 +13,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="jmeno">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('name', ['label' => 'Jméno poskytovatele (alespoň 3 písmena)', 'value' => $name]);
+        echo $this->Form->control('name', ['label' => 'Jméno poskytovatele (alespoň 3 písmena)', 'value' => $name]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
         ?>
@@ -30,7 +30,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="dotacni-urady">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&dotacni-urady=dotacni-urady">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?name=" : "") ?>&dotacni-urady=dotacni-urady">
             <thead>
             <tr>
                 <th>Dotační úřad</th>
@@ -52,7 +52,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
     <div id="zdroje-financovani">
         <table class="datatable" style="width: 100%;"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&zdroje-financovani=zdroje-financovani">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?name=" : "") ?>&zdroje-financovani=zdroje-financovani">
             <thead>
             <tr>
                 <th>Zdroj Financování</th>
@@ -74,7 +74,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
     <div id="dotacni-tituly">
         <table class="datatable" style="width: 100%;"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&dotacni-tituly=dotacni-tituly">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?name=" : "") ?>&dotacni-tituly=dotacni-tituly">
             <thead>
             <tr>
                 <th>Dotační Titul</th>
@@ -97,7 +97,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="dotinfo">
         <table class="datatable" style="width: 100%;"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&dotinfo=dotinfo">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?name=" : "") ?>&dotinfo=dotinfo">
             <thead>
             <tr>
                 <th>Poskytovatel</th>

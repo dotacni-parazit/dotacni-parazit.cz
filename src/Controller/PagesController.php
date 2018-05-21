@@ -177,19 +177,33 @@ class PagesController extends AppController
 
     public function cache()
     {
+        debug("cacheAll");
         $this->Caching->cacheAll();
+        debug("cedrOperacniProgramy");
         $this->cedrOperacniProgramy();
+        debug("mmrOperacniProgramy");
         $this->mmrOperacniProgramy();
+        debug("detailKrajeCache");
         $this->detailKrajeCache();
+        debug("detailObceCache");
         $this->detailObceCache();
+        debug("detailOkresyCache");
         $this->detailOkresyCache();
+        debug("detailStatuCache");
         $this->detailStatuCache();
+        debug("podlePoskytovatelu");
         $this->podlePoskytovatelu();
+        debug("strukturalniFondy");
         $this->strukturalniFondy();
+        debug("podleSidlaPrijemce");
         $this->podleSidlaPrijemce();
+        debug("podleZdrojeFinanci");
         $this->podleZdrojeFinanci();
+        debug("statistics");
         $this->statistics();
+        debug("dotacniTituly");
         $this->dotacniTituly();
+        debug("fyzickeOsobyAjax");
         $this->fyzickeOsobyAjax();
     }
 
@@ -304,8 +318,8 @@ class PagesController extends AppController
                 ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
             }
-            debug($kraj);
-            debug(count($biggest));
+            //debug($kraj);
+            //debug(count($biggest));
         }
     }
 
@@ -318,7 +332,7 @@ class PagesController extends AppController
         ])->enableHydration(false)->toArray();
 
         foreach ($obce as $obec) {
-            debug($obec);
+            //debug($obec);
 
             $cache_tag_obec_top_100 = 'detail_obce_top_100_' . sha1($obec['obecKod']);
             $biggest = Cache::read($cache_tag_obec_top_100, 'long_term');
@@ -355,7 +369,7 @@ class PagesController extends AppController
                 ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_obec_top_100, $biggest, 'long_term');
             }
-            debug(count($biggest));
+            //debug(count($biggest));
         }
     }
 
@@ -405,7 +419,7 @@ class PagesController extends AppController
                 ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_okres_top_100, $biggest, 'long_term');
             }
-            debug(count($biggest));
+            //debug(count($biggest));
         }
     }
 
@@ -418,7 +432,7 @@ class PagesController extends AppController
         ])->enableHydration(false)->toArray();
 
         foreach ($staty as $stat) {
-            debug($stat);
+            //debug($stat);
 
             $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat['statKod3Znaky']);
             $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
@@ -997,7 +1011,7 @@ class PagesController extends AppController
      */
     public function fyzickeOsobyAjax()
     {
-        if (!$this->request->is('ajax')) {
+        if (PHP_SAPI !== 'cli' && !$this->request->is('ajax')) {
             throw new NotFoundException();
         }
 
@@ -1019,7 +1033,9 @@ class PagesController extends AppController
             'CiselnikStatv01',
             'AdresaBydliste'
         ])->enableHydration(true)->limit(110000);
+        debug(count($osoby));
 
+        $counter = 0;
         /** @var PrijemcePomoci[] $osoby */
         foreach ($osoby as $o) {
             $cache_tag_sum_rozhodnuti = "fyzicke_osoby_sum_rozhodnuti_" . sha1($o->idPrijemce);
@@ -1060,6 +1076,8 @@ class PagesController extends AppController
                 ])->first()->sum;
                 Cache::write($cache_tag_sum_spotrebovano, $sum_spotrebovano, 'long_term');
             }
+            $counter++;
+            if($counter % 1000) debug($counter);
         }
 
         $_serialize = false;

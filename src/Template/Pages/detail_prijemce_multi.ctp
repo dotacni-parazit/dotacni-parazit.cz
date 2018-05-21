@@ -86,7 +86,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </pre>
     </div>
     <div id="rozhodnuti">
-        <table class="datatable" style="width: 100%;" data-ajax="<?= $this->request->here(false) ?>">
+        <table class="datatable" style="width: 100%;" data-ajax="<?= $this->request->getRequestTarget() ?>">
             <thead>
             <tr>
                 <th data-type="html" class="nosearch medium-1 large-1 small-1">Rozhodnutí</th>

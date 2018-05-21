@@ -1,7 +1,7 @@
 <?php
 $this->set('title', $name);
 ?>
-<table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
+<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th>Jméno příjemce</th>

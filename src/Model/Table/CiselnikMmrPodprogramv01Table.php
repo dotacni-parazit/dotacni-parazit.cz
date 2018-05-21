@@ -30,23 +30,8 @@ class CiselnikMmrPodprogramv01Table extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('ciselnikMmrPopdprogramv01');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
-    }
-
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    public function validationDefault(Validator $validator)
-    {
-        $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
-
-        return $validator;
+        $this->setTable('ciselnikMmrPodprogramv01');
+        $this->setDisplayField('idPodprogram');
+        $this->setPrimaryKey('podprogramKod');
     }
 }

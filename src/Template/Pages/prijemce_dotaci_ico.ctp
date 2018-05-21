@@ -16,7 +16,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="search">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('ico', ['label' => 'IČO (pouze čísla) ', 'value' => \App\View\DPUTILS::ico($ico)]);
+        echo $this->Form->control('ico', ['label' => 'IČO (pouze čísla) ', 'value' => \App\View\DPUTILS::ico($ico)]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
         ?>
@@ -24,7 +24,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="multiple">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->input('multiple', ['label' => 'Jedno a více IČO (oddělené mezerou nebo čárkou) ', 'value' => \App\View\DPUTILS::ico($ico)]);
+        echo $this->Form->control('multiple', ['label' => 'Jedno a více IČO (oddělené mezerou nebo čárkou) ', 'value' => \App\View\DPUTILS::ico($ico)]);
         echo $this->Form->submit('Zobrazit!');
         echo $this->Form->end();
         ?>
@@ -44,7 +44,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&cedr=cedr">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -69,7 +69,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="czechinvest">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&czechinvest=czechinvest">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&czechinvest=czechinvest">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -96,7 +96,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="strukturalniFondy">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy=strukturalni-fondy">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy=strukturalni-fondy">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -125,7 +125,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="strukturalniFondy2020">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy-2020=strukturalni-fondy-2020">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&strukturalni-fondy-2020=strukturalni-fondy-2020">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -154,7 +154,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="dotInfo">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&dotinfo=dotinfo">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&dotinfo=dotinfo">
             <thead>
             <tr>
                 <th>Jméno</th>
@@ -181,7 +181,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="politickeStrany">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&politickeStrany=politickeStrany">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&politickeStrany=politickeStrany">
             <thead>
             <tr>
                 <th>Dárce</th>
@@ -206,7 +206,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="szif">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?ico=0" : "") ?>&szif=szif">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?ico=0" : "") ?>&szif=szif">
             <thead>
             <tr>
                 <th>Příjemce pomoci</th>
@@ -243,7 +243,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
     <div id="konsolidace">
         <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->here(false) . (strpos($this->request->here(false), "?") == false ? "?name=" : "") ?>&konsolidace=konsolidace">
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?name=" : "") ?>&konsolidace=konsolidace">
             <thead>
             <tr>
                 <th>Jméno Společnosti</th>

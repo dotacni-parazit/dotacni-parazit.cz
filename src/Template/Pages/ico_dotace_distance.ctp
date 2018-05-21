@@ -23,7 +23,7 @@ $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po po
     kompletní data, kontaktujte nás.
 </div>
 
-<table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
+<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th>Příjemce</th>

@@ -134,7 +134,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="biggest">
         <div>Až 20.000 rozhodnutí</div>
         <hr/>
-        <table class="datatable" data-ajax="<?= $this->request->here(false) ?>">
+        <table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
             <thead>
             <tr>
                 <th data-type="html">Rozhodnutí</th>
