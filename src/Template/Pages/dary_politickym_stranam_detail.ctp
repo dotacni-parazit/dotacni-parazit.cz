@@ -158,7 +158,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 ?>
                 <tr>
                     <td><?= $t->attachment->name ?></td>
-                    <td><?= $this->Html->link(str_replace("data.dotacni-parazit.cz", "dotacni-parazit.cz", $t->attachment->url)) ?></td>
+                    <td><?= $this->Html->link(str_replace("data.dotacni-parazit.cz", "dotacni-parazit.cz", $t->attachment->url), parse_url($t->attachment->url)["path"]) ?></td>
                 </tr>
                 <?php
                 $already_done[] = $t->attachment_id;
