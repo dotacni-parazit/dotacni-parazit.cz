@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUndefinedFieldInspection */
 
 namespace App\Controller;
 
@@ -59,6 +59,7 @@ use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
+use DebugKit\DebugSql;
 
 
 /**
@@ -939,9 +940,9 @@ class PagesController extends AppController
         $tables = Cache::read($cache_tag, 'long_term');
         if ($tables === false) {
             $tables = [];
-            $dbtables = ConnectionManager::get('default')->schemaCollection(null)->listTables();
+            $dbtables = ConnectionManager::get('default')->getSchemaCollection()->listTables();
             foreach ($dbtables as $key => $t) {
-                $tablereg = TableRegistry::get($t);
+                $tablereg = TableRegistry::getTableLocator()->get($t);
 
                 $this->loadModel($tablereg->getAlias());
                 $tableData = (object)[
@@ -952,13 +953,18 @@ class PagesController extends AppController
                 $tableCount100 = $tableData->total / 100;
 
                 foreach ($tablereg->getSchema()->columns() as $raw_col) {
-                    $col_type = $tablereg->getSchema()->column($raw_col);
+                    $col_type = $tablereg->getSchema()->getColumn($raw_col);
                     $col_type = $col_type['type'];
-                    /** @var Query $empty_rows */
-                    $empty_rows = $this->{$tablereg->getAlias()}->find()->where([$raw_col . ' IS NULL']);
-                    if ($col_type == 'string') $empty_rows->orWhere([$raw_col => '']);
-                    else if ($col_type == 'decimal') $empty_rows->orWhere([$raw_col => 0]);
-                    $empty_rows = $empty_rows->count();
+                    /** @var \Cake\ORM\Query $empty_rows */
+                    $primaryKey = $tablereg->getPrimaryKey();
+                    if (!is_string($primaryKey) || is_null($primaryKey)) $primaryKey = $raw_col;
+
+                    $empty_rows = $this->{$tablereg->getAlias()}->find('all', ['fields' => [$primaryKey]]);
+                    if ($col_type == 'string') $empty_rows->where(['OR' => [$raw_col . ' IS NULL', $raw_col => '']]);
+                    else if ($col_type == 'decimal') $empty_rows->where(['OR' => [$raw_col . ' IS NULL', $raw_col => 0]]);
+                    else $empty_rows->where([$raw_col . ' IS NULL']);
+                    DebugSql::sql($empty_rows, true, false, 1);
+                    $empty_rows = $empty_rows->rowCountAndClose();
 
                     $top_value = $this->{$tablereg->getAlias()}->find('all', [
                         'fields' => [
@@ -974,11 +980,12 @@ class PagesController extends AppController
                         "empty_rows" => $empty_rows,
                         "percent_empty" => $tableCount100 == 0 ? 0 : round($empty_rows / $tableCount100, 4),
                         "name" => $raw_col,
-                        "most_common_value" => empty($top_value) ? '' : $top_value->{$raw_col}
+                        "most_common_value" => (empty($top_value) || $top_value->rsum === 1) ? '' : $top_value->{$raw_col}
                     ];
                 }
 
                 $tables[] = $tableData;
+                debug("Stats Completed for: " . $tableData->name);
             }
             Cache::write($cache_tag, $tables, 'long_term');
         }
@@ -1077,7 +1084,7 @@ class PagesController extends AppController
                 Cache::write($cache_tag_sum_spotrebovano, $sum_spotrebovano, 'long_term');
             }
             $counter++;
-            if($counter % 1000 === 0) debug($counter);
+            if ($counter % 1000 === 0) debug($counter);
         }
 
         $_serialize = false;
