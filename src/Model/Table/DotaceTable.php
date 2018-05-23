@@ -51,7 +51,7 @@ class DotaceTable extends Table
 
         $this->belongsTo('CiselnikMmrPodprogramv01')
             ->setForeignKey('iriPodprogram')
-            ->setBindingKey('id')
+            ->setBindingKey('idPodprogram')
             ->setProperty('MmrPodprogram');
 
         $this->belongsTo('CiselnikCedrPodprogramv01')

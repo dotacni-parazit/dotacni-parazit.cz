@@ -49,4 +49,11 @@ class Application extends BaseApplication
 
         return $middleware;
     }
+    
+    public function bootstrap()
+    {
+        $this->addPlugin('DebugKit');
+
+        parent::bootstrap();
+    }
 }

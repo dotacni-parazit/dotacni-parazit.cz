@@ -39,7 +39,7 @@ class CiselnikMmrPrioritav01Table extends Table
             ->setProperty('MmrOperacniProgram');
 
         $this->belongsTo('CiselnikMmrPodprogramv01')
-            ->setBindingKey('id')
+            ->setBindingKey('idPodprogram')
             ->setForeignKey('idPodprogram')
             ->setProperty('MmrPodprogram');
 

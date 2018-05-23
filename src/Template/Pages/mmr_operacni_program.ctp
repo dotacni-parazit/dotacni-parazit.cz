@@ -9,6 +9,9 @@ $this->set('title', $data->operacaniProgramNazev);
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
         <li><a href="#priority">Podřízené MMR Priority</a></li>
+        <?php if (!empty($data->MmrPodprogram)) { ?>
+            <li><a href="#podprogramy">Podřízené MMR Podprogramy</a></li>
+        <?php } ?>
         <li><a href="#dotace">Dotace</a></li>
     </ul>
     <div id="obecne">
@@ -63,6 +66,33 @@ $this->set('title', $data->operacaniProgramNazev);
             </tfoot>
         </table>
     </div>
+    <?php if (!empty($data->MmrPodprogram)) { ?>
+        <div id="podprogramy">
+            <h2>Podřízené MMR Podprogramy</h2>
+            <table class="datatable datatable_simple">
+                <thead>
+                <tr>
+                    <th>Kód</th>
+                    <th>Název</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($data->MmrPodprogram as $p) { ?>
+                    <tr>
+                        <td><?= $p->podprogramKod ?></td>
+                        <td><?= $p->podprogramNazev ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Kód</td>
+                    <td>Název</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    <?php } ?>
     <div id="priority">
         <h2>Podřízené MMR Priority</h2>
         <table class="datatable datatable_simple">

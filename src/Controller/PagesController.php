@@ -1077,7 +1077,7 @@ class PagesController extends AppController
                 Cache::write($cache_tag_sum_spotrebovano, $sum_spotrebovano, 'long_term');
             }
             $counter++;
-            if($counter % 1000) debug($counter);
+            if($counter % 1000 === 0) debug($counter);
         }
 
         $_serialize = false;
@@ -3306,7 +3306,8 @@ class PagesController extends AppController
                 'idOperacniProgram' => $this->request->getQuery('id')
             ],
             'contain' => [
-                'CiselnikMmrPrioritav01'
+                'CiselnikMmrPrioritav01',
+                'CiselnikMmrPodprogramv01'
             ]
         ])->first();
         if (empty($data)) throw new NotFoundException();
