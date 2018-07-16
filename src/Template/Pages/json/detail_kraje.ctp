@@ -22,6 +22,7 @@ if (!$cache_data) {
             $this->Html->link('[R]', '/detail-rozhodnuti/' . $b->idRozhodnuti),
             $this->Html->link(\App\View\DPUTILS::dotaceNazev($b->Dotace), '/detail-dotace/' . $b->Dotace->idDotace),
             $this->Html->link($b->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $b->Dotace->idPrijemce),
+            isset($b->Dotace->PrijemcePomoci->AdresaSidlo['psc']) ? $b->Dotace->PrijemcePomoci->AdresaSidlo['psc'] : '',
             \App\View\DPUTILS::currency($b->castkaRozhodnuta),
             isset($b->RozpoctoveObdobi->castkaSpotrebovana) ? \App\View\DPUTILS::currency($b->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
             isset($b->RozpoctoveObdobi->rozpoctoveObdobi) ? $b->RozpoctoveObdobi->rozpoctoveObdobi : 'N/A'

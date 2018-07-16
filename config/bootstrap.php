@@ -211,7 +211,7 @@ Type::build('timestamp')
  * Debug Kit should not be installed on a production system
  */
 if (Configure::read('debug')) {
-    Configure::write('DebugKit.forceEnable', true);
+    //Configure::write('DebugKit.forceEnable', true);
     //Configure::write('DebugKit.panels', ['DebugKit.Cache' => false]);
     Plugin::load('DebugKit', ['bootstrap' => true, 'routes' => true]);
 }

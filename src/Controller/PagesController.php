@@ -280,7 +280,6 @@ class PagesController extends AppController
                 'krajKod' => 'DISTINCT(krajKod)'
             ]
         ])->enableHydration(false)->toArray();
-
         foreach ($kraje as $kraj) {
 
             $cache_tag_kraj_top_100 = 'detail_kraje_top_100_' . sha1($kraj['krajKod']);
@@ -300,7 +299,8 @@ class PagesController extends AppController
                         'Dotace.idPrijemce',
                         'Dotace.projektNazev',
                         'Dotace.projektIdnetifikator',
-                        'PrijemcePomoci.obchodniJmeno'
+                        'PrijemcePomoci.obchodniJmeno',
+                        'AdresaSidlo.psc'
                     ],
                     'conditions' => [
                         'CiselnikOkresv01.krajNadKod' => $kraj['krajKod'],
@@ -310,6 +310,7 @@ class PagesController extends AppController
                         'RozpoctoveObdobi',
                         'Dotace',
                         'Dotace.PrijemcePomoci',
+                        'Dotace.PrijemcePomoci.AdresaSidlo',
                         'Dotace.PrijemcePomoci.AdresaSidlo.CiselnikObecv01.CiselnikOkresv01'
                     ],
                     'group' => [
@@ -318,8 +319,6 @@ class PagesController extends AppController
                 ])->limit(20000)->enableHydration(false)->toArray();
                 Cache::write($cache_tag_kraj_top_100, $biggest, 'long_term');
             }
-            //debug($kraj);
-            //debug(count($biggest));
         }
     }
 

@@ -131,9 +131,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <th data-type="html">Rozhodnutí</th>
                 <th data-type="html">Název Dotace</th>
                 <th data-type="html">Příjemce pomoci</th>
+                <th data-type="number" class="medium-1 large-1">PSČ</th>
                 <th data-type="currency" class="text-right">Částka rozhodnuta</th>
                 <th data-type="currency" class="text-right">Částka spotřebovaná</th>
-                <th data-type="number">Rok</th>
+                <th data-type="number" class="medium-1 large-1">Rok</th>
             </tr>
             </thead>
             <tbody>
@@ -143,6 +144,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Rozhodnutí</td>
                 <td>Název Dotace</td>
                 <td>Příjemce pomoci</td>
+                <td>PSČ</td>
                 <td>Částka rozhodnuta</td>
                 <td>Částka spotřebovaná</td>
                 <td>Rok</td>
