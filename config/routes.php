@@ -19,9 +19,9 @@
  */
 
 use Cake\Core\Plugin;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 
 /**
  * The default class to use for all routes
@@ -153,6 +153,12 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/kandidati-na-prezidenta', ['controller' => 'Prezident', 'action' => 'index']);
     $routes->connect('/kandidati-na-prezidenta/detail/:id', ['controller' => 'Prezident', 'action' => 'detail'], ['id' => '[0-9]+']);
+
+    $routes->connect('/granty-praha', ['controller' => 'Prague', 'action' => 'index']);
+    $routes->connect('/granty-praha/prijemce/:id_zadatel', ['controller' => 'Prague', 'action' => 'detailPrijemce'], ['id_zadatel' => '[0-9a-zA-Z\-]{36}']);
+    $routes->connect('/granty-praha/projekt/:id_projekt', ['controller' => 'Prague', 'action' => 'detailProjektu'], ['id_projekt' => '[0-9a-zA-Z\-]{36}']);
+    $routes->connect('/granty-praha/ajax/prijemce/projekty/:id_zadatel', ['controller' => 'Prague', 'action' => 'ajaxProjektyPrijemce'], ['id_zadatel' => '[0-9a-zA-Z\-]{36}']);
+    $routes->connect('/granty-praha/ajax/prijemci', ['controller' => 'Prague', 'action' => 'ajaxPrijemci']);
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

@@ -70,7 +70,7 @@ function setupDataTable(selector) {
         responsive: false,
         ajax: $($e).attr('data-ajax') ? $($e).attr('data-ajax') : '',
         "stateDuration": 60 * 60 * 24 * 7,
-        dom: $($e).hasClass('datatable_simple') ? '<"table-responsive"t>B' : 'r<"clear">ip<"clear">lf<"clear"><"table-responsive"t>B',
+        dom: $($e).hasClass('datatable_simple') ? '<"table-responsive"t>B' : 'r<"clear">ip<"clear">lf<"clear"><"table-responsive"t>Bp',
         buttons: [
             $.extend(true, {}, buttonCommon, {
                 extend: 'csv'

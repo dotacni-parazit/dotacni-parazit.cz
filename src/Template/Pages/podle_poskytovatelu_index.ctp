@@ -65,6 +65,9 @@ $this->set('title', 'Poskytovatelé');
         <a href="/program-rozvoje-venkova">Státní Zemědělský Intervenční Fond</a>
     </div>
     <div class="col-lg-4 col-sm-9 col-md-4">
+        <a href="/granty-praha">Hlavní Město Praha - Granty</a>
+    </div>
+    <div class="col-lg-4 col-sm-9 col-md-4">
         <a href="/poskytovatel-dotaci/jmeno">Podle Jména</a>
     </div>
 </div>
