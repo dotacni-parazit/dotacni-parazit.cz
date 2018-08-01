@@ -34,6 +34,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li id="tab-politickeStrany"><a href="#politickeStrany">Dotace Dárců Politických Stran</a></li>
         <li id="tab-konsolidace"><a href="#konsolidace">Konsolidace</a></li>
         <li id="tab-szif"><a href="#szif">Státní Zemědělský Intervenční Fond</a></li>
+        <li id="tab-granty-praha"><a href="#grantypraha">Hl.m.Praha Granty</a></li>
     </ul>
     <div id="cedr">
         <table id="datatable" style="width: 100%"
@@ -258,6 +259,32 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tfoot>
         </table>
     </div>
+
+
+    <div id="grantypraha">
+        <table class="datatable" style="width: 100%"
+               data-ajax="<?= $this->request->getRequestTarget() . (strpos($this->request->getRequestTarget(), "?") == false ? "?name=" : "") ?>&grantyPraha=grantyPraha">
+            <thead>
+            <tr>
+                <th>Příjemce / Žadatel</th>
+                <th data-type="currency">Součet přidělených / schválených financí</th>
+                <th data-type="currency">Součet vyčerpaných / vyúčtovaných financí</th>
+                <th>Počet projektů celkem</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Příjemce / Žadatel</th>
+                <th>Součet přidělených / schválených financí</th>
+                <th>Součet vyčerpaných / vyúčtovaných financí</th>
+                <th>Počet projektů celkem</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -281,6 +308,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         if (typeof ajax !== 'undefined') ajax = ajax.split("=").pop();
         var count = table.rows()[0].length;
         if (count === 0) {
+            console.log(ajax);
             switch (ajax) {
                 case 'cedr':
                     $("#cedr").remove();
@@ -313,6 +341,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 case 'szif':
                     $("#szif").remove();
                     $("#tab-szif").remove();
+                    break;
+                case 'grantyPraha':
+                    $("#grantypraha").remove();
+                    $("#tab-granty-praha").remove();
                     break;
             }
             $("#tabs").tabs("refresh");

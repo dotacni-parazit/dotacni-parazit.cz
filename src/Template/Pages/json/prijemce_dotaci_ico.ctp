@@ -43,6 +43,17 @@ foreach ($data as $d) {
             ];
 
             break;
+        case 'grantyPraha':
+
+            /** @var \App\Model\Entity\GrantyPrahaZadatel $d */
+            $data_arr[] = [
+                $this->Html->link($d->nazev . ' (' . $d->ic . ')', '/granty-praha/prijemce/' . $d->id_zadatel),
+                \App\View\DPUTILS::currency(\App\Controller\PragueController::getSoucetPridelenoProIdZadatel($d->id_zadatel)),
+                \App\View\DPUTILS::currency(\App\Controller\PragueController::getSoucetVycerpanoProIdZadatel($d->id_zadatel)),
+                \App\Controller\PragueController::getPocetProjektuProIdZadatel($d->id_zadatel)
+            ];
+
+            break;
         case 'dotinfo':
 
             /** @var \App\Model\Entity\Dotinfo $d */

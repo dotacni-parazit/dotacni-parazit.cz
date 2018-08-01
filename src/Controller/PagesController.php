@@ -40,6 +40,8 @@ use App\Model\Table\CompaniesTable;
 use App\Model\Table\ConsolidationsTable;
 use App\Model\Table\DotaceTable;
 use App\Model\Table\DotinfoTable;
+use App\Model\Table\GrantyPrahaProjektyTable;
+use App\Model\Table\GrantyPrahaZadatelTable;
 use App\Model\Table\InvesticniPobidkyTable;
 use App\Model\Table\MFCRPAPTable;
 use App\Model\Table\OwnersTable;
@@ -99,6 +101,8 @@ use DebugKit\DebugSql;
  * @property AuditsTable Audits
  * @property MFCRPAPTable MFCRPAP
  * @property PRVTable PRV
+ * @property GrantyPrahaZadatelTable GrantyPrahaZadatel
+ * @property GrantyPrahaProjektyTable GrantyPrahaProjekty
  */
 class PagesController extends AppController
 {
@@ -148,6 +152,8 @@ class PagesController extends AppController
         $this->loadModel('CiselnikUcelZnakv01');
         $this->loadModel('CiselnikUcelZnakDotacniTitulv01');
         $this->loadModel('PRV');
+        $this->loadModel('GrantyPrahaZadatel');
+        $this->loadModel('GrantyPrahaProjekty');
         $this->loadComponent('Caching');
     }
 
@@ -1385,6 +1391,16 @@ class PagesController extends AppController
                         'ico' => $ico
                     ]
                 ])->limit(50000);
+            } else if ($this->request->getQuery('grantyPraha') == 'grantyPraha'){
+                $data = $this->GrantyPrahaZadatel->find('all', [
+                    'conditions' => [
+                        'ic' => $ico
+                    ],
+                    'group' => [
+                        'id_zadatel'
+                    ]
+                ]);
+                $ajax_type = 'grantyPraha';
             } else if ($this->request->getQuery('dotinfo') == 'dotinfo') {
                 $data = $this->Dotinfo->find('all', [
                     'conditions' => [
@@ -1597,6 +1613,16 @@ class PagesController extends AppController
                     ]
                 ]);
                 $ajax_type = 'strukturalniFondy2020';
+            } else if ($this->request->getQuery('grantyPraha') == 'grantyPraha') {
+                $data = $this->GrantyPrahaZadatel->find('all', [
+                    'conditions' => [
+                        "MATCH (nazev) AGAINST ('" . $name . "' IN BOOLEAN MODE)"
+                    ],
+                    'group' => [
+                        'id_zadatel'
+                    ]
+                ]);
+                $ajax_type = 'grantyPraha';
             } else if ($this->request->getQuery('politickeStrany') == 'politickeStrany') {
                 $ajax_type = 'politickeStrany';
                 $data = $this->Companies->find('all', [

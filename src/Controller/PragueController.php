@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\GrantyPrahaProjekty;
 use App\Model\Entity\GrantyPrahaZadatel;
 use App\Model\Table\GrantyPrahaCastkyTable;
 use App\Model\Table\GrantyPrahaProjektyTable;
@@ -78,6 +79,7 @@ class PragueController extends AppController
 
     public function detailProjektu()
     {
+        /** @var GrantyPrahaProjekty $projekt */
         $projekt = $this->GrantyPrahaProjekty->find('all', [
             'conditions' => [
                 'GrantyPrahaProjekty.id_projekt' => $this->request->getParam('id_projekt')
@@ -116,7 +118,7 @@ class PragueController extends AppController
     public function ajaxProjektyOblast()
     {
         if (!$this->request->is('ajax')) {
-            //return new NotFoundException();
+            return new NotFoundException();
         }
 
         $id_oblast = $this->request->getParam('id_oblast');
@@ -156,54 +158,10 @@ class PragueController extends AppController
                 foreach ($prijemci as $prijemce) {
                     if (!$prijemce->id || !$prijemce->id_zadatel) continue;
 
-                    $cache_tag_soucet_prideleno = 'granty_praha_soucet_prideleno_' . sha1($prijemce->id_zadatel);
-                    $cache_tag_soucet_vycerpano = 'granty_praha_soucet_vycerpano_' . sha1($prijemce->id_zadatel);
-                    $cache_tag_pocet_projektu = 'granty_praha_pocet_projektu_' . sha1($prijemce->id_zadatel);
-
-                    $soucet_prideleno = Cache::read($cache_tag_soucet_prideleno, 'long_term');
-                    $soucet_vycerpano = Cache::read($cache_tag_soucet_vycerpano, 'long_term');
-                    $pocet_projektu = Cache::read($cache_tag_pocet_projektu, 'long_term');
-
-                    if ($soucet_prideleno === false) {
-                        $soucet_prideleno = $this->GrantyPrahaCastky->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(castka_pridelena)'
-                            ],
-                            'conditions' => [
-                                'id_zadatel' => $prijemce->id_zadatel
-                            ]
-                        ])->first()->sum;
-                        Cache::write($cache_tag_soucet_prideleno, $soucet_prideleno, 'long_term');
-                    }
-
-                    if ($soucet_vycerpano === false) {
-                        $soucet_vycerpano = $this->GrantyPrahaCastky->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(castka_vycerpana)'
-                            ],
-                            'conditions' => [
-                                'id_zadatel' => $prijemce->id_zadatel
-                            ]
-                        ])->first()->sum;
-                        Cache::write($cache_tag_soucet_vycerpano, $soucet_vycerpano, 'long_term');
-                    }
-
-                    if ($pocet_projektu === false) {
-                        $pocet_projektu = $this->GrantyPrahaProjekty->find('all', [
-                            'conditions' => [
-                                'id_zadatel' => $prijemce->id_zadatel
-                            ],
-                            'fields' => [
-                                'sum' => 'COUNT(id_projekt)'
-                            ]
-                        ])->first()->sum;
-                        Cache::write($cache_tag_pocet_projektu, $pocet_projektu, 'long_term');
-                    }
-
                     $soucty[$prijemce->id_zadatel] = [
-                        'prideleno' => $soucet_prideleno,
-                        'vycerpano' => $soucet_vycerpano,
-                        'pocet_projektu' => $pocet_projektu
+                        'prideleno' => self::getSoucetPridelenoProIdZadatel($prijemce->id_zadatel, $this->GrantyPrahaCastky),
+                        'vycerpano' => self::getSoucetVycerpanoProIdZadatel($prijemce->id_zadatel, $this->GrantyPrahaCastky),
+                        'pocet_projektu' => self::getPocetProjektuProIdZadatel($prijemce->id_zadatel, $this->GrantyPrahaProjekty)
                     ];
                 }
             }
@@ -212,7 +170,72 @@ class PragueController extends AppController
         } else {
             throw new NotFoundException();
         }
+    }
 
+    public static function getSoucetPridelenoProIdZadatel($id_zadatel = null, GrantyPrahaCastkyTable $GrantyPrahaCastky = null)
+    {
+        if ($id_zadatel === null) return 0;
+
+        $cache_tag_soucet_prideleno = 'granty_praha_soucet_prideleno_' . sha1($id_zadatel);
+        $soucet_prideleno = Cache::read($cache_tag_soucet_prideleno, 'long_term');
+
+        if ($soucet_prideleno === false && $GrantyPrahaCastky !== null) {
+            $soucet_prideleno = $GrantyPrahaCastky->find('all', [
+                'fields' => [
+                    'sum' => 'SUM(castka_pridelena)'
+                ],
+                'conditions' => [
+                    'id_zadatel' => $id_zadatel
+                ]
+            ])->first()->sum;
+            Cache::write($cache_tag_soucet_prideleno, $soucet_prideleno, 'long_term');
+        }
+
+        return $soucet_prideleno;
+    }
+
+    public static function getSoucetVycerpanoProIdZadatel($id_zadatel = null, GrantyPrahaCastkyTable $GrantyPrahaCastky = null)
+    {
+        if ($id_zadatel === null) return 0;
+
+        $cache_tag_soucet_vycerpano = 'granty_praha_soucet_vycerpano_' . sha1($id_zadatel);
+        $soucet_vycerpano = Cache::read($cache_tag_soucet_vycerpano, 'long_term');
+
+        if ($soucet_vycerpano === false && $GrantyPrahaCastky !== null) {
+            $soucet_vycerpano = $GrantyPrahaCastky->find('all', [
+                'fields' => [
+                    'sum' => 'SUM(castka_vycerpana)'
+                ],
+                'conditions' => [
+                    'id_zadatel' => $id_zadatel
+                ]
+            ])->first()->sum;
+            Cache::write($cache_tag_soucet_vycerpano, $soucet_vycerpano, 'long_term');
+        }
+
+        return $soucet_vycerpano;
+    }
+
+    public static function getPocetProjektuProIdZadatel($id_zadatel = null, GrantyPrahaProjektyTable $GrantyPrahaProjekty = null)
+    {
+        if ($id_zadatel === null) return 0;
+
+        $cache_tag_pocet_projektu = 'granty_praha_pocet_projektu_' . sha1($id_zadatel);
+        $pocet_projektu = Cache::read($cache_tag_pocet_projektu, 'long_term');
+
+        if ($pocet_projektu === false && $GrantyPrahaProjekty !== null) {
+            $pocet_projektu = $GrantyPrahaProjekty->find('all', [
+                'conditions' => [
+                    'id_zadatel' => $id_zadatel
+                ],
+                'fields' => [
+                    'sum' => 'COUNT(id_projekt)'
+                ]
+            ])->first()->sum;
+            Cache::write($cache_tag_pocet_projektu, $pocet_projektu, 'long_term');
+        }
+
+        return $pocet_projektu;
     }
 
 }

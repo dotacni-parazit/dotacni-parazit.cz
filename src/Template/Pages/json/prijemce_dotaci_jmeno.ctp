@@ -11,7 +11,7 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    if(empty($data)) $data = [];
+    if (empty($data)) $data = [];
     foreach ($data as $d) {
 
         switch ($ajax_type) {
@@ -46,6 +46,17 @@ if (!$cache_data) {
                     \App\View\DPUTILS::ico($d->ico),
                     $d->type->label,
                     $this->Html->link('Otevřít', $link)
+                ];
+
+                break;
+            case 'grantyPraha':
+
+                /** @var \App\Model\Entity\GrantyPrahaZadatel $d */
+                $data_arr[] = [
+                    $this->Html->link($d->nazev, '/granty-praha/prijemce/' . $d->id_zadatel),
+                    \App\View\DPUTILS::currency(\App\Controller\PragueController::getSoucetPridelenoProIdZadatel($d->id_zadatel)),
+                    \App\View\DPUTILS::currency(\App\Controller\PragueController::getSoucetVycerpanoProIdZadatel($d->id_zadatel)),
+                    \App\Controller\PragueController::getPocetProjektuProIdZadatel($d->id_zadatel)
                 ];
 
                 break;
