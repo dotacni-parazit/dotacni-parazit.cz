@@ -20,6 +20,8 @@ use Cake\Http\Exception\NotFoundException;
 class PragueController extends AppController
 {
 
+    protected $cache_tag_oblasti = 'granty_praha_oblasti_ciselnik';
+
     public function initialize()
     {
         parent::initialize();
@@ -33,6 +35,32 @@ class PragueController extends AppController
     public function index()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Hlavní Město Praha' => 'self']);
+
+
+        $oblasti = Cache::read($this->cache_tag_oblasti, 'long_term');
+        if ($oblasti === false) {
+            $raw = $this->GrantyPrahaProjekty->find('all', [
+                'fields' => [
+                    'nazev_oblasti' => 'DISTINCT(nazev_oblasti)'
+                ]
+            ]);
+            $oblasti = [];
+            $i = 0;
+            foreach ($raw as $r) {
+                if (empty($r->nazev_oblasti)) continue;
+
+                $oblasti[$i] = $r->nazev_oblasti;
+                $i++;
+            }
+            Cache::write($this->cache_tag_oblasti, $oblasti, 'long_term');
+        }
+        $this->set(compact('oblasti'));
+
+        $oblast = $this->request->getQuery('oblast');
+        $oblast = is_numeric($oblast) ? $oblast : 0;
+        $oblast = isset($oblasti[$oblast]) ? $oblast : 0;
+
+        $this->set(compact('oblast'));
     }
 
     public function detailPrijemce()
@@ -60,7 +88,7 @@ class PragueController extends AppController
             ]
         ])->first();
 
-        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Hlavní Město Praha' => '/granty-praha', $projekt->Zadatel->nazev => '/granty-praha/prijemce/'.$projekt->Zadatel->id_zadatel, 'Detail projektu' => 'self']);
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Hlavní Město Praha' => '/granty-praha', $projekt->Zadatel->nazev => '/granty-praha/prijemce/' . $projekt->Zadatel->id_zadatel, 'Detail projektu' => 'self']);
         $this->set('projekt', $projekt);
     }
 
@@ -83,6 +111,29 @@ class PragueController extends AppController
 
         $_serialize = false;
         $this->set(compact('_serialize', 'prijemce', 'id_zadatel'));
+    }
+
+    public function ajaxProjektyOblast()
+    {
+        if (!$this->request->is('ajax')) {
+            //return new NotFoundException();
+        }
+
+        $id_oblast = $this->request->getParam('id_oblast');
+        $oblasti = Cache::read($this->cache_tag_oblasti, 'long_term');
+        $oblast = $oblasti[$id_oblast];
+
+        $prijemce = $this->GrantyPrahaZadatel->find('all', [
+            'conditions' => [
+                'GrantyPrahaProjekty.nazev_oblasti' => $oblast
+            ],
+            'contain' => [
+                'GrantyPrahaProjekty'
+            ]
+        ]);
+
+        $_serialize = false;
+        $this->set(compact('_serialize', 'prijemce', 'id_oblast'));
     }
 
     public function ajaxPrijemci()

@@ -159,6 +159,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/granty-praha/projekt/:id_projekt', ['controller' => 'Prague', 'action' => 'detailProjektu'], ['id_projekt' => '[0-9a-zA-Z\-]{36}']);
     $routes->connect('/granty-praha/ajax/prijemce/projekty/:id_zadatel', ['controller' => 'Prague', 'action' => 'ajaxProjektyPrijemce'], ['id_zadatel' => '[0-9a-zA-Z\-]{36}']);
     $routes->connect('/granty-praha/ajax/prijemci', ['controller' => 'Prague', 'action' => 'ajaxPrijemci']);
+    $routes->connect('/granty-praha/ajax/projekty/oblast/:id_oblast', ['controller' => 'Prague', 'action' => 'ajaxProjektyOblast'], ["id_oblast" => "[0-9]+"]);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });
