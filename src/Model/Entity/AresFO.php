@@ -10,8 +10,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate $datum_narozeni
  * @property string $jmeno
  * @property string $prijmeni
+ * @property int $ico_count
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property AresFOtoICO[] $ares_f_oto_i_c_o
  */
 class AresFO extends Entity
 {
@@ -30,6 +32,7 @@ class AresFO extends Entity
         'jmeno' => true,
         'prijmeni' => true,
         'created' => true,
-        'modified' => true
+        'modified' => true,
+        'ico_count' => true
     ];
 }

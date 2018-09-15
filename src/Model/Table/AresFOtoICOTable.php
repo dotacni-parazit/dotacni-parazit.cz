@@ -44,6 +44,11 @@ class AresFOtoICOTable extends Table
             'foreignKey' => 'fo_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('Nazev', [
+            'className' => 'AresNazvy',
+            'foreignKey' => 'ico',
+            'bindingKey' => 'ico'
+        ]);
     }
 
     /**

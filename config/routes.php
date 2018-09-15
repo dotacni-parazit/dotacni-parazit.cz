@@ -161,6 +161,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/granty-praha/ajax/prijemci', ['controller' => 'Prague', 'action' => 'ajaxPrijemci']);
     $routes->connect('/granty-praha/ajax/projekty/oblast/:id_oblast', ['controller' => 'Prague', 'action' => 'ajaxProjektyOblast'], ["id_oblast" => "[0-9]+"]);
 
+    $routes->connect('/ares/fo', ['controller' => 'Ares', 'action' => 'test']);
+    $routes->connect('/ares/fo/detail/:foid', ['controller' => 'Ares', 'action' => 'foDetail'], ['foid' => '[0-9]+']);
+    $routes->connect('/ares/budovy', ['controller' => 'Ares', 'action' => 'budovy']);
+
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
 });

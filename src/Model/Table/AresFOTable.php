@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\AresFOtoICO;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -8,6 +9,7 @@ use Cake\Validation\Validator;
 
 /**
  * AresFO Model
+ *
  *
  * @method \App\Model\Entity\AresFO get($primaryKey, $options = [])
  * @method \App\Model\Entity\AresFO newEntity($data = null, array $options = [])
@@ -37,6 +39,10 @@ class AresFOTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->hasMany('AresFOtoICO', [
+            'foreignKey' => 'fo_id'
+        ]);
     }
 
     /**
