@@ -2,7 +2,8 @@
 
 use Cake\Cache\Cache;
 
-$cache_key = 'podle_sidla_prijemce_obce_ajax';
+$var = (isset($variant) && is_numeric($variant)) ? $variant : 1;
+$cache_key = 'podle_sidla_prijemce_obce_ajax_' . $var;
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -11,13 +12,27 @@ if (!$cache_data) {
     $total = 0;
 
 
+    /** @var \App\Model\Entity\CiselnikObecv01[] $obce */
     foreach ($obce as $o) {
+        switch ($var) {
+            case 1:
+            default:
+                $data_arr[] = [
+                    $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod),
+                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucet),
+                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
+                ];
+                break;
+            case 2:
 
-        $data_arr[] = [
-            $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod),
-            \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucet),
-            \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
-        ];
+                $data_arr[] = [
+                    $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod),
+                    $o->obecNutsKod,
+                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucet),
+                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
+                ];
+                break;
+        }
         $total++;
     }
 

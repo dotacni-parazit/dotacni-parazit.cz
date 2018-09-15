@@ -660,6 +660,7 @@ class PagesController extends AppController
             }
 
             $_serialize = false;
+            $this->set('variant', $this->request->getQuery('var'));
             $this->set(compact(['obce', 'obce_soucet', '_serialize', 'okresy_soucet']));
             return;
         }
