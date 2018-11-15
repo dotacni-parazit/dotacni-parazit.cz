@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\AresAngosFO;
 use App\Model\Entity\AresFO;
+use App\Model\Table\AresAngosFOTable;
 use App\Model\Table\AresFOTable;
 use App\Model\Table\AresFOtoICOTable;
 use App\Model\Table\AresFOtoMoneyTable;
@@ -23,6 +25,7 @@ use Cake\Core\Configure;
  * @property RozpoctoveObdobiTable $RozpoctoveObdobi
  * @property RozhodnutiTable $Rozhodnuti
  * @property BudovaTable $Budova
+ * @property AresAngosFOTable $AresAngosFO
  */
 class AresController extends AppController
 {
@@ -41,6 +44,7 @@ class AresController extends AppController
         $this->loadModel('Rozhodnuti');
         $this->loadModel('RozpoctoveObdobi');
         $this->loadModel('Budova');
+        $this->loadModel('AresAngosFO');
     }
 
     public function budovy()
@@ -48,6 +52,10 @@ class AresController extends AppController
         Configure::write('debug', false);
         $this->set('budovy', $this->Budova->find('all'));
         $this->set('_serialize', false);
+    }
+
+    public function detailBudovy() {
+        $this->set('budova', $this->Budova->get($this->request->getParam('budovaid')));
     }
 
     public function test()
@@ -76,7 +84,24 @@ class AresController extends AppController
                 'AresFOtoICO.Nazev'
             ]
         ]);
+
+        $angos = $this->AresAngosFO->find('all', [
+            'conditions' => [
+                'jmeno' => $osoba->jmeno,
+                'prijmeni' => $osoba->prijmeni,
+                'datum_narozeni' => $osoba->datum_narozeni
+            ]
+        ]);
+        $icos = [];
+        foreach($angos as $a){
+            $i = isset($icos[$a->ico]) ? $icos[$a->ico] : [];
+            $i[] = $a->funkce;
+            $icos[$a->ico] = $i;
+        }
+        //dump($angos->toArray());
+
         //dump($osoba);
+        $this->set('icos', $icos);
         $this->set('osoba', $osoba);
     }
 

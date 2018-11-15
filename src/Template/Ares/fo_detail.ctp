@@ -10,7 +10,7 @@ $this->set('title', 'Detail FO: ' . $osoba->jmeno . ' ' . $osoba->prijmeni)
 
 <ui>
     <?php foreach ($osoba->ares_f_oto_i_c_o as $ic) { ?>
-        <li><?= $ic->nazev[0]->nazev ?>
+        <li><?= $ic->nazev[0]->nazev ?> (jako <?= join($icos[$ic->ico], ", ") ?>)
             <?php
             $cache_tag_ico_sum_rozhodnuti = 'sum_rozhodnuti_ico_' . sha1($ic->ico) . '_all_years';
             $cache_tag_ico_sum_spotrebovano = 'sum_spotrebovano_ico_' . sha1($ic->ico) . '_all_years';

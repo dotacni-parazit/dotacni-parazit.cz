@@ -164,6 +164,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/ares/fo', ['controller' => 'Ares', 'action' => 'test']);
     $routes->connect('/ares/fo/detail/:foid', ['controller' => 'Ares', 'action' => 'foDetail'], ['foid' => '[0-9]+']);
     $routes->connect('/ares/budovy', ['controller' => 'Ares', 'action' => 'budovy']);
+    $routes->connect('/ares/budovy/detail/:budovaid', ['controller' => 'Ares', 'action' => 'detailBudovy'], ['budovaid' => '[0-9]+']);
 
     // fallback
     // $routes->fallbacks(\Cake\Routing\Route\InflectedRoute::class);
