@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\Entity\AresAngosFO;
 use App\Model\Entity\AresFO;
 use App\Model\Table\AresAngosFOTable;
 use App\Model\Table\AresFOTable;
@@ -54,7 +53,8 @@ class AresController extends AppController
         $this->set('_serialize', false);
     }
 
-    public function detailBudovy() {
+    public function detailBudovy()
+    {
         $this->set('budova', $this->Budova->get($this->request->getParam('budovaid')));
     }
 
@@ -62,6 +62,9 @@ class AresController extends AppController
     {
         Configure::write('debug', false);
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
 
             $osoby = $this->AresFO->find('all', [
                 'contain' => [
@@ -93,7 +96,7 @@ class AresController extends AppController
             ]
         ]);
         $icos = [];
-        foreach($angos as $a){
+        foreach ($angos as $a) {
             $i = isset($icos[$a->ico]) ? $icos[$a->ico] : [];
             $i[] = $a->funkce;
             $icos[$a->ico] = $i;

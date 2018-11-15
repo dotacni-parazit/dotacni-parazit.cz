@@ -66,7 +66,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 </tr>
             <?php } ?>
             </tbody>
-        <li><a href="#projects">Projekty</a></li>
             <tfoot>
             <tr>
                 <td>Název</td>

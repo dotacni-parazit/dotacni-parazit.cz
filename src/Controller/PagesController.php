@@ -538,6 +538,9 @@ class PagesController extends AppController
         $this->set('title', 'CEDR III - Dotační Úřady');
 
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
             /** @var CiselnikDotacePoskytovatelv01[] $data */
             $data = $this->CiselnikDotacePoskytovatelv01->find('all');
@@ -609,6 +612,9 @@ class PagesController extends AppController
         $okresy_soucet = [];
 
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
 
             $obce_soucet = [];
 
@@ -1010,6 +1016,9 @@ class PagesController extends AppController
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'CEDR III - Dotační Tituly' => 'self']);
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
             $data = $this->CiselnikDotaceTitulv01->find('all', [
                 'contain' => [
@@ -1034,6 +1043,9 @@ class PagesController extends AppController
     {
         if (PHP_SAPI !== 'cli' && !$this->request->is('ajax')) {
             throw new NotFoundException();
+        }
+        if (!$this->request->is('json')) {
+            $this->RequestHandler->renderAs($this, 'json');
         }
 
         $osoby = $this->PrijemcePomoci->find('all', [
@@ -1222,6 +1234,9 @@ class PagesController extends AppController
         $spolecna_pravni_forma = filter_var($spolecna_pravni_forma, FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
             $conditions = [];
             $filter_id = 1;
@@ -1333,6 +1348,9 @@ class PagesController extends AppController
         }
 
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
             $ajax_type = 'cedr';
             if (empty($ico) || strlen($ico) < 3) {
@@ -1392,7 +1410,7 @@ class PagesController extends AppController
                         'ico' => $ico
                     ]
                 ])->limit(50000);
-            } else if ($this->request->getQuery('grantyPraha') == 'grantyPraha'){
+            } else if ($this->request->getQuery('grantyPraha') == 'grantyPraha') {
                 $data = $this->GrantyPrahaZadatel->find('all', [
                     'conditions' => [
                         'ic' => $ico
@@ -1468,6 +1486,9 @@ class PagesController extends AppController
         while (in_array(substr($name, -1), ['-', '+'])) $name = substr($name, 0, -1);
 
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
             $ajax_type = 'empty';
 
@@ -1553,6 +1574,9 @@ class PagesController extends AppController
         while (in_array(substr($name, -1), ['-', '+'])) $name = substr($name, 0, -1);
 
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
             $ajax_type = 'empty';
 
@@ -1676,6 +1700,9 @@ class PagesController extends AppController
     {
         if (!$this->request->is('ajax')) {
             throw new NotFoundException();
+        }
+        if (!$this->request->is('json')) {
+            $this->RequestHandler->renderAs($this, 'json');
         }
         if (!$this->request->is('json')) {
             $this->RequestHandler->renderAs($this, 'json');

@@ -99,6 +99,9 @@ class PragueController extends AppController
         if (!$this->request->is('ajax')) {
             return new NotFoundException();
         }
+        if (!$this->request->is('json')) {
+            $this->RequestHandler->renderAs($this, 'json');
+        }
 
         $id_zadatel = $this->request->getParam('id_zadatel');
 
@@ -119,6 +122,9 @@ class PragueController extends AppController
     {
         if (!$this->request->is('ajax')) {
             return new NotFoundException();
+        }
+        if (!$this->request->is('json')) {
+            $this->RequestHandler->renderAs($this, 'json');
         }
 
         $id_oblast = $this->request->getParam('id_oblast');
@@ -141,6 +147,9 @@ class PragueController extends AppController
     public function ajaxPrijemci()
     {
         if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
             $_serialize = false;
 
             $cache_tag_final_result = 'ajax_granty_praha_prijemci';
