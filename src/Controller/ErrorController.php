@@ -12,6 +12,7 @@
  * @since         3.3.4
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Event\Event;
@@ -27,6 +28,7 @@ class ErrorController extends AppController
      * Initialization hook method.
      *
      * @return void
+     * @throws \Exception
      */
     public function initialize()
     {

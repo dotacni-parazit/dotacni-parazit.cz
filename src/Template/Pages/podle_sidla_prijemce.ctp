@@ -61,7 +61,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <br/>
     </div>
     <div id="obce_list" style="width: 100%;">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->getRequestTarget() ?>">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->getAttribute("here") ?>">
             <thead>
             <tr>
                 <th>Název obce</th>
@@ -135,7 +135,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         </table>
     </div>
     <div id="hackujstat" style="width: 100%;">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->getRequestTarget() ?>?var=2">
+        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->getAttribute("here") ?>?var=2">
             <thead>
             <tr>
                 <th>Název obce</th>

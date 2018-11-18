@@ -11,6 +11,7 @@ $this->set('title', \App\View\DPUTILS::jmenoPrijemcePomoci($prijemce));
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 ?>
+
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
@@ -121,7 +122,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <span id="soucet"></span><br/>
         <span id="soucetSpotrebovana"></span>
         <hr/>
-        <table id="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>?dotace=dotace">
+        <table id="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>?dotace=dotace">
             <thead>
             <tr>
                 <th data-type="html" class="large-2 medium-2">Dotace (kod nebo identifikator projektu)</th>
@@ -169,7 +170,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php if (!empty($strukturalniFondy)) { ?>
         <div id="strukturalniFondy">
             <table class="datatable"
-                   data-ajax="<?= $this->request->getRequestTarget() ?>?strukturalni-fondy=strukturalni-fondy">
+                   data-ajax="<?= $this->request->getAttribute("here") ?>?strukturalni-fondy=strukturalni-fondy">
                 <thead>
                 <tr>
                     <th>Číslo a název programu</th>
@@ -208,7 +209,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php if (!empty($strukturalniFondy2020)) { ?>
         <div id="strukturalniFondy2020">
             <table class="datatable"
-                   data-ajax="<?= $this->request->getRequestTarget() ?>?strukturalni-fondy-2020=strukturalni-fondy-2020">
+                   data-ajax="<?= $this->request->getAttribute("here") ?>?strukturalni-fondy-2020=strukturalni-fondy-2020">
                 <thead>
                 <tr>
                     <th>Číslo a název programu</th>
@@ -284,7 +285,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </div>
     <?php if (!empty($dotinfo)) { ?>
         <div id="dotinfo">
-            <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->getRequestTarget() ?>?dotinfo=dotinfo">
+            <table class="datatable" style="width: 100%"
+                   data-ajax="<?= $this->request->getAttribute("here") ?>?dotinfo=dotinfo">
                 <thead>
                 <tr>
                     <th>Jméno</th>
@@ -311,7 +313,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
     <?php if (!empty($investicniPobidky)) { ?>
         <div id="investicniPobidky">
-            <table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>?czechinvest=czechinvest">
+            <table class="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>?czechinvest=czechinvest">
                 <thead>
                 <tr>
                     <th>Sektor</th>
@@ -342,48 +344,48 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <?php } ?>
 
     <?php if (!empty($szif)) { ?>
-    <div id="szif">
-        <table class="datatable" style="width: 100%"
-               data-ajax="<?= $this->request->getRequestTarget() ?>?szif=szif">
-            <thead>
-            <tr>
-                <th>Příjemce pomoci</th>
-                <th>IČO příjemce</th>
-                <th>Rok</th>
-                <th data-type="currency">Fondy Tuzemské</th>
-                <th data-type="currency">Fondy EU</th>
-                <th data-type="currency">Fondy celkem</th>
-                <th>Opatření</th>
-                <th>Finanční zdroj</th>
-                <th>Místo realizace</th>
-                <td>Otevřít</td>
-            </tr>
-            </thead>
-            <tbody>
+        <div id="szif">
+            <table class="datatable" style="width: 100%"
+                   data-ajax="<?= $this->request->getAttribute("here") ?>?szif=szif">
+                <thead>
+                <tr>
+                    <th>Příjemce pomoci</th>
+                    <th>IČO příjemce</th>
+                    <th>Rok</th>
+                    <th data-type="currency">Fondy Tuzemské</th>
+                    <th data-type="currency">Fondy EU</th>
+                    <th data-type="currency">Fondy celkem</th>
+                    <th>Opatření</th>
+                    <th>Finanční zdroj</th>
+                    <th>Místo realizace</th>
+                    <td>Otevřít</td>
+                </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>Příjemce pomoci</td>
-                <td>IČO příjemce</td>
-                <td>Rok</td>
-                <td data-type="currency">Fondy Tuzemské</td>
-                <td data-type="currency">Fondy EU</td>
-                <td data-type="currency">Fondy celkem</td>
-                <td>Opatření</td>
-                <td>Finanční zdroj</td>
-                <td>Místo realizace</td>
-                <td>Otevřít</td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Příjemce pomoci</td>
+                    <td>IČO příjemce</td>
+                    <td>Rok</td>
+                    <td data-type="currency">Fondy Tuzemské</td>
+                    <td data-type="currency">Fondy EU</td>
+                    <td data-type="currency">Fondy celkem</td>
+                    <td>Opatření</td>
+                    <td>Finanční zdroj</td>
+                    <td>Místo realizace</td>
+                    <td>Otevřít</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     <?php } ?>
 
     <?php if (!empty($politickeDary)) { ?>
         <div id="politickeDary">
             <table class="datatable" style="width: 100%"
-                   data-ajax="<?= $this->request->getRequestTarget() ?>?politickeDary=politickeDary">
+                   data-ajax="<?= $this->request->getAttribute("here") ?>?politickeDary=politickeDary">
                 <thead>
                 <tr>
                     <th>Strana</th>

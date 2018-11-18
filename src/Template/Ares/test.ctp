@@ -2,7 +2,7 @@
 $this->set('title', 'Odhalování spol. fyzických osob u příjemců dotací');
 ?>
 
-<table class="datatable" style="width: 100%;" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table class="datatable" style="width: 100%;" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th>Jméno</th>

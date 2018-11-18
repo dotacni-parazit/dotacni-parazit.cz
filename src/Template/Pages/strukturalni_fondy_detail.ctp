@@ -103,7 +103,7 @@ $this->set('title', $data->operacaniProgramNazev);
         }
         ?>
 
-        <table style="width: 100%" class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
+        <table style="width: 100%" class="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
             <thead>
             <tr>
                 <th data-type="html">Název Projektu</th>

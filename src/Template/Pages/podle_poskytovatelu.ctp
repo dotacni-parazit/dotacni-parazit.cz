@@ -1,4 +1,4 @@
-<table id="datatable" class="datatable_simple" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table id="datatable" class="datatable_simple" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th>Poskytovatel</th>

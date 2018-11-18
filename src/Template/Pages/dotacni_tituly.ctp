@@ -2,7 +2,7 @@
 $this->set('title', 'CEDR III - Dotační Tituly');
 ?>
 
-<table id="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table id="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th data-type="html">Kapitola Státního Rozpočtu</th>

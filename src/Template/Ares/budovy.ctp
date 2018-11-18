@@ -2,7 +2,7 @@
 $this->set('title', 'Agregace příjemců dotací podle adresy');
 ?>
 
-<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table class="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th>Budova adresa</th>

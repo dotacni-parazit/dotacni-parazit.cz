@@ -39,7 +39,7 @@ use App\Model\Table\RozpoctoveObdobiTable;
 use App\Model\Table\StrukturalniFondy2020Table;
 use App\Model\Table\StrukturalniFondyTable;
 use App\Model\Table\TransactionsTable;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 
 
 /**

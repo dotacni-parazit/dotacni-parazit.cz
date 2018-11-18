@@ -41,7 +41,6 @@ use App\Model\Table\StrukturalniFondy2020Table;
 use App\Model\Table\StrukturalniFondyTable;
 use App\Model\Table\TransactionsTable;
 use Cake\Cache\Cache;
-use Cake\Core\Configure;
 
 
 /**

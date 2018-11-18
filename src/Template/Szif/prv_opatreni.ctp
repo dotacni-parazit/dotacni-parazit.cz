@@ -2,7 +2,7 @@
 $this->set('title', $this->request->getQuery('name'));
 ?>
 
-<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table class="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th>Jméno příjemce</th>

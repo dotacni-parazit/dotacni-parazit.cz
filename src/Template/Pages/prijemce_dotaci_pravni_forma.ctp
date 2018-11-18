@@ -33,7 +33,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         ?>
     </div>
 </div>
-<table id="datatable" style="width: 100%" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table id="datatable" style="width: 100%" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th>Obchodní Jméno</th>

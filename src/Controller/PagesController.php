@@ -56,7 +56,7 @@ use App\View\DPUTILS;
 use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Client;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
@@ -154,6 +154,7 @@ class PagesController extends AppController
         $this->loadModel('PRV');
         $this->loadModel('GrantyPrahaZadatel');
         $this->loadModel('GrantyPrahaProjekty');
+
         $this->loadComponent('Caching');
     }
 

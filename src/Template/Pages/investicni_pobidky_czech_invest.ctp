@@ -2,7 +2,7 @@
 $this->set('title', 'Investiční Pobídky - CzechInvest');
 ?>
 
-<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
+<table class="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
     <thead>
     <tr>
         <th>Společnost</th>
