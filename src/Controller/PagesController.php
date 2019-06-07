@@ -57,10 +57,14 @@ use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\Number;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
 use DebugKit\DebugSql;
+use Error;
+use Exception;
 
 
 /**
@@ -976,7 +980,7 @@ class PagesController extends AppController
                 foreach ($tablereg->getSchema()->columns() as $raw_col) {
                     $col_type = $tablereg->getSchema()->getColumn($raw_col);
                     $col_type = $col_type['type'];
-                    /** @var \Cake\ORM\Query $empty_rows */
+                    /** @var Query $empty_rows */
                     $primaryKey = $tablereg->getPrimaryKey();
                     if (!is_string($primaryKey) || is_null($primaryKey)) $primaryKey = $raw_col;
 
@@ -4033,9 +4037,9 @@ class PagesController extends AppController
                         ]
                     ])->body();
                     $data_obj = json_decode($data_string);
-                } catch (\Error $e) {
+                } catch (Error $e) {
                     $data_obj = [];
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $data_obj = [];
                 }
 

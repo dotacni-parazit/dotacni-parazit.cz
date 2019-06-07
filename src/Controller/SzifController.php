@@ -178,7 +178,7 @@ class SzifController extends AppController
     {
         $obce = $this->PRV->find('all', [
             'conditions' => [
-                'okres' => $this->request->getQuery('name')
+                'okres' => urldecode($this->request->getQuery('name'))
             ],
             'fields' => [
                 'obec' => 'DISTINCT(obec)',
@@ -203,8 +203,8 @@ class SzifController extends AppController
     {
         $data = $this->PRV->find('all', [
             'conditions' => [
-                'okres' => $this->request->getQuery('okres'),
-                'obec' => $this->request->getQuery('name')
+                'okres' => urldecode($this->request->getQuery('okres')),
+                'obec' => urldecode($this->request->getQuery('name'))
             ]
         ]);
         if ($data->count() < 1) throw new NotFoundException();
