@@ -1,9 +1,13 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Hlavní město Praha - Granty');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView; ?>
 <div id="tabs">
     <ul>
         <li><a href="#recipients">Podle příjemců</a></li>

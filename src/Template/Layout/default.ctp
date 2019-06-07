@@ -1,7 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->assign('title', empty($title) ? "" : $title);
 $title = $this->fetch('title');
-?>
+
+use App\View\AppView; ?>
 <!DOCTYPE html>
 <html lang="cs">
 <head>

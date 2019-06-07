@@ -1,10 +1,17 @@
 <?php
+/**
+ * @var AppView $this
+ * @var Dotace $dotace
+ */
 
+use App\Model\Entity\Dotace;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 use Cake\Routing\Router;
 
-/** @var \App\Model\Entity\Dotace $dotace */
-$this->set('title', \App\View\DPUTILS::dotaceNazev($dotace));
+/** @var Dotace $dotace */
+$this->set('title', DPUTILS::dotaceNazev($dotace));
 
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
@@ -257,7 +264,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>IČ (IČO)</td>
-                <td><?= \App\View\DPUTILS::ico($dotace->PrijemcePomoci->ico) ?></td>
+                <td><?= DPUTILS::ico($dotace->PrijemcePomoci->ico) ?></td>
             </tr>
 
             <tr>

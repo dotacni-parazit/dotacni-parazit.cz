@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+
 $this->set('title', 'Finanční zdroje');
 ?>
 <table class="datatable">

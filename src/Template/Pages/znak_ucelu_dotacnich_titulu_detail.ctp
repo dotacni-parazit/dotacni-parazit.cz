@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', $data->ucelZnakNazev);
-?>
+
+use App\View\AppView; ?>
 
 <table class="datatable datatable_simple" style="width: 100%;">
     <thead>

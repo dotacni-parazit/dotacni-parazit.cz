@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 
 $years = $titul->zaznamPlatnostOdDatum->year == $titul->zaznamPlatnostDoDatum->year ? $titul->zaznamPlatnostDoDatum->year : $titul->zaznamPlatnostOdDatum->year . '-' . $titul->zaznamPlatnostDoDatum->year;
@@ -15,7 +18,8 @@ $props = [
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView; ?>
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>

@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+
+?>
 <table class="datatable datatable_simple">
     <thead>
     <tr>

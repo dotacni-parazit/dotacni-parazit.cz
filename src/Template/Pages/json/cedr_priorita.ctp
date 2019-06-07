@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\Dotace;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -11,14 +17,14 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    /** @var \App\Model\Entity\Dotace[] $dotace */
+    /** @var Dotace[] $dotace */
     foreach ($dotace as $d) {
 
         $data_arr[] = [
             $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace),
             $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace),
             $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace),
-            $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce)
+            $this->Html->link(DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce)
         ];
         $total++;
     }

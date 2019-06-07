@@ -1,11 +1,18 @@
 <?php
+/**
+ * @var AppView $this
+ */
 /** @var array $sums */
 
-/** @var \App\Model\Entity\Transaction[] $transactions */
+/** @var Transaction[] $transactions */
 
+use App\Model\Entity\Company;
+use App\Model\Entity\Transaction;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
-/** @var \App\Model\Entity\Company $strana */
+/** @var Company $strana */
 $this->set('title', $strana->name);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
@@ -42,7 +49,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>IČO</td>
-                <td><?= \App\View\DPUTILS::ico($strana->ico) ?></td>
+                <td><?= DPUTILS::ico($strana->ico) ?></td>
             </tr>
 
             <tr>
@@ -98,7 +105,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php foreach ($transactions as $t) { ?>
                 <tr>
                     <td><?= $this->Html->link($t->donor->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $t->donor->name]) ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::ico($t->donor->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $t->donor->ico]) ?></td>
+                    <td><?= $this->Html->link(DPUTILS::ico($t->donor->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $t->donor->ico]) ?></td>
                     <td><?= $t->year ?></td>
                     <td><?= Number::currency($t->amount) ?></td>
                 </tr>
@@ -126,7 +133,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <tbody>
             <?php foreach ($audits as $a) { ?>
                 <tr>
-                    <td><?= $a->auditor->name . ' (IČ: ' . \App\View\DPUTILS::ico($a->auditor->ico) . ')' ?></td>
+                    <td><?= $a->auditor->name . ' (IČ: ' . DPUTILS::ico($a->auditor->ico) . ')' ?></td>
                     <td><?= $a->name . ' (' . $a->permission . ')' ?></td>
                     <td><?= $a->year ?></td>
                 </tr>

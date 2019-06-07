@@ -1,5 +1,20 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Controller\PragueController;
+use App\Model\Entity\Company;
+use App\Model\Entity\Dotinfo;
+use App\Model\Entity\GrantyPrahaZadatel;
+use App\Model\Entity\InvesticniPobidky;
+use App\Model\Entity\PrijemcePomoci;
+use App\Model\Entity\PRV;
+use App\Model\Entity\StrukturalniFondy;
+use App\Model\Entity\StrukturalniFondy2020;
+use App\Model\Entity\Transaction;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 /** @var string $ajax_type */
@@ -17,7 +32,7 @@ if (!$cache_data) {
         switch ($ajax_type) {
             case 'konsolidace':
 
-                /** @var \App\Model\Entity\Company $d */
+                /** @var Company $d */
 
                 $link = "";
                 switch ($d->type_id) {
@@ -43,7 +58,7 @@ if (!$cache_data) {
 
                 $data_arr[] = [
                     $d->name,
-                    \App\View\DPUTILS::ico($d->ico),
+                    DPUTILS::ico($d->ico),
                     $d->type->label,
                     $this->Html->link('Otevřít', $link)
                 ];
@@ -51,23 +66,23 @@ if (!$cache_data) {
                 break;
             case 'grantyPraha':
 
-                /** @var \App\Model\Entity\GrantyPrahaZadatel $d */
+                /** @var GrantyPrahaZadatel $d */
                 $data_arr[] = [
                     $this->Html->link($d->nazev, '/granty-praha/prijemce/' . $d->id_zadatel),
-                    \App\View\DPUTILS::currency(\App\Controller\PragueController::getSoucetPridelenoProIdZadatel($d->id_zadatel)),
-                    \App\View\DPUTILS::currency(\App\Controller\PragueController::getSoucetVycerpanoProIdZadatel($d->id_zadatel)),
-                    \App\Controller\PragueController::getPocetProjektuProIdZadatel($d->id_zadatel)
+                    DPUTILS::currency(PragueController::getSoucetPridelenoProIdZadatel($d->id_zadatel)),
+                    DPUTILS::currency(PragueController::getSoucetVycerpanoProIdZadatel($d->id_zadatel)),
+                    PragueController::getPocetProjektuProIdZadatel($d->id_zadatel)
                 ];
 
                 break;
             case 'dotinfo':
 
-                /** @var \App\Model\Entity\Dotinfo $d */
+                /** @var Dotinfo $d */
                 $data_arr[] = [
                     $d->ucastnikObchodniJmeno,
-                    \App\View\DPUTILS::ico($d->ucastnikIco),
+                    DPUTILS::ico($d->ucastnikIco),
                     '<span title="' . $d->ucelDotace . '">' . (empty($d->dotaceNazev) ? 'Neuvedeno' : $d->dotaceNazev) . '</span>',
-                    \App\View\DPUTILS::currency($d->castkaSchvalena),
+                    DPUTILS::currency($d->castkaSchvalena),
                     $this->Html->link('Otevřít', '/detail-dotinfo/' . $d->id) . '<br/>' .
                     $this->Html->link('Otevřít DotInfo.cz', 'https://www.dotinfo.cz/dotace/' . $d->dotinfoId)
                 ];
@@ -76,14 +91,14 @@ if (!$cache_data) {
 
             case 'szif':
 
-                /** @var \App\Model\Entity\PRV $d */
+                /** @var PRV $d */
                 $data_arr[] = [
                     $d->jmeno,
-                    \App\View\DPUTILS::ico($d->ico),
+                    DPUTILS::ico($d->ico),
                     $d->rok,
-                    \App\View\DPUTILS::currency($d->czk_tuzemske),
-                    \App\View\DPUTILS::currency($d->czk_evropske),
-                    \App\View\DPUTILS::currency($d->czk_celkem),
+                    DPUTILS::currency($d->czk_tuzemske),
+                    DPUTILS::currency($d->czk_evropske),
+                    DPUTILS::currency($d->czk_celkem),
                     $d->opatreni,
                     $d->zdroj,
                     $d->okres . ', ' . $d->obec,
@@ -93,32 +108,32 @@ if (!$cache_data) {
                 break;
             case 'cedr':
 
-                /** @var \App\Model\Entity\PrijemcePomoci $d */
+                /** @var PrijemcePomoci $d */
                 $data_arr[] = [
-                    \App\View\DPUTILS::jmenoPrijemcePomoci($d),
-                    \App\View\DPUTILS::ico($d->ico),
+                    DPUTILS::jmenoPrijemcePomoci($d),
+                    DPUTILS::ico($d->ico),
                     empty($d->Stat->statNazev) ? 'N/A' : $this->Html->link($d->Stat->statNazev, '/detail-statu/' . $d->Stat->statKod3Znaky),
                     $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $d->idPrijemce)
                 ];
                 break;
             case 'czechinvest':
 
-                /** @var \App\Model\Entity\InvesticniPobidky $d */
+                /** @var InvesticniPobidky $d */
                 $data_arr[] = [
                     $d->name,
-                    \App\View\DPUTILS::ico($d->ico),
-                    \App\View\DPUTILS::currency($d->investiceCZK * 1000000),
+                    DPUTILS::ico($d->ico),
+                    DPUTILS::currency($d->investiceCZK * 1000000),
                     ($d->rozhodnutiDen == 0 ? 1 : $d->rozhodnutiDen) . "." . $d->rozhodnutiMesic . " " . $d->rozhodnutiRok,
                     $this->Html->link('Otevřít', '/investicni-pobidky/detail/' . $d->id)
                 ];
                 break;
             case 'strukturalniFondy':
 
-                /** @var \App\Model\Entity\StrukturalniFondy $d */
+                /** @var StrukturalniFondy $d */
                 $data_arr[] = [
                     $d->zadatel,
-                    \App\View\DPUTILS::ico($d->zadatelIcoNum),
-                    \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
+                    DPUTILS::ico($d->zadatelIcoNum),
+                    DPUTILS::currency($d->verejneZdrojeCelkem),
                     $d->cisloProjektu,
                     $d->nazevProjektu,
                     $this->Html->link('Otevřít', '/strukturalni-fondy-detail-dotace/' . $d->id)
@@ -126,11 +141,11 @@ if (!$cache_data) {
                 break;
             case 'strukturalniFondy2020':
 
-                /** @var \App\Model\Entity\StrukturalniFondy2020 $d */
+                /** @var StrukturalniFondy2020 $d */
                 $data_arr[] = [
                     $d->zadatel,
-                    \App\View\DPUTILS::ico($d->zadatelIco),
-                    \App\View\DPUTILS::currency($d->schvaleneZdrojeVerejne),
+                    DPUTILS::ico($d->zadatelIco),
+                    DPUTILS::currency($d->schvaleneZdrojeVerejne),
                     $d->registracniCisloProjektu,
                     $d->nazevProjektu,
                     $this->Html->link('Otevřít', '/strukturalni-fondy-2014-2020-detail-dotace/' . $d->id)
@@ -138,13 +153,13 @@ if (!$cache_data) {
                 break;
             case 'politickeStrany':
 
-                /** @var \App\Model\Entity\Transaction $d */
+                /** @var Transaction $d */
 
                 $data_arr[] = [
                     $this->Html->link($d->donor->name, "/dary-politickym-stranam/detail-darce/" . $d->donor->id),
                     $this->Html->link($d->recipient->name, '/dary-politickym-stranam/detail/' . $d->recipient->id),
                     $d->year,
-                    \App\View\DPUTILS::currency($d->amount)
+                    DPUTILS::currency($d->amount)
                 ];
 
                 break;

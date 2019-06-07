@@ -1,9 +1,14 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Státní Zemědělský Intervenční Fond');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView;
+use App\View\DPUTILS; ?>
 <div class="alert alert-info">
     <ul>
         <li>U právnických osob (PO) je vždy uveden název společnosti, obec a okres</li>
@@ -44,7 +49,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <tr>
                     <td><?= $this->Html->link($s->source, '/program-rozvoje-venkova/zdroj/?name=' . urlencode($s->source)) ?></td>
                     <td><?= $s->count ?></td>
-                    <td><?= \App\View\DPUTILS::currency($s->sum) ?></td>
+                    <td><?= DPUTILS::currency($s->sum) ?></td>
                     <td><?= $this->Html->link('Otevřít', '/program-rozvoje-venkova/zdroj/?name=' . urlencode($s->source)) ?></td>
                 </tr>
             <?php } ?>
@@ -75,7 +80,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <tr>
                     <td><?= $this->Html->link($o->okres, '/program-rozvoje-venkova/okres/?name=' . urlencode($o->okres)) ?></td>
                     <td><?= $o->count ?></td>
-                    <td><?= \App\View\DPUTILS::currency($o->sum) ?></td>
+                    <td><?= DPUTILS::currency($o->sum) ?></td>
                     <td><?= $this->Html->link('Otevřít', '/program-rozvoje-venkova/okres/?name=' . urlencode($o->okres)) ?></td>
                 </tr>
             <?php } ?>
@@ -106,7 +111,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <tr>
                     <td><?= $this->Html->link($o->opatreni, '/program-rozvoje-venkova/opatreni/?name=' . urlencode($o->opatreni)) ?></td>
                     <td><?= $o->count ?></td>
-                    <td><?= \App\View\DPUTILS::currency($o->sum) ?></td>
+                    <td><?= DPUTILS::currency($o->sum) ?></td>
                     <td><?= $this->Html->link('Otevřít', '/program-rozvoje-venkova/opatreni/?name=' . urlencode($o->opatreni)) ?></td>
                 </tr>
             <?php } ?>

@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\RozpoctoveObdobi;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', $titul->dotaceTitulNazev);
@@ -116,12 +122,12 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php /** @var \App\Model\Entity\RozpoctoveObdobi[] $top_rozpoctove_obdobi */
+            <?php /** @var RozpoctoveObdobi[] $top_rozpoctove_obdobi */
             foreach ($top_rozpoctove_obdobi as $r) { ?>
                 <tr>
                     <td class="medium-1 large-1"><?= $this->Html->link('[R]', '/detail-rozhodnuti/' . $r->idRozhodnuti) ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::dotaceNazev($r->Rozhodnuti->Dotace), '/detail-dotace/' . $r->Rozhodnuti->idDotace); ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($r->Rozhodnuti->Dotace->PrijemcePomoci), '/detail-prijemce-pomoci/' . $r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
+                    <td><?= $this->Html->link(DPUTILS::dotaceNazev($r->Rozhodnuti->Dotace), '/detail-dotace/' . $r->Rozhodnuti->idDotace); ?></td>
+                    <td><?= $this->Html->link(DPUTILS::jmenoPrijemcePomoci($r->Rozhodnuti->Dotace->PrijemcePomoci), '/detail-prijemce-pomoci/' . $r->Rozhodnuti->Dotace->PrijemcePomoci->idPrijemce) ?></td>
                     <td class="medium-1 large-1"><?= $r->rozpoctoveObdobi ?></td>
                     <td style="text-align: right;"><?= Number::currency($r->Rozhodnuti->castkaRozhodnuta) ?></td>
                     <td style="text-align: right;"><?= Number::currency($r->castkaSpotrebovana) ?></td>

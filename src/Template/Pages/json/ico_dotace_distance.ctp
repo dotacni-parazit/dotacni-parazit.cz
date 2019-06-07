@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\MFCRPAP;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -11,11 +17,11 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    /** @var \App\Model\Entity\MFCRPAP[] $data */
+    /** @var MFCRPAP[] $data */
     foreach ($data as $d) {
-        /** @var \App\Model\Entity\MFCRPAP $d */
+        /** @var MFCRPAP $d */
         $data_arr[] = [
-            $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->idPrijemce),
+            $this->Html->link(DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->idPrijemce),
             $d->start->nice(),
             !empty($d->end) ? $d->end->nice() : 'N/A',
             empty($d->PrvniDotace) ? 'N/A' : $this->Html->link($d->PrvniDotace->podpisDatum->nice(), '/detail-dotace/' . $d->distance_start_dotace),

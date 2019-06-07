@@ -1,8 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 $this->set('title', $source->zdroj);
 
-?>
+use App\View\AppView; ?>
 
 <table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>

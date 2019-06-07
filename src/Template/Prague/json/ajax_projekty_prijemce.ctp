@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\GrantyPrahaZadatel;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -12,7 +18,7 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    /** @var \App\Model\Entity\GrantyPrahaZadatel[] $prijemce */
+    /** @var GrantyPrahaZadatel[] $prijemce */
     foreach ($prijemce as $p) {
         $projekt = $p->Projekt;
         if (empty($projekt)) continue;
@@ -22,10 +28,10 @@ if (!$cache_data) {
             '<span title="' . $projekt->popis . '">' . $projekt->nazev_projektu . '</span>',
             $projekt->rok_od,
             $projekt->rok_do,
-            \App\View\DPUTILS::currency($projekt->castka_naklady),
-            \App\View\DPUTILS::currency($projekt->castka_pozadovana),
-            \App\View\DPUTILS::currency($projekt->castka_pridelena),
-            \App\View\DPUTILS::currency($projekt->castka_vycerpana),
+            DPUTILS::currency($projekt->castka_naklady),
+            DPUTILS::currency($projekt->castka_pozadovana),
+            DPUTILS::currency($projekt->castka_pridelena),
+            DPUTILS::currency($projekt->castka_vycerpana),
             $projekt->stav,
             $projekt->nazev_programu,
             $projekt->nazev_oblasti,

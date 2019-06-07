@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Agregace příjemců dotací podle adresy');
-?>
+
+use App\View\AppView; ?>
 
 <table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>

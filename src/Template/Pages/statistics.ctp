@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+
 $this->set('title', 'Statistika Využití Databáze');
 ?>
 <div class="alert alert-info">

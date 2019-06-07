@@ -1,7 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 $this->set('title', 'Seznam příjemců dotace, podle času od vzniku IČO po poskytnutí dotace');
-?>
+
+use App\View\AppView; ?>
 <div class="alert alert-info">
     &#8226; Byly použity datové sady: CEDR-III (<?= $this->Html->link("http://cedropendata.mfcr.cz") ?>) a MFČR PAP
     (<?= $this->Html->link("http://www.statnipokladna.cz/cs/csuis/sprava-ciselniku") ?>)

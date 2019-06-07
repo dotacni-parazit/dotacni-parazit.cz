@@ -1,14 +1,28 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\Dotinfo;
+use App\Model\Entity\InvesticniPobidky;
+use App\Model\Entity\PrijemcePomoci;
+use App\Model\Entity\PRV;
+use App\Model\Entity\Rozhodnuti;
+use App\Model\Entity\StrukturalniFondy;
+use App\Model\Entity\StrukturalniFondy2020;
+use App\Model\Entity\Transaction;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
+use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\Number;
 
 
-/** @var \App\Model\Entity\PrijemcePomoci $prijemce */
+/** @var PrijemcePomoci $prijemce */
 /** @var string $ajax_type */
 
 $cache_key = 'detail_prijemce_pomoci_' . sha1($prijemce->idPrijemce) . '_' . $ajax_type;
-if (!isset($ajax_type)) throw new \Cake\Http\Exception\NotFoundException();
+if (!isset($ajax_type)) throw new NotFoundException();
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
@@ -19,13 +33,13 @@ if (!$cache_data) {
     switch ($ajax_type) {
         case "dotinfo":
 
-            /** @var \App\Model\Entity\Dotinfo[] $dotinfo */
+            /** @var Dotinfo[] $dotinfo */
             foreach ($dotinfo as $d) {
                 $data_arr[] = [
                     $d->ucastnikObchodniJmeno,
-                    \App\View\DPUTILS::ico($d->ucastnikIco),
+                    DPUTILS::ico($d->ucastnikIco),
                     '<span title="' . $d->ucelDotace . '">' . (empty($d->dotaceNazev) ? 'Neuvedeno' : $d->dotaceNazev) . '</span>',
-                    \App\View\DPUTILS::currency($d->castkaSchvalena),
+                    DPUTILS::currency($d->castkaSchvalena),
                     $this->Html->link('Otevřít', '/detail-dotinfo/' . $d->id) . '<br/>' .
                     $this->Html->link('Otevřít DotInfo.cz', 'https://www.dotinfo.cz/dotace/' . $d->dotinfoId)
                 ];
@@ -37,15 +51,15 @@ if (!$cache_data) {
 
         case "czechinvest":
 
-            /** @var \App\Model\Entity\InvesticniPobidky[] $investicniPobidky */
+            /** @var InvesticniPobidky[] $investicniPobidky */
             foreach ($investicniPobidky as $i) {
                 $data_arr[] = [
                     $i->sektor,
                     $i->druhInvesticniAkce,
                     $i->vytvorenaPracovniMista,
-                    \App\View\DPUTILS::currency($i->investiceCZK * 1000000),
+                    DPUTILS::currency($i->investiceCZK * 1000000),
                     Number::toPercentage($i->miraVerejnePodpory * 100),
-                    \App\View\DPUTILS::currency($i->stropVerejnePodpory * 1000000),
+                    DPUTILS::currency($i->stropVerejnePodpory * 1000000),
                     ($i->rozhodnutiDen == 0 ? "" : $i->rozhodnutiDen . " ") . $i->rozhodnutiMesic . " " . $i->rozhodnutiRok
                 ];
 
@@ -54,18 +68,18 @@ if (!$cache_data) {
             break;
         case "strukturalniFondy":
 
-            /** @var \App\Model\Entity\StrukturalniFondy[] $strukturalniFondy */
+            /** @var StrukturalniFondy[] $strukturalniFondy */
             foreach ($strukturalniFondy as $f) {
 
                 $data_arr[] = [
                     $f->cisloANazevProgramu,
                     $f->cisloProjektu,
                     $f->nazevProjektu,
-                    \App\View\DPUTILS::currency($f->celkoveZdroje),
-                    \App\View\DPUTILS::currency($f->verejneZdrojeCelkem),
-                    \App\View\DPUTILS::currency($f->euZdroje),
-                    \App\View\DPUTILS::currency($f->vyuctovaneVerejneCelkem),
-                    \App\View\DPUTILS::currency($f->proplaceneEuZdroje),
+                    DPUTILS::currency($f->celkoveZdroje),
+                    DPUTILS::currency($f->verejneZdrojeCelkem),
+                    DPUTILS::currency($f->euZdroje),
+                    DPUTILS::currency($f->vyuctovaneVerejneCelkem),
+                    DPUTILS::currency($f->proplaceneEuZdroje),
                     $f->kodNUTS . ' (' . $f->nazevNUTS . ')',
                     $this->Html->link('Detail', '/strukturalni-fondy-detail-dotace/' . $f->id)
                 ];
@@ -76,15 +90,15 @@ if (!$cache_data) {
 
         case "szif":
 
-            /** @var \App\Model\Entity\PRV[] $szif */
+            /** @var PRV[] $szif */
             foreach ($szif as $d) {
                 $data_arr[] = [
                     $d->jmeno,
-                    \App\View\DPUTILS::ico($d->ico),
+                    DPUTILS::ico($d->ico),
                     $d->rok,
-                    \App\View\DPUTILS::currency($d->czk_tuzemske),
-                    \App\View\DPUTILS::currency($d->czk_evropske),
-                    \App\View\DPUTILS::currency($d->czk_celkem),
+                    DPUTILS::currency($d->czk_tuzemske),
+                    DPUTILS::currency($d->czk_evropske),
+                    DPUTILS::currency($d->czk_celkem),
                     $d->opatreni,
                     $d->zdroj,
                     $d->okres . ', ' . $d->obec,
@@ -96,19 +110,19 @@ if (!$cache_data) {
             break;
 
         case "strukturalniFondy2020":
-            /** @var \App\Model\Entity\StrukturalniFondy2020[] $strukturalniFondy2020 */
+            /** @var StrukturalniFondy2020[] $strukturalniFondy2020 */
             foreach ($strukturalniFondy2020 as $f) {
                 $data_arr[] = [
                     $f->operacniProgram . ' ' . $f->cisloPrioritniOsy,
                     $f->registracniCisloProjektu,
                     $f->nazevProjektu,
-                    \App\View\DPUTILS::currency($f->celkoveZdroje),
-                    \App\View\DPUTILS::currency($f->schvaleneZdrojeVerejne),
-                    \App\View\DPUTILS::currency($f->schvaleneZdrojeEU),
-                    \App\View\DPUTILS::currency($f->vyuctovaneZdrojeVerejne),
-                    \App\View\DPUTILS::currency($f->vyuctovaneZdrojeSoukrome),
-                    \App\View\DPUTILS::currency($f->vyuctovaneZdrojeEU),
-                    \App\View\DPUTILS::currency($f->vyuctovaneZdroje),
+                    DPUTILS::currency($f->celkoveZdroje),
+                    DPUTILS::currency($f->schvaleneZdrojeVerejne),
+                    DPUTILS::currency($f->schvaleneZdrojeEU),
+                    DPUTILS::currency($f->vyuctovaneZdrojeVerejne),
+                    DPUTILS::currency($f->vyuctovaneZdrojeSoukrome),
+                    DPUTILS::currency($f->vyuctovaneZdrojeEU),
+                    DPUTILS::currency($f->vyuctovaneZdroje),
                     $f->kodNUTS . ' (' . $f->nazevNUTS . ')',
                     $this->Html->link('Detail', '/strukturalni-fondy-2014-2020-detail-dotace/' . $f->id)
                 ];
@@ -118,13 +132,13 @@ if (!$cache_data) {
             break;
         case "politickeDary":
 
-            /** @var \App\Model\Entity\Transaction[] $politickeDary */
+            /** @var Transaction[] $politickeDary */
             foreach ($politickeDary as $p) {
 
                 $data_arr[] = [
                     $this->Html->link($p->recipient->name, '/dary-politickym-stranam/detail/' . $p->recipient->id),
                     $p->year,
-                    \App\View\DPUTILS::currency($p->amount)
+                    DPUTILS::currency($p->amount)
                 ];
 
                 $total++;
@@ -132,14 +146,14 @@ if (!$cache_data) {
             break;
         case "dotace":
 
-            /** @var \App\Model\Entity\Rozhodnuti[] $dotace */
+            /** @var Rozhodnuti[] $dotace */
             foreach ($dotace as $d) {
-                $displayDotace = \App\View\DPUTILS::dotaceNazev($d->Dotace);
+                $displayDotace = DPUTILS::dotaceNazev($d->Dotace);
                 $data_arr[] = [
                     $this->Html->link($displayDotace, '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]),
-                    \App\View\DPUTILS::currency($d->castkaPozadovana),
-                    \App\View\DPUTILS::currency($d->castkaRozhodnuta),
-                    !empty($d->RozpoctoveObdobi) ? \App\View\DPUTILS::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
+                    DPUTILS::currency($d->castkaPozadovana),
+                    DPUTILS::currency($d->castkaRozhodnuta),
+                    !empty($d->RozpoctoveObdobi) ? DPUTILS::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
                     $d->rokRozhodnuti,
                     $d->CleneniFinancnichProstredku->financniProstredekCleneniNazev,
                     $d->FinancniZdroj->financniZdrojNazev,

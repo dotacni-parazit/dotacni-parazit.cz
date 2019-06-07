@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 
 //$cache_key = 'ajax_stat_dotace_' . sha1($stat->statKod3Znaky);
@@ -6,22 +9,25 @@
 
 //if (!$cache_data) {
 
+use App\Model\Entity\InvesticniPobidky;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $data_arr = [];
 $total = 0;
 
 
-/** @var \App\Model\Entity\InvesticniPobidky[] $pobidky */
+/** @var InvesticniPobidky[] $pobidky */
 foreach ($pobidky as $p) {
 
     $data_arr[] = [
         $this->Html->link($p->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $p->name]),
-        $this->Html->link(\App\View\DPUTILS::ico($p->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $p->ico]),
+        $this->Html->link(DPUTILS::ico($p->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $p->ico]),
         $p->sektor,
         $p->druhInvesticniAkce,
         $p->zemePuvodu,
-        \App\View\DPUTILS::currency($p->investiceCZK * 1000000, 'CZK'),
+        DPUTILS::currency($p->investiceCZK * 1000000, 'CZK'),
         $p->vytvorenaPracovniMista,
         Number::toPercentage($p->miraVerejnePodpory * 100),
         $p->okres . ", " . $p->kraj,

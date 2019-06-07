@@ -1,9 +1,13 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', $ukazatele[0]['statniRozpocetUkazatelNazev']);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView; ?>
 
 <div id="tabs">
     <ul>

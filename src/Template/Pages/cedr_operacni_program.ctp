@@ -1,12 +1,16 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
-/** @var \App\Model\Entity\CiselnikCedrOperacniProgramv01 $data */
+/** @var CiselnikCedrOperacniProgramv01 $data */
 $this->set('title', $data->operacaniProgramNazev);
 
-?>
+use App\Model\Entity\CiselnikCedrOperacniProgramv01;
+use App\View\AppView; ?>
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>

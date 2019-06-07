@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+use App\View\DPUTILS;
+
 $this->set('title', 'Dary Prezidentským Kandidátům');
 function prezident_array_sum($carry, $item)
 {
@@ -23,7 +30,7 @@ function prezident_array_sum($carry, $item)
     <?php foreach ($kandidati as $k) { ?>
         <tr>
             <td><?= $this->Html->link($k->name, '/kandidati-na-prezidenta/detail/' . $k->id) ?></td>
-            <td><?= \App\View\DPUTILS::currency(array_reduce($dary[$k->id], "prezident_array_sum")) ?></td>
+            <td><?= DPUTILS::currency(array_reduce($dary[$k->id], "prezident_array_sum")) ?></td>
             <td><?= $this->Html->link('Otevřít', '/kandidati-na-prezidenta/detail/' . $k->id) ?></td>
         </tr>
     <?php } ?>

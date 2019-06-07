@@ -1,8 +1,12 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 
 $this->set('title', $zdroj->financniZdrojNazev);
-?>
+
+use App\View\AppView; ?>
 <table id="datatable" data-ajax="/podle-zdroje-financi/<?= $zdroj->financniZdrojKod ?>/complete/ajax">
     <thead>
     <tr>

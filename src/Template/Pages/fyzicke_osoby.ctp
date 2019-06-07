@@ -1,5 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+
+use App\View\AppView;
 
 $this->set('title', 'Fyzické osoby Nepodnikatelé')
 ?>

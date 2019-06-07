@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\CiselnikDotacePoskytovatelv01;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -11,13 +17,13 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    /** @var \App\Model\Entity\CiselnikDotacePoskytovatelv01[] $data */
+    /** @var CiselnikDotacePoskytovatelv01[] $data */
     foreach ($data as $d) {
 
         $data_arr[] = [
             $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod),
-            \App\View\DPUTILS::currency($counts[$d->id]['soucet']),
-            \App\View\DPUTILS::currency($counts[$d->id]['soucetSpotrebovano'])
+            DPUTILS::currency($counts[$d->id]['soucet']),
+            DPUTILS::currency($counts[$d->id]['soucetSpotrebovano'])
         ];
 
         $total++;

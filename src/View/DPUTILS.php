@@ -11,7 +11,7 @@ class DPUTILS
 {
 
     /**
-     * @param number $value
+     * @param number|integer $value
      * @param null|string $currency
      * @param null|array $options
      * @return string formatted currency string
@@ -22,7 +22,7 @@ class DPUTILS
     }
 
     /**
-     * @param number $ico
+     * @param number|integer $ico
      * @return string formatted ico string
      */
     public static function ico($ico)

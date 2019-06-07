@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\CiselnikCedrOperacniProgramv01;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', 'CEDR III - Ostatní Programy');
@@ -17,7 +23,7 @@ $this->set('title', 'CEDR III - Ostatní Programy');
     </thead>
     <tbody>
     <?php
-    /** @var \App\Model\Entity\CiselnikCedrOperacniProgramv01[] $cedr */
+    /** @var CiselnikCedrOperacniProgramv01[] $cedr */
     foreach ($cedr as $c) {
         ?>
         <tr>
@@ -26,7 +32,7 @@ $this->set('title', 'CEDR III - Ostatní Programy');
             <td><?= $c->operacaniProgramCislo ?></td>
             <td><?= $counts[$c->idOperacniProgram] ?></td>
             <td><?= $c->zaznamPlatnostDoDatum->year ?></td>
-            <td><?= \App\View\DPUTILS::currency(isset($sums[$c->idOperacniProgram]) ? $sums[$c->idOperacniProgram] : 0) ?></td>
+            <td><?= DPUTILS::currency(isset($sums[$c->idOperacniProgram]) ? $sums[$c->idOperacniProgram] : 0) ?></td>
         </tr>
         <?php
     }

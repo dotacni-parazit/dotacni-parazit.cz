@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Účel Dotačních Titulů');
-?>
+
+use App\View\AppView; ?>
 <div>
     Filtrovat: <span id="yearsfilter">
             <a href="javascript:filterYear('')"> "Zobrazit vše"</a>

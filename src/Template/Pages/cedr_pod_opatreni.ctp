@@ -1,10 +1,15 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
 $this->set('title', $data->podOpatreniNazev);
-?>
+
+use App\View\AppView;
+use App\View\DPUTILS; ?>
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
@@ -83,7 +88,7 @@ $this->set('title', $data->podOpatreniNazev);
                     <td><?= $this->Html->link($d->projektNazev, '/detail-dotace/' . $d->idDotace) ?></td>
                     <td><?= $this->Html->link($d->projektKod, '/detail-dotace/' . $d->idDotace) ?></td>
                     <td><?= $this->Html->link($d->projektIdnetifikator, '/detail-dotace/' . $d->idDotace) ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce) ?></td>
+                    <td><?= $this->Html->link(DPUTILS::jmenoPrijemcePomoci($d->PrijemcePomoci), '/detail-prijemce-pomoci/' . $d->PrijemcePomoci->idPrijemce) ?></td>
                 </tr>
             <?php } ?>
             </tbody>

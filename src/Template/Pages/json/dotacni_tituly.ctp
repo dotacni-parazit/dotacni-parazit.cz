@@ -1,9 +1,15 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\Model\Entity\CiselnikDotaceTitulv01;
+use App\View\AppView;
 
 $data_arr = [];
 $total = 0;
 
-/** @var \App\Model\Entity\CiselnikDotaceTitulv01[] $data */
+/** @var CiselnikDotaceTitulv01[] $data */
 foreach ($data as $d) {
 
     $data_arr[] = [

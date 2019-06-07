@@ -1,7 +1,13 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
-/** @var \App\Model\Entity\InvesticniPobidky $data */
+/** @var InvesticniPobidky $data */
 
+use App\Model\Entity\InvesticniPobidky;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', $data->name);
@@ -23,7 +29,7 @@ $this->set('title', $data->name);
 
     <tr>
         <td>IČO Příjemce</td>
-        <td><?= \App\View\DPUTILS::ico($data->ico) ?></td>
+        <td><?= DPUTILS::ico($data->ico) ?></td>
     </tr>
 
     <tr>

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $i = $ico[0];
 $this->set('title', $i['jmeno']);
 
@@ -12,7 +15,8 @@ $soucet_tuzemske = 0;
 $soucet_eu = 0;
 $soucet_celkem = 0;
 
-?>
+use App\View\AppView;
+use App\View\DPUTILS; ?>
 
 <div id="tabs">
     <ul>
@@ -54,9 +58,9 @@ $soucet_celkem = 0;
                     <td><?= $this->Html->link($i['okres'], '/program-rozvoje-venkova/okres/?name=' . urlencode($i['okres'])) ?></td>
                     <td><?= $this->Html->link($i['zdroj'], '/program-rozvoje-venkova/zdroj/?name=' . urlencode($i['zdroj'])) ?></td>
                     <td><?= $this->Html->link($i['opatreni'], '/program-rozvoje-venkova/opatreni/?name=' . urlencode($i['opatreni'])) ?></td>
-                    <td><?= \App\View\DPUTILS::currency($i['czk_celkem']) ?></td>
-                    <td><?= \App\View\DPUTILS::currency($i['czk_tuzemske']) ?></td>
-                    <td><?= \App\View\DPUTILS::currency($i['czk_evropske']) ?></td>
+                    <td><?= DPUTILS::currency($i['czk_celkem']) ?></td>
+                    <td><?= DPUTILS::currency($i['czk_tuzemske']) ?></td>
+                    <td><?= DPUTILS::currency($i['czk_evropske']) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -107,17 +111,17 @@ $soucet_celkem = 0;
 
             <tr>
                 <td>Součet přijmuté pomoci (tuzemské fondy)</td>
-                <td><?= \App\View\DPUTILS::currency($soucet_tuzemske) ?></td>
+                <td><?= DPUTILS::currency($soucet_tuzemske) ?></td>
             </tr>
 
             <tr>
                 <td>Součet přijmuté pomoci (EU fondy)</td>
-                <td><?= \App\View\DPUTILS::currency($soucet_eu) ?></td>
+                <td><?= DPUTILS::currency($soucet_eu) ?></td>
             </tr>
 
             <tr>
                 <td>Součet přijmuté pomoci (celkem)</td>
-                <td><?= \App\View\DPUTILS::currency($soucet_celkem) ?></td>
+                <td><?= DPUTILS::currency($soucet_celkem) ?></td>
             </tr>
 
             <tr>

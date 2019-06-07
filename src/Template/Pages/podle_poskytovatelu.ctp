@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView; ?>
 <table id="datatable" class="datatable_simple" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>

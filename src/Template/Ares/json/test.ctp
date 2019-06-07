@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\AresFO;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 $cache_key = 'ares_fo_index';
@@ -9,7 +15,7 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    /** @var \App\Model\Entity\AresFO[] $osoby */
+    /** @var AresFO[] $osoby */
     foreach ($osoby as $o) {
 
 
@@ -21,8 +27,8 @@ if (!$cache_data) {
             $o->prijmeni,
             $o->datum_narozeni->nice(),
             $o->ico_count,
-            \App\View\DPUTILS::currency(Cache::read($cache_tag_fo_sum_rozhodnuti, 'long_term')),
-            \App\View\DPUTILS::currency(Cache::read($cache_tag_fo_sum_spotrebovano, 'long_term'))
+            DPUTILS::currency(Cache::read($cache_tag_fo_sum_rozhodnuti, 'long_term')),
+            DPUTILS::currency(Cache::read($cache_tag_fo_sum_spotrebovano, 'long_term'))
         ];
 
         $total++;

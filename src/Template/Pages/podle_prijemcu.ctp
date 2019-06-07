@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+use App\View\DPUTILS;
+
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
 $this->set('title', 'Příjemci dotací');
@@ -48,7 +55,7 @@ $this->set('title', 'Příjemci dotací');
                 foreach ($zvlastni_ico as $ic) {
                     ?>
                     <li>
-                        <a href="?ico=<?= \App\View\DPUTILS::ico($ic->ico) ?>">IČO: <?= \App\View\DPUTILS::ico($ic->ico) . ' (' . $ic->obchodniJmeno . ')' ?></a>
+                        <a href="?ico=<?= DPUTILS::ico($ic->ico) ?>">IČO: <?= DPUTILS::ico($ic->ico) . ' (' . $ic->obchodniJmeno . ')' ?></a>
                     </li>
                     <?php
                 }
@@ -76,7 +83,7 @@ if (!empty($prijemci)) {
         <?php
         foreach ($prijemci as $p) {
             echo '<tr>';
-            echo '<td>' . $this->Html->link(\App\View\DPUTILS::ico($p->ico), '/detail-prijemce-pomoci/' . $p->idPrijemce) . '</td>';
+            echo '<td>' . $this->Html->link(DPUTILS::ico($p->ico), '/detail-prijemce-pomoci/' . $p->idPrijemce) . '</td>';
             echo '<td>' . $this->Html->link($p->obchodniJmeno, '/detail-prijemce-pomoci/' . $p->idPrijemce) . '</td>';
             echo '<td>' . $this->Html->link($p->jmeno, '/detail-prijemce-pomoci/' . $p->idPrijemce) . '</td>';
             echo '<td>' . $this->Html->link($p->prijmeni, '/detail-prijemce-pomoci/' . $p->idPrijemce) . '</td>';

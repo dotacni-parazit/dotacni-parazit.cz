@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Investiční Pobídky - CzechInvest');
-?>
+
+use App\View\AppView; ?>
 
 <table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>

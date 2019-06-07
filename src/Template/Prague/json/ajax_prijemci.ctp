@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\GrantyPrahaZadatel;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -12,7 +18,7 @@ if (!$cache_data) {
     $total = 0;
 
     /** @var array $soucty */
-    /** @var \App\Model\Entity\GrantyPrahaZadatel[] $prijemci */
+    /** @var GrantyPrahaZadatel[] $prijemci */
     foreach ($prijemci as $p) {
 
         $data_arr[] = [
@@ -20,8 +26,8 @@ if (!$cache_data) {
             $p->ic,
             $p->pravni_forma,
             $soucty[$p->id_zadatel]['pocet_projektu'],
-            \App\View\DPUTILS::currency($soucty[$p->id_zadatel]['prideleno']),
-            \App\View\DPUTILS::currency($soucty[$p->id_zadatel]['vycerpano'])
+            DPUTILS::currency($soucty[$p->id_zadatel]['prideleno']),
+            DPUTILS::currency($soucty[$p->id_zadatel]['vycerpano'])
         ];
 
         $total++;

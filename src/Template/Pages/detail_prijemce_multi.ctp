@@ -1,9 +1,14 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Vícero Příjemců dle IČO');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView;
+use App\View\DPUTILS; ?>
 
 <div id="tabs">
     <ul>
@@ -13,7 +18,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     </ul>
     <div id="obecne">
         <?php foreach ($info as $i) { ?>
-            <h2>IČO: <?= \App\View\DPUTILS::ico($i->ico) ?></h2>
+            <h2>IČO: <?= DPUTILS::ico($i->ico) ?></h2>
             <table class="datatable datatable_simple">
                 <thead>
                 <tr>
@@ -34,7 +39,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
                 <tr>
                     <td>IČO</td>
-                    <td><?= \App\View\DPUTILS::ico($i->ico) ?></td>
+                    <td><?= DPUTILS::ico($i->ico) ?></td>
                 </tr>
 
                 <tr>

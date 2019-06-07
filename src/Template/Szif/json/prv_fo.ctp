@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+use App\View\DPUTILS;
 
 $data_arr = [];
 $total = 0;
@@ -8,7 +14,7 @@ foreach ($data as $d) {
         $d->jmeno,
         $this->Html->link($d->okres, '/program-rozvoje-venkova/okres/?name=' . urlencode($d->okres)),
         $d->count,
-        \App\View\DPUTILS::currency($d->sum),
+        DPUTILS::currency($d->sum),
         $this->Html->link('Otevřít', '/program-rozvoje-venkova/detail/' . $d->id)
     ];
     $total++;

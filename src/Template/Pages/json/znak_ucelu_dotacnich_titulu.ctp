@@ -1,5 +1,9 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\View\AppView;
 use Cake\Cache\Cache;
 
 

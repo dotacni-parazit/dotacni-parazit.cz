@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\Budova;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 $cache_key = 'hackujstat_budovy_index';
@@ -9,7 +15,7 @@ if (!$cache_data) {
     $data_arr = [];
     $total = 0;
 
-    /** @var \App\Model\Entity\Budova[] $budovy */
+    /** @var Budova[] $budovy */
     foreach ($budovy as $o) {
 
         $data_arr[] = [
@@ -17,8 +23,8 @@ if (!$cache_data) {
             $o->psc,
             $o->pocetPrijemcu,
             $o->pocetDotaci,
-            \App\View\DPUTILS::currency($o->castkaRozhodnuta),
-            \App\View\DPUTILS::currency($o->castkaPozadovanaSum)
+            DPUTILS::currency($o->castkaRozhodnuta),
+            DPUTILS::currency($o->castkaPozadovanaSum)
         ];
 
         $total++;

@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+use App\View\DPUTILS;
+
+?>
 <table class="datatable datatable_simple">
     <thead>
     <tr>
@@ -10,7 +19,7 @@
     <?php foreach ($holdingy as $h) { ?>
         <tr>
             <td><?= $this->Html->link($h->owner[0]->name, '/konsolidace-holdingy/detail-vlastnik/' . $h->owner[0]->id) ?></td>
-            <td><?= $this->Html->link($h->name . (empty($h->ico) ? '' : " (" . \App\View\DPUTILS::ico($h->ico) . ")"), '/konsolidace-holdingy/detail/' . $h->id) ?></td>
+            <td><?= $this->Html->link($h->name . (empty($h->ico) ? '' : " (" . DPUTILS::ico($h->ico) . ")"), '/konsolidace-holdingy/detail/' . $h->id) ?></td>
             <td><?= $this->Html->link('Otevřít', '/konsolidace-holdingy/detail/' . $h->id) ?></td>
         </tr>
     <?php } ?>

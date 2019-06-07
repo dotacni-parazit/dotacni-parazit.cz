@@ -1,12 +1,20 @@
 <?php
-/** @var \App\Model\Entity\Owner[] $owners */
+/**
+ * @var AppView $this
+ */
+/** @var Owner[] $owners */
 /** @var array $subsidiaries_sums */
 
-/** @var \App\Model\Entity\Consolidation[] $subsidiaries */
+/** @var Consolidation[] $subsidiaries */
 
+use App\Model\Entity\Company;
+use App\Model\Entity\Consolidation;
+use App\Model\Entity\Owner;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
-/** @var \App\Model\Entity\Company $holding */
+/** @var Company $holding */
 $this->set('title', $holding->name);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
@@ -42,7 +50,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
             <tr>
                 <td>IČ</td>
-                <td><?= \App\View\DPUTILS::ico($holding->ico) ?></td>
+                <td><?= DPUTILS::ico($holding->ico) ?></td>
             </tr>
 
             <tr>
@@ -140,7 +148,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php foreach ($subsidiaries as $s) { ?>
                 <tr>
                     <td><?= $this->Html->link($s->subsidiary->name, ['controller' => 'Pages', 'action' => 'prijemceDotaciJmeno', 'name' => $s->subsidiary->name]) ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::ico($s->subsidiary->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $s->subsidiary->ico]) ?></td>
+                    <td><?= $this->Html->link(DPUTILS::ico($s->subsidiary->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $s->subsidiary->ico]) ?></td>
                     <td><?= $s->year ?></td>
                     <td><?= Number::toPercentage($s->shares_percent) ?></td>
                     <td><?= $s->subsidiary->state->name ?></td>

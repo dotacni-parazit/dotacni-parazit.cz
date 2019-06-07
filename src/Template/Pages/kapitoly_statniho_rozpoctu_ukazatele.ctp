@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Ukazatele Kapitol Státního Rozpočtu');
-?>
+
+use App\View\AppView; ?>
 <div>
     Filtrovat: <span id="yearsfilter">
             <a href="javascript:filterYear('')"> "Zobrazit vše"</a>

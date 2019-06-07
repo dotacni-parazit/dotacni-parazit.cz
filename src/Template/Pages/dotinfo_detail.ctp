@@ -1,6 +1,12 @@
 <?php
-/** @var \App\Model\Entity\Dotinfo $data */
+/**
+ * @var AppView $this
+ */
+/** @var Dotinfo $data */
 
+use App\Model\Entity\Dotinfo;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', empty($data->dotaceNazev) ? (empty($data->idDotace) ? '' : $data->idDotace) : $data->dotaceNazev);
@@ -30,11 +36,11 @@ $this->set('title', empty($data->dotaceNazev) ? (empty($data->idDotace) ? '' : $
     </tr>
     <tr>
         <td>IČO Příjemce Pomoci</td>
-        <td><?= \App\View\DPUTILS::ico($data->ucastnikIco) ?></td>
+        <td><?= DPUTILS::ico($data->ucastnikIco) ?></td>
     </tr>
     <tr>
         <td>IČO Poskytovatele Pomoci</td>
-        <td><?= \App\View\DPUTILS::ico($data->poskytovatelIco) ?></td>
+        <td><?= DPUTILS::ico($data->poskytovatelIco) ?></td>
     </tr>
     <tr>
         <td>Poskytovatel Pomoci</td>

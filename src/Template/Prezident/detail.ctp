@@ -1,6 +1,13 @@
 <?php
-/** @var \App\Model\Entity\Company $kandidat */
+/**
+ * @var AppView $this
+ */
+/** @var Company $kandidat */
 
+use App\Model\Entity\Company;
+use App\Model\Entity\Transaction;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', $kandidat->name);
@@ -31,7 +38,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                     <td><?= $t['donor']['name'] ?></td>
                     <td><?= $t['donor']['ico'] ?></td>
                     <td><?= $t['donor']['transparency_label']['label'] ?></td>
-                    <td><?= \App\View\DPUTILS::currency($t['amount']) ?></td>
+                    <td><?= DPUTILS::currency($t['amount']) ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -82,10 +89,10 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </thead>
             <tbody>
             <?php foreach ($donors as $d) { ?>
-                <?php /** @var \App\Model\Entity\Transaction $d */ ?>
+                <?php /** @var Transaction $d */ ?>
                 <tr>
                     <td><?= $d->donor->name ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::ico($d->donor->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $d->donor->ico]) ?></td>
+                    <td><?= $this->Html->link(DPUTILS::ico($d->donor->ico), ['controller' => 'Pages', 'action' => 'prijemceDotaciIco', 'ico' => $d->donor->ico]) ?></td>
                     <td><?= $d->year ?></td>
                     <td><?= $d->donor->transparency_label->label ?></td>
                     <td><?= Number::currency($sum_donors[$d->donor->ico][$d->year][0]) ?></td>

@@ -1,5 +1,14 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\CiselnikDotacePoskytovatelv01;
+use App\Model\Entity\CiselnikDotaceTitulv01;
+use App\Model\Entity\CiselnikFinancniZdrojv01;
+use App\Model\Entity\Dotinfo;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 /** @var string $ajax_type */
@@ -16,31 +25,31 @@ if (!$cache_data) {
         switch ($ajax_type) {
             case 'dotacni-urady':
 
-                /** @var \App\Model\Entity\CiselnikDotacePoskytovatelv01 $d */
+                /** @var CiselnikDotacePoskytovatelv01 $d */
 
                 $data_arr[] = [
                     $this->Html->link($d->dotacePoskytovatelNazev, '/podle-poskytovatelu/' . $d->dotacePoskytovatelKod),
-                    \App\View\DPUTILS::currency($counts[$d->id]['soucet']),
-                    \App\View\DPUTILS::currency($counts[$d->id]['soucetSpotrebovano'])
+                    DPUTILS::currency($counts[$d->id]['soucet']),
+                    DPUTILS::currency($counts[$d->id]['soucetSpotrebovano'])
                 ];
 
                 break;
 
             case 'zdroje-financovani':
 
-                /** @var \App\Model\Entity\CiselnikFinancniZdrojv01 $d */
+                /** @var CiselnikFinancniZdrojv01 $d */
 
                 $data_arr[] = [
                     $this->Html->link($d->financniZdrojNazev, '/podle-zdroje-financi/' . $d->financniZdrojKod),
-                    \App\View\DPUTILS::currency($counts[$d->financniZdrojKod]['SUM']),
-                    \App\View\DPUTILS::currency($counts[$d->financniZdrojKod]['SUM2'])
+                    DPUTILS::currency($counts[$d->financniZdrojKod]['SUM']),
+                    DPUTILS::currency($counts[$d->financniZdrojKod]['SUM2'])
                 ];
 
                 break;
 
             case 'dotacni-tituly':
 
-                /** @var \App\Model\Entity\CiselnikDotaceTitulv01 $d */
+                /** @var CiselnikDotaceTitulv01 $d */
 
                 $data_arr[] = [
                     $this->Html->link($d->dotaceTitulNazev, '/detail-dotacni-titul/' . $d->dotaceTitulKod),
@@ -52,13 +61,13 @@ if (!$cache_data) {
 
             case 'dotinfo':
 
-                /** @var \App\Model\Entity\Dotinfo $d */
+                /** @var Dotinfo $d */
                 /** @var array|mixed $sums */
 
                 $data_arr[] = [
                     $this->Html->link($d->poskytovatelNazev, '/dotinfo/poskytovatel/' . $d->poskytovatelIco),
                     $d->poskytovatelIco,
-                    \App\View\DPUTILS::currency($sums[$d->poskytovatelIco]['sumSchvaleno']),
+                    DPUTILS::currency($sums[$d->poskytovatelIco]['sumSchvaleno']),
                     $sums[$d->poskytovatelIco]['count']
                 ];
 

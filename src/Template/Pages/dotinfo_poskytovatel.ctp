@@ -1,7 +1,12 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
-/** @var \App\Model\Entity\Dotinfo $poskytovatel */
+/** @var Dotinfo $poskytovatel */
 
+use App\Model\Entity\Dotinfo;
+use App\View\AppView;
 use Cake\I18n\Number;
 
 $this->set('title', $poskytovatel->poskytovatelNazev);

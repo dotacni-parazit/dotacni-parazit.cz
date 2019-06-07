@@ -1,11 +1,18 @@
 <?php
-/** @var \App\Model\Entity\Company $company */
+/**
+ * @var AppView $this
+ * @var Company $company
+ */
 
 $this->set('title', $company->name);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\Model\Entity\Audit;
+use App\Model\Entity\Company;
+use App\View\AppView;
+use App\View\DPUTILS; ?>
 
 <div id="tabs">
     <ul>
@@ -55,7 +62,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 Příjemce pomoci je také evidován v CEDR pod těmito aliasy (dle IČO): <br/>
                 <?php
                 foreach ($aliases as $p) { ?>
-                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . \App\View\DPUTILS::jmenoPrijemcePomoci($p), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
+                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . DPUTILS::jmenoPrijemcePomoci($p), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
                     <br/>
                 <?php } ?>
             </div>
@@ -71,7 +78,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             </tr>
             </thead>
             <tbody>
-            <?php /** @var \App\Model\Entity\Audit[] $audits */
+            <?php /** @var Audit[] $audits */
             foreach ($audits as $c) { ?>
                 <tr>
                     <td><?= $c->year ?></td>

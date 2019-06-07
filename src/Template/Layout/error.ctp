@@ -11,8 +11,10 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @since         0.10.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @var AppView $this
  */
-?>
+
+use App\View\AppView; ?>
 <!DOCTYPE html>
 <html>
 <head>

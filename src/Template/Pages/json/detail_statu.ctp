@@ -1,5 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -20,10 +25,10 @@ if (!$cache_data) {
 
         $data_arr[] = [
             $this->Html->link('[R]', '/detail-rozhodnuti/' . $b->idRozhodnuti),
-            $this->Html->link(\App\View\DPUTILS::dotaceNazev($b->Dotace), '/detail-dotace/' . $b->Dotace->idDotace),
+            $this->Html->link(DPUTILS::dotaceNazev($b->Dotace), '/detail-dotace/' . $b->Dotace->idDotace),
             $this->Html->link($b->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $b->Dotace->idPrijemce),
-            \App\View\DPUTILS::currency($b->castkaRozhodnuta),
-            isset($b->RozpoctoveObdobi->castkaSpotrebovana) ? \App\View\DPUTILS::currency($b->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
+            DPUTILS::currency($b->castkaRozhodnuta),
+            isset($b->RozpoctoveObdobi->castkaSpotrebovana) ? DPUTILS::currency($b->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A',
             isset($b->RozpoctoveObdobi->rozpoctoveObdobi) ? $b->RozpoctoveObdobi->rozpoctoveObdobi : 'N/A'
         ];
 

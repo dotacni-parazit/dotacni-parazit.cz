@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 
+use App\View\AppView;
 use Cake\I18n\Number;
 
 $this->set('title', 'Detail - Rozpočtové Období')

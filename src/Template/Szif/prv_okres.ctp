@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+use App\View\DPUTILS;
+
+?>
 <table class="datatable">
     <thead>
     <tr>
@@ -14,9 +23,9 @@
         <tr>
             <td><?= $this->Html->link($o->obec, '/program-rozvoje-venkova/obec/?name=' . urlencode($o->obec) . '&okres=' . urlencode($o->okres)) ?></td>
             <td><?= $o->count ?></td>
-            <td><?= \App\View\DPUTILS::currency($o->sum_celkem) ?></td>
-            <td><?= \App\View\DPUTILS::currency($o->sum_tuzemske) ?></td>
-            <td><?= \App\View\DPUTILS::currency($o->sum_evropske) ?></td>
+            <td><?= DPUTILS::currency($o->sum_celkem) ?></td>
+            <td><?= DPUTILS::currency($o->sum_tuzemske) ?></td>
+            <td><?= DPUTILS::currency($o->sum_evropske) ?></td>
             <td><?= $this->Html->link('Otevřít', '/program-rozvoje-venkova/obec/?okres=' . urlencode($o->okres) . '&name=' . urlencode($o->obec)) ?></td>
         </tr>
     <?php } ?>

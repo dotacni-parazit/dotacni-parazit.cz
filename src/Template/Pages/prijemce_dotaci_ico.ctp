@@ -1,9 +1,14 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Podle IČO');
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView;
+use App\View\DPUTILS; ?>
 <div class="alert alert-info">
     Všechny právnické osoby a fyzické osoby podnikající evidované v CEDR III, Dotinfo, přehledu investičních pobídek, na
     strukturální-fondy.cz a přehledu dárců politických stran jako příjemci dotací.
@@ -16,7 +21,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="search">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->control('ico', ['label' => 'IČO (pouze čísla) ', 'value' => \App\View\DPUTILS::ico($ico)]);
+        echo $this->Form->control('ico', ['label' => 'IČO (pouze čísla) ', 'value' => DPUTILS::ico($ico)]);
         echo $this->Form->submit('Hledat!');
         echo $this->Form->end();
         ?>
@@ -24,7 +29,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
     <div id="multiple">
         <?php
         echo $this->Form->create(null, ['type' => 'get']);
-        echo $this->Form->control('multiple', ['label' => 'Jedno a více IČO (oddělené mezerou nebo čárkou) ', 'value' => \App\View\DPUTILS::ico($ico)]);
+        echo $this->Form->control('multiple', ['label' => 'Jedno a více IČO (oddělené mezerou nebo čárkou) ', 'value' => DPUTILS::ico($ico)]);
         echo $this->Form->submit('Zobrazit!');
         echo $this->Form->end();
         ?>

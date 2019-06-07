@@ -1,5 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -22,8 +27,8 @@ if (!$cache_data) {
             $o->rokNarozeni,
             !empty($o->AdresaBydliste) ? $o->AdresaBydliste->obecNazev : '',
             $o->Stat->statNazev,
-            \App\View\DPUTILS::currency(Cache::read($cache_tag_sum_rozhodnuti, 'long_term') + 0),
-            \App\View\DPUTILS::currency(Cache::read($cache_tag_sum_spotrebovano, 'long_term') + 0),
+            DPUTILS::currency(Cache::read($cache_tag_sum_rozhodnuti, 'long_term') + 0),
+            DPUTILS::currency(Cache::read($cache_tag_sum_spotrebovano, 'long_term') + 0),
             $this->Html->link('Otevřít', '/detail-prijemce-pomoci/' . $o->idPrijemce)
         ];
         $total++;

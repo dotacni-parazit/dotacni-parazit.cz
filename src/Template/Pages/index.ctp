@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+
+?>
 <?php $this->set('title', 'Dotační Parazit'); ?>
 
 <form action="/">

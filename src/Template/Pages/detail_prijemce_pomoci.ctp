@@ -1,12 +1,18 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
-/** @var \App\Model\Entity\PrijemcePomoci $prijemce */
+/** @var PrijemcePomoci $prijemce */
 
+use App\Model\Entity\PrijemcePomoci;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Routing\Router;
 
-/** @var \App\Model\Entity\PrijemcePomoci $prijemci */
+/** @var PrijemcePomoci $prijemci */
 
-$this->set('title', \App\View\DPUTILS::jmenoPrijemcePomoci($prijemce));
+$this->set('title', DPUTILS::jmenoPrijemcePomoci($prijemce));
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
@@ -58,7 +64,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php if ($prijemce->ico != 0) { ?>
                 <tr>
                     <td>IČ (IČO)</td>
-                    <td><?= $prijemce->ico == 0 ? "N/A" : \App\View\DPUTILS::ico($prijemce->ico) ?></td>
+                    <td><?= $prijemce->ico == 0 ? "N/A" : DPUTILS::ico($prijemce->ico) ?></td>
                 </tr>
             <?php } ?>
 
@@ -158,9 +164,9 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <div id="prijemce_aliasy">
                 Příjemce pomoci je také evidován pod těmito odkazy: <br/>
                 <?php
-                /** @var \App\Model\Entity\PrijemcePomoci[] $prijemci */
+                /** @var PrijemcePomoci[] $prijemci */
                 foreach ($prijemci as $p) { ?>
-                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . \App\View\DPUTILS::jmenoPrijemcePomoci($p), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
+                    <?= $this->Html->link('( ' . str_pad($p->idPrijemce, 44, " ") . ' ) ' . DPUTILS::jmenoPrijemcePomoci($p), '/detail-prijemce-pomoci/' . $p->idPrijemce, ['escape' => false]) ?>
                     <br/>
                 <?php } ?>
             </div>

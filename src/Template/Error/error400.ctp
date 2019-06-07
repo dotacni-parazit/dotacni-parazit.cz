@@ -1,5 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 //$this->layout = false;
+use App\View\AppView;
+
 $this->set('title', 'Page Not Found');
 ?>
 <div style="width: 100%; height: 100%; align-items: center;">

@@ -1,5 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', 'DotInfo.cz');
@@ -28,7 +33,7 @@ $this->set('title', 'DotInfo.cz');
     <?php foreach ($poskytovatele as $p) { ?>
         <tr>
             <td><?= $p['poskytovatelNazev'] ?></td>
-            <td><?= \App\View\DPUTILS::ico($p['poskytovatelIco']) ?></td>
+            <td><?= DPUTILS::ico($p['poskytovatelIco']) ?></td>
             <td><?= Number::currency($sums[$p['poskytovatelIco']]['sumSchvaleno']) ?></td>
             <td><?= $sums[$p['poskytovatelIco']]['count'] ?></td>
             <td><?= $this->Html->link('Detail Poskytovatele', '/dotinfo/poskytovatel/' . $p['poskytovatelIco']) ?></td>

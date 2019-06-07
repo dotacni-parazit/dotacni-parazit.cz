@@ -1,10 +1,14 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
 $this->set('title', $stat->statNazevZkraceny);
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);
-?>
+
+use App\View\AppView; ?>
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>

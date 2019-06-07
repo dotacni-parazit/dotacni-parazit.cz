@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'Odhalování spol. fyzických osob u příjemců dotací');
-?>
+
+use App\View\AppView; ?>
 
 <table class="datatable" style="width: 100%;" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>

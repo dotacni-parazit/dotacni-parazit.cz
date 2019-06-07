@@ -1,5 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', $poskytovatel->dotacePoskytovatelNazev);
@@ -71,7 +76,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
             <?php foreach ($poskytovatel_biggest as $d) { ?>
                 <tr>
                     <td><?= $this->Html->link($d->Dotace->PrijemcePomoci->obchodniJmeno, '/detail-prijemce-pomoci/' . $d->Dotace->PrijemcePomoci->idPrijemce) ?></td>
-                    <td><?= $this->Html->link(\App\View\DPUTILS::dotaceNazev($d->Dotace), '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
+                    <td><?= $this->Html->link(DPUTILS::dotaceNazev($d->Dotace), '/detail-dotace/' . $d->Dotace->idDotace, ['escape' => false]) ?></td>
                     <td style="text-align: right"><?= Number::currency($d->castkaRozhodnuta) ?></td>
                     <td style="text-align: right"><?= !empty($d->RozpoctoveObdobi) ? Number::currency($d->RozpoctoveObdobi->castkaSpotrebovana) : 'N/A' ?></td>
                     <td><?= $d->rokRozhodnuti ?></td>

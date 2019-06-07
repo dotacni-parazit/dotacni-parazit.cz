@@ -1,6 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
 $this->set('title', 'CEDR III - Dotační Tituly');
-?>
+
+use App\View\AppView; ?>
 
 <table id="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>

@@ -1,5 +1,12 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\StrukturalniFondy;
+use App\Model\Entity\StrukturalniFondy2020;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 
@@ -16,39 +23,39 @@ if (!$cache_data) {
         switch ($ajax_type) {
             case "strukturalniFondy":
 
-                /** @var \App\Model\Entity\StrukturalniFondy $d */
+                /** @var StrukturalniFondy $d */
                 $data_arr[] = [
                     $this->Html->link('<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>', '/strukturalni-fondy-detail-dotace/' . $d->id, ['escape' => false]),
                     '<span title="' . $d->popisProjektu . '">' . $d->cisloProjektu . '</span>',
-                    $d->zadatel . ' (' . \App\View\DPUTILS::ico($d->zadatelIcoNum) . ')',
+                    $d->zadatel . ' (' . DPUTILS::ico($d->zadatelIcoNum) . ')',
                     $d->cisloPrioritniOsy,
-                    \App\View\DPUTILS::currency($d->celkoveZdroje),
-                    \App\View\DPUTILS::currency($d->verejneZdrojeCelkem),
-                    \App\View\DPUTILS::currency($d->euZdroje),
-                    \App\View\DPUTILS::currency($d->vyuctovaneVerejneCelkem),
-                    \App\View\DPUTILS::currency($d->proplaceneEuZdroje),
-                    \App\View\DPUTILS::currency($d->certifikovaneVerejneCelkem),
-                    \App\View\DPUTILS::currency($d->certifikovaneEUZdoje)
+                    DPUTILS::currency($d->celkoveZdroje),
+                    DPUTILS::currency($d->verejneZdrojeCelkem),
+                    DPUTILS::currency($d->euZdroje),
+                    DPUTILS::currency($d->vyuctovaneVerejneCelkem),
+                    DPUTILS::currency($d->proplaceneEuZdroje),
+                    DPUTILS::currency($d->certifikovaneVerejneCelkem),
+                    DPUTILS::currency($d->certifikovaneEUZdoje)
                 ];
 
                 break;
             case "strukturalniFondy2020":
 
-                /** @var \App\Model\Entity\StrukturalniFondy2020 $d */
+                /** @var StrukturalniFondy2020 $d */
 
                 $data_arr[] = [
                     $this->Html->link('<span title="' . $d->popisProjektu . '">' . $d->nazevProjektu . '</span>', '/strukturalni-fondy-2014-2020-detail-dotace/' . $d->id, ['escape' => false]),
                     '<span title="' . $d->popisProjektu . '">' . $d->registracniCisloProjektu . '</span>',
-                    $d->zadatel . ' (' . \App\View\DPUTILS::ico($d->zadatelIco) . ')',
+                    $d->zadatel . ' (' . DPUTILS::ico($d->zadatelIco) . ')',
                     explode(" ", $d->cisloPrioritniOsy)[0],
-                    \App\View\DPUTILS::currency($d->celkoveZdroje),
-                    \App\View\DPUTILS::currency($d->schvaleneZdrojeVerejne),
-                    \App\View\DPUTILS::currency($d->schvaleneZdrojeEU),
-                    \App\View\DPUTILS::currency($d->schvaleneZdrojeSoukrome),
-                    \App\View\DPUTILS::currency($d->vyuctovaneZdroje),
-                    \App\View\DPUTILS::currency($d->vyuctovaneZdrojeVerejne),
-                    \App\View\DPUTILS::currency($d->vyuctovaneZdrojeEU),
-                    \App\View\DPUTILS::currency($d->vyuctovaneZdrojeSoukrome)
+                    DPUTILS::currency($d->celkoveZdroje),
+                    DPUTILS::currency($d->schvaleneZdrojeVerejne),
+                    DPUTILS::currency($d->schvaleneZdrojeEU),
+                    DPUTILS::currency($d->schvaleneZdrojeSoukrome),
+                    DPUTILS::currency($d->vyuctovaneZdroje),
+                    DPUTILS::currency($d->vyuctovaneZdrojeVerejne),
+                    DPUTILS::currency($d->vyuctovaneZdrojeEU),
+                    DPUTILS::currency($d->vyuctovaneZdrojeSoukrome)
                 ];
 
                 break;

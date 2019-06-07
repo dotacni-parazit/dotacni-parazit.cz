@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ * @var Osoba $osoba
+ */
 
+use App\Model\Entity\Osoba;
+use App\View\AppView;
 use Cake\Cache\Cache;
 use Cake\I18n\Number;
 

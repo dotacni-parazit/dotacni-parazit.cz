@@ -1,9 +1,16 @@
 <?php
+/**
+ * @var AppView $this
+ * @var Dotace $dotace
+ */
 
+use App\Model\Entity\Dotace;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $dotace = (object)$rozhodnuti['Dotace'];
-$this->set('title', \App\View\DPUTILS::dotaceNazev($dotace));
+$this->set('title', DPUTILS::dotaceNazev($dotace));
 
 $this->Html->script('jquery-ui.min.js', ['block' => true]);
 $this->Html->css('jquery-ui.min.css', ['block' => true]);

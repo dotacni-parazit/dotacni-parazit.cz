@@ -1,8 +1,13 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\GrantyPrahaProjekty;
+use App\View\AppView;
 use Cake\I18n\Number;
 
-/** @var \App\Model\Entity\GrantyPrahaProjekty $projekt */
+/** @var GrantyPrahaProjekty $projekt */
 $this->set('title', $projekt->nazev_projektu);
 
 $prijemce = $projekt->Zadatel;

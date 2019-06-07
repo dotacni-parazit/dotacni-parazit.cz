@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
+
 $this->set('title', 'Kapitoly Státního Rozpočtu');
 ?>
 <table class="datatable" style="width: 100%;">

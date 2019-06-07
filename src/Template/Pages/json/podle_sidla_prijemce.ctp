@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var AppView $this
+ */
 
+use App\Model\Entity\CiselnikObecv01;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 $var = (isset($variant) && is_numeric($variant)) ? $variant : 1;
@@ -12,15 +18,15 @@ if (!$cache_data) {
     $total = 0;
 
 
-    /** @var \App\Model\Entity\CiselnikObecv01[] $obce */
+    /** @var CiselnikObecv01[] $obce */
     foreach ($obce as $o) {
         switch ($var) {
             case 1:
             default:
                 $data_arr[] = [
                     $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod),
-                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucet),
-                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
+                    DPUTILS::currency($obce_soucet[$o->id]->soucet),
+                    DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
                 ];
                 break;
             case 2:
@@ -28,8 +34,8 @@ if (!$cache_data) {
                 $data_arr[] = [
                     $this->Html->link($o->obecNazev, '/detail-obce/' . $o->obecKod),
                     $o->obecNutsKod,
-                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucet),
-                    \App\View\DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
+                    DPUTILS::currency($obce_soucet[$o->id]->soucet),
+                    DPUTILS::currency($obce_soucet[$o->id]->soucetSpotrebovano)
                 ];
                 break;
         }

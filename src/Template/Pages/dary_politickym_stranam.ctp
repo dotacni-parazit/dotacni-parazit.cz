@@ -1,8 +1,13 @@
 <?php
-/** @var \App\Model\Entity\Company[] $data */
+/**
+ * @var AppView $this
+ */
+/** @var Company[] $data */
 
 /** @var array $sums */
 
+use App\Model\Entity\Company;
+use App\View\AppView;
 use Cake\I18n\Number;
 
 $this->set('title', 'Dotace Dárců Politických Stran');

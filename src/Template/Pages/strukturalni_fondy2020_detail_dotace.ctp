@@ -1,6 +1,12 @@
 <?php
-/** @var \App\Model\Entity\StrukturalniFondy2020 $data */
+/**
+ * @var AppView $this
+ */
+/** @var StrukturalniFondy2020 $data */
 
+use App\Model\Entity\StrukturalniFondy2020;
+use App\View\AppView;
+use App\View\DPUTILS;
 use Cake\I18n\Number;
 
 $this->set('title', $data->nazevProjektu);
@@ -52,7 +58,7 @@ $this->set('title', $data->nazevProjektu);
 
     <tr>
         <td>Žadatel IČO</td>
-        <td><?= \App\View\DPUTILS::ico($data->zadatelIco) ?></td>
+        <td><?= DPUTILS::ico($data->zadatelIco) ?></td>
     </tr>
 
     <tr>

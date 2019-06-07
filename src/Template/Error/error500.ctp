@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var AppView $this
+ */
+
+use App\View\AppView;
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
