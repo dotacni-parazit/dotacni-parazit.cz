@@ -4,7 +4,7 @@ $this->set('title', $source->zdroj);
 
 ?>
 
-<table class="datatable" data-ajax="<?= $this->request->-getAttribute("here") ?>">
+<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th>Jméno Příjemce</th>

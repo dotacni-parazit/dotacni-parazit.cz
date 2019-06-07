@@ -1067,7 +1067,7 @@ class PagesController extends AppController
             'CiselnikStatv01',
             'AdresaBydliste'
         ])->enableHydration(true)->limit(110000);
-        debug(count($osoby));
+        //debug(count($osoby));
 
         $counter = 0;
         /** @var PrijemcePomoci[] $osoby */
@@ -1764,7 +1764,7 @@ class PagesController extends AppController
             $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'Strukturální Fondy 2014 - 2020' => '/strukturalni-fondy-2014-2020', 'Detail OP' => 'self']);
 
         }
-        if (empty($op)) throw new NotFoundException();
+        if (empty($op)) throw new NotFoundException('A');
 
 
         $op_kod = explode(' ', $req_op);
@@ -1777,7 +1777,7 @@ class PagesController extends AppController
                     'operacaniProgramKod' => $op_kod
                 ]
             ])->first();
-            if (empty($data) && strpos($req_op, 'ROP') === false && strpos($req_op, 'OP Praha') === false) throw new NotFoundException();
+            if (empty($data) && strpos($req_op, 'ROP') === false && strpos($req_op, 'OP Praha') === false) throw new NotFoundException('B');
 
             $is_special_op = strpos($req_op, 'ROP') !== false || strpos($req_op, 'OP Praha') !== false;
         } else {

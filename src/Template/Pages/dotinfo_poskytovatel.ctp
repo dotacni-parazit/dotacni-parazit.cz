@@ -13,7 +13,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné Informace</a></li>
-        <?php if (count($aliasy) > 1) { ?>
+        <?php if (!empty($aliasy) && count($aliasy) > 1) { ?>
             <li><a href="#aliasy">Aliasy Poskytovatele</a></li>
         <?php } ?>
         <li><a href="#dotinfo">Rozhodnutí</a></li>

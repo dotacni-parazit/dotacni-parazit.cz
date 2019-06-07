@@ -105,7 +105,7 @@ $this->set('title', $data->prioritaNazev);
     <div id="dotace">
         <h2>Dotace v Prioritě CEDR</h2>
         <div>Max. 50.000 záznamů</div>
-        <table class="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
+        <table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
             <thead>
             <tr>
                 <th>Název Projektu</th>

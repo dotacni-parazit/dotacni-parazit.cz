@@ -10,7 +10,7 @@ $this->set('title', 'Účel Dotačních Titulů');
     </span>
 </div>
 <hr/>
-<table id="datatable" data-ajax="<?= $this->request->getAttribute("here") ?>">
+<table id="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th data-type="html" class="col">Název</th>
