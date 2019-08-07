@@ -7,4 +7,3 @@
 .github
 webroot/downloads/*
 .htpasswd
-/tests
