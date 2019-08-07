@@ -7,7 +7,7 @@
   "require": {
     "php": ">=5.6",
     "ext-json": "*",
-    "cakephp/cakephp": "3.7.*",
+    "cakephp/cakephp": "3.8.*",
     "mobiledetect/mobiledetectlib": "2.*",
     "cakephp/migrations": "~1.0",
     "cakephp/plugin-installer": "*",

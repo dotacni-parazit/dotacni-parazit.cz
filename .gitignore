@@ -5,6 +5,6 @@
 .idea
 .well-known
 .github
-webroot/downloads/
+webroot/downloads/*
 .htpasswd
 /tests
