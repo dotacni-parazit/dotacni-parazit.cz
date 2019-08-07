@@ -59,7 +59,7 @@ class Application extends BaseApplication
         }
 
         if (Configure::read('debug')) {
-            $this->addPlugin(\DebugKit\Plugin::class);
+            //$this->addPlugin(\DebugKit\Plugin::class);
         }
 
     }
