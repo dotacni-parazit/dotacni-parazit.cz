@@ -190,8 +190,8 @@ $this->set('title', 'OpenData');
     <ul>
         <li><a href="/downloads/pap.gz">MFČR PAP - Pomocný Analytický Přehled - Originál (pap.gz)</a></li>
         <li><a href="/downloads/pap_ico.sql.gz">MFČR PAP - Pomocný Analytický Přehled (pap_ico.sql.gz)</a></li>
-        <li><a href="/downloads/CEDR_7Z/">Kompletní data CEDR v originální podobě (vždy aktuální verze) ve formátu
-                "csv.7z"</a></li>
+        <li><a href="/downloads/CEDR_ORIGINAL/">Kompletní data CEDR v originální podobě (vždy aktuální verze) ve formátu
+                "csv.gz"</a></li>
         <li><a href="/downloads/cedr.db.dump.sql.gz">Kompletní podoba databáze CEDR v Dotačním Parazitu, formát
                 MysqlDump (cedr.db.dump.sql.gz)</a></li>
         <li><a href="/downloads/DotInfo.utf8.csv">Poslední verze dat DotInfo.cz (DotInfo.utf8.csv)</a></li>
@@ -219,9 +219,17 @@ $this->set('title', 'OpenData');
         </li>
         <li><a href="/downloads/konsolidace.sql.gz">Aktuální stav databáze konsolidací holdingů/dceřinných společností a
                 darů právnických osob politickým stranám (konsolidace.sql.gz)</a></li>
+
         <li><a href="/downloads/SZIF_SPD_2014.xlsx">SZIF SPD 2014 (xlsx) - nejnovější (verze 2)</a> <a href="/downloads/SZIF_SPD_2014.csv">(csv)</a></li>
+
         <li><a href="/downloads/SZIF_SPD_2015.xlsx">SZIF SPD 2015 (xlsx) - nejnovější (verze 3)</a> <a href="/downloads/SZIF_SPD_2015.csv">(csv)</a></li>
+
         <li><a href="/downloads/SZIF_SPD_2016.xlsx">SZIF SPD 2016 (xlsx) - nejnovější (verze 3)</a> <a href="/downloads/SZIF_SPD_2016.csv">(csv)</a></li>
+
+        <li><a href="/downloads/PRV_2017.xlsx">SZIF SPD 2017 (xlsx) - nejnovější (verze 1)</a> <a href="/downloads/PRV_2017.csv">(csv)</a></li>
+
+        <li><a href="/downloads/PRV_2018_v6.xlsx">SZIF SPD 2018 (xlsx) - nejnovější (verze 6)</a> <a href="/downloads/PRV_2018_v6.csv">(csv)</a></li>
+
         <li><a href="/downloads/PRV_2014.xls">SZIF SPD 2014 (verze 1)</a></li>
         <li><a href="/downloads/PRV_2015_2.xls">SZIF SPD 2015 (verze 2)</a></li>
         <li><a href="/downloads/PRV_2015.xls">SZIF SPD 2015 (verze 1)</a></li>
