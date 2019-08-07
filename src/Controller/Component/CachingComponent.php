@@ -2,9 +2,12 @@
 
 namespace App\Controller\Component;
 
+use App\Controller\PagesController;
 use App\Model\Entity\CiselnikDotacePoskytovatelv01;
 use Cake\Cache\Cache;
 use Cake\Controller\Component;
+use Cake\Controller\Controller;
+use Cake\ORM\Query;
 use InvalidArgumentException;
 
 class CachingComponent extends Component
@@ -52,6 +55,14 @@ class CachingComponent extends Component
         return Cache::read($cache_tag, self::$defaultCacheConfig);
     }
 
+    /**
+     * @return PagesController|Controller
+     */
+    public function getController()
+    {
+        return parent::getController();
+    }
+
     public function cacheWrite($cache_tag = null, $content = null)
     {
         if (empty($cache_tag))
@@ -61,7 +72,7 @@ class CachingComponent extends Component
     }
 
     /**
-     * @param CiselnikDotacePoskytovatelv01[] $poskytovateleDotaci
+     * @param CiselnikDotacePoskytovatelv01[]|Query $poskytovateleDotaci
      * @return array
      */
     public function initCachePodlePoskytovatelu($poskytovateleDotaci)
