@@ -31,3 +31,11 @@
         <a href="#">Připravuje se</a>
     </div>
 </div>
+<div class="row homepage_row homepage">
+    <div class="col-lg-4 col-sm-9 col-md-4">
+        <a href="/ares/fo">ARES: Fyzické osoby společné příjemcům dotací</a>
+    </div>
+    <div class="col-lg-4 col-sm-9 col-md-4">
+        <a href="/ares/budovy">ARES: Agregace dotačních rozhodnutí podle adresy příjemců</a>
+    </div>
+</div>
