@@ -19,7 +19,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
         <li><a href="#okresy_map">Okresy - Mapa</a></li>
         <li><a href="#obce_list">Obce - Seznam</a></li>
         <li><a href="#staty_list">Státy - Seznam</a></li>
-        <li><a href="#hackujstat">Hackuj Stát</a></li>
     </ul>
     <div id="kraje_map">
         <?php
@@ -134,28 +133,6 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                 <td>Název státu</td>
                 <td style="text-align: right;">Součet rozhodnutých částek</td>
                 <td style="text-align: right;">Součet vyčerpaných částek</td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
-    <div id="hackujstat" style="width: 100%;">
-        <table class="datatable" style="width: 100%" data-ajax="<?= $this->request->getRequestTarget() ?>?var=2">
-            <thead>
-            <tr>
-                <th>Název obce</th>
-                <th>NUTS Kód</th>
-                <th class="nosearch" data-type="currency" style="text-align: right;">Součet částek rozhodnutých</th>
-                <th class="nosearch" data-type="currency" style="text-align: right;">Součet částek spotřebovaných</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>Název obce</td>
-                <td>NUTS Kód</td>
-                <td style="text-align: right;">Součet částek rozhodnutých</td>
-                <td style="text-align: right;">Součet částek spotřebovaných</td>
             </tr>
             </tfoot>
         </table>

@@ -54,10 +54,11 @@ use App\Model\Table\StrukturalniFondyTable;
 use App\Model\Table\TransactionsTable;
 use App\View\DPUTILS;
 use Cake\Cache\Cache;
+use Cake\Cache\Engine\FileEngine;
+use Cake\Cache\Engine\RedisEngine;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
-use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\View\Helper\HtmlHelper;
@@ -186,8 +187,42 @@ class PagesController extends AppController
         }
     }
 
+    public function migrateCache()
+    {
+        if (PHP_SAPI !== 'cli') {
+            throw new NotFoundException();
+            return;
+        }
+        /** @var FileEngine $files */
+        $files = Cache::engine('long_term');
+        $files->setConfig('prefix', false);
+
+        /** @var RedisEngine $redis */
+        $redis = Cache::engine('redis_long_term');
+        $redis->setConfig('prefix', false);
+
+        $keys = scandir(\CACHE . DS . 'long_term');
+
+        foreach ($keys as $key) {
+            $val = $files->read($key);
+            if ($val !== false) {
+                if ($redis->write($key, $val)) {
+                    $files->delete($key);
+                } else {
+                    dump("write-redis-fail:: " . $key);
+                }
+            } else {
+                dump("files-not-found:: " . $key);
+            }
+        }
+    }
+
     public function cache()
     {
+        if (PHP_SAPI !== 'cli') {
+            throw new NotFoundException();
+            return;
+        }
         debug("cacheAll");
         $this->Caching->cacheAll();
         debug("cedrOperacniProgramy");
@@ -441,8 +476,8 @@ class PagesController extends AppController
             ]
         ])->enableHydration(false)->toArray();
 
+        debug("detailStatuStart ".date(DATE_ATOM));
         foreach ($staty as $stat) {
-            //debug($stat);
 
             $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat['statKod3Znaky']);
             $biggest = Cache::read($cache_tag_statu_top_100, 'long_term');
@@ -531,8 +566,8 @@ class PagesController extends AppController
                 }
                 Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
             }
-            debug(count($biggest));
         }
+        debug("detailStatuEnd ".date(DATE_ATOM));
     }
 
     public function podlePoskytovatelu()
@@ -616,12 +651,13 @@ class PagesController extends AppController
         $kraje_data = [];
         $okresy_soucet = [];
 
-        if ($this->request->is('ajax')) {
+        if ($this->request->is('ajax') || PHP_SAPI == 'cli') {
             if (!$this->request->is('json')) {
                 $this->RequestHandler->renderAs($this, 'json');
             }
 
             $obce_soucet = [];
+            $obce_done = 0;
 
             foreach ($obce as $obec) {
                 $cache_tag_obec_soucet = 'obec_soucet_' . sha1($obec->obecKod);
@@ -630,8 +666,7 @@ class PagesController extends AppController
                 $obec_soucet = Cache::read($cache_tag_obec_soucet, 'long_term');
                 $obec_soucet_spotrebovano = Cache::read($cache_tag_obec_soucet_spotrebovano, 'long_term');
 
-                if (PHP_SAPI == 'cli' && $obec_soucet === false) {
-                    debug($cache_tag_obec_soucet);
+                if (PHP_SAPI == 'cli' && empty($obec_soucet)) {
                     $obec_soucet = $this->Rozhodnuti->find('all', [
                         'fields' => [
                             'sum' => 'SUM(castkaRozhodnuta)'
@@ -647,8 +682,7 @@ class PagesController extends AppController
                     Cache::write($cache_tag_obec_soucet, $obec_soucet, 'long_term');
                 }
 
-                if (PHP_SAPI == 'cli' && $obec_soucet_spotrebovano === false) {
-                    debug($cache_tag_obec_soucet_spotrebovano);
+                if (PHP_SAPI == 'cli' && empty($obec_soucet_spotrebovano)) {
                     $obec_soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
                         'fields' => [
                             'sum' => 'SUM(castkaSpotrebovana)'
@@ -668,20 +702,26 @@ class PagesController extends AppController
                     'soucet' => $obec_soucet,
                     'soucetSpotrebovano' => $obec_soucet_spotrebovano
                 ];
+                $obce_done++;
+                if ($obce_done % 500 === 0) {
+                    debug('obce done: ' . $obce_done);
+                }
             }
 
-            $_serialize = false;
-            $this->set('variant', $this->request->getQuery('var'));
-            $this->set(compact(['obce', 'obce_soucet', '_serialize', 'okresy_soucet']));
-            return;
+            if ($this->request->is('ajax')) {
+                $_serialize = false;
+                $this->set('variant', $this->request->getQuery('var'));
+                $this->set(compact(['obce', 'obce_soucet', '_serialize', 'okresy_soucet']));
+                return;
+            }
         }
 
+        $staty_done = 0;
         foreach ($staty as $stat) {
             // soucet rozhodnutych
             $cache_tag = "soucet_stat_" . $stat->statKod3Znaky;
             $soucet = Cache::read($cache_tag, 'long_term');
-            if (PHP_SAPI == 'cli' && $soucet === false) {
-                debug($cache_tag);
+            if (PHP_SAPI == 'cli' && empty($soucet)) {
                 $sum = $this->Rozhodnuti->find('all', [
                         'fields' => [
                             'sum' => 'SUM(castkaRozhodnuta)'
@@ -703,8 +743,7 @@ class PagesController extends AppController
             // soucet spotrebovaanych
             $cache_tag_spotrebovano = "soucet_stat_spotrebovano_" . $stat->statKod3Znaky;
             $soucet_spotrebovano = Cache::read($cache_tag_spotrebovano, 'long_term');
-            if (PHP_SAPI == 'cli' && $soucet_spotrebovano === false) {
-                debug($cache_tag_spotrebovano);
+            if (PHP_SAPI == 'cli' && empty($soucet_spotrebovano)) {
                 $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
                         'fields' => [
                             'sum' => 'SUM(castkaSpotrebovana)'
@@ -722,14 +761,19 @@ class PagesController extends AppController
                 $soucet_spotrebovano = $sum_spotrebovano;
             }
             $soucet_staty_spotrebovano[$stat->id] = $soucet_spotrebovano;
+            $staty_done++;
+            if ($staty_done % 10 === 0) {
+                debug('staty done: ' . $staty_done);
+            }
         }
+        debug('staty done completely');
 
+        $kraje_done = 0;
         foreach ($kraje_ids as $kraj) {
             $cache_tag_kraj = 'soucet_kraj_' . sha1($kraj->krajKod);
 
             $soucet_kraj = Cache::read($cache_tag_kraj, 'long_term');
-            if (PHP_SAPI == 'cli' && $soucet_kraj === false) {
-                debug($cache_tag_kraj);
+            if (PHP_SAPI == 'cli' && empty($soucet_kraj)) {
                 $soucet = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'sum' => 'SUM(Rozhodnuti.castkaRozhodnuta)'
@@ -748,8 +792,7 @@ class PagesController extends AppController
 
             $cache_tag_kraj_spotrebovano = 'soucet_kraj_spotrebovano_' . sha1($kraj->krajKod);
             $soucet_kraj_spotrebovano = Cache::read($cache_tag_kraj_spotrebovano, 'long_term');
-            if (PHP_SAPI == 'cli' && $soucet_kraj_spotrebovano === false) {
-                debug($cache_tag_kraj_spotrebovano);
+            if (PHP_SAPI == 'cli' && empty($soucet_kraj_spotrebovano)) {
                 $soucet_spotrebovano = $this->RozpoctoveObdobi->find('all', [
                     'fields' => [
                         'sum' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
@@ -774,7 +817,12 @@ class PagesController extends AppController
                 'krajNazev' => $this->CiselnikKrajv01->find('all', ['conditions' => ['krajKod' => $kraj->krajKod]])->first()->krajNazev,
                 'color' => ''
             ];
+            $kraje_done++;
+            if ($kraje_done % 1 === 0) {
+                debug('kraje done: ' . $kraje_done);
+            }
         }
+        debug('kraje done completely');
 
         $gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($kraje_data) + 1);
         usort($kraje_data, function ($a, $b) {
@@ -794,6 +842,7 @@ class PagesController extends AppController
         $kraje_data = $tmparr;
         unset($tmparr);
 
+        $okresy_done = 0;
         foreach ($okresy as $okres) {
             $cache_tag_okres_soucet = 'soucet_okres_' . sha1($okres->okresKod);
             $cache_tag_okres_soucet_spotrebovano = 'soucet_okres_spotrebovano_' . sha1($okres->okresKod);
@@ -801,8 +850,7 @@ class PagesController extends AppController
             $soucet_okres = Cache::read($cache_tag_okres_soucet, 'long_term');
             $soucet_okres_spotrebovano = Cache::read($cache_tag_okres_soucet_spotrebovano, 'long_term');
 
-            if (PHP_SAPI == 'cli' && $soucet_okres === false) {
-                debug($cache_tag_okres_soucet);
+            if (PHP_SAPI == 'cli' && empty($soucet_okres)) {
                 $soucet_okres = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'sum' => 'SUM(castkaRozhodnuta)'
@@ -818,8 +866,7 @@ class PagesController extends AppController
                 Cache::write($cache_tag_okres_soucet, $soucet_okres, 'long_term');
             }
 
-            if (PHP_SAPI == 'cli' && $soucet_okres_spotrebovano === false) {
-                debug($cache_tag_okres_soucet_spotrebovano);
+            if (PHP_SAPI == 'cli' && empty($soucet_okres_spotrebovano)) {
                 $soucet_okres_spotrebovano = $this->RozpoctoveObdobi->find('all', [
                     'fields' => [
                         'sum' => 'SUM(castkaSpotrebovana)'
@@ -843,7 +890,12 @@ class PagesController extends AppController
                 'okresKod' => $okres->okresKod,
                 'id' => $okres->id
             ];
+            $okresy_done++;
+            if ($okresy_done % 10 === 0) {
+                debug('okresy done: ' . $okresy_done);
+            }
         }
+        debug('okresy done completely');
 
         $okresy_gradients = $this->lineargradient(255, 0, 0, 0, 255, 255, count($okresy_soucet) + 1);
         usort($okresy_soucet, function ($a, $b) {
@@ -920,7 +972,7 @@ class PagesController extends AppController
             $cache_tag = 'soucet_podle_zdroje_' . sha1($z->id);
             $sum = Cache::read($cache_tag, 'long_term');
             $sums[$z->financniZdrojKod]['SUM'] = $sum;
-            if ($sum === false) {
+            if (empty($sum)) {
                 $z_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(RozpoctoveObdobi.castkaSpotrebovana)'
@@ -941,7 +993,7 @@ class PagesController extends AppController
             $cache_tag = 'soucet_podle_zdroje_rozhodnuta_' . sha1($z->id);
             $sum = Cache::read($cache_tag, 'long_term');
             $sums[$z->financniZdrojKod]['SUM2'] = $sum;
-            if ($sum === false) {
+            if (empty($sum)) {
                 $z_sum = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'SUM' => 'SUM(castkaRozhodnuta)'
@@ -1082,7 +1134,7 @@ class PagesController extends AppController
             $sum_rozhodnuti = Cache::read($cache_tag_sum_rozhodnuti, 'long_term');
             $sum_spotrebovano = Cache::read($cache_tag_sum_spotrebovano, 'long_term');
 
-            if ($sum_rozhodnuti === false) {
+            if (PHP_SAPI === 'cli' && empty($sum_rozhodnuti)) {
                 $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'sum' => 'SUM(castkaRozhodnuta)'
@@ -1098,7 +1150,7 @@ class PagesController extends AppController
                 Cache::write($cache_tag_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
             }
 
-            if ($sum_spotrebovano === false) {
+            if (empty($sum_spotrebovano)) {
                 $sum_spotrebovano = $this->Rozhodnuti->find('all', [
                     'fields' => [
                         'sum' => 'SUM(castkaSpotrebovana)'

@@ -110,82 +110,97 @@ class AresController extends AppController
 
     public function cacheSouctyPodleIco()
     {
-        $osoby = $this->AresFO->find('all', [
-            'contain' => [
-                'AresFOtoICO'
-            ],
-            'limit' => 3000,
-            'offset' => 5000
-        ]);
+        $limit = 5000;
+        $offset = 0;
+        $hasMore = true;
 
-        /** @var AresFO[] $osoby */
-        foreach ($osoby as $f) {
-            dump($f->id);
+        while ($hasMore) {
 
-            $cache_tag_fo_sum_rozhodnuti = 'sum_rozhodnuti_fo_id_' . sha1($f->id);
-            $cache_tag_fo_sum_spotrebovano = 'sum_spotrebovano_fo_id_' . sha1($f->id);
+            $osoby = $this->AresFO->find('all', [
+                'contain' => [
+                    'AresFOtoICO'
+                ],
+                'limit' => $limit,
+                'offset' => $offset
+            ]);
+            $hasOne = false;
 
-            $fo_sum_rozhodnuti = Cache::read($cache_tag_fo_sum_rozhodnuti, 'long_term');
-            $fo_sum_spotrebovano = Cache::read($cache_tag_fo_sum_spotrebovano, 'long_term');
+            /** @var AresFO[] $osoby */
+            foreach ($osoby as $f) {
+                $hasOne = true;
+                dump('id: ' . $f->id);
 
-            if ($fo_sum_spotrebovano !== false && $fo_sum_rozhodnuti !== false) {
-                dump('continue');
-                continue;
-            }
-            $fo_sum_rozhodnuti = 0;
-            $fo_sum_spotrebovano = 0;
+                $cache_tag_fo_sum_rozhodnuti = 'sum_rozhodnuti_fo_id_' . sha1($f->id);
+                $cache_tag_fo_sum_spotrebovano = 'sum_spotrebovano_fo_id_' . sha1($f->id);
 
-            foreach ($f->ares_f_oto_i_c_o as $d) {
+                $fo_sum_rozhodnuti = Cache::read($cache_tag_fo_sum_rozhodnuti, 'long_term');
+                $fo_sum_spotrebovano = Cache::read($cache_tag_fo_sum_spotrebovano, 'long_term');
 
-                $cache_tag_ico_sum_rozhodnuti = 'sum_rozhodnuti_ico_' . sha1($d->ico) . '_all_years';
-                $cache_tag_ico_sum_spotrebovano = 'sum_spotrebovano_ico_' . sha1($d->ico) . '_all_years';
+                //if ($fo_sum_spotrebovano !== false && $fo_sum_rozhodnuti !== false) {
+                    //dump('continue');
+                    //continue;
+                //}
+                $fo_sum_rozhodnuti = 0;
+                $fo_sum_spotrebovano = 0;
+
+                foreach ($f->ares_f_oto_i_c_o as $d) {
+
+                    $cache_tag_ico_sum_rozhodnuti = 'sum_rozhodnuti_ico_' . sha1($d->ico) . '_all_years';
+                    $cache_tag_ico_sum_spotrebovano = 'sum_spotrebovano_ico_' . sha1($d->ico) . '_all_years';
 
 //            Cache::delete($cache_tag_ico_sum_rozhodnuti, 'long_term');
 //            Cache::delete($cache_tag_ico_sum_spotrebovano, 'long_term');
 
-                $sum_rozhodnuti = Cache::read($cache_tag_ico_sum_rozhodnuti, 'long_term');
-                $sum_spotrebovano = Cache::read($cache_tag_ico_sum_spotrebovano, 'long_term');
+                    $sum_rozhodnuti = Cache::read($cache_tag_ico_sum_rozhodnuti, 'long_term');
+                    $sum_spotrebovano = Cache::read($cache_tag_ico_sum_spotrebovano, 'long_term');
 
-                if ($sum_rozhodnuti === false) {
-                    $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(castkaRozhodnuta)'
-                            ],
-                            'contain' => [
-                                'Dotace.PrijemcePomoci'
-                            ],
-                            'conditions' => [
-                                'PrijemcePomoci.ico' => $d->ico,
-                                'refundaceIndikator' => 0
-                            ]
-                        ])->first()->sum + 0;
-                    Cache::write($cache_tag_ico_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
+                    if ($sum_rozhodnuti === false) {
+                        $sum_rozhodnuti = $this->Rozhodnuti->find('all', [
+                                'fields' => [
+                                    'sum' => 'SUM(castkaRozhodnuta)'
+                                ],
+                                'contain' => [
+                                    'Dotace.PrijemcePomoci'
+                                ],
+                                'conditions' => [
+                                    'PrijemcePomoci.ico' => $d->ico,
+                                    'refundaceIndikator' => 0
+                                ]
+                            ])->first()->sum + 0;
+
+                        Cache::write($cache_tag_ico_sum_rozhodnuti, $sum_rozhodnuti, 'long_term');
+                    }
+
+                    if ($sum_spotrebovano === false) {
+                        $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
+                                'fields' => [
+                                    'sum' => 'SUM(castkaSpotrebovana)'
+                                ],
+                                'contain' => [
+                                    'Rozhodnuti',
+                                    'Rozhodnuti.Dotace.PrijemcePomoci'
+                                ],
+                                'conditions' => [
+                                    'PrijemcePomoci.ico' => $d->ico,
+                                    'refundaceIndikator' => 0
+                                ]
+                            ])->first()->sum + 0;
+                        Cache::write($cache_tag_ico_sum_spotrebovano, $sum_spotrebovano, 'long_term');
+                    }
+
+                    $fo_sum_rozhodnuti += $sum_rozhodnuti;
+                    $fo_sum_spotrebovano += $sum_spotrebovano;
+
+                    dump('save ic: ' . $d->ico);
                 }
 
-                if ($sum_spotrebovano === false) {
-                    $sum_spotrebovano = $this->RozpoctoveObdobi->find('all', [
-                            'fields' => [
-                                'sum' => 'SUM(castkaSpotrebovana)'
-                            ],
-                            'contain' => [
-                                'Rozhodnuti',
-                                'Rozhodnuti.Dotace.PrijemcePomoci'
-                            ],
-                            'conditions' => [
-                                'PrijemcePomoci.ico' => $d->ico,
-                                'refundaceIndikator' => 0
-                            ]
-                        ])->first()->sum + 0;
-                    Cache::write($cache_tag_ico_sum_spotrebovano, $sum_spotrebovano, 'long_term');
-                }
-
-                $fo_sum_rozhodnuti += $sum_rozhodnuti;
-                $fo_sum_spotrebovano += $sum_spotrebovano;
+                Cache::write($cache_tag_fo_sum_spotrebovano, $fo_sum_spotrebovano, 'long_term');
+                Cache::write($cache_tag_fo_sum_rozhodnuti, $fo_sum_rozhodnuti, 'long_term');
             }
-
-            Cache::write($cache_tag_fo_sum_spotrebovano, $fo_sum_spotrebovano, 'long_term');
-            Cache::write($cache_tag_fo_sum_rozhodnuti, $fo_sum_rozhodnuti, 'long_term');
-            dump('save');
+            $offset += $limit;
+            if (!$hasOne) {
+                $hasMore = false;
+            }
         }
     }
 

@@ -21,11 +21,11 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 <div id="tabs">
     <ul>
         <li><a href="#obecne">Obecné informace</a></li>
-        <li><a href="#hlidacsmluv">Smlouvy (Hlídač Smluv)</a></li>
+        <li><a href="#rozhodnuti">Rozhodnutí dle CEDR</a></li>
         <?php if (!empty($prijemci->toArray()) && count($prijemci->toArray()) > 1) { ?>
             <li><a href="#aliasy">Aliasy příjemce pomoci</a></li>
         <?php } ?>
-        <li><a href="#rozhodnuti">Rozhodnutí dle CEDR</a></li>
+        <li><a href="#hlidacsmluv">Smlouvy (Hlídač Smluv)</a></li>
         <?php if (!empty($strukturalniFondy)) { ?>
             <li><a href="#strukturalniFondy">Strukturální Fondy 2007 - 2013</a></li>
         <?php } ?>
@@ -418,7 +418,7 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
 
         $("#tabs").tabs({
             collapsible: false,
-            active: <?= empty($name) ? '0' : '1' ?>
+            active: <?= empty($name) ? '1' : '0' ?>
         });
 
         $("#onlythis").on('change', function () {

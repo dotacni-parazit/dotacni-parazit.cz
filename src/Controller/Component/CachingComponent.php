@@ -13,7 +13,7 @@ use InvalidArgumentException;
 class CachingComponent extends Component
 {
 
-    static $defaultCacheConfig = 'long_term';
+    static $defaultCacheConfig = 'redis_long_term';
 
     public function cacheAll()
     {
@@ -44,7 +44,8 @@ class CachingComponent extends Component
     {
         if (empty($type) || empty($name))
             throw new InvalidArgumentException();
-        return $name . '_' . $type . (empty($unique) ? '' : '_' . sha1($unique));
+        $tag = $name . '_' . $type . (empty($unique) ? '' : '_' . sha1($unique));
+        return $tag;
     }
 
     public function cacheRead($cache_tag = null)
