@@ -9,6 +9,7 @@ use App\View\DPUTILS;
 use Cake\Cache\Cache;
 
 $cache_key = 'ares_fo_index';
+//Cache::delete($cache_key, 'long_term');
 $cache_data = Cache::read($cache_key, 'long_term');
 
 if (!$cache_data) {
