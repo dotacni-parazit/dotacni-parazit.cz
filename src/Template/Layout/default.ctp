@@ -17,7 +17,7 @@ use App\View\AppView; ?>
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta property="og:image" content="https://dotacni-parazit.cz/img/brouk_128.png" />
+    <meta property="og:image" content="https://dotacni-parazit.cz/img/brouk_128.png"/>
     <meta name="theme-color" content="#ffffff">
     <title>
         <?= strtolower($title) === "dotační parazit" ? "Hlavní Stránka" : $title ?> - Dotační Parazit
@@ -78,14 +78,19 @@ use App\View\AppView; ?>
 
 <footer>
     <div id="sitefooter" style="margin: 4em 0 0 0; text-align: center;">
-        <a href="http://goodgovernance.cz/" style="display: block;"><img src="/img/good_governance_logo.png"></a>
-        <div id="footercontent"
-             style="color: #fff; width: 100%; text-align: center; padding: 2em 0; background: #46223E; margin: 1em 0 0 0;">
-            &copy; Copyright <a href="http://goodgovernance.cz/" style="color: #fff; text-decoration: underline;">Good
-                Governance</a> - Centrum of Excellence for Good Governance
-            <br/>
-            <a style="color: white;" href="mailto:info@dotacni-parazit.cz">info@dotacni-parazit.cz</a>
-        </div>
+        <a href="http://goodgovernance.cz/" title="Sponsored by Centrum of excellence for Good Governance, z.s."
+           class="text-right"><img src="/img/good_governance_logo.png"></a>
+        <a href="https://www.jetbrains.com/?from=DotacniParazit" title="Sponsored by JetBrains"
+           class="col text-left"><img src="/img/jetbrains.png" height="84"></a>
+    </div>
+
+    <div id="footercontent"
+         style="color: #fff; width: 100%; text-align: center; padding: 2em 0; background: #46223E; margin: 1em 0 0 0;">
+        &copy; Copyright <a href="http://goodgovernance.cz/" style="color: #fff; text-decoration: underline;">Good
+            Governance</a> - Centrum of Excellence for Good Governance
+        <br/>
+        <a style="color: white;" href="mailto:info@dotacni-parazit.cz">info@dotacni-parazit.cz</a>
+    </div>
     </div>
 </footer>
 
