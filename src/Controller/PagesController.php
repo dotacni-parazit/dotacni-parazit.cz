@@ -47,6 +47,7 @@ use App\Model\Table\MFCRPAPTable;
 use App\Model\Table\OwnersTable;
 use App\Model\Table\PrijemcePomociTable;
 use App\Model\Table\PRVTable;
+use App\Model\Table\RDMTable;
 use App\Model\Table\RozhodnutiTable;
 use App\Model\Table\RozpoctoveObdobiTable;
 use App\Model\Table\StrukturalniFondy2020Table;
@@ -108,6 +109,7 @@ use Exception;
  * @property PRVTable PRV
  * @property GrantyPrahaZadatelTable GrantyPrahaZadatel
  * @property GrantyPrahaProjektyTable GrantyPrahaProjekty
+ * @property RDMTable RDM
  */
 class PagesController extends AppController
 {
@@ -159,6 +161,7 @@ class PagesController extends AppController
         $this->loadModel('PRV');
         $this->loadModel('GrantyPrahaZadatel');
         $this->loadModel('GrantyPrahaProjekty');
+        $this->loadModel('RDM');
 
         $this->loadComponent('Caching');
     }
@@ -476,7 +479,7 @@ class PagesController extends AppController
             ]
         ])->enableHydration(false)->toArray();
 
-        debug("detailStatuStart ".date(DATE_ATOM));
+        debug("detailStatuStart " . date(DATE_ATOM));
         foreach ($staty as $stat) {
 
             $cache_tag_statu_top_100 = 'detail_statu_top_100_' . sha1($stat['statKod3Znaky']);
@@ -567,7 +570,7 @@ class PagesController extends AppController
                 Cache::write($cache_tag_statu_top_100, $biggest, 'long_term');
             }
         }
-        debug("detailStatuEnd ".date(DATE_ATOM));
+        debug("detailStatuEnd " . date(DATE_ATOM));
     }
 
     public function podlePoskytovatelu()
@@ -4337,6 +4340,15 @@ class PagesController extends AppController
         if (empty($data)) throw new NotFoundException();
 
         $this->set(compact('data'));
+    }
+
+    public function rdmIndex()
+    {
+        $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'MZE eAgri' => 'self', 'Registr de Minimis' => 'self']);
+
+        $all = $this->RDM->find('all');
+
+        $this->set(compact('all'));
     }
 
 }

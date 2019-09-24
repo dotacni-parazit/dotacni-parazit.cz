@@ -18,7 +18,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -150,6 +149,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/program-rozvoje-venkova/okres', ['controller' => 'Szif', 'action' => 'prvOkres']);
     $routes->connect('/program-rozvoje-venkova/obec', ['controller' => 'Szif', 'action' => 'prvObec']);
     $routes->connect('/program-rozvoje-venkova/opatreni', ['controller' => 'Szif', 'action' => 'prvOpatreni']);
+
+    $routes->connect('/eagri/rdm/', ['controller' => 'Pages', 'action' => 'rdmIndex']);
 
     $routes->connect('/kandidati-na-prezidenta', ['controller' => 'Prezident', 'action' => 'index']);
     $routes->connect('/kandidati-na-prezidenta/detail/:id', ['controller' => 'Prezident', 'action' => 'detail'], ['id' => '[0-9]+']);
