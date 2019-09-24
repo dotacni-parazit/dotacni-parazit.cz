@@ -6,10 +6,9 @@
 
 use App\Model\Entity\RDM;
 use App\View\AppView;
-use App\View\DPUTILS;
 
 ?>
-<table class="datatable">
+<table class="datatable" data-ajax="<?= $this->request->getRequestTarget() ?>">
     <thead>
     <tr>
         <th>Období</th>
@@ -21,16 +20,6 @@ use App\View\DPUTILS;
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($all as $rdm) { ?>
-        <tr>
-            <td><?= $rdm->in_year ?></td>
-            <td><?= $rdm->ico_prijemce_num ?></td>
-            <td><?= $rdm->kod_prijemce_num ?></td>
-            <td><?= $rdm->ico_poskytovatele ?></td>
-            <td><?= DPUTILS::currency($rdm->castka_kc) ?></td>
-            <td><?= $rdm->ucel ?></td>
-        </tr>
-    <?php } ?>
     </tbody>
     <tfoot>
     <tr>

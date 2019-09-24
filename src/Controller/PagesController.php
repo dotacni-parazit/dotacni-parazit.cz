@@ -4345,10 +4345,16 @@ class PagesController extends AppController
     public function rdmIndex()
     {
         $this->set('crumbs', ['Hlavní Stránka' => '/', 'Poskytovatelé' => '/podle-poskytovatelu/index', 'MZE eAgri' => 'self', 'Registr de Minimis' => 'self']);
+        
+        if ($this->request->is('ajax')) {
+            if (!$this->request->is('json')) {
+                $this->RequestHandler->renderAs($this, 'json');
+            }
+            $_serialize = false;
+            $all = $this->RDM->find('all');
+            $this->set(compact('all'));
+        }
 
-        $all = $this->RDM->find('all');
-
-        $this->set(compact('all'));
     }
 
 }
