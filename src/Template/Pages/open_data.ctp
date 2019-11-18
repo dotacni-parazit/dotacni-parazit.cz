@@ -194,6 +194,7 @@ $this->set('title', 'OpenData');
                 "csv.gz"</a></li>
         <li><a href="/downloads/cedr.db.dump.sql.gz">Kompletní podoba databáze CEDR v Dotačním Parazitu, formát
                 MysqlDump (cedr.db.dump.sql.gz)</a></li>
+        <li><a href="/downloads/DotInfo.xlsx">Poslední verze dat DotInfo.cz (DotInfo.xlsx)</a></li>
         <li><a href="/downloads/DotInfo.utf8.csv">Poslední verze dat DotInfo.cz (DotInfo.utf8.csv)</a></li>
         <li><a href="/downloads/dotinfo.sql.gz">Poslední verze dat DotInfo.cz (dotinfo.sql.gz)</a></li>
         <li><a href="/downloads/strukturalniFondy2020.csv">Strukturální Fondy 2014-2020 (strukturalniFondy2020.csv)</a>
