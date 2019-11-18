@@ -79,12 +79,12 @@ $this->set('title', 'OpenData');
 
 <div class="text">
     Stručného průvodce prací s Dotačním Parazitem naleznete na Blogu, na adrese <a
-            href="https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/">https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/</a>
+        href="https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/">https://blog.dotacni-parazit.cz/2017/10/02/strucny-pruvodce-dotacnim-parazitem/</a>
     <br/>
     <br/>
     Pro správnou funkci stránek Dotační Parazit doporučujeme využívat prohlížeče <a
-            href="https://www.mozilla.cz/stahnout/">Mozilla Firefox</a> nebo <a
-            href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a>
+        href="https://www.mozilla.cz/stahnout/">Mozilla Firefox</a> nebo <a
+        href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a>
 </div>
 
 <h2 id="parazit">O názvu "Dotační Parazit"</h2>
@@ -197,11 +197,15 @@ $this->set('title', 'OpenData');
         <li><a href="/downloads/DotInfo.xlsx">Poslední verze dat DotInfo.cz (DotInfo.xlsx)</a></li>
         <li><a href="/downloads/DotInfo.utf8.csv">Poslední verze dat DotInfo.cz (DotInfo.utf8.csv)</a></li>
         <li><a href="/downloads/dotinfo.sql.gz">Poslední verze dat DotInfo.cz (dotinfo.sql.gz)</a></li>
-        <li><a href="/downloads/strukturalniFondy2020.csv">Strukturální Fondy 2014-2020 (strukturalniFondy2020.csv)</a>
-        </li>
+        <li><a href="/downloads/strukturalniFondy2014-2020.csv">Strukturální Fondy 2014-2020
+                (strukturalniFondy2014-2020.csv)</a></li>
+        <li><a href="/downloads/strukturalniFondy2014-2020.xls">Strukturální Fondy 2014-2020
+                (strukturalniFondy2014-2020.xls)</a></li>
         <li><a href="/downloads/strukturalniFondy2014-2020.sql.gz">Strukturální Fondy 2014-2020
                 (strukturalniFondy2014-2020.sql.gz)</a>
         </li>
+        <li><a href="/downloads/strukturalniFondy2007-2013.csv">Strukturální Fondy 2007-2013
+                (strukturalniFondy2007-2013.csv)</a></li>
         <li><a href="/downloads/strukturalniFondy2007-2013.xlsx">Strukturální Fondy 2007-2013
                 (strukturalniFondy2007-2013.xlsx)</a></li>
         <li><a href="/downloads/strukturalniFondy2007-2013.sql.gz">Strukturální Fondy 2007-2013
@@ -221,15 +225,20 @@ $this->set('title', 'OpenData');
         <li><a href="/downloads/konsolidace.sql.gz">Aktuální stav databáze konsolidací holdingů/dceřinných společností a
                 darů právnických osob politickým stranám (konsolidace.sql.gz)</a></li>
 
-        <li><a href="/downloads/SZIF_SPD_2014.xlsx">SZIF SPD 2014 (xlsx) - nejnovější (verze 2)</a> <a href="/downloads/SZIF_SPD_2014.csv">(csv)</a></li>
+        <li><a href="/downloads/SZIF_SPD_2014.xlsx">SZIF SPD 2014 (xlsx) - nejnovější (verze 2)</a> <a
+                href="/downloads/SZIF_SPD_2014.csv">(csv)</a></li>
 
-        <li><a href="/downloads/SZIF_SPD_2015.xlsx">SZIF SPD 2015 (xlsx) - nejnovější (verze 3)</a> <a href="/downloads/SZIF_SPD_2015.csv">(csv)</a></li>
+        <li><a href="/downloads/SZIF_SPD_2015.xlsx">SZIF SPD 2015 (xlsx) - nejnovější (verze 3)</a> <a
+                href="/downloads/SZIF_SPD_2015.csv">(csv)</a></li>
 
-        <li><a href="/downloads/SZIF_SPD_2016.xlsx">SZIF SPD 2016 (xlsx) - nejnovější (verze 3)</a> <a href="/downloads/SZIF_SPD_2016.csv">(csv)</a></li>
+        <li><a href="/downloads/SZIF_SPD_2016.xlsx">SZIF SPD 2016 (xlsx) - nejnovější (verze 3)</a> <a
+                href="/downloads/SZIF_SPD_2016.csv">(csv)</a></li>
 
-        <li><a href="/downloads/PRV_2017.xlsx">SZIF SPD 2017 (xlsx) - nejnovější (verze 1)</a> <a href="/downloads/PRV_2017.csv">(csv)</a></li>
+        <li><a href="/downloads/PRV_2017.xlsx">SZIF SPD 2017 (xlsx) - nejnovější (verze 1)</a> <a
+                href="/downloads/PRV_2017.csv">(csv)</a></li>
 
-        <li><a href="/downloads/PRV_2018_v6.xlsx">SZIF SPD 2018 (xlsx) - nejnovější (verze 6)</a> <a href="/downloads/PRV_2018_v6.csv">(csv)</a></li>
+        <li><a href="/downloads/PRV_2018_v6.xlsx">SZIF SPD 2018 (xlsx) - nejnovější (verze 6)</a> <a
+                href="/downloads/PRV_2018_v6.csv">(csv)</a></li>
 
         <li><a href="/downloads/PRV_2014.xls">SZIF SPD 2014 (verze 1)</a></li>
         <li><a href="/downloads/PRV_2015_2.xls">SZIF SPD 2015 (verze 2)</a></li>
@@ -273,7 +282,7 @@ $this->set('title', 'OpenData');
                 </li>
                 <li>Po importu jsou vygenerovány hodnoty sloupců "CiselnikOkresv01.krajNadKod",
                     "CiselnikObecv01.okresNadKod", aby bylo možné data párovat v MySQL (např. pro sekci <a
-                            href="https://dotacni-parazit.cz/podle-sidla-prijemce">Podle Sídla Příjemce</a>)
+                        href="https://dotacni-parazit.cz/podle-sidla-prijemce">Podle Sídla Příjemce</a>)
                 </li>
             </ul>
         </li>
@@ -302,7 +311,7 @@ $this->set('title', 'OpenData');
         <li>Data pro tyto sekce byly manuálně vytvořeny týmem GoodGovernance skrze datovou administraci</li>
         <li>Výchozími pro tato data byly výroční zprávy politických stran a holdingů</li>
         <li>Data jsou k dispozici ke stažení v podobě SQL a jako PDF v detailu politických stran nebo holdingů (viz. <a
-                    href="#downloads">Ke stažení</a>)
+                href="#downloads">Ke stažení</a>)
         </li>
     </ul>
 </div>
@@ -320,10 +329,10 @@ $this->set('title', 'OpenData');
     Vyhledávání podle jména:
     <ul>
         <li>Text v uvozovkách, bude hledán jako "přesná fráze", např. <a
-                    href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=%22ministerstvo+%C5%A1kolstv%C3%AD%22">"ministerstvo
+                href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=%22ministerstvo+%C5%A1kolstv%C3%AD%22">"ministerstvo
                 školství"</a></li>
         <li>Slova prefixována znakem "-" budou vyloučena z výsledků, např. <a
-                    href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=ministerstvo+-dopravy+-%C5%A1kolstv%C3%AD+-financ%C3%AD">ministerstvo
+                href="https://dotacni-parazit.cz/poskytovatel-dotaci/jmeno?name=ministerstvo+-dopravy+-%C5%A1kolstv%C3%AD+-financ%C3%AD">ministerstvo
                 -dopravy -školství -financí</a></li>
     </ul>
 </div>
@@ -519,7 +528,7 @@ $this->set('title', 'OpenData');
         <li><a href="/presskit/Dotacni-Parazit-Tiskova-Zprava-1.pdf">Tisková zpráva o spuštění projektu (3.10.2017)</a>
         </li>
         <li><a href="/presskit/logo.zip">Logo v různých formátech a velikostech (logo.zip)</a> - Vytvořil <a
-                    href="https://tom-kurka.cz/">Tomáš Kůrka</a></li>
+                href="https://tom-kurka.cz/">Tomáš Kůrka</a></li>
     </ul>
 </div>
 
