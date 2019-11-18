@@ -180,8 +180,8 @@ $this->Html->css('jquery-ui.min.css', ['block' => true]);
                         }
                     });
 
-                    $("#soucet").text("Součet zobrazených řádků (částka rozhodnutá): " + $.fn.dataTable.render.number('.', ',', 0).display(soucet) + " Kč");
-                    $("#soucetSpotrebovana").text("Součet zobrazených řádků (částka spotřebovaná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetSpotrebovano) + " Kč");
+                    $("#soucet").text("Součet zobrazených řádků (částka čerpaná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucet) + " Kč");
+                    $("#soucetSpotrebovana").text("Součet zobrazených řádků (částka uvolněná): " + $.fn.dataTable.render.number('.', ',', 0).display(soucetSpotrebovano) + " Kč");
                 }
 
                 $("#datatable").dataTable().fnSettings().aoDrawCallback.push({
